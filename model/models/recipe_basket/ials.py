@@ -54,33 +54,49 @@ def _solve_users(Y: np.ndarray, corpus, alpha: float, reg: float,
     return X
 
 
+def _group_slots(corpus, n_vocab: int) -> tuple[np.ndarray, np.ndarray]:
+    """Index every (ingredient, recipe) slot once, grouped by ingredient.
+
+    Returns the recipe id of each slot sorted by its ingredient, plus the
+    boundaries of each ingredient's run. The grouping depends only on the
+    corpus, so it is built once and reused by every iteration.
+    """
+    n = corpus.n_recipes
+    items = corpus.flat[corpus.offsets[0]:corpus.offsets[n]].astype(np.int64)
+    owner = np.repeat(np.arange(n, dtype=np.int64), corpus.sizes[:n])
+    order = np.argsort(items, kind="stable")
+    bounds = np.searchsorted(items[order], np.arange(n_vocab + 1))
+    return owner[order], bounds
+
+
 def _solve_items(X: np.ndarray, corpus, alpha: float, reg: float,
-                 n_vocab: int) -> np.ndarray:
+                 n_vocab: int, owner: np.ndarray,
+                 bounds: np.ndarray) -> np.ndarray:
     """Least-squares update for every ingredient factor.
 
-    The transpose of the user problem, but the "items" grouping is ragged, so
-    instead of bucketing this accumulates each ingredient's normal equations by
-    scattering over the recipes that contain it. At 1,790 ingredients the
-    accumulator is small enough to hold densely.
+    The transpose of the recipe problem. Each ingredient's normal equations are
+    the sum of outer products over the recipes containing it, which is the
+    Gram matrix of those recipe factors — so it is one BLAS call per
+    ingredient over a gathered block, not a scatter of per-slot outer products.
+
+    The distinction is not stylistic. Materialising the outer products first
+    costs (slots, d, d) floats, which at this corpus size is over a hundred
+    gigabytes and is killed by the OS; the Gram form never holds more than one
+    ingredient's rows at a time. At 1,790 ingredients the loop overhead is
+    negligible and the accumulator stays dense.
     """
     d = X.shape[1]
-    XtX = X.T @ X
-    base = XtX + reg * np.eye(d)
+    base = X.T @ X + reg * np.eye(d)
     A = np.repeat(base[None], n_vocab, axis=0)
     b = np.zeros((n_vocab, d), np.float64)
 
-    # Walk recipes in blocks and scatter their outer products to the
-    # ingredients they contain. `np.add.at` on the (n_vocab, d, d) accumulator
-    # is the only scatter available, so blocks are kept large to amortise it.
-    block = 200_000
-    for s in range(0, corpus.n_recipes, block):
-        e = min(s + block, corpus.n_recipes)
-        lo, hi = corpus.offsets[s], corpus.offsets[e]
-        items = corpus.flat[lo:hi].astype(np.int64)
-        owner = np.repeat(np.arange(s, e), corpus.sizes[s:e])
-        Xu = X[owner]
-        np.add.at(A, items, alpha * np.einsum("md,me->mde", Xu, Xu))
-        np.add.at(b, items, (1.0 + alpha) * Xu)
+    for i in range(n_vocab):
+        lo, hi = int(bounds[i]), int(bounds[i + 1])
+        if hi <= lo:
+            continue
+        Xi = X[owner[lo:hi]]
+        A[i] += alpha * (Xi.T @ Xi)
+        b[i] = (1.0 + alpha) * Xi.sum(0)
     return np.linalg.solve(A, b[:, :, None])[:, :, 0].astype(np.float32)
 
 
@@ -106,10 +122,11 @@ def train_ials(ctx: TrainContext) -> TrainResult:
 
     rng = np.random.default_rng(ctx.seed)
     Y = (rng.normal(size=(n_vocab, d)) * 0.01).astype(np.float32)
+    owner, bounds = _group_slots(corpus, n_vocab)
     t0 = time.time()
     for it in range(int(p["iterations"])):
         X = _solve_users(Y, corpus, alpha, reg, int(p["chunk"]))
-        Y = _solve_items(X, corpus, alpha, reg, n_vocab)
+        Y = _solve_items(X, corpus, alpha, reg, n_vocab, owner, bounds)
         print(f"  iteration {it + 1:>2}/{p['iterations']}  "
               f"|Y| {np.linalg.norm(Y):.2f}  {time.time() - t0:.0f}s", flush=True)
     return TrainResult(embedding=Y.astype(np.float64),

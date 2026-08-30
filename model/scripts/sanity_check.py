@@ -346,7 +346,24 @@ def check_normalisation_faithfulness() -> None:
     import normalize as nm  # type: ignore
 
     full = load_recipes()
-    nz = nm.Normalizer()
+
+    # Replay through the normaliser that *built* this corpus, not whichever one
+    # happens to be importable. The corrected normaliser recovered 924,315
+    # ingredient occurrences the base one missed, so replaying a corrected
+    # corpus through the base normaliser disagrees on exactly those recipes and
+    # reports a 97.5% that looks like corpus corruption and is nothing of the
+    # kind. Which one built it is recorded at promotion rather than guessed.
+    from ingredient_model.config import corpus_generation
+    marker = corpus_generation()
+    which = marker.get("normalizer", "base")
+    if which == "corrected":
+        from ingredient_model.data.normalizer import get_normalizer
+        nz = get_normalizer(fix_zh_qty=True, extra=True)
+    else:
+        nz = nm.Normalizer()
+    print(f"  corpus generation {marker.get('generation', 'unknown')!r}, "
+          f"replaying through the {which} normaliser")
+
     check("normaliser and corpus share one vocabulary",
           list(nz.itos) == list(full.itos),
           f"{len(nz.itos)} terms, element-wise identical")

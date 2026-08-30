@@ -1,0 +1,22 @@
+{
+  "generation": "v2",
+  "corpus": "recipe_ids.npz",
+  "normalizer": "corrected",
+  "promoted_from": "recipe_ids_v2.npz",
+  "promoted_at": "2026-08-29T22:59:38-0400",
+  "recipes": 4653430,
+  "slots": 36707624,
+  "vocab": 1790,
+  "sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+  "ii_graph_edges": 220871,
+  "min_count": 2,
+  "threshold": -0.15,
+  "seed": 20260805,
+  "previous": {
+    "generation": "v1",
+    "recipes": 4647847,
+    "slots": 35783309,
+    "vocab": 1790,
+    "itos_sha": "abbc669198171aac"
+  }
+}

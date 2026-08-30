@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ingredient_model.artifacts import load_embedding
+from ingredient_model.artifacts import load_embedding, resolve_run
 from ingredient_model.config import PATHS
 from ingredient_model.eval.metrics import unit
 from ingredient_model.registry import register
@@ -14,7 +14,7 @@ RESIDUAL_DEFAULTS = dict(base="", correction="", d_model=0, ridge=1.0,
                          strength=1.0)
 
 
-def _load_runs(spec: str) -> tuple[list[str], list[np.ndarray]]:
+def _load_runs(spec: str, root=None) -> tuple[list[str], list[np.ndarray]]:
     names = [s.strip() for s in str(spec).split(",") if s.strip()]
     if len(names) < 2:
         raise ValueError(
@@ -22,9 +22,10 @@ def _load_runs(spec: str) -> tuple[list[str], list[np.ndarray]]:
             "--set runs=svd-ppmi-recipe-holdout-s0,ease-recipe-holdout-s0")
     mats = []
     for n in names:
-        d = PATHS.run_dir(n)
-        if not d.exists():
-            raise FileNotFoundError(f"no run {n!r} at {d}. `im runs` lists them.")
+        # Resolved rather than assumed to sit at runs/<id>: inside a sweep the
+        # inputs are siblings under runs/<experiment>/, which is exactly where
+        # a blend declared in that same sweep will look for them.
+        d = resolve_run(n, root=root)
         mats.append(load_embedding(d).astype(np.float64))
     rows = {m.shape[0] for m in mats}
     if len(rows) != 1:
@@ -46,7 +47,7 @@ def train_concat(ctx: TrainContext) -> TrainResult:
     happened to have the larger numbers.
     """
     p = {**CONCAT_DEFAULTS, **dict(ctx.params)}
-    names, mats = _load_runs(p["runs"])
+    names, mats = _load_runs(p["runs"], root=ctx.out_dir.parent)
     if p["weights"]:
         w = [float(x) for x in str(p["weights"]).split(",")]
         if len(w) != len(mats):
@@ -96,7 +97,8 @@ def train_residual(ctx: TrainContext) -> TrainResult:
     p = {**RESIDUAL_DEFAULTS, **dict(ctx.params)}
     if not (p["base"] and p["correction"]):
         raise ValueError("residual needs --set base=<run> --set correction=<run>")
-    _, (B, C) = _load_runs(f"{p['base']},{p['correction']}")
+    _, (B, C) = _load_runs(f"{p['base']},{p['correction']}",
+                           root=ctx.out_dir.parent)
 
     Bu, Cu = unit(B), unit(C)
     X = np.hstack([Bu, np.ones((len(Bu), 1))])

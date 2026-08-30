@@ -8,7 +8,7 @@ import time
 
 import numpy as np
 
-from ingredient_model.artifacts import load_embedding
+from ingredient_model.artifacts import load_embedding, resolve_run
 from ingredient_model.config import PATHS
 from ingredient_model.data.graphs import load_ii_graph
 from ingredient_model.registry import register
@@ -136,7 +136,8 @@ def train_text_aligned(ctx: TrainContext) -> TrainResult:
             "text-aligned needs a trained space to align to: "
             "--set source_run=<run-id>. Aligning to nothing is text-embed.")
 
-    target = load_embedding(PATHS.run_dir(str(p["source_run"])))
+    target = load_embedding(resolve_run(str(p["source_run"]),
+                                        root=ctx.out_dir.parent))
     g = load_ii_graph(ctx.graph)
     X = embed_names(list(g.itos), str(p["model"]), 256, "{name}",
                     bool(p["cache"])).astype(np.float64)

@@ -59,7 +59,48 @@ def _environment() -> dict[str, str]:
             stderr=subprocess.DEVNULL, text=True).strip()
     except Exception:
         pass
+    # Which corpus produced this run. Two leaderboards built on different
+    # corpus generations are not comparable, and without this stamp they are
+    # indistinguishable once the terminal scrollback is gone.
+    try:
+        from .config import corpus_generation
+        env["corpus_generation"] = str(corpus_generation().get("generation"))
+    except Exception:
+        pass
     return env
+
+
+def resolve_run(ref: str, *, root: Path | None = None) -> Path:
+    """Find a run directory by id, path, or sweep-relative id.
+
+    Sweeps group their runs under ``runs/<experiment>/<run-id>``, but a model
+    that consumes another model's output — ``concat``, ``residual``,
+    ``text-aligned`` — is given a bare run id. Looking only in ``runs/<id>``
+    means those models can never see a sibling produced by the same sweep, which
+    fails as a confusing FileNotFoundError at the end of a long batch rather
+    than in the pre-flight check.
+
+    Search order is most-specific first: an explicit path, then the sweep's own
+    directory, then the top level, then anywhere below ``runs/``.
+    """
+    p = Path(ref)
+    if p.exists() and (p / MANIFEST).exists():
+        return p
+    candidates = []
+    if root is not None:
+        candidates.append(Path(root) / ref)
+    candidates.append(PATHS.run_dir(ref))
+    for c in candidates:
+        if (c / MANIFEST).exists():
+            return c
+    matches = sorted(m.parent for m in PATHS.runs.rglob(f"{ref}/{MANIFEST}"))
+    if len(matches) == 1:
+        return matches[0]
+    if len(matches) > 1:
+        raise FileNotFoundError(
+            f"run {ref!r} is ambiguous — {len(matches)} matches: "
+            + ", ".join(str(m.relative_to(PATHS.runs)) for m in matches[:5]))
+    raise FileNotFoundError(f"no run {ref!r} under {PATHS.runs}")
 
 
 def save_run(run_id: str, spec: ModelSpec, result: TrainResult, *, graph: str,

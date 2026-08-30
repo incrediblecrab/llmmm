@@ -77,6 +77,17 @@ class Paths:
     def run_dir(self, run_id: str) -> Path:
         return self.runs / run_id
 
+    @property
+    def generation_file(self) -> Path:
+        """Records which corpus is canonical in this data tree.
+
+        Written by ``scripts/promote_corpus.py``. Read into every run manifest,
+        so a stored number always names the corpus that produced it. Without
+        this, a v1 and a v2 leaderboard are two directories of identical-looking
+        JSON and the only way to tell them apart is the file modification time.
+        """
+        return self.data / "GENERATION.json"
+
     def ensure(self) -> "Paths":
         for d in (self.data, self.graphs, self.recipes, self.catalog,
                   self.results, self.runs, self.reports):
@@ -95,6 +106,23 @@ def load_paths() -> Paths:
 
 
 PATHS = load_paths()
+
+
+def corpus_generation() -> dict:
+    """What the canonical corpus in this data tree is, as recorded at promotion.
+
+    Returns ``{"generation": "unknown"}`` when the marker is absent rather than
+    raising: an unpromoted tree is a valid state, it just cannot describe itself.
+    """
+    import json
+    p = PATHS.generation_file
+    if not p.exists():
+        return {"generation": "unknown"}
+    try:
+        return json.loads(p.read_text())
+    except (OSError, ValueError):
+        return {"generation": "unreadable"}
+
 
 # Fixed across every experiment. Changing it invalidates comparisons against
 # results already recorded, so it is a constant rather than a flag.

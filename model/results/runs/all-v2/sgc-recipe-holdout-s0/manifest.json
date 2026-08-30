@@ -1,0 +1,31 @@
+{
+  "run_id": "sgc-recipe-holdout-s0",
+  "model": "sgc",
+  "family": "graph_neural",
+  "graph": "ii_graph_rh_train.npz",
+  "seed": 0,
+  "params": {
+    "split": "recipe-holdout"
+  },
+  "created": "2026-08-29T23:04:56-0400",
+  "duration_s": 0.4306371212005615,
+  "shape": [
+    1790,
+    300
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0",
+    "git": "ef916cf",
+    "corpus_generation": "v2"
+  },
+  "metadata": {
+    "d_model": 300,
+    "layers": 2,
+    "weight": "npmi",
+    "self_loops": true
+  }
+}

@@ -1,0 +1,85 @@
+name: all-v2
+description: >
+  Every runnable model on the honest split, against corpus generation v2 — the
+  rebuilt corpus that recovered 924,315 ingredient occurrences the original
+  normaliser missed. This is the complete leaderboard, and the thing it is meant
+  to answer is whether better ingredient coverage changes the ranking or only
+  the absolute numbers. The v1 leaderboard it is compared against is stored
+  under runs/baselines/.
+
+  Declaration order is cheap first. A systemic problem — a stale split, a
+  vocabulary mismatch, a metric returning chance for everyone — then shows up in
+  the first thirty seconds rather than after item2vec has spent an hour earning
+  the same failure.
+
+  All sixteen registered models run here. text-embed and text-aligned call a
+  hosted embedding model and were previously unrunnable — llmmm-foundry deploys
+  four chat models and no embedding model, and westus2 offers no OpenAI-format
+  embedding at all. They are served instead by a text-embedding-3-small
+  deployment on the ingredients-embed account in eastus, which is the only
+  region in this subscription that carries it. Both need AZURE_OPENAI_ENDPOINT
+  and AZURE_OPENAI_API_KEY in the environment.
+
+splits: [recipe-holdout]
+seeds: [0]
+
+# Any single trial that runs longer than this is abandoned and journalled. The
+# whole sweep is unattended; without a bound, one model that fails to converge
+# holds up the twelve behind it for as long as the terminal stays open.
+timeout_s: 10800
+
+models:
+  # cheap — closed form or a single pass. Seconds to a few minutes.
+  - svd-ppmi
+  - chem-svd
+  - sgc
+  - ease
+
+  # moderate — iterative, but bounded. Minutes.
+  - glove
+  - lightgcn
+  - sgns-cooc
+  - sgns-chem
+  - sgns-core
+
+  # heavy — the ones worth having a timeout for.
+  - ials
+  - item2vec
+  - masked-set
+
+  # Name semantics, with nothing learned from recipes. Expected to score poorly
+  # on M4 and M2, and that is the point: the gap between it and the learned
+  # models is what the corpus is worth.
+  - text-embed
+
+  # The family's actual product use — a ridge map from name space into a trained
+  # space, so an ingredient the corpus has never seen can still be placed. Named
+  # by run id, so the orchestrator orders it after its target automatically.
+  - name: text-aligned
+    id: text-aligned-svdppmi
+    params:
+      source_run: svd-ppmi-recipe-holdout-s0
+
+  # Blends, which consume two of the runs above. Their inputs are named by run
+  # id, and the orchestrator derives the ordering from exactly those strings, so
+  # these run last without anything declaring that they must.
+  #
+  # The pairing is not arbitrary: on v1, svd-ppmi held the best M6 (0.4430) and
+  # sgns-cooc the best M4 among the models that also score on M6 (0.7170). If a
+  # blend is worth anything, combining the best completion model with the best
+  # link model is where it should show.
+  - name: concat
+    id: concat-svdppmi-sgnscooc
+    params:
+      runs: svd-ppmi-recipe-holdout-s0,sgns-cooc-recipe-holdout-s0
+      d_model: 300
+
+  # strength=1.0 appends the correction's new directions; the same run at
+  # strength=0 is exactly the base space, which is the control this has to beat.
+  - name: residual
+    id: residual-svdppmi-sgnscooc
+    params:
+      base: svd-ppmi-recipe-holdout-s0
+      correction: sgns-cooc-recipe-holdout-s0
+      d_model: 300
+      strength: 1.0

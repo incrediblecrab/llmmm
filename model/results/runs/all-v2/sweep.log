@@ -1,0 +1,185 @@
+experiment all-v2  —  16 trials  —  corpus v2
+  Every runnable model on the honest split, against corpus generation v2 — the rebuilt corpus that recovered 924,315 ingredient occurrences the original normaliser missed. This is the complete leaderboard, and the thing it is meant to answer is whether better ingredient coverage changes the ranking or only the absolute numbers. The v1 leaderboard it is compared against is stored under runs/baselines/.
+Declaration order is cheap first. A systemic problem — a stale split, a vocabulary mismatch, a metric returning chance for everyone — then shows up in the first thirty seconds rather than after item2vec has spent an hour earning the same failure.
+All sixteen registered models run here. text-embed and text-aligned call a hosted embedding model and were previously unrunnable — llmmm-foundry deploys four chat models and no embedding model, and westus2 offers no OpenAI-format embedding at all. They are served instead by a text-embedding-3-small deployment on the ingredients-embed account in eastus, which is the only region in this subscription that carries it. Both need AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_API_KEY in the environment.
+
+
+  ials-recipe-holdout-s0
+  item2vec-recipe-holdout-s0
+  masked-set-recipe-holdout-s0
+  text-embed-recipe-holdout-s0
+  text-aligned-svdppmi-recipe-holdout-s0   after svd-ppmi-recipe-holdout-s0
+  concat-svdppmi-sgnscooc-recipe-holdout-s0   after sgns-cooc-recipe-holdout-s0, svd-ppmi-recipe-holdout-s0
+  residual-svdppmi-sgnscooc-recipe-holdout-s0   after sgns-cooc-recipe-holdout-s0, svd-ppmi-recipe-holdout-s0
+
+  9 already complete, skipping (--force to rerun): svd-ppmi-recipe-holdout-s0, chem-svd-recipe-holdout-s0, sgc-recipe-holdout-s0, ease-recipe-holdout-s0 …
+
+[1/7] ials-recipe-holdout-s0
+  400,000 recipes x 1790 ingredients, d=128
+experiment all-v2  —  16 trials  —  corpus v2
+  Every runnable model on the honest split, against corpus generation v2 — the rebuilt corpus that recovered 924,315 ingredient occurrences the original normaliser missed. This is the complete leaderboard, and the thing it is meant to answer is whether better ingredient coverage changes the ranking or only the absolute numbers. The v1 leaderboard it is compared against is stored under runs/baselines/.
+Declaration order is cheap first. A systemic problem — a stale split, a vocabulary mismatch, a metric returning chance for everyone — then shows up in the first thirty seconds rather than after item2vec has spent an hour earning the same failure.
+All sixteen registered models run here. text-embed and text-aligned call a hosted embedding model and were previously unrunnable — llmmm-foundry deploys four chat models and no embedding model, and westus2 offers no OpenAI-format embedding at all. They are served instead by a text-embedding-3-small deployment on the ingredients-embed account in eastus, which is the only region in this subscription that carries it. Both need AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_API_KEY in the environment.
+
+
+  ials-recipe-holdout-s0
+  item2vec-recipe-holdout-s0
+  masked-set-recipe-holdout-s0
+  text-embed-recipe-holdout-s0
+  text-aligned-svdppmi-recipe-holdout-s0   after svd-ppmi-recipe-holdout-s0
+  concat-svdppmi-sgnscooc-recipe-holdout-s0   after sgns-cooc-recipe-holdout-s0, svd-ppmi-recipe-holdout-s0
+  residual-svdppmi-sgnscooc-recipe-holdout-s0   after sgns-cooc-recipe-holdout-s0, svd-ppmi-recipe-holdout-s0
+
+  9 already complete, skipping (--force to rerun): svd-ppmi-recipe-holdout-s0, chem-svd-recipe-holdout-s0, sgc-recipe-holdout-s0, ease-recipe-holdout-s0 …
+
+[1/7] ials-recipe-holdout-s0
+  400,000 recipes x 1790 ingredients, d=128
+  iteration  1/15  |Y| 3.64  38s
+  iteration  2/15  |Y| 3.67  77s
+  iteration  3/15  |Y| 3.73  115s
+  iteration  4/15  |Y| 3.81  155s
+  iteration  5/15  |Y| 3.90  194s
+  iteration  6/15  |Y| 3.99  233s
+  iteration  7/15  |Y| 4.08  276s
+  iteration  8/15  |Y| 4.18  315s
+  iteration  9/15  |Y| 4.27  353s
+  iteration 10/15  |Y| 4.36  391s
+  iteration 11/15  |Y| 4.46  430s
+  iteration 12/15  |Y| 4.55  468s
+  iteration 13/15  |Y| 4.64  506s
+  iteration 14/15  |Y| 4.73  545s
+  iteration 15/15  |Y| 4.82  584s
+  ials-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      101.3  / 128
+    M2 triplet acc [broad ]    0.6220  +/-0.0067  (chance 0.50)
+    M2 triplet acc [strict]    0.6623  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0794
+    M3 recall@10   [strict]    0.1112
+    M4 held-out link AUC       0.5371  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.0343
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0426   mrr 0.0220   n=20,000
+       vs popularity baseline   0.3650   lift -0.3224
+
+[2/7] item2vec-recipe-holdout-s0
+  epoch  1/5  loss 2.6235  pairs 5,249,552  35s
+  epoch  2/5  loss 2.1268  pairs 5,258,199  62s
+  epoch  3/5  loss 2.0800  pairs 5,247,828  88s
+  epoch  4/5  loss 2.0609  pairs 5,251,257  118s
+  epoch  5/5  loss 2.0496  pairs 5,248,336  154s
+  item2vec-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio       28.6  / 300
+    M2 triplet acc [broad ]    0.7527  +/-0.0060  (chance 0.50)
+    M2 triplet acc [strict]    0.8404  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.1067
+    M3 recall@10   [strict]    0.1921
+    M4 held-out link AUC       0.7238  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4826
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0123   mrr 0.0103   n=20,000
+       vs popularity baseline   0.3650   lift -0.3528
+
+[3/7] masked-set-recipe-holdout-s0
+/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
+  600,000 recipes, vocab 1790, 1,515,006 parameters
+  epoch 1/3  loss 4.3114  steps 1,132  113s
+  epoch 2/3  loss 3.7900  steps 1,132  226s
+  epoch 3/3  loss 3.6904  steps 1,132  429s
+  masked-set-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio       50.3  / 256
+    M2 triplet acc [broad ]    0.5716  +/-0.0069  (chance 0.50)
+    M2 triplet acc [strict]    0.7543  +/-0.0060  (chance 0.50)
+    M3 recall@10   [broad ]    0.0821
+    M3 recall@10   [strict]    0.2082
+    M4 held-out link AUC       0.5726  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.9654
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1229   mrr 0.0585   n=20,000
+       vs popularity baseline   0.3650   lift -0.2421
+       native scorer            0.6178   mrr 0.3621   lift +0.2528
+
+[4/7] text-embed-recipe-holdout-s0
+      256/1790
+      512/1790
+      768/1790
+     1024/1790
+     1280/1790
+     1536/1790
+     1790/1790
+  text-embed-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      112.8  / 1536
+    M2 triplet acc [broad ]    0.8627  +/-0.0048  (chance 0.50)
+    M2 triplet acc [strict]    0.9313  +/-0.0035  (chance 0.50)
+    M3 recall@10   [broad ]    0.2147
+    M3 recall@10   [strict]    0.3197
+    M4 held-out link AUC       0.5799  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1854
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1077   mrr 0.0509   n=20,000
+       vs popularity baseline   0.3650   lift -0.2573
+
+[5/7] text-aligned-svdppmi-recipe-holdout-s0
+  cache hit bced7e2e8b639e58.npy
+  relative residual 0.8200   mean cosine to target 0.5196
+  text-aligned-svdppmi-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio       49.5  / 300
+    M2 triplet acc [broad ]    0.8684  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9424  +/-0.0032  (chance 0.50)
+    M3 recall@10   [broad ]    0.2399
+    M3 recall@10   [strict]    0.3443
+    M4 held-out link AUC       0.6510  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.3226
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.3216   mrr 0.1587   n=20,000
+       vs popularity baseline   0.3650   lift -0.0433
+
+[6/7] concat-svdppmi-sgnscooc-recipe-holdout-s0
+  svd-ppmi-recipe-holdout-s0              d=300   weight 1.0
+  sgns-cooc-recipe-holdout-s0             d=300   weight 1.0
+  concat-svdppmi-sgnscooc-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      125.0  / 300
+    M2 triplet acc [broad ]    0.8046  +/-0.0055  (chance 0.50)
+    M2 triplet acc [strict]    0.8980  +/-0.0042  (chance 0.50)
+    M3 recall@10   [broad ]    0.1270
+    M3 recall@10   [strict]    0.2479
+    M4 held-out link AUC       0.7138  +/-0.0060  (chance 0.50)
+    M5 max PC-freq corr        0.7554
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4446   mrr 0.2294   n=20,000
+       vs popularity baseline   0.3650   lift +0.0796
+
+[7/7] residual-svdppmi-sgnscooc-recipe-holdout-s0
+  base explains 60.8% of the correction space; appending the remaining 39.2%
+  residual-svdppmi-sgnscooc-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      250.1  / 300
+    M2 triplet acc [broad ]    0.7225  +/-0.0062  (chance 0.50)
+    M2 triplet acc [strict]    0.8207  +/-0.0053  (chance 0.50)
+    M3 recall@10   [broad ]    0.1086
+    M3 recall@10   [strict]    0.2073
+    M4 held-out link AUC       0.5870  +/-0.0065  (chance 0.50)
+    M5 max PC-freq corr        0.4661
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4235   mrr 0.2163   n=20,000
+       vs popularity baseline   0.3650   lift +0.0585
+
+7 succeeded, 0 failed, 9 already complete
+
+| model | run | family | split | M1 | M2 broad | M2 strict | M3@10 | M4 AUC | M5 freq | M6@10 | M6 best | vs pop |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| masked-set | all-v2 | set_transformer | recipe-holdout | 50.3 | 0.5716 | 0.7543 | 0.0821 | 0.5726 | 0.0000 | 0.1229 | 0.6178 | +0.2528 |
+| ease | all-v2 | recipe_basket | recipe-holdout | 158.3 | 0.6968 | 0.7775 | 0.1414 | 0.5598 | 0.2121 | 0.1422 | 0.5872 | +0.2222 |
+| svd-ppmi | all-v2 | factorization | recipe-holdout | 210.4 | 0.7708 | 0.8674 | 0.1146 | 0.6227 | 0.0256 | 0.4505 | 0.4505 | +0.0855 |
+| concat | all-v2 | hybrid | recipe-holdout | 125.0 | 0.8046 | 0.8980 | 0.1270 | 0.7138 | 0.0000 | 0.4446 | 0.4446 | +0.0796 |
+| residual | all-v2 | hybrid | recipe-holdout | 250.1 | 0.7225 | 0.8207 | 0.1086 | 0.5870 | 0.0000 | 0.4235 | 0.4235 | +0.0585 |
+| sgns-core | all-v2 | sgns_walk | recipe-holdout | 111.0 | 0.8684 | 0.9214 | 0.1493 | 0.7295 | 0.2121 | 0.4065 | 0.4065 | +0.0415 |
+| sgns-cooc | all-v2 | sgns_walk | recipe-holdout | 112.5 | 0.8674 | 0.9187 | 0.1449 | 0.7356 | 0.1429 | 0.3885 | 0.3885 | +0.0235 |
+| text-aligned | all-v2 | text_embedding | recipe-holdout | 49.5 | 0.8684 | 0.9424 | 0.2399 | 0.6510 | 0.1111 | 0.3216 | 0.3216 | -0.0433 |
+| glove | all-v2 | factorization | recipe-holdout | 14.0 | 0.8350 | 0.8914 | 0.1170 | 0.6611 | 0.1429 | 0.2211 | 0.2211 | -0.1439 |
+| lightgcn | all-v2 | graph_neural | recipe-holdout | 4.0 | 0.7470 | 0.7973 | 0.0702 | 0.7565 | 0.1111 | 0.1837 | 0.1837 | -0.1813 |
+| text-embed | all-v2 | text_embedding | recipe-holdout | 112.8 | 0.8627 | 0.9313 | 0.2147 | 0.5799 | 0.0000 | 0.1077 | 0.1077 | -0.2573 |
+| sgc | all-v2 | graph_neural | recipe-holdout | 244.9 | 0.7772 | 0.8401 | 0.0640 | 0.6806 | 0.0000 | 0.0777 | 0.0777 | -0.2873 |
+| ials | all-v2 | recipe_basket | recipe-holdout | 101.3 | 0.6220 | 0.6623 | 0.0794 | 0.5371 | 0.0000 | 0.0426 | 0.0426 | -0.3224 |
+| chem-svd | all-v2 | factorization | recipe-holdout | 140.4 | 0.5824 | 0.6483 | 0.0367 | 0.5019 | 0.0000 | 0.0152 | 0.0152 | -0.3498 |
+| sgns-chem | all-v2 | sgns_walk | recipe-holdout | 2.7 | 0.5804 | 0.6394 | 0.0358 | 0.5044 | 0.0000 | 0.0149 | 0.0149 | -0.3502 |
+| item2vec | all-v2 | recipe_basket | recipe-holdout | 28.6 | 0.7527 | 0.8404 | 0.1067 | 0.7238 | 0.0000 | 0.0123 | 0.0123 | -0.3528 |

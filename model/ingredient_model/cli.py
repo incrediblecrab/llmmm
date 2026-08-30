@@ -59,13 +59,11 @@ def _parse_set(items: list[str] | None) -> dict:
 
 
 def _resolve_run(ref: str) -> Path:
-    p = Path(ref)
-    if p.exists():
-        return p
-    p = PATHS.run_dir(ref)
-    if p.exists():
-        return p
-    raise SystemExit(f"no such run: {ref}")
+    from .artifacts import resolve_run
+    try:
+        return resolve_run(ref)
+    except FileNotFoundError as e:
+        raise SystemExit(str(e)) from e
 
 
 # ----------------------------------------------------------------- commands
@@ -196,7 +194,9 @@ def cmd_neighbors(a) -> int:
 
 def cmd_sweep(a) -> int:
     from .experiments import run_experiment
-    return run_experiment(Path(a.spec), dry_run=a.dry_run)
+    only = tuple(x.strip() for x in str(a.only).split(",") if x.strip())
+    return run_experiment(Path(a.spec), dry_run=a.dry_run,
+                          resume=not a.force, timeout_s=a.timeout, only=only)
 
 
 def cmd_recipes(a) -> int:
@@ -323,6 +323,13 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("sweep", help="run a declared experiment")
     s.add_argument("spec")
     s.add_argument("--dry-run", action="store_true")
+    s.add_argument("--force", action="store_true",
+                   help="retrain trials that already have metrics "
+                        "(default is to resume)")
+    s.add_argument("--timeout", type=int, default=None, metavar="SEC",
+                   help="abandon any single trial that exceeds this")
+    s.add_argument("--only", default="", metavar="M,M",
+                   help="restrict to these model names")
     s.set_defaults(fn=cmd_sweep)
 
     b = sub.add_parser("recipes", help="browse the corpus in readable form")

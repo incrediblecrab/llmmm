@@ -8,7 +8,23 @@ __pycache__/
 # Imported artefacts and anything derived from them. All of it is regenerable
 # from scripts/import_data.py and scripts/build_splits.py, and the recipe corpus
 # is 40MB+ — large enough to make a repository unpleasant and slow to clone.
-data/
+#
+# The leading slash is load-bearing. An unanchored `data/` matches a directory
+# of that name at any depth, which silently excluded the ingredient_model/data
+# source package — splits.py, text.py and recipes.py were absent from the
+# repository entirely rather than merely uncommitted.
+#
+# `*` rather than a bare directory, because git will not re-include a file whose
+# parent directory is excluded — the exception below only works if the directory
+# itself is still walked.
+/data/*
+
+# Except the generation marker, which is the single source of truth for which
+# corpus is canonical and which normaliser built it. It is a few hundred bytes,
+# it is read by sanity_check.py and data/text.py, and it is stamped into every
+# run manifest — so a checkout that cannot see it cannot interpret its own
+# results.
+!/data/GENERATION.json
 
 # results/runs/ is deliberately NOT excluded. The weight matrices are dropped by
 # the root .gitignore's *.npy rule, which leaves manifest.json and metrics.json
