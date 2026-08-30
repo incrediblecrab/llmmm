@@ -1,0 +1,907 @@
+22:47:42 seeded queue with 17 jobs -> /Users/maxmarquardt/Downloads/llmmm/results/program.json
+22:49:20 harness ready: vocab 1790, held-out 20,350
+22:49:29 submitted chem (H1,H5) -> lucid_leather_zyn4fgxfs9
+22:49:32 submitted cooc (H1,H5) -> helpful_pen_ndk9ytk2yr
+22:49:34 submitted core-ii0 (H1,H5) -> jovial_parsnip_jlt8vqbslk
+23:50:09 chem -> Completed
+23:50:13 chem scored: PR 2.7 M2 0.5784 M4 0.5198
+00:38:18 submitted core-ii0.1 (H1,H5) -> teal_stem_gtdxt20x1g
+02:26:09 cooc -> Completed
+02:26:14 cooc scored: PR 115.1 M2 0.8677 M4 0.8432
+02:26:15 core-ii0 -> Completed
+02:26:19 core-ii0 scored: PR 41.6 M2 0.6585 M4 0.5157
+02:26:20 core-ii0.1 -> Completed
+02:27:14 core-ii0.1 scored: PR 84.7 M2 0.8531 M4 0.7768
+02:27:22 submitted core-ii1 (H1,H5) -> calm_stem_3fgyffjgmw
+02:27:26 submitted core-ii10 (H1,H5) -> magenta_yam_h95nlsjx05
+02:27:29 submitted core-ii100 (H1,H5) -> boring_plate_bn0q5b81f3
+05:33:28 core-ii1 -> Completed
+06:44:50 core-ii1 analysis collected
+06:44:53 core-ii10 -> Completed
+06:44:56 core-ii10 scored: PR 117.2 M2 0.8675 M4 0.8408
+06:44:57 core-ii100 -> Completed
+06:45:01 core-ii100 scored: PR 118.8 M2 0.8690 M4 0.8374
+07:34:39 harness ready: vocab 1790, held-out 20,350
+07:34:47 submitted chem-svd (H2) -> sincere_cake_t2331fssxq
+07:34:49 submitted cuisines (H4) -> icy_ice_6zt629ytr8
+07:34:52 submitted glove (H2) -> eager_plum_w02zrbv590
+07:42:46 [watchdog] orchestrator running as pid 20440
+07:42:47 harness ready: vocab 1790, held-out 20,350
+07:42:52 core-ii1 scored: PR 109.2 M2 0.8708 M4 0.8278
+07:47:02 chem-svd -> Completed
+07:47:06 chem-svd scored: PR 140.4 M2 0.5827 M4 0.5132
+07:47:13 submitted svd-ppmi (H2) -> quiet_rose_lv68pfyyb3
+07:48:15 svd-ppmi -> Completed
+07:48:20 svd-ppmi scored: PR 222.7 M2 0.7649 M4 0.7410
+07:48:25 submitted cooc-d128 (H7) -> serene_melon_9prp98165w
+07:49:26 glove -> Failed
+07:49:30 submitted cooc-d32 (H7) -> tough_cheetah_nlrrtmtzql
+07:51:32 cuisines -> Completed
+07:51:33 cuisines analysis collected
+07:51:37 submitted cooc-d600 (H7) -> epic_queen_bcblxjrgfp
+08:02:59 [watchdog] state untouched for 11m; assuming wedged
+08:02:59 [watchdog] orchestrator running as pid 21876
+08:03:01 harness ready: vocab 1790, held-out 20,350
+08:03:19 poll cooc-d128: HTTPSConnection(host='management.azure.com', port=443): Failed to resolve 'management.azure.com' ([Errno 8] nodename nor servname provided, or not known)
+08:03:24 poll cooc-d32: HTTPSConnection(host='management.azure.com', port=443): Failed to resolve 'management.azure.com' ([Errno 8] nodename nor servname provided, or not known)
+08:20:20 poll cooc-d600: ERROR: The command failed with an unexpected error. Here is the traceback:
+ERROR: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10bccb4d0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 715, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 404, in _make_request
+    self._validate_conn(conn)
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 1060, in _validate_conn
+    conn.connect()
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x10bccb4d0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 829, in urlopen
+    return self.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 801, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/retry.py", line 594, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10bccb4d0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/knack/cli.py", line 233, in invoke
+    cmd_result = self.invocation.execute(args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 666, in execute
+    raise ex
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 734, in _run_jobs_serially
+    results.append(self._run_job(expanded_arg, cmd_copy))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 703, in _run_job
+    result = cmd_copy(params)
+             ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 336, in __call__
+    return self.handler(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/command_operation.py", line 120, in handler
+    return op(**command_args)
+           ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/command_modules/profile/custom.py", line 83, in get_access_token
+    creds, subscription, tenant = profile.get_raw_token(subscription=subscription, resource=resource, scopes=scopes,
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/_profile.py", line 482, in get_raw_token
+    sdk_token = sdk_cred.get_token(*scopes)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/credential_adaptor.py", line 33, in get_token
+    msal_result = self._credential.acquire_token(list(scopes), **msal_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/msal_credentials.py", line 56, in acquire_token
+    result = self._msal_app.acquire_token_silent_with_error(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1416, in acquire_token_silent_with_error
+    return _clean_up(self._acquire_token_silent_with_error(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1439, in _acquire_token_silent_with_error
+    result = self._acquire_token_silent_from_cache_and_possibly_refresh_it(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1574, in _acquire_token_silent_from_cache_and_possibly_refresh_it
+    result = self._acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1642, in _acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family
+    return self._acquire_token_silent_by_finding_specific_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1683, in _acquire_token_silent_by_finding_specific_refresh_token
+    response = client.obtain_token_by_refresh_token(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 835, in obtain_token_by_refresh_token
+    resp = super(Client, self).obtain_token_by_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 265, in obtain_token_by_refresh_token
+    return self._obtain_token("refresh_token", data=data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oidc.py", line 170, in _obtain_token
+    ret = super(Client, self)._obtain_token(grant_type, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 776, in _obtain_token
+    resp = super(Client, self)._obtain_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 237, in _obtain_token
+    resp = (post or self._http_client.post)(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10bccb4d0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+To check existing issues, please visit: https://github.com/Azure/azure-cli/issues
+
+08:21:32 cooc-d32 -> Completed
+08:21:36 cooc-d32 scored: PR 15.9 M2 0.8521 M4 0.8414
+08:21:37 cooc-d600 -> Failed
+08:21:41 submitted cooc-d64 (H7) -> bold_dinner_y55zttzv9b
+08:21:48 submitted chem-s1 (H1,var) -> gray_stone_7hv5lh87d1
+08:23:04 [watchdog] orchestrator running as pid 22364
+08:23:05 harness ready: vocab 1790, held-out 20,350
+08:23:07 cooc-d128 -> Completed
+08:23:11 cooc-d128 scored: PR 56.4 M2 0.8672 M4 0.8418
+08:23:20 submitted glove (H2) -> lemon_glove_s8k2jf9b8c
+08:45:49 [watchdog] orchestrator running as pid 24257
+08:45:51 harness ready: vocab 1790, held-out 20,350
+08:48:05 chem-s1 -> Completed
+08:48:16 chem-s1 scored: PR 2.7 M2 0.5906 M4 0.5042
+08:48:25 submitted cooc-full (H8) -> gifted_floor_x0xpkwmp1y
+08:49:26 cooc-d64 -> Completed
+08:49:29 cooc-d64 scored: PR 28.7 M2 0.8610 M4 0.8388
+08:49:35 submitted core-ii10-full (H8) -> lemon_yacht_4hpcqzlzbq
+09:49:31 poll glove: ERROR: The command failed with an unexpected error. Here is the traceback:
+ERROR: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x1073876e0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 715, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 404, in _make_request
+    self._validate_conn(conn)
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 1060, in _validate_conn
+    conn.connect()
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x1073876e0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 829, in urlopen
+    return self.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 801, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/retry.py", line 594, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x1073876e0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/knack/cli.py", line 233, in invoke
+    cmd_result = self.invocation.execute(args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 666, in execute
+    raise ex
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 734, in _run_jobs_serially
+    results.append(self._run_job(expanded_arg, cmd_copy))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 703, in _run_job
+    result = cmd_copy(params)
+             ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 336, in __call__
+    return self.handler(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/command_operation.py", line 120, in handler
+    return op(**command_args)
+           ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/command_modules/profile/custom.py", line 83, in get_access_token
+    creds, subscription, tenant = profile.get_raw_token(subscription=subscription, resource=resource, scopes=scopes,
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/_profile.py", line 482, in get_raw_token
+    sdk_token = sdk_cred.get_token(*scopes)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/credential_adaptor.py", line 33, in get_token
+    msal_result = self._credential.acquire_token(list(scopes), **msal_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/msal_credentials.py", line 56, in acquire_token
+    result = self._msal_app.acquire_token_silent_with_error(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1416, in acquire_token_silent_with_error
+    return _clean_up(self._acquire_token_silent_with_error(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1439, in _acquire_token_silent_with_error
+    result = self._acquire_token_silent_from_cache_and_possibly_refresh_it(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1574, in _acquire_token_silent_from_cache_and_possibly_refresh_it
+    result = self._acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1642, in _acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family
+    return self._acquire_token_silent_by_finding_specific_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1683, in _acquire_token_silent_by_finding_specific_refresh_token
+    response = client.obtain_token_by_refresh_token(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 835, in obtain_token_by_refresh_token
+    resp = super(Client, self).obtain_token_by_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 265, in obtain_token_by_refresh_token
+    return self._obtain_token("refresh_token", data=data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oidc.py", line 170, in _obtain_token
+    ret = super(Client, self)._obtain_token(grant_type, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 776, in _obtain_token
+    resp = super(Client, self)._obtain_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 237, in _obtain_token
+    resp = (post or self._http_client.post)(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x1073876e0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+To check existing issues, please visit: https://github.com/Azure/azure-cli/issues
+
+09:49:31 poll cooc-full: ERROR: The command failed with an unexpected error. Here is the traceback:
+ERROR: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10b3af920>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 715, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 404, in _make_request
+    self._validate_conn(conn)
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 1060, in _validate_conn
+    conn.connect()
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x10b3af920>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 829, in urlopen
+    return self.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 801, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/retry.py", line 594, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10b3af920>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/knack/cli.py", line 233, in invoke
+    cmd_result = self.invocation.execute(args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 666, in execute
+    raise ex
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 734, in _run_jobs_serially
+    results.append(self._run_job(expanded_arg, cmd_copy))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 703, in _run_job
+    result = cmd_copy(params)
+             ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 336, in __call__
+    return self.handler(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/command_operation.py", line 120, in handler
+    return op(**command_args)
+           ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/command_modules/profile/custom.py", line 83, in get_access_token
+    creds, subscription, tenant = profile.get_raw_token(subscription=subscription, resource=resource, scopes=scopes,
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/_profile.py", line 482, in get_raw_token
+    sdk_token = sdk_cred.get_token(*scopes)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/credential_adaptor.py", line 33, in get_token
+    msal_result = self._credential.acquire_token(list(scopes), **msal_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/msal_credentials.py", line 56, in acquire_token
+    result = self._msal_app.acquire_token_silent_with_error(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1416, in acquire_token_silent_with_error
+    return _clean_up(self._acquire_token_silent_with_error(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1439, in _acquire_token_silent_with_error
+    result = self._acquire_token_silent_from_cache_and_possibly_refresh_it(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1574, in _acquire_token_silent_from_cache_and_possibly_refresh_it
+    result = self._acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1642, in _acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family
+    return self._acquire_token_silent_by_finding_specific_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1683, in _acquire_token_silent_by_finding_specific_refresh_token
+    response = client.obtain_token_by_refresh_token(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 835, in obtain_token_by_refresh_token
+    resp = super(Client, self).obtain_token_by_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 265, in obtain_token_by_refresh_token
+    return self._obtain_token("refresh_token", data=data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oidc.py", line 170, in _obtain_token
+    ret = super(Client, self)._obtain_token(grant_type, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 776, in _obtain_token
+    resp = super(Client, self)._obtain_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 237, in _obtain_token
+    resp = (post or self._http_client.post)(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10b3af920>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+To check existing issues, please visit: https://github.com/Azure/azure-cli/issues
+
+09:49:32 poll core-ii10-full: ERROR: The command failed with an unexpected error. Here is the traceback:
+ERROR: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x1076abbf0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 715, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 404, in _make_request
+    self._validate_conn(conn)
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 1060, in _validate_conn
+    conn.connect()
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x1076abbf0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 829, in urlopen
+    return self.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 801, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/retry.py", line 594, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x1076abbf0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/knack/cli.py", line 233, in invoke
+    cmd_result = self.invocation.execute(args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 666, in execute
+    raise ex
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 734, in _run_jobs_serially
+    results.append(self._run_job(expanded_arg, cmd_copy))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 703, in _run_job
+    result = cmd_copy(params)
+             ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 336, in __call__
+    return self.handler(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/command_operation.py", line 120, in handler
+    return op(**command_args)
+           ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/command_modules/profile/custom.py", line 83, in get_access_token
+    creds, subscription, tenant = profile.get_raw_token(subscription=subscription, resource=resource, scopes=scopes,
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/_profile.py", line 482, in get_raw_token
+    sdk_token = sdk_cred.get_token(*scopes)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/credential_adaptor.py", line 33, in get_token
+    msal_result = self._credential.acquire_token(list(scopes), **msal_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/msal_credentials.py", line 56, in acquire_token
+    result = self._msal_app.acquire_token_silent_with_error(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1416, in acquire_token_silent_with_error
+    return _clean_up(self._acquire_token_silent_with_error(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1439, in _acquire_token_silent_with_error
+    result = self._acquire_token_silent_from_cache_and_possibly_refresh_it(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1574, in _acquire_token_silent_from_cache_and_possibly_refresh_it
+    result = self._acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1642, in _acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family
+    return self._acquire_token_silent_by_finding_specific_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1683, in _acquire_token_silent_by_finding_specific_refresh_token
+    response = client.obtain_token_by_refresh_token(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 835, in obtain_token_by_refresh_token
+    resp = super(Client, self).obtain_token_by_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 265, in obtain_token_by_refresh_token
+    return self._obtain_token("refresh_token", data=data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oidc.py", line 170, in _obtain_token
+    ret = super(Client, self)._obtain_token(grant_type, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 776, in _obtain_token
+    resp = super(Client, self)._obtain_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 237, in _obtain_token
+    resp = (post or self._http_client.post)(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x1076abbf0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+To check existing issues, please visit: https://github.com/Azure/azure-cli/issues
+
+10:30:04 glove -> Completed
+10:30:11 [watchdog] state untouched for 41m; assuming wedged
+10:30:11 [watchdog] orchestrator running as pid 25116
+10:30:12 harness ready: vocab 1790, held-out 20,350
+10:30:15 glove -> Completed
+10:30:19 glove scored: PR 12.9 M2 0.8332 M4 0.7795
+10:30:20 cooc-full -> Completed
+10:30:23 cooc-full scored: PR 146.1 M2 0.8607 M4 0.7618
+10:30:24 core-ii10-full -> Completed
+10:30:27 core-ii10-full scored: PR 147.8 M2 0.8636 M4 0.7635
+10:30:32 submitted cooc-d300-b16k (H7,control) -> ashy_vinegar_f4yf04mwq6
+10:30:35 submitted cooc-d600-b16k (H7) -> mango_pumpkin_x0wdf71jtx
+10:30:39 submitted chem-s2 (H1,var) -> loving_chain_wn11v4y7bm
+10:57:42 chem-s2 -> Completed
+10:57:45 chem-s2 scored: PR 2.7 M2 0.5827 M4 0.5059
+10:57:52 submitted cooc-recipeholdout (backtest) -> red_calypso_b7rgdbnq2z
+12:01:24 cooc-d300-b16k -> Completed
+12:01:27 cooc-d300-b16k scored: PR 126.3 M2 0.8636 M4 0.8388
+12:01:36 submitted cooc-s1 (H1,var) -> clever_wolf_8xymmwjbh2
+12:14:05 cooc-recipeholdout -> Completed
+12:14:08 cooc-recipeholdout scored: PR 110.6 M2 0.8692 M4 0.8570
+12:14:14 submitted cooc-s2 (H1,var) -> boring_office_8zwlx3tdgy
+13:06:54 cooc-d600-b16k -> Completed
+13:06:58 cooc-d600-b16k scored: PR 202.3 M2 0.8586 M4 0.8314
+13:07:17 submitted core-ii10-s1 (H1,var) -> sharp_stone_c13ms914zm
+13:23:54 cooc-s1 -> Completed
+13:23:57 cooc-s1 scored: PR 117.2 M2 0.8677 M4 0.8397
+13:24:07 submitted core-ii10-s2 (H1,var) -> dynamic_insect_dbf667ybnk
+13:29:18 cooc-s2 -> Completed
+13:29:21 cooc-s2 scored: PR 117.0 M2 0.8726 M4 0.8442
+13:29:28 submitted cuisines-full (H4) -> wheat_bucket_kcf8pzf3sw
+13:46:19 [watchdog] state untouched for 15m; assuming wedged
+13:46:19 [watchdog] orchestrator running as pid 61611
+13:46:21 harness ready: vocab 1790, held-out 20,350
+13:46:25 cuisines-full -> Completed
+13:46:28 cuisines-full analysis collected
+15:12:29 [watchdog] state untouched for 51m; assuming wedged
+15:12:29 [watchdog] orchestrator running as pid 67336
+15:12:31 harness ready: vocab 1790, held-out 20,350
+15:12:32 poll core-ii10-s1: DefaultAzureCredential failed to retrieve a token from the included credentials.
+Attempted credentials:
+	EnvironmentCredential: EnvironmentCredential authentication unavailable. Environment variables are not fully configured.
+Visit https://aka.ms/azsdk/python/identity/environmentcredential/troubleshoot to troubleshoot this issue.
+	WorkloadIdentityCredential: WorkloadIdentityCredential authentication unavailable. The workload options are not fully configured. See the troubleshooting guide for more information: https://aka.ms/azsdk/python/identity/workloadidentitycredential/troubleshoot. Missing required arguments: 'tenant_id', 'client_id', 'token_file_path'.
+	ManagedIdentityCredential: ManagedIdentityCredential authentication unavailable, no response from the IMDS endpoint.
+	SharedTokenCacheCredential: SharedTokenCacheCredential authentication unavailable. No accounts were found in the cache.
+	VisualStudioCodeCredential: VisualStudioCodeCredential requires the 'azure-identity-broker' package to be installed. You must also ensure you have the Azure Resources extension installed and have signed in to Azure via Visual Studio Code.
+	AzureCliCredential: ERROR: The command failed with an unexpected error. Here is the traceback:
+ERROR: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10794f6b0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 715, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 404, in _make_request
+    self._validate_conn(conn)
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 1060, in _validate_conn
+    conn.connect()
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x10794f6b0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 829, in urlopen
+    return self.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 801, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/retry.py", line 594, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10794f6b0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/knack/cli.py", line 233, in invoke
+    cmd_result = self.invocation.execute(args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 666, in execute
+    raise ex
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 734, in _run_jobs_serially
+    results.append(self._run_job(expanded_arg, cmd_copy))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 703, in _run_job
+    result = cmd_copy(params)
+             ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 336, in __call__
+    return self.handler(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/command_operation.py", line 120, in handler
+    return op(**command_args)
+           ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/command_modules/profile/custom.py", line 83, in get_access_token
+    creds, subscription, tenant = profile.get_raw_token(subscription=subscription, resource=resource, scopes=scopes,
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/_profile.py", line 482, in get_raw_token
+    sdk_token = sdk_cred.get_token(*scopes)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/credential_adaptor.py", line 33, in get_token
+    msal_result = self._credential.acquire_token(list(scopes), **msal_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/msal_credentials.py", line 56, in acquire_token
+    result = self._msal_app.acquire_token_silent_with_error(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1416, in acquire_token_silent_with_error
+    return _clean_up(self._acquire_token_silent_with_error(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1439, in _acquire_token_silent_with_error
+    result = self._acquire_token_silent_from_cache_and_possibly_refresh_it(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1574, in _acquire_token_silent_from_cache_and_possibly_refresh_it
+    result = self._acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1642, in _acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family
+    return self._acquire_token_silent_by_finding_specific_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1683, in _acquire_token_silent_by_finding_specific_refresh_token
+    response = client.obtain_token_by_refresh_token(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 835, in obtain_token_by_refresh_token
+    resp = super(Client, self).obtain_token_by_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 265, in obtain_token_by_refresh_token
+    return self._obtain_token("refresh_token", data=data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oidc.py", line 170, in _obtain_token
+    ret = super(Client, self)._obtain_token(grant_type, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 776, in _obtain_token
+    resp = super(Client, self)._obtain_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 237, in _obtain_token
+    resp = (post or self._http_client.post)(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10794f6b0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+To check existing issues, please visit: https://github.com/Azure/azure-cli/issues
+
+	AzurePowerShellCredential: PowerShell is not installed
+	AzureDeveloperCliCredential: Azure Developer CLI could not be found. Please visit https://aka.ms/azure-dev for installation instructions and then,once installed, authenticate to your Azure account using 'azd auth login'.
+	BrokerCredential: InteractiveBrowserBrokerCredential unavailable. The 'azure-identity-broker' package is required to use brokered authentication.
+To mitigate this issue, please refer to the troubleshooting guidelines here at https://aka.ms/azsdk/python/identity/defaultazurecredential/troubleshoot.
+15:12:32 poll core-ii10-s2: DefaultAzureCredential failed to retrieve a token from the included credentials.
+Attempted credentials:
+	EnvironmentCredential: EnvironmentCredential authentication unavailable. Environment variables are not fully configured.
+Visit https://aka.ms/azsdk/python/identity/environmentcredential/troubleshoot to troubleshoot this issue.
+	WorkloadIdentityCredential: WorkloadIdentityCredential authentication unavailable. The workload options are not fully configured. See the troubleshooting guide for more information: https://aka.ms/azsdk/python/identity/workloadidentitycredential/troubleshoot. Missing required arguments: 'tenant_id', 'client_id', 'token_file_path'.
+	ManagedIdentityCredential: ManagedIdentityCredential authentication unavailable, no response from the IMDS endpoint.
+	SharedTokenCacheCredential: SharedTokenCacheCredential authentication unavailable. No accounts were found in the cache.
+	VisualStudioCodeCredential: VisualStudioCodeCredential requires the 'azure-identity-broker' package to be installed. You must also ensure you have the Azure Resources extension installed and have signed in to Azure via Visual Studio Code.
+	AzureCliCredential: ERROR: The command failed with an unexpected error. Here is the traceback:
+ERROR: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10bc5f770>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 715, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 404, in _make_request
+    self._validate_conn(conn)
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 1060, in _validate_conn
+    conn.connect()
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x10bc5f770>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 829, in urlopen
+    return self.urlopen(
+           ^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/connectionpool.py", line 801, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/urllib3/util/retry.py", line 594, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10bc5f770>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/knack/cli.py", line 233, in invoke
+    cmd_result = self.invocation.execute(args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 666, in execute
+    raise ex
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 734, in _run_jobs_serially
+    results.append(self._run_job(expanded_arg, cmd_copy))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 703, in _run_job
+    result = cmd_copy(params)
+             ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/__init__.py", line 336, in __call__
+    return self.handler(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/commands/command_operation.py", line 120, in handler
+    return op(**command_args)
+           ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/command_modules/profile/custom.py", line 83, in get_access_token
+    creds, subscription, tenant = profile.get_raw_token(subscription=subscription, resource=resource, scopes=scopes,
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/_profile.py", line 482, in get_raw_token
+    sdk_token = sdk_cred.get_token(*scopes)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/credential_adaptor.py", line 33, in get_token
+    msal_result = self._credential.acquire_token(list(scopes), **msal_kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/azure/cli/core/auth/msal_credentials.py", line 56, in acquire_token
+    result = self._msal_app.acquire_token_silent_with_error(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1416, in acquire_token_silent_with_error
+    return _clean_up(self._acquire_token_silent_with_error(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1439, in _acquire_token_silent_with_error
+    result = self._acquire_token_silent_from_cache_and_possibly_refresh_it(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1574, in _acquire_token_silent_from_cache_and_possibly_refresh_it
+    result = self._acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1642, in _acquire_token_silent_by_finding_rt_belongs_to_me_or_my_family
+    return self._acquire_token_silent_by_finding_specific_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/application.py", line 1683, in _acquire_token_silent_by_finding_specific_refresh_token
+    response = client.obtain_token_by_refresh_token(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 835, in obtain_token_by_refresh_token
+    resp = super(Client, self).obtain_token_by_refresh_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 265, in obtain_token_by_refresh_token
+    return self._obtain_token("refresh_token", data=data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oidc.py", line 170, in _obtain_token
+    ret = super(Client, self)._obtain_token(grant_type, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 776, in _obtain_token
+    resp = super(Client, self)._obtain_token(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/oauth2cli/oauth2.py", line 237, in _obtain_token
+    resp = (post or self._http_client.post)(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/msal/individual_cache.py", line 269, in wrapper
+    value = function(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/azure-cli/2.71.0/libexec/lib/python3.12/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='login.microsoftonline.com', port=443): Max retries exceeded with url: /1c0ced57-898b-47ea-990f-bff3530d2657/oauth2/v2.0/token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10bc5f770>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+To check existing issues, please visit: https://github.com/Azure/azure-cli/issues
+
+	AzurePowerShellCredential: PowerShell is not installed
+	AzureDeveloperCliCredential: Azure Developer CLI could not be found. Please visit https://aka.ms/azure-dev for installation instructions and then,once installed, authenticate to your Azure account using 'azd auth login'.
+	BrokerCredential: InteractiveBrowserBrokerCredential unavailable. The 'azure-identity-broker' package is required to use brokered authentication.
+To mitigate this issue, please refer to the troubleshooting guidelines here at https://aka.ms/azsdk/python/identity/defaultazurecredential/troubleshoot.
+15:36:10 core-ii10-s1 -> Completed
+15:36:21 core-ii10-s1 scored: PR 117.7 M2 0.8662 M4 0.8380
+15:36:21 core-ii10-s2 -> Completed
+15:36:24 core-ii10-s2 scored: PR 116.9 M2 0.8713 M4 0.8412
+15:36:24 queue drained; all jobs terminal
+15:37:03 [watchdog] orchestrator exited cleanly; queue drained, watchdog done

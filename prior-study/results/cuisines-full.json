@@ -1,0 +1,300 @@
+{
+  "cuisines": {
+    "north_american": {
+      "region": "North America",
+      "recipes_total": 2669991,
+      "recipes_used": 198903,
+      "real": 29.891588265697518,
+      "null_mean": 28.65429546176335,
+      "null_sd": 0.04339311144167453,
+      "delta": 1.2372928039341673,
+      "ci95": 0.08505049842568208,
+      "z": 28.513576529243245,
+      "rel_delta": 0.043180011373346316,
+      "significant": true,
+      "direction": "pairing"
+    },
+    "chinese": {
+      "region": "East Asia",
+      "recipes_total": 1433167,
+      "recipes_used": 194438,
+      "real": 15.615018340720695,
+      "null_mean": 15.40248655617297,
+      "null_sd": 0.03304201222348395,
+      "delta": 0.2125317845477248,
+      "ci95": 0.06476234395802855,
+      "z": 6.4321683289213265,
+      "rel_delta": 0.013798537253879105,
+      "significant": true,
+      "direction": "pairing"
+    },
+    "russian": {
+      "region": "Eastern Europe",
+      "recipes_total": 162762,
+      "recipes_used": 162302,
+      "real": 25.279190262459746,
+      "null_mean": 25.293182100011677,
+      "null_sd": 0.04280714682045513,
+      "delta": -0.013991837551930786,
+      "ci95": 0.08390200776809206,
+      "z": -0.3268575130834198,
+      "rel_delta": -0.0005531861312113957,
+      "significant": false,
+      "direction": "contrast"
+    },
+    "turkish": {
+      "region": "Middle East",
+      "recipes_total": 125748,
+      "recipes_used": 125323,
+      "real": 22.036070261912787,
+      "null_mean": 22.688460352704574,
+      "null_sd": 0.04929490514434635,
+      "delta": -0.652390090791787,
+      "ci95": 0.09661801408291884,
+      "z": -13.234432420174965,
+      "rel_delta": -0.02875426893892423,
+      "significant": true,
+      "direction": "contrast"
+    },
+    "spanish": {
+      "region": "Southern Europe",
+      "recipes_total": 46446,
+      "recipes_used": 45803,
+      "real": 36.9884897298803,
+      "null_mean": 35.635119934128056,
+      "null_sd": 0.07425879800523096,
+      "delta": 1.3533697957522435,
+      "ci95": 0.14554724409025266,
+      "z": 18.22504312090951,
+      "rel_delta": 0.037978539100021656,
+      "significant": true,
+      "direction": "pairing"
+    },
+    "vietnamese": {
+      "region": "Southeast Asia",
+      "recipes_total": 31884,
+      "recipes_used": 31241,
+      "real": 20.764377760718826,
+      "null_mean": 21.227744862388786,
+      "null_sd": 0.0989355723564888,
+      "delta": -0.4633671016699594,
+      "ci95": 0.19391372181871805,
+      "z": -4.683523738057891,
+      "rel_delta": -0.021828371533282886,
+      "significant": true,
+      "direction": "contrast"
+    },
+    "indian": {
+      "region": "South Asia",
+      "recipes_total": 22204,
+      "recipes_used": 22160,
+      "real": 36.4258239958878,
+      "null_mean": 35.15724422446349,
+      "null_sd": 0.12911853831138848,
+      "delta": 1.2685797714243066,
+      "ci95": 0.2530723350903214,
+      "z": 9.824923578091774,
+      "rel_delta": 0.03608302639777408,
+      "significant": true,
+      "direction": "pairing"
+    },
+    "indonesian": {
+      "region": "Southeast Asia",
+      "recipes_total": 14939,
+      "recipes_used": 14929,
+      "real": 23.116729544060945,
+      "null_mean": 21.89116428148287,
+      "null_sd": 0.0935420511513101,
+      "delta": 1.2255652625780762,
+      "ci95": 0.1833424202565678,
+      "z": 13.101757418122551,
+      "rel_delta": 0.05598447148901751,
+      "significant": true,
+      "direction": "pairing"
+    },
+    "israeli": {
+      "region": "Middle East",
+      "recipes_total": 8698,
+      "recipes_used": 8586,
+      "real": 36.67419312591574,
+      "null_mean": 36.63600405994974,
+      "null_sd": 0.21432104513613517,
+      "delta": 0.03818906596600158,
+      "ci95": 0.4200692484668249,
+      "z": 0.1781862623044982,
+      "rel_delta": 0.0010423916839705134,
+      "significant": false,
+      "direction": "pairing"
+    },
+    "persian": {
+      "region": "Middle East",
+      "recipes_total": 5793,
+      "recipes_used": 5737,
+      "real": 48.02194563377477,
+      "null_mean": 45.38591516479139,
+      "null_sd": 0.17717848844748607,
+      "delta": 2.6360304689833782,
+      "ci95": 0.3472698373570727,
+      "z": 14.877824571602389,
+      "rel_delta": 0.058080363906120085,
+      "significant": true,
+      "direction": "pairing"
+    },
+    "greek": {
+      "region": "Southern Europe",
+      "recipes_total": 4881,
+      "recipes_used": 4832,
+      "real": 38.98765752890737,
+      "null_mean": 38.85017435364428,
+      "null_sd": 0.32542191963612754,
+      "delta": 0.1374831752630925,
+      "ci95": 0.6378269624868099,
+      "z": 0.42247668939086874,
+      "rel_delta": 0.0035388045884071078,
+      "significant": false,
+      "direction": "pairing"
+    },
+    "german": {
+      "region": "Western Europe",
+      "recipes_total": 4290,
+      "recipes_used": 4285,
+      "real": 36.526179543106416,
+      "null_mean": 36.70542325794972,
+      "null_sd": 0.36189233211627714,
+      "delta": -0.17924371484330237,
+      "ci95": 0.7093089709479031,
+      "z": -0.4952956969138291,
+      "rel_delta": -0.004883303308714237,
+      "significant": false,
+      "direction": "contrast"
+    },
+    "japanese": {
+      "region": "East Asia",
+      "recipes_total": 3692,
+      "recipes_used": 3492,
+      "real": 20.248634111219346,
+      "null_mean": 21.053923171403156,
+      "null_sd": 0.2532294560994188,
+      "delta": -0.8052890601838101,
+      "ci95": 0.4963297339548609,
+      "z": -3.1800765700324,
+      "rel_delta": -0.03824888376516959,
+      "significant": true,
+      "direction": "contrast"
+    },
+    "moroccan": {
+      "region": "North Africa",
+      "recipes_total": 2443,
+      "recipes_used": 2442,
+      "real": 43.27437275811453,
+      "null_mean": 40.41533493404361,
+      "null_sd": 0.3694273279821959,
+      "delta": 2.859037824070924,
+      "ci95": 0.7240775628451039,
+      "z": 7.739107552456736,
+      "rel_delta": 0.07074141111874423,
+      "significant": true,
+      "direction": "pairing"
+    },
+    "filipino": {
+      "region": "Southeast Asia",
+      "recipes_total": 1984,
+      "recipes_used": 1982,
+      "real": 27.328990796849624,
+      "null_mean": 25.59614725040602,
+      "null_sd": 0.3564862554378248,
+      "delta": 1.732843546443604,
+      "ci95": 0.6987130606581367,
+      "z": 4.860898618139939,
+      "rel_delta": 0.06769938965779769,
+      "significant": true,
+      "direction": "pairing"
+    },
+    "taiwanese": {
+      "region": "East Asia",
+      "recipes_total": 1726,
+      "recipes_used": 1574,
+      "real": 12.85476367068977,
+      "null_mean": 13.113200728204438,
+      "null_sd": 0.4828844123241533,
+      "delta": -0.2584370575146675,
+      "ci95": 0.9464534481553405,
+      "z": -0.5351944500978889,
+      "rel_delta": -0.01970815995814126,
+      "significant": false,
+      "direction": "contrast"
+    },
+    "thai": {
+      "region": "Southeast Asia",
+      "recipes_total": 1704,
+      "recipes_used": 1685,
+      "real": 27.02281393394946,
+      "null_mean": 21.95273314806437,
+      "null_sd": 0.5096435901403961,
+      "delta": 5.070080785885089,
+      "ci95": 0.9989014366751763,
+      "z": 9.948287163757694,
+      "rel_delta": 0.2309544215605851,
+      "significant": true,
+      "direction": "pairing"
+    },
+    "romanian": {
+      "region": "Eastern Europe",
+      "recipes_total": 791,
+      "recipes_used": 777,
+      "real": 33.761591725830485,
+      "null_mean": 33.157142606714004,
+      "null_sd": 0.8787638095115586,
+      "delta": 0.6044491191164809,
+      "ci95": 1.722377066642655,
+      "z": 0.6878402507864435,
+      "rel_delta": 0.018229831390660478,
+      "significant": false,
+      "direction": "pairing"
+    }
+  },
+  "regions": {
+    "North America": {
+      "mean_rel_delta": 0.043180011373346316,
+      "cuisines": 1
+    },
+    "East Asia": {
+      "mean_rel_delta": -0.014719502156477248,
+      "cuisines": 3
+    },
+    "Eastern Europe": {
+      "mean_rel_delta": 0.00883832262972454,
+      "cuisines": 2
+    },
+    "Middle East": {
+      "mean_rel_delta": 0.010122828883722122,
+      "cuisines": 3
+    },
+    "Southern Europe": {
+      "mean_rel_delta": 0.020758671844214382,
+      "cuisines": 2
+    },
+    "Southeast Asia": {
+      "mean_rel_delta": 0.08320247779352935,
+      "cuisines": 4
+    },
+    "South Asia": {
+      "mean_rel_delta": 0.03608302639777408,
+      "cuisines": 1
+    },
+    "Western Europe": {
+      "mean_rel_delta": -0.004883303308714237,
+      "cuisines": 1
+    },
+    "North Africa": {
+      "mean_rel_delta": 0.07074141111874423,
+      "cuisines": 1
+    }
+  },
+  "params": {
+    "seed": 20260805,
+    "max_recipes": 200000,
+    "n_null": 25,
+    "min_recipes": 500
+  }
+}

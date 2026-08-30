@@ -1,0 +1,194 @@
+[
+  {
+    "name": "cooc",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 0",
+    "priority": 1,
+    "hypothesis": "H1,H5"
+  },
+  {
+    "name": "chem",
+    "script": "train_epicure.py",
+    "args": "chem --device cpu --epochs 20 --seed 0",
+    "priority": 1,
+    "hypothesis": "H1,H5"
+  },
+  {
+    "name": "core-ii0",
+    "script": "train_epicure.py",
+    "args": "core --device cpu --epochs 20 --seed 0 --ii-repeat 0",
+    "priority": 1,
+    "hypothesis": "H1,H5"
+  },
+  {
+    "name": "core-ii0.1",
+    "script": "train_epicure.py",
+    "args": "core --device cpu --epochs 20 --seed 0 --ii-repeat 0.1",
+    "priority": 1,
+    "hypothesis": "H1,H5"
+  },
+  {
+    "name": "core-ii1",
+    "script": "train_epicure.py",
+    "args": "core --device cpu --epochs 20 --seed 0 --ii-repeat 1",
+    "priority": 1,
+    "hypothesis": "H1,H5"
+  },
+  {
+    "name": "core-ii10",
+    "script": "train_epicure.py",
+    "args": "core --device cpu --epochs 20 --seed 0 --ii-repeat 10",
+    "priority": 1,
+    "hypothesis": "H1,H5"
+  },
+  {
+    "name": "core-ii100",
+    "script": "train_epicure.py",
+    "args": "core --device cpu --epochs 20 --seed 0 --ii-repeat 100",
+    "priority": 1,
+    "hypothesis": "H1,H5"
+  },
+  {
+    "name": "svd-ppmi",
+    "script": "train_factorization.py",
+    "args": "--method svd-ppmi",
+    "priority": 2,
+    "hypothesis": "H2"
+  },
+  {
+    "name": "glove",
+    "script": "train_factorization.py",
+    "args": "--method glove",
+    "priority": 2,
+    "hypothesis": "H2"
+  },
+  {
+    "name": "chem-svd",
+    "script": "train_factorization.py",
+    "args": "--method chem-svd",
+    "priority": 2,
+    "hypothesis": "H2"
+  },
+  {
+    "name": "cuisines",
+    "script": "analyze_cuisines.py",
+    "args": "",
+    "priority": 2,
+    "hypothesis": "H4"
+  },
+  {
+    "name": "cooc-s1",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 1",
+    "priority": 3,
+    "hypothesis": "H1,var"
+  },
+  {
+    "name": "core-ii10-s1",
+    "script": "train_epicure.py",
+    "args": "core --device cpu --epochs 20 --seed 1 --ii-repeat 10",
+    "priority": 3,
+    "hypothesis": "H1,var"
+  },
+  {
+    "name": "chem-s1",
+    "script": "train_epicure.py",
+    "args": "chem --device cpu --epochs 20 --seed 1",
+    "priority": 3,
+    "hypothesis": "H1,var"
+  },
+  {
+    "name": "cooc-s2",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 2",
+    "priority": 3,
+    "hypothesis": "H1,var"
+  },
+  {
+    "name": "core-ii10-s2",
+    "script": "train_epicure.py",
+    "args": "core --device cpu --epochs 20 --seed 2 --ii-repeat 10",
+    "priority": 3,
+    "hypothesis": "H1,var"
+  },
+  {
+    "name": "chem-s2",
+    "script": "train_epicure.py",
+    "args": "chem --device cpu --epochs 20 --seed 2",
+    "priority": 3,
+    "hypothesis": "H1,var"
+  },
+  {
+    "name": "cooc-d32",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 0 --d-model 32",
+    "priority": 2,
+    "hypothesis": "H7"
+  },
+  {
+    "name": "cooc-d64",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 0 --d-model 64",
+    "priority": 2,
+    "hypothesis": "H7"
+  },
+  {
+    "name": "cooc-d128",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 0 --d-model 128",
+    "priority": 2,
+    "hypothesis": "H7"
+  },
+  {
+    "name": "cooc-d600",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 0 --d-model 600",
+    "priority": 2,
+    "hypothesis": "H7"
+  },
+  {
+    "name": "cuisines-full",
+    "script": "analyze_cuisines.py",
+    "args": "--max-recipes 200000 --n-null 25",
+    "priority": 4,
+    "hypothesis": "H4"
+  },
+  {
+    "name": "cooc-d600-b16k",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 0 --d-model 600 --batch 16384",
+    "priority": 2,
+    "hypothesis": "H7"
+  },
+  {
+    "name": "cooc-d300-b16k",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 0 --d-model 300 --batch 16384",
+    "priority": 2,
+    "hypothesis": "H7,control"
+  },
+  {
+    "name": "cooc-full",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 0",
+    "graph": "ii_graph_full_train.npz",
+    "priority": 1,
+    "hypothesis": "H8"
+  },
+  {
+    "name": "core-ii10-full",
+    "script": "train_epicure.py",
+    "args": "core --device cpu --epochs 20 --seed 0 --ii-repeat 10",
+    "graph": "ii_graph_full_train.npz",
+    "priority": 1,
+    "hypothesis": "H8"
+  },
+  {
+    "name": "cooc-recipeholdout",
+    "script": "train_epicure.py",
+    "args": "cooc --device cpu --epochs 20 --seed 0",
+    "graph": "ii_graph_recipe_train.npz",
+    "priority": 1,
+    "hypothesis": "backtest"
+  }
+]

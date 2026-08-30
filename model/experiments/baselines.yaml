@@ -1,0 +1,14 @@
+name: baselines
+description: >
+  Every family on the honest split, one seed. This is the reference leaderboard —
+  the numbers any new model has to beat, produced under a protocol that is valid
+  for all of them at once.
+splits: [recipe-holdout]
+seeds: [0]
+models:
+  - svd-ppmi
+  - glove
+  - sgns-cooc
+  - sgc
+  - ease
+  - item2vec

@@ -1,0 +1,30 @@
+{
+  "split": "recipe-holdout",
+  "n": 1790,
+  "d": 300,
+  "whitened": false,
+  "M1_participation_ratio": 20.53495216369629,
+  "M4_link_auc": 0.7179218303145853,
+  "M4_link_auc_ci95": 0.006089430072023031,
+  "M2_triplet_accuracy_broad": 0.6505128846634977,
+  "M2_triplet_accuracy_broad_ci95": 0.006610701251429618,
+  "M3_recall_at_10_broad": 0.05688104873268144,
+  "M2_triplet_accuracy_strict": 0.7015564007606846,
+  "M2_triplet_accuracy_strict_ci95": 0.006344523702239035,
+  "M3_recall_at_10_strict": 0.07698641179539267,
+  "M5_pc_freq_corr": [
+    0.6286058617848655,
+    0.03603764187395524,
+    0.13643175208249067
+  ],
+  "M5_max_pc_freq_corr": 0.6286058617848655,
+  "M5_top20_freq_jaccard": 0.0,
+  "M6_n": 20000,
+  "M6_recall_at_10": 0.0066,
+  "M6_recall_at_50": 0.0347,
+  "M6_mrr": 0.006081504688937046,
+  "M6_median_rank": 569.0,
+  "M6_popularity_recall_at_10": 0.3723,
+  "M6_popularity_mrr": 0.18451761094373853,
+  "M6_lift_over_popularity": -0.3657
+}

@@ -1,0 +1,171 @@
+{
+  "note": "recipe/expansion flattened into recipe/; reverse to undo",
+  "moves": [
+    {
+      "from": "expansion/foodcom-522k-canonical",
+      "to": "10-foodcom-522k-canonical"
+    },
+    {
+      "from": "expansion/foodcom-raw-231k",
+      "to": "11-foodcom-raw-231k"
+    },
+    {
+      "from": "expansion/povarenok-detail",
+      "to": "12-povarenok-detail"
+    },
+    {
+      "from": "expansion/turkish-102k",
+      "to": "13-turkish-102k"
+    },
+    {
+      "from": "expansion/thefoodprocessor-74k",
+      "to": "14-thefoodprocessor-74k"
+    },
+    {
+      "from": "expansion/allrecipes-33k",
+      "to": "15-allrecipes-33k"
+    },
+    {
+      "from": "expansion/bhuvii-17k",
+      "to": "16-bhuvii-17k"
+    },
+    {
+      "from": "expansion/kaggle-food-13k",
+      "to": "17-kaggle-food-13k"
+    },
+    {
+      "from": "expansion/hebrew-9.7k",
+      "to": "18-hebrew-9.7k"
+    },
+    {
+      "from": "expansion/indian-7k",
+      "to": "19-indian-7k"
+    },
+    {
+      "from": "expansion/persian-6k",
+      "to": "20-persian-6k"
+    },
+    {
+      "from": "expansion/greek-5k",
+      "to": "21-greek-5k"
+    },
+    {
+      "from": "expansion/moroccan-4.6k",
+      "to": "22-moroccan-4.6k"
+    },
+    {
+      "from": "expansion/japanese-3k",
+      "to": "23-japanese-3k"
+    },
+    {
+      "from": "expansion/filipino-2k",
+      "to": "24-filipino-2k"
+    },
+    {
+      "from": "expansion/halal-2k",
+      "to": "25-halal-2k"
+    },
+    {
+      "from": "expansion/thai-1k",
+      "to": "26-thai-1k"
+    },
+    {
+      "from": "expansion/taiwan-1.8k",
+      "to": "27-taiwan-1.8k"
+    },
+    {
+      "from": "expansion/romanian-881",
+      "to": "28-romanian-881"
+    },
+    {
+      "from": "expansion/ingredient-substitutions-74k",
+      "to": "29-ingredient-substitutions-74k"
+    },
+    {
+      "from": "expansion/README.md",
+      "to": "_expansion_README.md"
+    },
+    {
+      "from": "expansion/_duplicates",
+      "to": "_duplicates"
+    }
+  ],
+  "renames": [
+    {
+      "from": "10-foodcom-522k-canonical",
+      "to": "10-foodcom-canonical"
+    },
+    {
+      "from": "11-foodcom-raw-231k",
+      "to": "11-foodcom-raw"
+    },
+    {
+      "from": "13-turkish-102k",
+      "to": "13-turkish"
+    },
+    {
+      "from": "14-thefoodprocessor-74k",
+      "to": "14-thefoodprocessor"
+    },
+    {
+      "from": "15-allrecipes-33k",
+      "to": "15-allrecipes"
+    },
+    {
+      "from": "16-bhuvii-17k",
+      "to": "16-bhuvii"
+    },
+    {
+      "from": "17-kaggle-food-13k",
+      "to": "17-kaggle-food"
+    },
+    {
+      "from": "18-hebrew-9.7k",
+      "to": "18-hebrew"
+    },
+    {
+      "from": "19-indian-7k",
+      "to": "19-indian"
+    },
+    {
+      "from": "20-persian-6k",
+      "to": "20-persian"
+    },
+    {
+      "from": "21-greek-5k",
+      "to": "21-greek"
+    },
+    {
+      "from": "22-moroccan-4.6k",
+      "to": "22-moroccan"
+    },
+    {
+      "from": "23-japanese-3k",
+      "to": "23-japanese"
+    },
+    {
+      "from": "24-filipino-2k",
+      "to": "24-filipino"
+    },
+    {
+      "from": "25-halal-2k",
+      "to": "25-halal"
+    },
+    {
+      "from": "26-thai-1k",
+      "to": "26-thai"
+    },
+    {
+      "from": "27-taiwan-1.8k",
+      "to": "27-taiwan"
+    },
+    {
+      "from": "28-romanian-881",
+      "to": "28-romanian"
+    },
+    {
+      "from": "29-ingredient-substitutions-74k",
+      "to": "29-ingredient-substitutions"
+    }
+  ]
+}

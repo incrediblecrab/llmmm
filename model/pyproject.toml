@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ingredient-model"
+version = "0.1.0"
+description = "Ingredient representation learning — modular model workspace"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pandas>=2.0",
+    "pyarrow>=14.0",
+]
+
+[project.optional-dependencies]
+torch = ["torch>=2.2"]
+azure = [
+    "azure-ai-ml>=1.16",
+    "azure-identity>=1.16",
+]
+foundry = ["openai>=1.30"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+im = "ingredient_model.cli:main"
+
+[tool.setuptools]
+packages = [
+    "ingredient_model",
+    "ingredient_model.data",
+    "ingredient_model.eval",
+    "ingredient_model.reasoning",
+    "models",
+    "models.sgns_walk",
+    "models.factorization",
+    "models.recipe_basket",
+    "models.graph_neural",
+    "models.set_transformer",
+    "models.text_embedding",
+    "models.hybrid",
+    "cloud",
+]

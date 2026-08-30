@@ -1,0 +1,22 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.DS_Store
+
+# Imported artefacts and anything derived from them. All of it is regenerable
+# from scripts/import_data.py and scripts/build_splits.py, and the recipe corpus
+# is 40MB+ — large enough to make a repository unpleasant and slow to clone.
+data/
+
+# results/runs/ is deliberately NOT excluded. The weight matrices are dropped by
+# the root .gitignore's *.npy rule, which leaves manifest.json and metrics.json
+# tracked — so the leaderboard is versioned and any published number can be
+# traced to the commit that produced it. Excluding the directory wholesale would
+# throw the findings away along with the blobs.
+results/*.json
+
+# Holds the subscription id. Not a secret, but not something to commit either,
+# and it differs per developer.
+cloud/config.json

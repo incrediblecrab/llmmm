@@ -1,0 +1,12 @@
+07:42:46 [watchdog] orchestrator running as pid 20440
+08:02:59 [watchdog] state untouched for 11m; assuming wedged
+08:02:59 [watchdog] orchestrator running as pid 21876
+08:23:04 [watchdog] orchestrator running as pid 22364
+08:45:49 [watchdog] orchestrator running as pid 24257
+10:30:11 [watchdog] state untouched for 41m; assuming wedged
+10:30:11 [watchdog] orchestrator running as pid 25116
+13:46:19 [watchdog] state untouched for 15m; assuming wedged
+13:46:19 [watchdog] orchestrator running as pid 61611
+15:12:29 [watchdog] state untouched for 51m; assuming wedged
+15:12:29 [watchdog] orchestrator running as pid 67336
+15:37:03 [watchdog] orchestrator exited cleanly; queue drained, watchdog done

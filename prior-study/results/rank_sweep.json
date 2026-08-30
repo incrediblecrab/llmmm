@@ -1,0 +1,68 @@
+{
+  "emb": "cooc.emb",
+  "n_test": 100000,
+  "slices": {
+    "all": 100000,
+    "non_staple": 35461,
+    "graph_uncovered": 26,
+    "graph_uncovered_nonstaple": 9
+  },
+  "spectrum": {
+    "rank_2": 0.3791,
+    "rank_4": 0.4259,
+    "rank_8": 0.4831,
+    "rank_16": 0.5553,
+    "rank_32": 0.6555,
+    "rank_64": 0.8039,
+    "rank_128": 1.0
+  },
+  "graph_npmi": {
+    "all": 0.3632,
+    "non_staple": 0.3097,
+    "graph_uncovered": 0.0
+  },
+  "by_rank": {
+    "2": {
+      "all": 0.0138,
+      "non_staple": 0.0135,
+      "graph_uncovered": 0.0,
+      "variance_explained": 0.3791
+    },
+    "4": {
+      "all": 0.0308,
+      "non_staple": 0.0211,
+      "graph_uncovered": 0.0,
+      "variance_explained": 0.4259
+    },
+    "8": {
+      "all": 0.1646,
+      "non_staple": 0.0699,
+      "graph_uncovered": 0.0,
+      "variance_explained": 0.4831
+    },
+    "16": {
+      "all": 0.2737,
+      "non_staple": 0.129,
+      "graph_uncovered": 0.0,
+      "variance_explained": 0.5553
+    },
+    "32": {
+      "all": 0.3295,
+      "non_staple": 0.1386,
+      "graph_uncovered": 0.0,
+      "variance_explained": 0.6555
+    },
+    "64": {
+      "all": 0.3468,
+      "non_staple": 0.1384,
+      "graph_uncovered": 0.0,
+      "variance_explained": 0.8039
+    },
+    "128": {
+      "all": 0.369,
+      "non_staple": 0.127,
+      "graph_uncovered": 0.0,
+      "variance_explained": 1.0
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "run_id": "item2vec-recipe-holdout-s0",
+  "model": "item2vec",
+  "family": "recipe_basket",
+  "graph": "ii_graph_rh_train.npz",
+  "seed": 0,
+  "params": {
+    "split": "recipe-holdout"
+  },
+  "created": "2026-08-06T20:29:07-0400",
+  "duration_s": 169.90099501609802,
+  "shape": [
+    1790,
+    300
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0"
+  },
+  "metadata": {
+    "loss_history": [
+      2.4936213203602366,
+      1.843445792691461,
+      1.763793455229865,
+      1.7363648406333394,
+      1.723158362838957
+    ],
+    "n_recipes": 3253493,
+    "d_model": 300,
+    "epochs": 5,
+    "lr": 0.0025,
+    "batch_size": 32768,
+    "negative_samples": 5,
+    "init": 1.0,
+    "max_recipes": 0,
+    "subsample": 0.0001
+  }
+}

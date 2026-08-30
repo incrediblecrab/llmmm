@@ -1,0 +1,56 @@
+# What is tracked here is what was *authored*: code, experiment declarations,
+# documentation, and the metrics that constitute the findings. Everything else
+# is regenerable from those, and most of it is large enough that committing it
+# would make the repository unusable.
+#
+# The rule, stated once: if a script can produce it, it does not belong in git.
+
+# ---------------------------------------------------------------------------
+# Source corpora — 7.4 GB, 29 folders, redistributed from upstream datasets.
+# raw-data/README.md and MANIFEST.md record provenance so the tree can be
+# reassembled; the bytes themselves are not ours to version.
+# ---------------------------------------------------------------------------
+raw-data/
+
+# ---------------------------------------------------------------------------
+# The prior study's derived artefacts (199 MB). Its own scripts regenerate
+# these, and model/data/ already holds the copies this workspace reads.
+# Its tools/, docs/ and pre-registration ARE tracked — they are load-bearing.
+# ---------------------------------------------------------------------------
+prior-study/data/
+
+# ---------------------------------------------------------------------------
+# Trained weight matrices, wherever they appear.
+#
+# Deliberately narrower than excluding results/runs/ wholesale: manifest.json
+# and metrics.json stay tracked, so the leaderboard is versioned and a number
+# can be traced to the commit that produced it. Only the blobs are dropped.
+# ---------------------------------------------------------------------------
+*.npy
+*.npz
+*.parquet
+*.pt
+*.bin
+*.safetensors
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Azure — holds the subscription id. Not secret, but per-developer.
+model/cloud/config.json
+.env
+
+# macOS
+.DS_Store

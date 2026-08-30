@@ -1,0 +1,10 @@
+name: ease-regularisation
+description: >
+  EASE has exactly one knob and it was never tuned — the default 250.0 was a
+  guess. The fit is a single matrix inverse, so the whole sweep costs under a
+  minute and there is no reason to keep quoting an untuned number.
+splits: [recipe-holdout]
+seeds: [0]
+models: [ease]
+grid:
+  reg: [1.0, 10.0, 50.0, 100.0, 250.0, 500.0, 1000.0, 5000.0]

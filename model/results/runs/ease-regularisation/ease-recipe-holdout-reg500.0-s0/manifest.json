@@ -1,0 +1,31 @@
+{
+  "run_id": "ease-recipe-holdout-reg500.0-s0",
+  "model": "ease",
+  "family": "recipe_basket",
+  "graph": "ii_graph_rh_train.npz",
+  "seed": 0,
+  "params": {
+    "reg": 500.0,
+    "split": "recipe-holdout"
+  },
+  "created": "2026-08-06T19:56:23-0400",
+  "duration_s": 1.3065931797027588,
+  "shape": [
+    1790,
+    300
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0"
+  },
+  "metadata": {
+    "spectrum_retained": 0.4798249843059411,
+    "n_recipes": 3253493,
+    "d_model": 300,
+    "reg": 500.0,
+    "max_recipes": 0
+  }
+}

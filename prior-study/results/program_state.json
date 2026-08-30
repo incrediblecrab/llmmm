@@ -1,0 +1,1754 @@
+{
+  "chem": {
+    "job": "lucid_leather_zyn4fgxfs9",
+    "status": "Completed",
+    "submitted": "2026-08-05T22:49:29.324739",
+    "hypothesis": "H1,H5",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 2.705979219842142,
+      "M4_link_auc": 0.5198280098280098,
+      "M4_link_auc_ci95": 0.0068643925989396535,
+      "M2_triplet_accuracy_broad": 0.5783587690768076,
+      "M2_triplet_accuracy_broad_ci95": 0.006846587986204346,
+      "M3_recall_at_10_broad": 0.034875472601441734,
+      "M2_triplet_accuracy_strict": 0.6397507756981283,
+      "M2_triplet_accuracy_strict_ci95": 0.006656463145088176,
+      "M3_recall_at_10_strict": 0.08379766069338926,
+      "M5_pc_freq_corr": [
+        0.3941764584645929,
+        0.10471305363947316,
+        0.0783266578220346
+      ],
+      "M5_max_pc_freq_corr": 0.3941764584645929,
+      "M5_top20_freq_jaccard": 0.0,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 124.67255401611328,
+        "M4_link_auc": 0.5118181818181818,
+        "M4_link_auc_ci95": 0.006867877175790216,
+        "M2_triplet_accuracy_broad": 0.5398799099324494,
+        "M2_triplet_accuracy_broad_ci95": 0.006910161165081749,
+        "M3_recall_at_10_broad": 0.029892735382947448,
+        "M2_triplet_accuracy_strict": 0.5912571314182764,
+        "M2_triplet_accuracy_strict_ci95": 0.006816318643966605,
+        "M3_recall_at_10_strict": 0.07616074365195478,
+        "M5_pc_freq_corr": [
+          0.08974940639679518,
+          0.028633471142487252,
+          0.06120045020441153
+        ],
+        "M5_max_pc_freq_corr": 0.08974940639679518,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "cooc": {
+    "job": "helpful_pen_ndk9ytk2yr",
+    "status": "Completed",
+    "submitted": "2026-08-05T22:49:32.093618",
+    "hypothesis": "H1,H5",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 115.0542994540436,
+      "M4_link_auc": 0.8432186732186732,
+      "M4_link_auc_ci95": 0.00499564006542225,
+      "M2_triplet_accuracy_broad": 0.8677257943457594,
+      "M2_triplet_accuracy_broad_ci95": 0.004697132702415988,
+      "M3_recall_at_10_broad": 0.14267081605504559,
+      "M2_triplet_accuracy_strict": 0.9204534080672605,
+      "M2_triplet_accuracy_strict_ci95": 0.0037518743709598844,
+      "M3_recall_at_10_strict": 0.23263889391226472,
+      "M5_pc_freq_corr": [
+        0.05827520980876583,
+        0.4426714728715557,
+        0.2513057144289179
+      ],
+      "M5_max_pc_freq_corr": 0.4426714728715557,
+      "M5_top20_freq_jaccard": 0.14285714285714285,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 170.86639404296875,
+        "M4_link_auc": 0.6907862407862407,
+        "M4_link_auc_ci95": 0.006350020234953448,
+        "M2_triplet_accuracy_broad": 0.7619964973730298,
+        "M2_triplet_accuracy_broad_ci95": 0.005904350856448561,
+        "M3_recall_at_10_broad": 0.11991618155716187,
+        "M2_triplet_accuracy_strict": 0.8637523771394255,
+        "M2_triplet_accuracy_strict_ci95": 0.004756589674075839,
+        "M3_recall_at_10_strict": 0.2340107352930221,
+        "M5_pc_freq_corr": [
+          0.5776340322938736,
+          0.0010127702645424466,
+          0.22569526251502878
+        ],
+        "M5_max_pc_freq_corr": 0.5776340322938736,
+        "M5_top20_freq_jaccard": 0.14285714285714285
+      }
+    }
+  },
+  "core-ii0": {
+    "job": "jovial_parsnip_jlt8vqbslk",
+    "status": "Completed",
+    "submitted": "2026-08-05T22:49:34.580115",
+    "hypothesis": "H1,H5",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 41.580568477577685,
+      "M4_link_auc": 0.5157002457002456,
+      "M4_link_auc_ci95": 0.006866408831383318,
+      "M2_triplet_accuracy_broad": 0.6585188891668752,
+      "M2_triplet_accuracy_broad_ci95": 0.006574632107022475,
+      "M3_recall_at_10_broad": 0.04722896101309668,
+      "M2_triplet_accuracy_strict": 0.7044089680712642,
+      "M2_triplet_accuracy_strict_ci95": 0.006326953740260938,
+      "M3_recall_at_10_strict": 0.09646868039861409,
+      "M5_pc_freq_corr": [
+        0.14867328256309092,
+        0.4553197089374329,
+        0.3821265735718945
+      ],
+      "M5_max_pc_freq_corr": 0.4553197089374329,
+      "M5_top20_freq_jaccard": 0.0,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 103.80776977539062,
+        "M4_link_auc": 0.5052334152334153,
+        "M4_link_auc_ci95": 0.006869420125879333,
+        "M2_triplet_accuracy_broad": 0.57395546659995,
+        "M2_triplet_accuracy_broad_ci95": 0.006855996575569217,
+        "M3_recall_at_10_broad": 0.043817098951448696,
+        "M2_triplet_accuracy_strict": 0.6396006405765189,
+        "M2_triplet_accuracy_strict_ci95": 0.006657068783039279,
+        "M3_recall_at_10_strict": 0.09164683491698258,
+        "M5_pc_freq_corr": [
+          0.08100115422135806,
+          0.013255089365753458,
+          0.006049988698855457
+        ],
+        "M5_max_pc_freq_corr": 0.08100115422135806,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "core-ii0.1": {
+    "job": "teal_stem_gtdxt20x1g",
+    "status": "Completed",
+    "submitted": "2026-08-06T00:38:18.426368",
+    "hypothesis": "H1,H5",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 84.65124030525041,
+      "M4_link_auc": 0.7767813267813267,
+      "M4_link_auc_ci95": 0.005721218235904323,
+      "M2_triplet_accuracy_broad": 0.8530647985989492,
+      "M2_triplet_accuracy_broad_ci95": 0.00490860326605148,
+      "M3_recall_at_10_broad": 0.13649977331535826,
+      "M2_triplet_accuracy_strict": 0.9129466519867881,
+      "M2_triplet_accuracy_strict_ci95": 0.003908877257725122,
+      "M3_recall_at_10_strict": 0.2524827667001747,
+      "M5_pc_freq_corr": [
+        0.01922787506338083,
+        0.3998020223796396,
+        0.3831391803780194
+      ],
+      "M5_max_pc_freq_corr": 0.3998020223796396,
+      "M5_top20_freq_jaccard": 0.05263157894736842,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 128.73667907714844,
+        "M4_link_auc": 0.6453808353808353,
+        "M4_link_auc_ci95": 0.00657299040334276,
+        "M2_triplet_accuracy_broad": 0.7541906429822367,
+        "M2_triplet_accuracy_broad_ci95": 0.0059695799140741645,
+        "M3_recall_at_10_broad": 0.11575121916335732,
+        "M2_triplet_accuracy_strict": 0.8553948553698328,
+        "M2_triplet_accuracy_strict_ci95": 0.004876539912502143,
+        "M3_recall_at_10_strict": 0.2382730182411208,
+        "M5_pc_freq_corr": [
+          0.5216663807355838,
+          0.006278404641093983,
+          0.09586793925076145
+        ],
+        "M5_max_pc_freq_corr": 0.5216663807355838,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "core-ii1": {
+    "job": "calm_stem_3fgyffjgmw",
+    "status": "Completed",
+    "submitted": "2026-08-06T02:27:22.982263",
+    "hypothesis": "H1,H5",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 109.16957201750968,
+      "M4_link_auc": 0.8278378378378378,
+      "M4_link_auc_ci95": 0.005186989335487523,
+      "M2_triplet_accuracy_broad": 0.8707780835626721,
+      "M2_triplet_accuracy_broad_ci95": 0.004650780349074031,
+      "M3_recall_at_10_broad": 0.15207656503448203,
+      "M2_triplet_accuracy_strict": 0.9244069662696427,
+      "M2_triplet_accuracy_strict_ci95": 0.0036652962821327366,
+      "M3_recall_at_10_strict": 0.2634508081109183,
+      "M5_pc_freq_corr": [
+        0.046197661116967506,
+        0.4094955958533974,
+        0.27995162039224775
+      ],
+      "M5_max_pc_freq_corr": 0.4094955958533974,
+      "M5_top20_freq_jaccard": 0.08108108108108109,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 164.88925170898438,
+        "M4_link_auc": 0.6775675675675675,
+        "M4_link_auc_ci95": 0.006421988585660751,
+        "M2_triplet_accuracy_broad": 0.7742556917688267,
+        "M2_triplet_accuracy_broad_ci95": 0.00579635001898788,
+        "M3_recall_at_10_broad": 0.12876128449221824,
+        "M2_triplet_accuracy_strict": 0.879866880192173,
+        "M2_triplet_accuracy_strict_ci95": 0.004507922665962811,
+        "M3_recall_at_10_strict": 0.25607648694417057,
+        "M5_pc_freq_corr": [
+          0.5597605667042557,
+          0.03736100916124685,
+          0.24566146238644745
+        ],
+        "M5_max_pc_freq_corr": 0.5597605667042557,
+        "M5_top20_freq_jaccard": 0.05263157894736842
+      }
+    }
+  },
+  "core-ii10": {
+    "job": "magenta_yam_h95nlsjx05",
+    "status": "Completed",
+    "submitted": "2026-08-06T02:27:26.145324",
+    "hypothesis": "H1,H5",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 117.19655090538423,
+      "M4_link_auc": 0.8407616707616707,
+      "M4_link_auc_ci95": 0.00502729213767879,
+      "M2_triplet_accuracy_broad": 0.8674756067050288,
+      "M2_triplet_accuracy_broad_ci95": 0.004700894916032144,
+      "M3_recall_at_10_broad": 0.14494093839811256,
+      "M2_triplet_accuracy_strict": 0.9226053448103293,
+      "M2_triplet_accuracy_strict_ci95": 0.0037051010919732243,
+      "M3_recall_at_10_strict": 0.24226533858990104,
+      "M5_pc_freq_corr": [
+        0.048997197144392074,
+        0.402125370533182,
+        0.23608066674221062
+      ],
+      "M5_max_pc_freq_corr": 0.402125370533182,
+      "M5_top20_freq_jaccard": 0.17647058823529413,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 172.3641357421875,
+        "M4_link_auc": 0.6906879606879607,
+        "M4_link_auc_ci95": 0.006350577490401794,
+        "M2_triplet_accuracy_broad": 0.7696522391793845,
+        "M2_triplet_accuracy_broad_ci95": 0.005837720005841908,
+        "M3_recall_at_10_broad": 0.12606601880515425,
+        "M2_triplet_accuracy_strict": 0.8748623761385247,
+        "M2_triplet_accuracy_strict_ci95": 0.004587757101146843,
+        "M3_recall_at_10_strict": 0.24256957690235292,
+        "M5_pc_freq_corr": [
+          0.6083316581640643,
+          0.04561400684703688,
+          0.19614720599544588
+        ],
+        "M5_max_pc_freq_corr": 0.6083316581640643,
+        "M5_top20_freq_jaccard": 0.08108108108108109
+      }
+    }
+  },
+  "core-ii100": {
+    "job": "boring_plate_bn0q5b81f3",
+    "status": "Completed",
+    "submitted": "2026-08-06T02:27:29.289789",
+    "hypothesis": "H1,H5",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 118.76294574515931,
+      "M4_link_auc": 0.8373710073710073,
+      "M4_link_auc_ci95": 0.005070278449170155,
+      "M2_triplet_accuracy_broad": 0.8690267700775582,
+      "M2_triplet_accuracy_broad_ci95": 0.004677478946602027,
+      "M3_recall_at_10_broad": 0.14072619916837856,
+      "M2_triplet_accuracy_strict": 0.9223551196076469,
+      "M2_triplet_accuracy_strict_ci95": 0.0037105824659965352,
+      "M3_recall_at_10_strict": 0.23844908018959676,
+      "M5_pc_freq_corr": [
+        0.03697032910936595,
+        0.4118322633841162,
+        0.23406510056410104
+      ],
+      "M5_max_pc_freq_corr": 0.4118322633841162,
+      "M5_top20_freq_jaccard": 0.21212121212121213,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 172.04269409179688,
+        "M4_link_auc": 0.6892628992628992,
+        "M4_link_auc_ci95": 0.006358619982031358,
+        "M2_triplet_accuracy_broad": 0.7676007005253941,
+        "M2_triplet_accuracy_broad_ci95": 0.005855838404259974,
+        "M3_recall_at_10_broad": 0.12000357924740515,
+        "M2_triplet_accuracy_strict": 0.8729106195576019,
+        "M2_triplet_accuracy_strict_ci95": 0.00461823590907504,
+        "M3_recall_at_10_strict": 0.23097219356472318,
+        "M5_pc_freq_corr": [
+          0.5926743371791159,
+          0.06566011544843785,
+          0.22241058278158257
+        ],
+        "M5_max_pc_freq_corr": 0.5926743371791159,
+        "M5_top20_freq_jaccard": 0.08108108108108109
+      }
+    }
+  },
+  "chem-svd": {
+    "job": "sincere_cake_t2331fssxq",
+    "status": "Completed",
+    "submitted": "2026-08-06T07:34:47.232110",
+    "hypothesis": "H2",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 140.39070842654218,
+      "M4_link_auc": 0.5132432432432432,
+      "M4_link_auc_ci95": 0.006867386324337578,
+      "M2_triplet_accuracy_broad": 0.5826870152614461,
+      "M2_triplet_accuracy_broad_ci95": 0.0068367958872176835,
+      "M3_recall_at_10_broad": 0.03627440512738683,
+      "M2_triplet_accuracy_strict": 0.6486587929136223,
+      "M2_triplet_accuracy_strict_ci95": 0.006619257761457983,
+      "M3_recall_at_10_strict": 0.08128578549292657,
+      "M5_pc_freq_corr": [
+        0.3859016502459356,
+        0.08059029693837629,
+        0.01531432770423636
+      ],
+      "M5_max_pc_freq_corr": 0.3859016502459356,
+      "M5_top20_freq_jaccard": 0.0,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 182.7009864913615,
+        "M4_link_auc": 0.5013267813267813,
+        "M4_link_auc_ci95": 0.00686977225836435,
+        "M2_triplet_accuracy_broad": 0.4891668751563673,
+        "M2_triplet_accuracy_broad_ci95": 0.0069306192550082696,
+        "M3_recall_at_10_broad": 0.03714987869098294,
+        "M2_triplet_accuracy_strict": 0.5434891402262035,
+        "M2_triplet_accuracy_strict_ci95": 0.00690649315916366,
+        "M3_recall_at_10_strict": 0.08470294124446036,
+        "M5_pc_freq_corr": [
+          0.1023734102889432,
+          0.046677432957080725,
+          0.07066312116390051
+        ],
+        "M5_max_pc_freq_corr": 0.1023734102889432,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "cuisines": {
+    "job": "icy_ice_6zt629ytr8",
+    "status": "Completed",
+    "submitted": "2026-08-06T07:34:49.644217",
+    "hypothesis": "H4",
+    "result": {
+      "kind": "analysis",
+      "payload": {
+        "cuisines": {
+          "north_american": {
+            "region": "North America",
+            "recipes_total": 2669991,
+            "recipes_used": 29820,
+            "real": 29.940941495881066,
+            "null_mean": 28.70813894058156,
+            "null_sd": 0.09082774940508528,
+            "delta": 1.2328025552995072,
+            "ci95": 0.17802238883396715,
+            "z": 13.572972614363653,
+            "rel_delta": 0.04294261490969827,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "chinese": {
+            "region": "East Asia",
+            "recipes_total": 1433167,
+            "recipes_used": 29164,
+            "real": 15.529154730612705,
+            "null_mean": 15.400750699200584,
+            "null_sd": 0.08726120127984578,
+            "delta": 0.12840403141212064,
+            "ci95": 0.17103195450849773,
+            "z": 1.4714905310589321,
+            "rel_delta": 0.008337517691185391,
+            "significant": false,
+            "direction": "pairing"
+          },
+          "russian": {
+            "region": "Eastern Europe",
+            "recipes_total": 162762,
+            "recipes_used": 29917,
+            "real": 25.084770246867002,
+            "null_mean": 25.14836129583585,
+            "null_sd": 0.08817422446165288,
+            "delta": -0.06359104896884915,
+            "ci95": 0.17282147994483965,
+            "z": -0.7211977123371809,
+            "rel_delta": -0.002528635890855392,
+            "significant": false,
+            "direction": "contrast"
+          },
+          "turkish": {
+            "region": "Middle East",
+            "recipes_total": 125748,
+            "recipes_used": 29904,
+            "real": 21.845598046335564,
+            "null_mean": 22.520075908944385,
+            "null_sd": 0.07315390772426292,
+            "delta": -0.6744778626088213,
+            "ci95": 0.1433816591395553,
+            "z": -9.219984052678535,
+            "rel_delta": -0.029950070565301082,
+            "significant": true,
+            "direction": "contrast"
+          },
+          "spanish": {
+            "region": "Southern Europe",
+            "recipes_total": 46446,
+            "recipes_used": 29570,
+            "real": 37.16197764760393,
+            "null_mean": 35.75930696977226,
+            "null_sd": 0.14952881014724992,
+            "delta": 1.4026706778316722,
+            "ci95": 0.29307646788860986,
+            "z": 9.380604824250115,
+            "rel_delta": 0.03922533171622608,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "vietnamese": {
+            "region": "Southeast Asia",
+            "recipes_total": 31884,
+            "recipes_used": 29400,
+            "real": 20.76483120709756,
+            "null_mean": 21.21232423111417,
+            "null_sd": 0.06858374513560174,
+            "delta": -0.44749302401660884,
+            "ci95": 0.1344241404657794,
+            "z": -6.524767977191082,
+            "rel_delta": -0.02109589779700932,
+            "significant": true,
+            "direction": "contrast"
+          },
+          "indian": {
+            "region": "South Asia",
+            "recipes_total": 22204,
+            "recipes_used": 22160,
+            "real": 36.4258239958878,
+            "null_mean": 35.198317256207346,
+            "null_sd": 0.11460114778201695,
+            "delta": 1.2275067396804502,
+            "ci95": 0.22461824965275323,
+            "z": 10.711120817177965,
+            "rel_delta": 0.03487401771924126,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "indonesian": {
+            "region": "Southeast Asia",
+            "recipes_total": 14939,
+            "recipes_used": 14929,
+            "real": 23.116729544060945,
+            "null_mean": 21.87111173468857,
+            "null_sd": 0.1205044199460326,
+            "delta": 1.2456178093723764,
+            "ci95": 0.2361886630942239,
+            "z": 10.336698105598293,
+            "rel_delta": 0.05695265172079801,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "israeli": {
+            "region": "Middle East",
+            "recipes_total": 8698,
+            "recipes_used": 8586,
+            "real": 36.67419312591574,
+            "null_mean": 36.847669758012806,
+            "null_sd": 0.22605085170078298,
+            "delta": -0.17347663209706354,
+            "ci95": 0.44305966933353463,
+            "z": -0.7674230412840451,
+            "rel_delta": -0.004707940372792223,
+            "significant": false,
+            "direction": "contrast"
+          },
+          "persian": {
+            "region": "Middle East",
+            "recipes_total": 5793,
+            "recipes_used": 5737,
+            "real": 48.02194563377477,
+            "null_mean": 45.29911181917755,
+            "null_sd": 0.20383686527645792,
+            "delta": 2.722833814597223,
+            "ci95": 0.3995202559418575,
+            "z": 13.357906632366642,
+            "rel_delta": 0.060107885237707936,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "greek": {
+            "region": "Southern Europe",
+            "recipes_total": 4881,
+            "recipes_used": 4832,
+            "real": 38.98765752890737,
+            "null_mean": 38.819680394959065,
+            "null_sd": 0.33434341599881173,
+            "delta": 0.16797713394830538,
+            "ci95": 0.655313095357671,
+            "z": 0.5024089780458018,
+            "rel_delta": 0.004327112748978687,
+            "significant": false,
+            "direction": "pairing"
+          },
+          "german": {
+            "region": "Western Europe",
+            "recipes_total": 4290,
+            "recipes_used": 4285,
+            "real": 36.526179543106416,
+            "null_mean": 36.6893969310833,
+            "null_sd": 0.3421379705204106,
+            "delta": -0.16321738797688568,
+            "ci95": 0.6705904222200048,
+            "z": -0.47705137120157426,
+            "rel_delta": -0.004448625532969927,
+            "significant": false,
+            "direction": "contrast"
+          },
+          "japanese": {
+            "region": "East Asia",
+            "recipes_total": 3692,
+            "recipes_used": 3492,
+            "real": 20.248634111219346,
+            "null_mean": 20.979429079666257,
+            "null_sd": 0.2946040721558959,
+            "delta": -0.7307949684469115,
+            "ci95": 0.577423981425556,
+            "z": -2.4806003633927913,
+            "rel_delta": -0.03483388254617542,
+            "significant": true,
+            "direction": "contrast"
+          },
+          "moroccan": {
+            "region": "North Africa",
+            "recipes_total": 2443,
+            "recipes_used": 2442,
+            "real": 43.27437275811453,
+            "null_mean": 40.399132570565726,
+            "null_sd": 0.2595071586154676,
+            "delta": 2.8752401875488047,
+            "ci95": 0.5086340308863164,
+            "z": 11.079618007028765,
+            "rel_delta": 0.07117083968391111,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "filipino": {
+            "region": "Southeast Asia",
+            "recipes_total": 1984,
+            "recipes_used": 1982,
+            "real": 27.328990796849624,
+            "null_mean": 25.49675765037342,
+            "null_sd": 0.3173934512521215,
+            "delta": 1.8322331464762023,
+            "ci95": 0.6220911644541581,
+            "z": 5.772750317462498,
+            "rel_delta": 0.0718614175026042,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "taiwanese": {
+            "region": "East Asia",
+            "recipes_total": 1726,
+            "recipes_used": 1574,
+            "real": 12.85476367068977,
+            "null_mean": 12.872159665565368,
+            "null_sd": 0.3275658520640538,
+            "delta": -0.01739599487559751,
+            "ci95": 0.6420290700455454,
+            "z": -0.053106863142119626,
+            "rel_delta": -0.001351443372951158,
+            "significant": false,
+            "direction": "contrast"
+          },
+          "thai": {
+            "region": "Southeast Asia",
+            "recipes_total": 1704,
+            "recipes_used": 1685,
+            "real": 27.02281393394946,
+            "null_mean": 22.038854779292958,
+            "null_sd": 0.5742249308781291,
+            "delta": 4.983959154656503,
+            "ci95": 1.125480864521133,
+            "z": 8.679454490133024,
+            "rel_delta": 0.2261441987148661,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "romanian": {
+            "region": "Eastern Europe",
+            "recipes_total": 791,
+            "recipes_used": 777,
+            "real": 33.761591725830485,
+            "null_mean": 33.14426622257282,
+            "null_sd": 0.6352390785481269,
+            "delta": 0.6173255032576677,
+            "ci95": 1.2450685939543287,
+            "z": 0.9718002624596055,
+            "rel_delta": 0.018625408663814066,
+            "significant": false,
+            "direction": "pairing"
+          }
+        },
+        "regions": {
+          "North America": {
+            "mean_rel_delta": 0.04294261490969827,
+            "cuisines": 1
+          },
+          "East Asia": {
+            "mean_rel_delta": -0.009282602742647063,
+            "cuisines": 3
+          },
+          "Eastern Europe": {
+            "mean_rel_delta": 0.008048386386479338,
+            "cuisines": 2
+          },
+          "Middle East": {
+            "mean_rel_delta": 0.008483291433204877,
+            "cuisines": 3
+          },
+          "Southern Europe": {
+            "mean_rel_delta": 0.021776222232602383,
+            "cuisines": 2
+          },
+          "Southeast Asia": {
+            "mean_rel_delta": 0.08346559253531474,
+            "cuisines": 4
+          },
+          "South Asia": {
+            "mean_rel_delta": 0.03487401771924126,
+            "cuisines": 1
+          },
+          "Western Europe": {
+            "mean_rel_delta": -0.004448625532969927,
+            "cuisines": 1
+          },
+          "North Africa": {
+            "mean_rel_delta": 0.07117083968391111,
+            "cuisines": 1
+          }
+        },
+        "params": {
+          "seed": 20260805,
+          "max_recipes": 30000,
+          "n_null": 15,
+          "min_recipes": 500
+        }
+      }
+    }
+  },
+  "svd-ppmi": {
+    "job": "quiet_rose_lv68pfyyb3",
+    "status": "Completed",
+    "submitted": "2026-08-06T07:47:13.904835",
+    "hypothesis": "H2",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 222.72879718159015,
+      "M4_link_auc": 0.741007371007371,
+      "M4_link_auc_ci95": 0.006019062191381372,
+      "M2_triplet_accuracy_broad": 0.7649487115336502,
+      "M2_triplet_accuracy_broad_ci95": 0.0058789730843995455,
+      "M3_recall_at_10_broad": 0.1108017306807617,
+      "M2_triplet_accuracy_strict": 0.8713342007807027,
+      "M2_triplet_accuracy_strict_ci95": 0.004642592179408312,
+      "M3_recall_at_10_strict": 0.22103640103667124,
+      "M5_pc_freq_corr": [
+        0.11971824776745675,
+        0.27973935081649626,
+        0.10646051831407323
+      ],
+      "M5_max_pc_freq_corr": 0.27973935081649626,
+      "M5_top20_freq_jaccard": 0.02564102564102564,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 245.97956897686365,
+        "M4_link_auc": 0.605970515970516,
+        "M4_link_auc_ci95": 0.0067137315424865215,
+        "M2_triplet_accuracy_broad": 0.7048286214660996,
+        "M2_triplet_accuracy_broad_ci95": 0.006323869257795547,
+        "M3_recall_at_10_broad": 0.10598518146717277,
+        "M2_triplet_accuracy_strict": 0.8200380342308077,
+        "M2_triplet_accuracy_strict_ci95": 0.005326524834132481,
+        "M3_recall_at_10_strict": 0.211024259402353,
+        "M5_pc_freq_corr": [
+          0.246031637366729,
+          0.2645973200861036,
+          0.2528650913085672
+        ],
+        "M5_max_pc_freq_corr": 0.2645973200861036,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "cooc-d128": {
+    "job": "serene_melon_9prp98165w",
+    "status": "Completed",
+    "submitted": "2026-08-06T07:48:25.555155",
+    "hypothesis": "H7",
+    "result": {
+      "n": 1790,
+      "d": 128,
+      "M1_participation_ratio": 56.40831222211917,
+      "M4_link_auc": 0.8418427518427518,
+      "M4_link_auc_ci95": 0.005013417850777229,
+      "M2_triplet_accuracy_broad": 0.8671753815361521,
+      "M2_triplet_accuracy_broad_ci95": 0.004705402226369751,
+      "M3_recall_at_10_broad": 0.14634817582583154,
+      "M2_triplet_accuracy_strict": 0.9199029126213593,
+      "M2_triplet_accuracy_strict_ci95": 0.0037637082666016073,
+      "M3_recall_at_10_strict": 0.22896419511058005,
+      "M5_pc_freq_corr": [
+        0.32848624161483947,
+        0.4398247118873116,
+        0.36305889137601577
+      ],
+      "M5_max_pc_freq_corr": 0.4398247118873116,
+      "M5_top20_freq_jaccard": 0.08108108108108109,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 128,
+        "M1_participation_ratio": 81.33674621582031,
+        "M4_link_auc": 0.7291646191646192,
+        "M4_link_auc_ci95": 0.006105754769831062,
+        "M2_triplet_accuracy_broad": 0.759344508381286,
+        "M2_triplet_accuracy_broad_ci95": 0.005926814183485597,
+        "M3_recall_at_10_broad": 0.12342724358858011,
+        "M2_triplet_accuracy_strict": 0.8623010709638675,
+        "M2_triplet_accuracy_strict_ci95": 0.004777837095711778,
+        "M3_recall_at_10_strict": 0.22413260376825453,
+        "M5_pc_freq_corr": [
+          0.4153175973850019,
+          0.06030333037717694,
+          0.2051091096417049
+        ],
+        "M5_max_pc_freq_corr": 0.4153175973850019,
+        "M5_top20_freq_jaccard": 0.05263157894736842
+      }
+    }
+  },
+  "cooc-d32": {
+    "job": "tough_cheetah_nlrrtmtzql",
+    "status": "Completed",
+    "submitted": "2026-08-06T07:49:30.471444",
+    "hypothesis": "H7",
+    "result": {
+      "n": 1790,
+      "d": 32,
+      "M1_participation_ratio": 15.86461894864999,
+      "M4_link_auc": 0.8414004914004913,
+      "M4_link_auc_ci95": 0.005019103644133248,
+      "M2_triplet_accuracy_broad": 0.8520640480360271,
+      "M2_triplet_accuracy_broad_ci95": 0.0049224008941635275,
+      "M3_recall_at_10_broad": 0.12051373261898109,
+      "M2_triplet_accuracy_strict": 0.9072915624061656,
+      "M2_triplet_accuracy_strict_ci95": 0.004021329511691352,
+      "M3_recall_at_10_strict": 0.20473081066537244,
+      "M5_pc_freq_corr": [
+        0.5918424385823661,
+        0.2486306262982217,
+        0.04149738424281517
+      ],
+      "M5_max_pc_freq_corr": 0.5918424385823661,
+      "M5_top20_freq_jaccard": 0.08108108108108109,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 32,
+        "M1_participation_ratio": 21.6213321685791,
+        "M4_link_auc": 0.701105651105651,
+        "M4_link_auc_ci95": 0.0062896206221683855,
+        "M2_triplet_accuracy_broad": 0.7579934951213411,
+        "M2_triplet_accuracy_broad_ci95": 0.0059381375615597965,
+        "M3_recall_at_10_broad": 0.10229230388879403,
+        "M2_triplet_accuracy_strict": 0.8446351716544891,
+        "M2_triplet_accuracy_strict_ci95": 0.005022819016421751,
+        "M3_recall_at_10_strict": 0.17806999840230717,
+        "M5_pc_freq_corr": [
+          0.4358313091191319,
+          0.02405074694061957,
+          0.2575865589573393
+        ],
+        "M5_max_pc_freq_corr": 0.4358313091191319,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "cooc-d600": {
+    "job": "epic_queen_bcblxjrgfp",
+    "status": "Failed",
+    "submitted": "2026-08-06T07:51:37.772097",
+    "hypothesis": "H7"
+  },
+  "cooc-d64": {
+    "job": "bold_dinner_y55zttzv9b",
+    "status": "Completed",
+    "submitted": "2026-08-06T08:21:41.928884",
+    "hypothesis": "H7",
+    "result": {
+      "n": 1790,
+      "d": 64,
+      "M1_participation_ratio": 28.74729680959383,
+      "M4_link_auc": 0.8388452088452089,
+      "M4_link_auc_ci95": 0.005051686482880791,
+      "M2_triplet_accuracy_broad": 0.8609707280460346,
+      "M2_triplet_accuracy_broad_ci95": 0.0047967967004502515,
+      "M3_recall_at_10_broad": 0.13361760291764824,
+      "M2_triplet_accuracy_strict": 0.9152487238514664,
+      "M2_triplet_accuracy_strict_ci95": 0.0038617066783532055,
+      "M3_recall_at_10_strict": 0.22392848694588668,
+      "M5_pc_freq_corr": [
+        0.4932138285100535,
+        0.3545709450996831,
+        0.2014108620520131
+      ],
+      "M5_max_pc_freq_corr": 0.4932138285100535,
+      "M5_top20_freq_jaccard": 0.05263157894736842,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 64,
+        "M1_participation_ratio": 41.4088249206543,
+        "M4_link_auc": 0.7237100737100737,
+        "M4_link_auc_ci95": 0.006143823047285703,
+        "M2_triplet_accuracy_broad": 0.7641981486114586,
+        "M2_triplet_accuracy_broad_ci95": 0.005885462419884849,
+        "M3_recall_at_10_broad": 0.11285724079425109,
+        "M2_triplet_accuracy_strict": 0.8629516564908417,
+        "M2_triplet_accuracy_strict_ci95": 0.004768334599278456,
+        "M3_recall_at_10_strict": 0.20074686445079828,
+        "M5_pc_freq_corr": [
+          0.4470760801137516,
+          0.040323038478056794,
+          0.22396964558721516
+        ],
+        "M5_max_pc_freq_corr": 0.4470760801137516,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "chem-s1": {
+    "job": "gray_stone_7hv5lh87d1",
+    "status": "Completed",
+    "submitted": "2026-08-06T08:21:48.489106",
+    "hypothesis": "H1,var",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 2.702752752258449,
+      "M4_link_auc": 0.5042014742014742,
+      "M4_link_auc_ci95": 0.006869553904009928,
+      "M2_triplet_accuracy_broad": 0.5906179634726044,
+      "M2_triplet_accuracy_broad_ci95": 0.006817446084183994,
+      "M3_recall_at_10_broad": 0.03707231470278062,
+      "M2_triplet_accuracy_strict": 0.655364828345511,
+      "M2_triplet_accuracy_strict_ci95": 0.006589583382246111,
+      "M3_recall_at_10_strict": 0.08536922493071851,
+      "M5_pc_freq_corr": [
+        0.39670585571243994,
+        0.10415504754020108,
+        0.07557680757836842
+      ],
+      "M5_max_pc_freq_corr": 0.39670585571243994,
+      "M5_top20_freq_jaccard": 0.02564102564102564,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 123.31300354003906,
+        "M4_link_auc": 0.5058722358722358,
+        "M4_link_auc_ci95": 0.0068693226440431215,
+        "M2_triplet_accuracy_broad": 0.541981486114586,
+        "M2_triplet_accuracy_broad_ci95": 0.006907767908204819,
+        "M3_recall_at_10_broad": 0.03432262807085506,
+        "M2_triplet_accuracy_strict": 0.6096236612951657,
+        "M2_triplet_accuracy_strict_ci95": 0.0067640879328267215,
+        "M3_recall_at_10_strict": 0.08024549702315577,
+        "M5_pc_freq_corr": [
+          0.07092288501826048,
+          0.025333904105456065,
+          0.07433393122425071
+        ],
+        "M5_max_pc_freq_corr": 0.07433393122425071,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "glove": {
+    "job": "lemon_glove_s8k2jf9b8c",
+    "status": "Completed",
+    "submitted": "2026-08-06T08:23:20.329408",
+    "hypothesis": "H2",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 12.9200450198734,
+      "M4_link_auc": 0.7794840294840295,
+      "M4_link_auc_ci95": 0.005696360934022839,
+      "M2_triplet_accuracy_broad": 0.8331998999249437,
+      "M2_triplet_accuracy_broad_ci95": 0.005168645579207307,
+      "M3_recall_at_10_broad": 0.12011410948782991,
+      "M2_triplet_accuracy_strict": 0.8918276448803923,
+      "M2_triplet_accuracy_strict_ci95": 0.004306606602646764,
+      "M3_recall_at_10_strict": 0.21144885785948145,
+      "M5_pc_freq_corr": [
+        0.9329132010239736,
+        0.06137263754064397,
+        0.06397903202591489
+      ],
+      "M5_max_pc_freq_corr": 0.9329132010239736,
+      "M5_top20_freq_jaccard": 0.1111111111111111,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 21.964656720510334,
+        "M4_link_auc": 0.6822850122850123,
+        "M4_link_auc_ci95": 0.006396989405446122,
+        "M2_triplet_accuracy_broad": 0.7184638478859144,
+        "M2_triplet_accuracy_broad_ci95": 0.0062355324021343885,
+        "M3_recall_at_10_broad": 0.11752549635218147,
+        "M2_triplet_accuracy_strict": 0.7918376538884997,
+        "M2_triplet_accuracy_strict_ci95": 0.0056293176533758135,
+        "M3_recall_at_10_strict": 0.19185592332544674,
+        "M5_pc_freq_corr": [
+          0.09892047436602316,
+          0.035950168375880664,
+          0.024530083743333323
+        ],
+        "M5_max_pc_freq_corr": 0.09892047436602316,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "cooc-full": {
+    "job": "gifted_floor_x0xpkwmp1y",
+    "status": "Completed",
+    "submitted": "2026-08-06T08:48:25.550107",
+    "hypothesis": "H8",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 146.0958785442298,
+      "M4_link_auc": 0.7618427518427519,
+      "M4_link_auc_ci95": 0.0058524597609006645,
+      "M2_triplet_accuracy_broad": 0.860720540405304,
+      "M2_triplet_accuracy_broad_ci95": 0.004800413132442187,
+      "M3_recall_at_10_broad": 0.09714734710156774,
+      "M2_triplet_accuracy_strict": 0.9016865178660795,
+      "M2_triplet_accuracy_strict_ci95": 0.00412829687994129,
+      "M3_recall_at_10_strict": 0.15754265904554204,
+      "M5_pc_freq_corr": [
+        0.04017308087300231,
+        0.2856032766717328,
+        0.6925038604183533
+      ],
+      "M5_max_pc_freq_corr": 0.6925038604183533,
+      "M5_top20_freq_jaccard": 0.17647058823529413,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 184.63922119140625,
+        "M4_link_auc": 0.6793857493857494,
+        "M4_link_auc_ci95": 0.006412442620716986,
+        "M2_triplet_accuracy_broad": 0.7235176382286715,
+        "M2_triplet_accuracy_broad_ci95": 0.006201007718000438,
+        "M3_recall_at_10_broad": 0.08334714054815044,
+        "M2_triplet_accuracy_strict": 0.8218646782103893,
+        "M2_triplet_accuracy_strict_ci95": 0.005305322309094614,
+        "M3_recall_at_10_strict": 0.15385862723144433,
+        "M5_pc_freq_corr": [
+          0.19467001916593654,
+          0.06842169917148382,
+          0.10463849364764309
+        ],
+        "M5_max_pc_freq_corr": 0.19467001916593654,
+        "M5_top20_freq_jaccard": 0.21212121212121213
+      }
+    }
+  },
+  "core-ii10-full": {
+    "job": "lemon_yacht_4hpcqzlzbq",
+    "status": "Completed",
+    "submitted": "2026-08-06T08:49:35.323957",
+    "hypothesis": "H8",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 147.83306714286437,
+      "M4_link_auc": 0.7635135135135135,
+      "M4_link_auc_ci95": 0.005838286364974899,
+      "M2_triplet_accuracy_broad": 0.8635726795096322,
+      "M2_triplet_accuracy_broad_ci95": 0.004758873021628953,
+      "M3_recall_at_10_broad": 0.1037555074863442,
+      "M2_triplet_accuracy_strict": 0.9039885897307577,
+      "M2_triplet_accuracy_strict_ci95": 0.0040848817864620884,
+      "M3_recall_at_10_strict": 0.16217556165870226,
+      "M5_pc_freq_corr": [
+        0.006833663533818567,
+        0.18396148453974615,
+        0.731774833012788
+      ],
+      "M5_max_pc_freq_corr": 0.731774833012788,
+      "M5_top20_freq_jaccard": 0.25,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 186.90357971191406,
+        "M4_link_auc": 0.6736855036855036,
+        "M4_link_auc_ci95": 0.006441998946798773,
+        "M2_triplet_accuracy_broad": 0.727820865649237,
+        "M2_triplet_accuracy_broad_ci95": 0.006170831110090742,
+        "M3_recall_at_10_broad": 0.08819548329881266,
+        "M2_triplet_accuracy_strict": 0.8269692723451106,
+        "M2_triplet_accuracy_strict_ci95": 0.0052449686598776794,
+        "M3_recall_at_10_strict": 0.1576523304978941,
+        "M5_pc_freq_corr": [
+          0.15799933479845463,
+          0.03773425580574862,
+          0.07475166289479125
+        ],
+        "M5_max_pc_freq_corr": 0.15799933479845463,
+        "M5_top20_freq_jaccard": 0.3793103448275862
+      }
+    }
+  },
+  "cooc-d300-b16k": {
+    "job": "ashy_vinegar_f4yf04mwq6",
+    "status": "Completed",
+    "submitted": "2026-08-06T10:30:32.610331",
+    "hypothesis": "H7,control",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 126.33543303200926,
+      "M4_link_auc": 0.8388452088452089,
+      "M4_link_auc_ci95": 0.005051686482880791,
+      "M2_triplet_accuracy_broad": 0.8636227170377784,
+      "M2_triplet_accuracy_broad_ci95": 0.004758138077402261,
+      "M3_recall_at_10_broad": 0.13746420794328473,
+      "M2_triplet_accuracy_strict": 0.9178510659593634,
+      "M2_triplet_accuracy_strict_ci95": 0.003807357594909605,
+      "M3_recall_at_10_strict": 0.23285099643442883,
+      "M5_pc_freq_corr": [
+        0.036231223289336485,
+        0.15529054605228057,
+        0.3335031208642839
+      ],
+      "M5_max_pc_freq_corr": 0.3335031208642839,
+      "M5_top20_freq_jaccard": 0.17647058823529413,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 180.99256896972656,
+        "M4_link_auc": 0.6794840294840294,
+        "M4_link_auc_ci95": 0.006411923445094762,
+        "M2_triplet_accuracy_broad": 0.762096572429322,
+        "M2_triplet_accuracy_broad_ci95": 0.005903497026270604,
+        "M3_recall_at_10_broad": 0.11533342107997624,
+        "M2_triplet_accuracy_strict": 0.8605494945450906,
+        "M2_triplet_accuracy_strict_ci95": 0.00480324309769747,
+        "M3_recall_at_10_strict": 0.22326079872551285,
+        "M5_pc_freq_corr": [
+          0.6667421643768842,
+          0.018649898938608595,
+          0.24764553182956753
+        ],
+        "M5_max_pc_freq_corr": 0.6667421643768842,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "cooc-d600-b16k": {
+    "job": "mango_pumpkin_x0wdf71jtx",
+    "status": "Completed",
+    "submitted": "2026-08-06T10:30:35.991660",
+    "hypothesis": "H7",
+    "result": {
+      "n": 1790,
+      "d": 600,
+      "M1_participation_ratio": 202.30721350163546,
+      "M4_link_auc": 0.8313759213759213,
+      "M4_link_auc_ci95": 0.005144372174309101,
+      "M2_triplet_accuracy_broad": 0.8585689266950213,
+      "M2_triplet_accuracy_broad_ci95": 0.004831299899955811,
+      "M3_recall_at_10_broad": 0.126167438484949,
+      "M2_triplet_accuracy_strict": 0.9139975978380542,
+      "M2_triplet_accuracy_strict_ci95": 0.0038874463828521056,
+      "M3_recall_at_10_strict": 0.21497594939613746,
+      "M5_pc_freq_corr": [
+        0.041336906707348096,
+        0.128219657037207,
+        0.3228397751961467
+      ],
+      "M5_max_pc_freq_corr": 0.3228397751961467,
+      "M5_top20_freq_jaccard": 0.25,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 600,
+        "M1_participation_ratio": 281.73687744140625,
+        "M4_link_auc": 0.6728501228501228,
+        "M4_link_auc_ci95": 0.006446239149090666,
+        "M2_triplet_accuracy_broad": 0.7526394796097073,
+        "M2_triplet_accuracy_broad_ci95": 0.005982224205098336,
+        "M3_recall_at_10_broad": 0.10610826555718182,
+        "M2_triplet_accuracy_strict": 0.8468871984786308,
+        "M2_triplet_accuracy_strict_ci95": 0.004992926001339107,
+        "M3_recall_at_10_strict": 0.19605436498673035,
+        "M5_pc_freq_corr": [
+          0.6695709941510926,
+          0.025093577367805764,
+          0.22984600195150412
+        ],
+        "M5_max_pc_freq_corr": 0.6695709941510926,
+        "M5_top20_freq_jaccard": 0.0
+      }
+    }
+  },
+  "chem-s2": {
+    "job": "loving_chain_wn11v4y7bm",
+    "status": "Completed",
+    "submitted": "2026-08-06T10:30:39.126886",
+    "hypothesis": "H1,var",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 2.7062623485094637,
+      "M4_link_auc": 0.5058722358722358,
+      "M4_link_auc_ci95": 0.0068693226440431215,
+      "M2_triplet_accuracy_broad": 0.5827120340255192,
+      "M2_triplet_accuracy_broad_ci95": 0.006836737713597836,
+      "M3_recall_at_10_broad": 0.03591472264480352,
+      "M2_triplet_accuracy_strict": 0.647808027224502,
+      "M2_triplet_accuracy_strict_ci95": 0.00662291960554819,
+      "M3_recall_at_10_strict": 0.08225411933735466,
+      "M5_pc_freq_corr": [
+        0.3937235889029237,
+        0.10198736917807912,
+        0.07443467516434676
+      ],
+      "M5_max_pc_freq_corr": 0.3937235889029237,
+      "M5_top20_freq_jaccard": 0.0,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 124.67820739746094,
+        "M4_link_auc": 0.5042997542997543,
+        "M4_link_auc_ci95": 0.0068695424241435685,
+        "M2_triplet_accuracy_broad": 0.5532899674756068,
+        "M2_triplet_accuracy_broad_ci95": 0.006892761411264134,
+        "M3_recall_at_10_broad": 0.03163714364529374,
+        "M2_triplet_accuracy_strict": 0.611425282754479,
+        "M2_triplet_accuracy_strict_ci95": 0.006758425960498378,
+        "M3_recall_at_10_strict": 0.07861664129130642,
+        "M5_pc_freq_corr": [
+          0.06477420571057867,
+          0.027800646943450722,
+          0.0792978273841735
+        ],
+        "M5_max_pc_freq_corr": 0.0792978273841735,
+        "M5_top20_freq_jaccard": 0.02564102564102564
+      }
+    }
+  },
+  "cooc-recipeholdout": {
+    "job": "red_calypso_b7rgdbnq2z",
+    "status": "Completed",
+    "submitted": "2026-08-06T10:57:52.436356",
+    "hypothesis": "backtest",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 110.64841962116691,
+      "M4_link_auc": 0.8569778869778869,
+      "M4_link_auc_ci95": 0.004810168251068164,
+      "M2_triplet_accuracy_broad": 0.8691768826619966,
+      "M2_triplet_accuracy_broad_ci95": 0.004675201410917977,
+      "M3_recall_at_10_broad": 0.1549272714109115,
+      "M2_triplet_accuracy_strict": 0.9241066960264238,
+      "M2_triplet_accuracy_strict_ci95": 0.0036719721835277415,
+      "M3_recall_at_10_strict": 0.26043599789141775,
+      "M5_pc_freq_corr": [
+        0.08149895060741279,
+        0.434124193692492,
+        0.24175736365136374
+      ],
+      "M5_max_pc_freq_corr": 0.434124193692492,
+      "M5_top20_freq_jaccard": 0.25,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 162.9315185546875,
+        "M4_link_auc": 0.7221375921375921,
+        "M4_link_auc_ci95": 0.006154584500217719,
+        "M2_triplet_accuracy_broad": 0.7742556917688267,
+        "M2_triplet_accuracy_broad_ci95": 0.00579635001898788,
+        "M3_recall_at_10_broad": 0.12934125321389622,
+        "M2_triplet_accuracy_strict": 0.8780652587328596,
+        "M2_triplet_accuracy_strict_ci95": 0.004536947165239026,
+        "M3_recall_at_10_strict": 0.25200905279325,
+        "M5_pc_freq_corr": [
+          0.5947818561172562,
+          0.01791787040347893,
+          0.20699103952474854
+        ],
+        "M5_max_pc_freq_corr": 0.5947818561172562,
+        "M5_top20_freq_jaccard": 0.21212121212121213
+      }
+    }
+  },
+  "cooc-s1": {
+    "job": "clever_wolf_8xymmwjbh2",
+    "status": "Completed",
+    "submitted": "2026-08-06T12:01:36.881944",
+    "hypothesis": "H1,var",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 117.21242709859236,
+      "M4_link_auc": 0.8396805896805897,
+      "M4_link_auc_ci95": 0.005041084473498569,
+      "M2_triplet_accuracy_broad": 0.8676757568176132,
+      "M2_triplet_accuracy_broad_ci95": 0.004697885591064159,
+      "M3_recall_at_10_broad": 0.14365782727070298,
+      "M2_triplet_accuracy_strict": 0.9215043539185267,
+      "M2_triplet_accuracy_strict_ci95": 0.0037291347275377443,
+      "M3_recall_at_10_strict": 0.2471657339844605,
+      "M5_pc_freq_corr": [
+        0.09346158207677888,
+        0.44756360812342133,
+        0.25345431364522364
+      ],
+      "M5_max_pc_freq_corr": 0.44756360812342133,
+      "M5_top20_freq_jaccard": 0.17647058823529413,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 170.8426055908203,
+        "M4_link_auc": 0.6908353808353808,
+        "M4_link_auc_ci95": 0.006349741481205201,
+        "M2_triplet_accuracy_broad": 0.7604453340005004,
+        "M2_triplet_accuracy_broad_ci95": 0.005917527869456869,
+        "M3_recall_at_10_broad": 0.12057745143444701,
+        "M2_triplet_accuracy_strict": 0.8620008007206486,
+        "M2_triplet_accuracy_strict_ci95": 0.0047822107557765154,
+        "M3_recall_at_10_strict": 0.22921501280343565,
+        "M5_pc_freq_corr": [
+          0.5565543537242512,
+          0.025967482063801933,
+          0.2250756505351058
+        ],
+        "M5_max_pc_freq_corr": 0.5565543537242512,
+        "M5_top20_freq_jaccard": 0.21212121212121213
+      }
+    }
+  },
+  "cooc-s2": {
+    "job": "boring_office_8zwlx3tdgy",
+    "status": "Completed",
+    "submitted": "2026-08-06T12:14:14.407609",
+    "hypothesis": "H1,var",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 117.00576517573339,
+      "M4_link_auc": 0.8441523341523341,
+      "M4_link_auc_ci95": 0.004983499608695591,
+      "M2_triplet_accuracy_broad": 0.872629472104078,
+      "M2_triplet_accuracy_broad_ci95": 0.004622249751844832,
+      "M3_recall_at_10_broad": 0.14902736232372377,
+      "M2_triplet_accuracy_strict": 0.9220048043238915,
+      "M2_triplet_accuracy_strict_ci95": 0.003718237375472806,
+      "M3_recall_at_10_strict": 0.2528678331107273,
+      "M5_pc_freq_corr": [
+        0.07679046187622086,
+        0.4347510002599991,
+        0.2384009381546081
+      ],
+      "M5_max_pc_freq_corr": 0.4347510002599991,
+      "M5_top20_freq_jaccard": 0.17647058823529413,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 170.51419067382812,
+        "M4_link_auc": 0.6948648648648649,
+        "M4_link_auc_ci95": 0.006326596690014195,
+        "M2_triplet_accuracy_broad": 0.7655991993995497,
+        "M2_triplet_accuracy_broad_ci95": 0.005873328280240682,
+        "M3_recall_at_10_broad": 0.12637860572070633,
+        "M2_triplet_accuracy_strict": 0.8723601241117005,
+        "M2_triplet_accuracy_strict_ci95": 0.0046267675763922616,
+        "M3_recall_at_10_strict": 0.2434554361827869,
+        "M5_pc_freq_corr": [
+          0.5807584602843778,
+          0.006689108663185653,
+          0.20734071151544609
+        ],
+        "M5_max_pc_freq_corr": 0.5807584602843778,
+        "M5_top20_freq_jaccard": 0.14285714285714285
+      }
+    }
+  },
+  "core-ii10-s1": {
+    "job": "sharp_stone_c13ms914zm",
+    "status": "Completed",
+    "submitted": "2026-08-06T13:07:17.588639",
+    "hypothesis": "H1,var",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 117.66296197902092,
+      "M4_link_auc": 0.8379606879606879,
+      "M4_link_auc_ci95": 0.0050628595795959705,
+      "M2_triplet_accuracy_broad": 0.86617463097323,
+      "M2_triplet_accuracy_broad_ci95": 0.004720369001791719,
+      "M3_recall_at_10_broad": 0.14644838845836275,
+      "M2_triplet_accuracy_strict": 0.9225552997697928,
+      "M2_triplet_accuracy_strict_ci95": 0.0037061982751575295,
+      "M3_recall_at_10_strict": 0.25185000302962046,
+      "M5_pc_freq_corr": [
+        0.07821646106676676,
+        0.39044417813898796,
+        0.2672601689436457
+      ],
+      "M5_max_pc_freq_corr": 0.39044417813898796,
+      "M5_top20_freq_jaccard": 0.17647058823529413,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 172.63905334472656,
+        "M4_link_auc": 0.6856265356265356,
+        "M4_link_auc_ci95": 0.0063788239165583245,
+        "M2_triplet_accuracy_broad": 0.7717538153615212,
+        "M2_triplet_accuracy_broad_ci95": 0.005818957040697897,
+        "M3_recall_at_10_broad": 0.1210740456506662,
+        "M2_triplet_accuracy_strict": 0.8732108898008207,
+        "M2_triplet_accuracy_strict_ci95": 0.004613570299811436,
+        "M3_recall_at_10_strict": 0.23339025804644267,
+        "M5_pc_freq_corr": [
+          0.5975893698448771,
+          0.018819743734305307,
+          0.1897416920222916
+        ],
+        "M5_max_pc_freq_corr": 0.5975893698448771,
+        "M5_top20_freq_jaccard": 0.14285714285714285
+      }
+    }
+  },
+  "core-ii10-s2": {
+    "job": "dynamic_insect_dbf667ybnk",
+    "status": "Completed",
+    "submitted": "2026-08-06T13:24:07.241309",
+    "hypothesis": "H1,var",
+    "result": {
+      "n": 1790,
+      "d": 300,
+      "M1_participation_ratio": 116.91590385073054,
+      "M4_link_auc": 0.8411547911547911,
+      "M4_link_auc_ci95": 0.005022256460018587,
+      "M2_triplet_accuracy_broad": 0.8712784588441331,
+      "M2_triplet_accuracy_broad_ci95": 0.004643100658391039,
+      "M3_recall_at_10_broad": 0.14450333663758128,
+      "M2_triplet_accuracy_strict": 0.9227554799319387,
+      "M2_triplet_accuracy_strict_ci95": 0.0037018068108203963,
+      "M3_recall_at_10_strict": 0.24835291352258823,
+      "M5_pc_freq_corr": [
+        0.05311186229359396,
+        0.3898387810713629,
+        0.2462042468956162
+      ],
+      "M5_max_pc_freq_corr": 0.3898387810713629,
+      "M5_top20_freq_jaccard": 0.17647058823529413,
+      "kind": "embedding",
+      "whitened": {
+        "n": 1790,
+        "d": 300,
+        "M1_participation_ratio": 171.61373901367188,
+        "M4_link_auc": 0.6878378378378378,
+        "M4_link_auc_ci95": 0.006366592099064951,
+        "M2_triplet_accuracy_broad": 0.7713535151363523,
+        "M2_triplet_accuracy_broad_ci95": 0.005822546841926185,
+        "M3_recall_at_10_broad": 0.12962186787048127,
+        "M2_triplet_accuracy_strict": 0.8747622860574518,
+        "M2_triplet_accuracy_strict_ci95": 0.0045893289228915325,
+        "M3_recall_at_10_strict": 0.24777433302978277,
+        "M5_pc_freq_corr": [
+          0.6048329527651342,
+          0.005858469173047356,
+          0.19653583226319785
+        ],
+        "M5_max_pc_freq_corr": 0.6048329527651342,
+        "M5_top20_freq_jaccard": 0.05263157894736842
+      }
+    }
+  },
+  "cuisines-full": {
+    "job": "wheat_bucket_kcf8pzf3sw",
+    "status": "Completed",
+    "submitted": "2026-08-06T13:29:28.489931",
+    "hypothesis": "H4",
+    "result": {
+      "kind": "analysis",
+      "payload": {
+        "cuisines": {
+          "north_american": {
+            "region": "North America",
+            "recipes_total": 2669991,
+            "recipes_used": 198903,
+            "real": 29.891588265697518,
+            "null_mean": 28.65429546176335,
+            "null_sd": 0.04339311144167453,
+            "delta": 1.2372928039341673,
+            "ci95": 0.08505049842568208,
+            "z": 28.513576529243245,
+            "rel_delta": 0.043180011373346316,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "chinese": {
+            "region": "East Asia",
+            "recipes_total": 1433167,
+            "recipes_used": 194438,
+            "real": 15.615018340720695,
+            "null_mean": 15.40248655617297,
+            "null_sd": 0.03304201222348395,
+            "delta": 0.2125317845477248,
+            "ci95": 0.06476234395802855,
+            "z": 6.4321683289213265,
+            "rel_delta": 0.013798537253879105,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "russian": {
+            "region": "Eastern Europe",
+            "recipes_total": 162762,
+            "recipes_used": 162302,
+            "real": 25.279190262459746,
+            "null_mean": 25.293182100011677,
+            "null_sd": 0.04280714682045513,
+            "delta": -0.013991837551930786,
+            "ci95": 0.08390200776809206,
+            "z": -0.3268575130834198,
+            "rel_delta": -0.0005531861312113957,
+            "significant": false,
+            "direction": "contrast"
+          },
+          "turkish": {
+            "region": "Middle East",
+            "recipes_total": 125748,
+            "recipes_used": 125323,
+            "real": 22.036070261912787,
+            "null_mean": 22.688460352704574,
+            "null_sd": 0.04929490514434635,
+            "delta": -0.652390090791787,
+            "ci95": 0.09661801408291884,
+            "z": -13.234432420174965,
+            "rel_delta": -0.02875426893892423,
+            "significant": true,
+            "direction": "contrast"
+          },
+          "spanish": {
+            "region": "Southern Europe",
+            "recipes_total": 46446,
+            "recipes_used": 45803,
+            "real": 36.9884897298803,
+            "null_mean": 35.635119934128056,
+            "null_sd": 0.07425879800523096,
+            "delta": 1.3533697957522435,
+            "ci95": 0.14554724409025266,
+            "z": 18.22504312090951,
+            "rel_delta": 0.037978539100021656,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "vietnamese": {
+            "region": "Southeast Asia",
+            "recipes_total": 31884,
+            "recipes_used": 31241,
+            "real": 20.764377760718826,
+            "null_mean": 21.227744862388786,
+            "null_sd": 0.0989355723564888,
+            "delta": -0.4633671016699594,
+            "ci95": 0.19391372181871805,
+            "z": -4.683523738057891,
+            "rel_delta": -0.021828371533282886,
+            "significant": true,
+            "direction": "contrast"
+          },
+          "indian": {
+            "region": "South Asia",
+            "recipes_total": 22204,
+            "recipes_used": 22160,
+            "real": 36.4258239958878,
+            "null_mean": 35.15724422446349,
+            "null_sd": 0.12911853831138848,
+            "delta": 1.2685797714243066,
+            "ci95": 0.2530723350903214,
+            "z": 9.824923578091774,
+            "rel_delta": 0.03608302639777408,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "indonesian": {
+            "region": "Southeast Asia",
+            "recipes_total": 14939,
+            "recipes_used": 14929,
+            "real": 23.116729544060945,
+            "null_mean": 21.89116428148287,
+            "null_sd": 0.0935420511513101,
+            "delta": 1.2255652625780762,
+            "ci95": 0.1833424202565678,
+            "z": 13.101757418122551,
+            "rel_delta": 0.05598447148901751,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "israeli": {
+            "region": "Middle East",
+            "recipes_total": 8698,
+            "recipes_used": 8586,
+            "real": 36.67419312591574,
+            "null_mean": 36.63600405994974,
+            "null_sd": 0.21432104513613517,
+            "delta": 0.03818906596600158,
+            "ci95": 0.4200692484668249,
+            "z": 0.1781862623044982,
+            "rel_delta": 0.0010423916839705134,
+            "significant": false,
+            "direction": "pairing"
+          },
+          "persian": {
+            "region": "Middle East",
+            "recipes_total": 5793,
+            "recipes_used": 5737,
+            "real": 48.02194563377477,
+            "null_mean": 45.38591516479139,
+            "null_sd": 0.17717848844748607,
+            "delta": 2.6360304689833782,
+            "ci95": 0.3472698373570727,
+            "z": 14.877824571602389,
+            "rel_delta": 0.058080363906120085,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "greek": {
+            "region": "Southern Europe",
+            "recipes_total": 4881,
+            "recipes_used": 4832,
+            "real": 38.98765752890737,
+            "null_mean": 38.85017435364428,
+            "null_sd": 0.32542191963612754,
+            "delta": 0.1374831752630925,
+            "ci95": 0.6378269624868099,
+            "z": 0.42247668939086874,
+            "rel_delta": 0.0035388045884071078,
+            "significant": false,
+            "direction": "pairing"
+          },
+          "german": {
+            "region": "Western Europe",
+            "recipes_total": 4290,
+            "recipes_used": 4285,
+            "real": 36.526179543106416,
+            "null_mean": 36.70542325794972,
+            "null_sd": 0.36189233211627714,
+            "delta": -0.17924371484330237,
+            "ci95": 0.7093089709479031,
+            "z": -0.4952956969138291,
+            "rel_delta": -0.004883303308714237,
+            "significant": false,
+            "direction": "contrast"
+          },
+          "japanese": {
+            "region": "East Asia",
+            "recipes_total": 3692,
+            "recipes_used": 3492,
+            "real": 20.248634111219346,
+            "null_mean": 21.053923171403156,
+            "null_sd": 0.2532294560994188,
+            "delta": -0.8052890601838101,
+            "ci95": 0.4963297339548609,
+            "z": -3.1800765700324,
+            "rel_delta": -0.03824888376516959,
+            "significant": true,
+            "direction": "contrast"
+          },
+          "moroccan": {
+            "region": "North Africa",
+            "recipes_total": 2443,
+            "recipes_used": 2442,
+            "real": 43.27437275811453,
+            "null_mean": 40.41533493404361,
+            "null_sd": 0.3694273279821959,
+            "delta": 2.859037824070924,
+            "ci95": 0.7240775628451039,
+            "z": 7.739107552456736,
+            "rel_delta": 0.07074141111874423,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "filipino": {
+            "region": "Southeast Asia",
+            "recipes_total": 1984,
+            "recipes_used": 1982,
+            "real": 27.328990796849624,
+            "null_mean": 25.59614725040602,
+            "null_sd": 0.3564862554378248,
+            "delta": 1.732843546443604,
+            "ci95": 0.6987130606581367,
+            "z": 4.860898618139939,
+            "rel_delta": 0.06769938965779769,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "taiwanese": {
+            "region": "East Asia",
+            "recipes_total": 1726,
+            "recipes_used": 1574,
+            "real": 12.85476367068977,
+            "null_mean": 13.113200728204438,
+            "null_sd": 0.4828844123241533,
+            "delta": -0.2584370575146675,
+            "ci95": 0.9464534481553405,
+            "z": -0.5351944500978889,
+            "rel_delta": -0.01970815995814126,
+            "significant": false,
+            "direction": "contrast"
+          },
+          "thai": {
+            "region": "Southeast Asia",
+            "recipes_total": 1704,
+            "recipes_used": 1685,
+            "real": 27.02281393394946,
+            "null_mean": 21.95273314806437,
+            "null_sd": 0.5096435901403961,
+            "delta": 5.070080785885089,
+            "ci95": 0.9989014366751763,
+            "z": 9.948287163757694,
+            "rel_delta": 0.2309544215605851,
+            "significant": true,
+            "direction": "pairing"
+          },
+          "romanian": {
+            "region": "Eastern Europe",
+            "recipes_total": 791,
+            "recipes_used": 777,
+            "real": 33.761591725830485,
+            "null_mean": 33.157142606714004,
+            "null_sd": 0.8787638095115586,
+            "delta": 0.6044491191164809,
+            "ci95": 1.722377066642655,
+            "z": 0.6878402507864435,
+            "rel_delta": 0.018229831390660478,
+            "significant": false,
+            "direction": "pairing"
+          }
+        },
+        "regions": {
+          "North America": {
+            "mean_rel_delta": 0.043180011373346316,
+            "cuisines": 1
+          },
+          "East Asia": {
+            "mean_rel_delta": -0.014719502156477248,
+            "cuisines": 3
+          },
+          "Eastern Europe": {
+            "mean_rel_delta": 0.00883832262972454,
+            "cuisines": 2
+          },
+          "Middle East": {
+            "mean_rel_delta": 0.010122828883722122,
+            "cuisines": 3
+          },
+          "Southern Europe": {
+            "mean_rel_delta": 0.020758671844214382,
+            "cuisines": 2
+          },
+          "Southeast Asia": {
+            "mean_rel_delta": 0.08320247779352935,
+            "cuisines": 4
+          },
+          "South Asia": {
+            "mean_rel_delta": 0.03608302639777408,
+            "cuisines": 1
+          },
+          "Western Europe": {
+            "mean_rel_delta": -0.004883303308714237,
+            "cuisines": 1
+          },
+          "North Africa": {
+            "mean_rel_delta": 0.07074141111874423,
+            "cuisines": 1
+          }
+        },
+        "params": {
+          "seed": 20260805,
+          "max_recipes": 200000,
+          "n_null": 25,
+          "min_recipes": 500
+        }
+      }
+    }
+  }
+}

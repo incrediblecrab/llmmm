@@ -1,0 +1,13 @@
+{
+  "variant": "cooc-i4.0",
+  "vocab_size": 1790,
+  "d_model": 300,
+  "walks_per_node": 100,
+  "walk_length": 50,
+  "context_size": 7,
+  "negative_samples": 5,
+  "batch_size": 32768,
+  "lr": 0.0025,
+  "epochs": 3,
+  "init": 4.0
+}
