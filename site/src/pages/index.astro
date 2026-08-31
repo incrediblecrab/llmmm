@@ -2,22 +2,46 @@
 import Base from "../layouts/Base.astro";
 import Demo from "../components/Demo.astro";
 import BaselineStrip from "../components/BaselineStrip.astro";
+import Predict from "../components/Predict.astro";
 import Num from "../components/Num.astro";
-import { leaderboard, generation, vocab, POPULARITY, n, href, bootstrap, countIsExact } from "../lib/data";
+import { leaderboard, generation, vocab, POPULARITY, n, href, bootstrap, countIsExact, stability } from "../lib/data";
 
 const top = vocab.by_frequency.slice(0, 3).map((v) => v.name.replace(/_/g, " "));
+
+/* Counted over exported embeddings, which is the larger and more defensible
+ * number for a claim about vectors. The headline uses the smaller one because
+ * it scores each system at its best available rule; both appear above the
+ * fold so the difference comes from us rather than from a reviewer. */
+const belowEmb = leaderboard.models.filter(
+  (m) => (m.M6_recall_at_10 ?? m.best_recall_at_10) < POPULARITY).length;
+
+const WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven",
+  "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen",
+  "Fifteen", "Sixteen"];
+const nWord = (v: number) => WORDS[v] ?? String(v);
 ---
 
 <Base
-  title="You probably cannot beat salt."
+  title={`We trained ${leaderboard.n_models} ingredient models on ${n(generation.recipes)} recipes. ${nWord(leaderboard.n_below_popularity)} lost to counting.`}
   chapter="One — the claim"
-  standfirst={`We trained ${leaderboard.n_models} ingredient models on ${n(generation.recipes)} recipes and asked each to finish a recipe it had never seen. ${leaderboard.n_below_popularity} of them lose to a ranked list of the most common ingredients.`}
+  standfirst={`A sorted frequency table beat ${belowEmb} of the ${leaderboard.n_models} exported embeddings. Letting every system use its own strongest scoring rule rescued exactly two.`}
 >
-  <div class="wide-figure hero">
-    <BaselineStrip />
+  <div class="wide-figure">
+    <Predict />
   </div>
 
-  <h2>Try it first</h2>
+  <div class="prose">
+    <p class="muted small">
+      {n(bootstrap!.n_instances)} held-out completions ·{" "}
+      {stability ? `${stability.seeds.length} training seeds · ` : ""}
+      {n(bootstrap!.n_boot)} bootstrap resamples ·{" "}
+      <a href={href("methods/")}>methods</a>,{" "}
+      <a href={href("trust/")}>controls</a> and{" "}
+      <a href="https://github.com/incrediblecrab/llmmm">code</a>.
+    </p>
+  </div>
+
+  <h2>Now play the same test</h2>
   <div class="prose">
     <p>
       Here is the test the models took. Take a recipe, hide one ingredient,
@@ -38,6 +62,10 @@ const top = vocab.by_frequency.slice(0, 3).map((v) => v.name.replace(/_/g, " "))
       exact bytes it reaches recall@10 of{" "}
       <Num value={0.5871} /> against <Num value={0.5872} /> at full precision.
     </p>
+  </div>
+
+  <div class="wide-figure hero">
+    <BaselineStrip />
   </div>
 
   <div class="prose">

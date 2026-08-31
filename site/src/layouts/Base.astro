@@ -15,6 +15,14 @@ interface Props {
 
 const { title, standfirst, chapter, wide = false } = Astro.props;
 
+/* Absolute, because a crawler resolves neither a root-relative path nor the
+ * project base. Without these the link renders as a bare URL everywhere it
+ * gets posted, which is most of the places it would ever be read. */
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(href("/og.png"), Astro.site);
+const description = standfirst ??
+  "16 ingredient models, 4,653,430 recipes. 9 of them lose to counting.";
+
 /* The order is the argument, not an alphabetised index. A reader who follows
  * it top to bottom gets the case made in the order it has to be made in.
  *
@@ -100,8 +108,24 @@ const showToc = headings.length > 1;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} — Ingredient embeddings</title>
-    <meta name="description" content={standfirst ?? title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Ingredient embeddings" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt"
+          content="Sixteen models placed on one axis; nine fall below the counting baseline." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href={href("/favicon.svg")} />
     <script is:inline>
       /* Applied before first paint, so a reader who chose dark never sees a
@@ -401,7 +425,15 @@ const showToc = headings.length > 1;
         .rail a[aria-current="page"] { border-left: 0; border-bottom-color: var(--accent); }
       }
 
-      .head { margin-bottom: var(--s-7); }
+      /* The headline is display type and does not belong on the body
+       * measure. Set to 34rem it broke across four lines and pushed the
+       * first interaction off the screen; given its own wider measure and a
+       * size that scales with the window, the same sentence lands in two. */
+      .head { margin-bottom: var(--s-6); max-width: var(--head-measure); }
+      .head h1 {
+        max-width: var(--head-measure);
+        font-size: clamp(var(--t-2xl), 1.9rem + 2.2vw, var(--t-3xl));
+      }
       .chapter { margin: 0 0 var(--s-3); color: var(--accent); }
       .standfirst {
         font-size: var(--t-md);

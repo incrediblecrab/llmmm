@@ -90,7 +90,11 @@ for (const v of vocab.by_frequency) names[v.id] = v.name.replace(/_/g, " ");
           <span class="mark" data-model-mark></span>
         </div>
       </div>
-      <button class="again" data-again>Next recipe</button>
+      <div class="endrow">
+        <button class="again" data-again>Next recipe</button>
+        <button class="share" data-share>Copy my score</button>
+        <span class="shared muted" data-share-status role="status" aria-live="polite"></span>
+      </div>
     </div>
   </div>
 </section>
@@ -185,6 +189,10 @@ for (const v of vocab.by_frequency) names[v.id] = v.name.replace(/_/g, " ");
   }
 
   const state = { you: 0, pop: 0, model: 0, round: 0 };
+  /* Per-round outcomes, kept so the reader can leave with the result rather
+   * than only see it. A score that cannot be carried anywhere is a score
+   * nobody repeats. */
+  const history: { y: boolean; p: boolean; m: boolean }[] = [];
   let current: { ctx: number[]; target: number } | null = null;
 
   function setScores() {
@@ -242,6 +250,7 @@ for (const v of vocab.by_frequency) names[v.id] = v.name.replace(/_/g, " ");
     if (youRight) state.you++;
     if (popRight) state.pop++;
     if (modelRight) state.model++;
+    history.push({ y: youRight, p: popRight, m: modelRight });
     setScores();
 
     q<HTMLElement>("[data-answer]").textContent = names[target];
@@ -332,6 +341,78 @@ for (const v of vocab.by_frequency) names[v.id] = v.name.replace(/_/g, " ");
     reveal(q<HTMLInputElement>("[data-input]").value);
   });
   q<HTMLButtonElement>("[data-again]").addEventListener("click", () => deal());
+
+  /* The share card.
+   *
+   * Wordle's grid travels because it is a result you can post without
+   * spoiling anything and without a screenshot. The same shape works here,
+   * and it carries the finding: three rows, and the reader's own row is
+   * usually the short one. That is the argument in six characters.
+   *
+   * Capped at the last ten rounds so it stays inside a post. */
+  const GRID_CAP = 10;
+
+  function shareText(): string {
+    const recent = history.slice(-GRID_CAP);
+    const row = (pick: (h: typeof history[number]) => boolean) =>
+      recent.map((h) => (pick(h) ? "\u{1F7E9}" : "\u2B1C")).join("");
+    const tally = (n: number) => `${n}/${state.round}`;
+    const lines = [
+      `Beat the baseline \u2014 ${state.round} ` +
+        (state.round === 1 ? "round" : "rounds"),
+      "",
+      `You      ${row((h) => h.y)} ${tally(state.you)}`,
+      `Counting ${row((h) => h.p)} ${tally(state.pop)}`,
+      `EASE     ${row((h) => h.m)} ${tally(state.model)}`,
+      "",
+      "9 of 16 ingredient models lose to counting.",
+      shareUrl(),
+    ];
+    return lines.join("\n");
+  }
+
+  function shareUrl(): string {
+    /* Bare page, no fragment. A heading id is renamed the moment the copy
+     * changes, and a dead anchor in someone else's post is not recoverable. */
+    const u = new URL(window.location.href);
+    u.hash = "";
+    u.search = "";
+    return u.href;
+  }
+
+  const shareBtn = q<HTMLButtonElement>("[data-share]");
+  const shareStatus = q<HTMLElement>("[data-share-status]");
+  let statusTimer: ReturnType<typeof setTimeout> | undefined;
+
+  shareBtn.addEventListener("click", async () => {
+    const text = shareText();
+    let ok = false;
+    try {
+      /* Only available on a secure origin, and a headless browser without
+       * the permission rejects rather than throwing synchronously. The
+       * textarea path is what makes this work on file:// and in tests. */
+      await navigator.clipboard.writeText(text);
+      ok = true;
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:-1000px;opacity:0";
+      document.body.append(ta);
+      ta.select();
+      try { ok = document.execCommand("copy"); } catch { ok = false; }
+      ta.remove();
+    }
+    shareStatus.textContent = ok ? "Copied." : "Press \u2318C to copy.";
+    shareStatus.dataset.ok = String(ok);
+    if (!ok) window.prompt("Copy your score:", text);
+    clearTimeout(statusTimer);
+    statusTimer = setTimeout(() => { shareStatus.textContent = ""; }, 4000);
+  });
+
+  /* Exposed for the smoke test, which asserts the grid matches the
+   * scoreboard rather than trusting that it does. */
+  (window as unknown as { __share: () => string }).__share = shareText;
 
   boot().catch(() => {
     q<HTMLElement>('[data-panel="loading"]').innerHTML =
@@ -424,8 +505,26 @@ for (const v of vocab.by_frequency) names[v.id] = v.name.replace(/_/g, " ");
     cursor: pointer;
   }
   button:hover { background: var(--ink-soft); border-color: var(--ink-soft); }
-  .again { margin-top: var(--s-5); background: none; color: var(--ink); }
+  .endrow {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+    margin-top: var(--s-5);
+  }
+  .again { background: none; color: var(--ink); }
   .again:hover { background: var(--paper); }
+  .share {
+    background: none;
+    color: var(--ink-soft);
+    border-color: var(--paper-edge);
+  }
+  .share:hover { background: var(--paper); color: var(--ink); }
+  .shared {
+    font-size: var(--t-sm);
+    font-variant-numeric: tabular-nums;
+  }
+  .shared[data-ok="true"] { color: var(--accent); }
 
   .hint { font-size: var(--t-sm); margin-top: var(--s-3); }
 

@@ -94,20 +94,43 @@ const proseMask = (lines) => {
     const open = /<(style|script)[\s>]/i.exec(line);
     if (open) {
       prose[i] = false;
-      if (!new RegExp(`</${open[1]}>`, "i").test(line)) block = open[1].toLowerCase();
+      /* A self-closing <script ... /> is Astro's JSON-island pattern and
+       * closes on its own line. Treating it as an opening tag masked the
+       * whole rest of the file as code and silently switched this check
+       * off, which is how a missing space shipped in Predict.astro. */
+      const selfClosed = /\/>\s*$/.test(line);
+      const closed = new RegExp(`</${open[1]}>`, "i").test(line);
+      if (!selfClosed && !closed) block = open[1].toLowerCase();
     }
   }
   return prose;
 };
 
+/* True for lines sitting between a `<Tag` and its closing `>`, so a break
+ * between two attributes is not read as a break between two words. midTag
+ * only sees one line; an attribute list spans several. */
+const attrMask = (lines) => {
+  const inAttrs = new Array(lines.length).fill(false);
+  let open = false;
+  for (let i = 0; i < lines.length; i++) {
+    inAttrs[i] = open;
+    const lt = lines[i].lastIndexOf("<");
+    const gt = lines[i].lastIndexOf(">");
+    if (lt > gt) open = true;
+    else if (gt > lt) open = false;
+  }
+  return inAttrs;
+};
+
 const check = (path, lines) => {
   const prose = proseMask(lines);
+  const inAttrs = attrMask(lines);
   for (let i = 0; i < lines.length - 1; i++) {
     if (!prose[i] || !prose[i + 1]) continue;
     const here = lines[i];
     const next = lines[i + 1];
     if (NOT_PROSE.test(here) || NOT_PROSE.test(next)) continue;
-    if (midTag(here) || EXPLICIT_SPACE.test(here)) continue;
+    if (midTag(here) || inAttrs[i] || EXPLICIT_SPACE.test(here)) continue;
 
     let why = null;
     const ends = SENTENCE_END.test(here);

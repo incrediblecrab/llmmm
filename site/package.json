@@ -12,9 +12,12 @@
     "astro": "astro",
     "smoke": "node test/demo.smoke.mjs",
     "keyboard": "node test/keyboard.smoke.mjs",
-    "test": "npm run smoke && npm run keyboard && npm run copy && npm run a11y",
+    "test": "npm run smoke && npm run keyboard && npm run predict && npm run share && npm run copy && npm run a11y",
     "copy": "node test/copy.smoke.mjs",
-    "a11y": "node test/a11y.smoke.mjs"
+    "a11y": "node test/a11y.smoke.mjs",
+    "og": "node scripts/og.mjs",
+    "share": "node test/share.smoke.mjs",
+    "predict": "node test/predict.smoke.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

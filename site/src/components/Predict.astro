@@ -1,0 +1,505 @@
+---
+/**
+ * Place the point.
+ *
+ * The rest of the site shows the reader a chart and asks them to be
+ * surprised by it. That order is backwards: a finished chart spends the
+ * surprise before anyone has committed to an expectation, and a reader who
+ * never stated a prior cannot be wrong, so nothing lands.
+ *
+ * So this asks first. The reader puts item2vec somewhere on a recall axis
+ * and locks it in. Only then does the axis fill in — their estimate stays on
+ * the chart beside the answer, which is the part worth carrying away.
+ *
+ * Three constraints shaped the build:
+ *
+ *  - It must not wait on the model. The recipe game downloads a 1.3 MB
+ *    item-item matrix before it can deal a hand; this needs sixteen numbers,
+ *    inlined, so the first meaningful action is available at first paint.
+ *
+ *  - It must be usable without a pointer. Placing a dot by dragging is the
+ *    nice path, not the only one: the axis is a slider with real key
+ *    bindings, and there is a number field beside it.
+ *
+ *  - It must not overclaim. The reveal counts embeddings, then offers the
+ *    native scorers as a second, separate step, because that distinction is
+ *    the most reasonable objection a careful reader can raise and it should
+ *    come from us rather than from them.
+ */
+import { leaderboard, POPULARITY, generation, n } from "../lib/data";
+
+const HERO = "item2vec";
+const hero = leaderboard.models.find((m) => m.model === HERO);
+if (!hero) throw new Error(`${HERO} is not in the leaderboard`);
+
+/* Embedding score for every model, plus the native rule where one exists.
+ * Both are needed up front: the second act of the reveal moves the two
+ * models that have a native scorer, and it should not fetch to do it. */
+const points = leaderboard.models.map((m) => ({
+  name: m.model,
+  emb: m.M6_recall_at_10 ?? m.best_recall_at_10,
+  nat: m.has_native ? m.M6_native_recall_at_10 ?? null : null,
+}));
+
+const belowEmb = points.filter((p) => p.emb < POPULARITY).length;
+const belowBest = leaderboard.models.filter((m) => m.best_lift < 0).length;
+const rescued = points.filter((p) => p.nat !== null && p.emb < POPULARITY && p.nat >= POPULARITY);
+
+/* The axis stops just past the best score rather than at 1.0, because an
+ * axis mostly made of empty space compresses every real difference. */
+const AXIS_MAX = Math.ceil(Math.max(...points.map((p) => p.nat ?? p.emb)) * 100 / 5) * 5;
+const times = (POPULARITY / hero.M6_recall_at_10!).toFixed(1);
+
+const config = {
+  pop: POPULARITY,
+  hero: { name: HERO, emb: hero.M6_recall_at_10 },
+  points,
+  axisMax: AXIS_MAX,
+  belowEmb,
+  belowBest,
+  times,
+  rescued: rescued.map((r) => ({ name: r.name, emb: r.emb, nat: r.nat })),
+};
+
+const ticks = [];
+for (let t = 0; t <= AXIS_MAX; t += 10) ticks.push(t);
+---
+
+<section class="predict" data-predict aria-labelledby="predict-q">
+  <script type="application/json" data-predict-config set:html={JSON.stringify(config)} />
+
+  <p class="ask" id="predict-q">
+    Counting the most common ingredients gets <b class="tnum">{(POPULARITY * 100).toFixed(1)}%</b>{" "}
+    of held-out recipes right. <code>item2vec</code> is word2vec for
+    recommendations, trained on all {n(generation.recipes)} of them.{" "}
+    <b>Where do you think it landed?</b>
+  </p>
+
+  <div class="stagewrap">
+    <svg class="axis" viewBox="0 0 1000 210" role="presentation" data-svg>
+      <rect class="hit" x="0" y="0" width="1000" height="210" data-hit fill="transparent" />
+
+      <g class="band" data-band hidden>
+        <rect x="40" y="24" width="0" height="126" data-band-rect />
+      </g>
+
+      <line class="rule" x1="40" x2="960" y1="150" y2="150" />
+
+      <g class="ticks">
+        {ticks.map((t) => (
+          <g transform={`translate(${40 + (t / AXIS_MAX) * 920} 0)`}>
+            <line class="tick" x1="0" x2="0" y1="150" y2="156" />
+            <text class="ticklabel" x="0" y="176" text-anchor="middle">{t}%</text>
+          </g>
+        ))}
+      </g>
+
+      <g class="baseline" transform={`translate(${40 + (POPULARITY * 100 / AXIS_MAX) * 920} 0)`}>
+        <line x1="0" x2="0" y1="20" y2="150" />
+        <text class="baselabel" x="-8" y="14" text-anchor="end">counting {(POPULARITY * 100).toFixed(1)}%</text>
+      </g>
+
+      <g class="you" data-you hidden>
+        <line x1="0" x2="0" y1="40" y2="150" data-you-line />
+        <circle cx="0" cy="150" r="9" data-you-dot />
+        <text class="youlabel" x="0" y="32" text-anchor="middle" data-you-label>you</text>
+      </g>
+
+      <g class="dots" data-dots></g>
+    </svg>
+
+    <div class="slider">
+      <label class="sr" for="predict-range">item2vec recall, percent</label>
+      <input id="predict-range" type="range" min="0" max={AXIS_MAX} step="0.1"
+             value="" data-range aria-describedby="predict-q" />
+    </div>
+  </div>
+
+  <div class="controls" data-controls>
+    <label class="numfield">
+      <span>Your estimate</span>
+      <input type="number" min="0" max={AXIS_MAX} step="0.1" inputmode="decimal"
+             placeholder="—" data-num aria-label="Your estimate, percent" />
+      <span class="pct">%</span>
+    </label>
+    <button type="button" data-lock disabled>Lock in my estimate</button>
+    <p class="nudge muted" data-nudge>Click the axis, drag the slider, or type a number.</p>
+  </div>
+
+  <div class="reveal" data-reveal hidden>
+    <div class="verdict" role="status" aria-live="polite" data-verdict></div>
+    <div class="acts">
+      <button type="button" data-act2 hidden>Now let every model use its own scoring rule</button>
+      <p class="act-note" data-act-note hidden></p>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* Second script island on the site. It carries sixteen numbers and no
+   * fetch, so it is interactive as soon as it parses. */
+
+  type Pt = { name: string; emb: number; nat: number | null };
+  type Config = {
+    pop: number;
+    hero: { name: string; emb: number };
+    points: Pt[];
+    axisMax: number;
+    belowEmb: number;
+    belowBest: number;
+    times: string;
+    rescued: { name: string; emb: number; nat: number }[];
+  };
+
+  const root = document.querySelector<HTMLElement>("[data-predict]");
+  if (root) {
+    const cfg: Config = JSON.parse(
+      root.querySelector("[data-predict-config]")!.textContent!);
+
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const svg = q<SVGSVGElement>("[data-svg]");
+    const range = q<HTMLInputElement>("[data-range]");
+    const num = q<HTMLInputElement>("[data-num]");
+    const lock = q<HTMLButtonElement>("[data-lock]");
+
+    const X0 = 40, X1 = 960, Y = 150;
+    const xOf = (pct: number) => X0 + (pct / cfg.axisMax) * (X1 - X0);
+    const clamp = (v: number) => Math.min(cfg.axisMax, Math.max(0, v));
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let guess: number | null = null;
+    let locked = false;
+
+    function setGuess(pct: number, from?: "num") {
+      if (locked) return;
+      guess = clamp(Math.round(pct * 10) / 10);
+      const g = q<SVGGElement>("[data-you]");
+      g.removeAttribute("hidden");
+      const x = xOf(guess);
+      q<SVGLineElement>("[data-you-line]").setAttribute("x1", String(x));
+      q<SVGLineElement>("[data-you-line]").setAttribute("x2", String(x));
+      q<SVGCircleElement>("[data-you-dot]").setAttribute("cx", String(x));
+      const label = q<SVGTextElement>("[data-you-label]");
+      label.setAttribute("x", String(x));
+      label.textContent = `you · ${guess.toFixed(1)}%`;
+      root!.dataset.guessed = "";
+      range.value = String(guess);
+      /* Do not fight the field the reader is typing in: rewriting its value
+       * mid-entry moves the caret and eats the next keystroke. */
+      if (from !== "num") num.value = String(guess);
+      lock.disabled = false;
+      q<HTMLElement>("[data-nudge]").textContent =
+        "Lock it in to see where it actually landed.";
+    }
+
+    /* Pointer anywhere on the axis, because a reader who has been told to
+     * place a point will aim at the chart, not at the slider under it. */
+    function fromEvent(e: PointerEvent) {
+      const r = svg.getBoundingClientRect();
+      const px = ((e.clientX - r.left) / r.width) * 1000;
+      setGuess(((px - X0) / (X1 - X0)) * cfg.axisMax);
+    }
+
+    const hit = q<SVGRectElement>("[data-hit]");
+    let dragging = false;
+    hit.addEventListener("pointerdown", (e) => {
+      if (locked) return;
+      dragging = true;
+      hit.setPointerCapture(e.pointerId);
+      fromEvent(e);
+    });
+    hit.addEventListener("pointermove", (e) => { if (dragging) fromEvent(e); });
+    hit.addEventListener("pointerup", (e) => {
+      dragging = false;
+      try { hit.releasePointerCapture(e.pointerId); } catch {}
+    });
+
+    range.addEventListener("input", () => setGuess(Number(range.value)));
+    num.addEventListener("input", () => {
+      if (num.value.trim() === "") return;
+      const v = Number(num.value);
+      if (Number.isFinite(v)) setGuess(v, "num");
+    });
+
+    lock.addEventListener("click", () => {
+      if (guess === null || locked) return;
+      locked = true;
+      range.disabled = true;
+      num.disabled = true;
+      lock.hidden = true;
+      q<HTMLElement>("[data-nudge]").hidden = true;
+      reveal();
+    });
+
+    /* Dodge upward so no two scores sit on top of each other. Half the
+     * models land between 38% and 45%; on a single row that cluster reads as
+     * four dots rather than eight, which understates the result. Rows are
+     * assigned over the final layout before anything is drawn, so a dot
+     * never has to jump after it appears. */
+    const R = 8, ROW = 19;
+    function assignRows(values: number[]): number[] {
+      const order = values.map((v, i) => i).sort((a, b) => values[a] - values[b]);
+      const lastInRow: number[] = [];
+      const rows = new Array(values.length).fill(0);
+      for (const i of order) {
+        const px = xOf(values[i] * 100);
+        let row = 0;
+        while (lastInRow[row] !== undefined && px - lastInRow[row] < 2 * R + 1) row++;
+        lastInRow[row] = px;
+        rows[i] = row;
+      }
+      return rows;
+    }
+
+    function dot(p: Pt, value: number, cls: string, row: number, delay: number) {
+      const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      c.setAttribute("cx", String(xOf(value * 100)));
+      c.setAttribute("cy", String(Y - R - 4 - row * ROW));
+      c.setAttribute("r", String(R));
+      c.setAttribute("class", cls);
+      c.dataset.model = p.name;
+      if (!reduced) {
+        c.style.opacity = "0";
+        c.style.transition = "opacity .28s ease, cx .6s cubic-bezier(.4,0,.2,1)";
+        setTimeout(() => { c.style.opacity = "1"; }, delay);
+      }
+      return c;
+    }
+
+    function reveal() {
+      const dots = q<SVGGElement>("[data-dots]");
+      const heroEmb = cfg.hero.emb;
+      const err = guess! - heroEmb * 100;
+
+      /* The hero lands first and alone. Dropping sixteen dots at once would
+       * bury the one the reader actually bet on. */
+      const heroIdx = cfg.points.findIndex((p) => p.name === cfg.hero.name);
+      const rows = assignRows(cfg.points.map((p) => p.emb));
+      const heroPt = cfg.points[heroIdx];
+      dots.append(dot(heroPt, heroEmb, "d hero below", rows[heroIdx], 0));
+
+      const band = q<SVGGElement>("[data-band]");
+      band.removeAttribute("hidden");
+      q<SVGRectElement>("[data-band-rect]").setAttribute(
+        "width", String(xOf(cfg.pop * 100) - X0));
+
+      const v = q<HTMLElement>("[data-verdict]");
+      v.innerHTML = `
+        <dl class="scorecard">
+          <div><dt>You said</dt><dd class="tnum">${guess!.toFixed(1)}%</dd></div>
+          <div><dt>${cfg.hero.name}</dt><dd class="tnum bad">${(heroEmb * 100).toFixed(2)}%</dd></div>
+          <div><dt>Counting</dt><dd class="tnum">${(cfg.pop * 100).toFixed(1)}%</dd></div>
+        </dl>
+        <p class="line">You were out by
+          <b class="tnum">${Math.abs(err).toFixed(1)} points</b>${err > 0 ? "" : " the other way"}.
+          Counting did <b class="tnum">${cfg.times}×</b> better than a model that
+          read every recipe in the corpus.</p>`;
+      q<HTMLElement>("[data-reveal]").removeAttribute("hidden");
+
+      /* Then the rest, on the embedding basis only — the honest count for a
+       * claim about exported vectors. */
+      const rest = cfg.points
+        .map((p, i) => ({ p, i }))
+        .filter(({ i }) => i !== heroIdx);
+      rest.forEach(({ p, i }, k) => {
+        dots.append(dot(p, p.emb, `d ${p.emb < cfg.pop ? "below" : "above"}`,
+                        rows[i], reduced ? 0 : 260 + k * 55));
+      });
+
+      const after = reduced ? 0 : 260 + rest.length * 55 + 250;
+      setTimeout(() => {
+        const note = q<HTMLElement>("[data-act-note]");
+        note.textContent =
+          `${cfg.belowEmb} of ${cfg.points.length} exported embedding tables ` +
+          `score below counting.`;
+        note.removeAttribute("hidden");
+        if (cfg.rescued.length) {
+          q<HTMLButtonElement>("[data-act2]").removeAttribute("hidden");
+        }
+      }, after);
+    }
+
+    q<HTMLButtonElement>("[data-act2]").addEventListener("click", (e) => {
+      const btn = e.currentTarget as HTMLButtonElement;
+      btn.hidden = true;
+      const dots = q<SVGGElement>("[data-dots]");
+      for (const r of cfg.rescued) {
+        const c = dots.querySelector<SVGCircleElement>(`[data-model="${r.name}"]`);
+        if (!c) continue;
+        c.setAttribute("cx", String(xOf(r.nat * 100)));
+        c.setAttribute("cy", String(Y - R - 4));
+        c.setAttribute("class", "d above moved");
+      }
+      const names = cfg.rescued.map((r) => r.name).join(" and ");
+      q<HTMLElement>("[data-act-note]").innerHTML =
+        `Only ${names} cross the line, and only under ${cfg.rescued.length === 1
+          ? "its own scoring rule" : "their own scoring rules"} — not as exported
+         vectors. <b>${cfg.belowBest} of ${cfg.points.length} still lose to counting.</b>`;
+    });
+  }
+</script>
+
+<style>
+  .predict {
+    border: 1px solid var(--paper-edge);
+    background: var(--paper-sunk);
+    padding: var(--s-6) var(--s-6) var(--s-5);
+  }
+
+  .ask {
+    margin: 0 0 var(--s-5);
+    font-size: var(--t-md);
+    line-height: 1.45;
+    max-width: 46rem;
+  }
+  .ask b { font-weight: 600; }
+
+  .stagewrap { position: relative; }
+  .axis { display: block; width: 100%; height: auto; }
+  .hit { cursor: crosshair; }
+
+  /* `hidden` is an HTML attribute and the UA stylesheet rule that acts on it
+   * does not reach into the SVG namespace, so a <g hidden> renders normally.
+   * The reader's marker was therefore on screen before they had placed one,
+   * which defeats the whole commit-before-reveal premise. An explicit rule
+   * is what actually hides these. */
+  .you[hidden],
+  .band[hidden] { display: none; }
+
+  .rule { stroke: var(--paper-edge); stroke-width: 1.5; }
+  .tick { stroke: var(--paper-edge); stroke-width: 1.5; }
+  .ticklabel {
+    font-family: var(--mono);
+    font-size: 15px;
+    fill: var(--ink-faint);
+  }
+
+  .baseline line { stroke: var(--ink); stroke-width: 2.5; }
+  .baselabel {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 600;
+    fill: var(--ink);
+  }
+
+  .band rect { fill: var(--below); opacity: 0.08; }
+
+  .you line { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 3 3; }
+  .you circle { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+  .youlabel {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 600;
+    fill: var(--accent);
+  }
+
+  :global(.predict .d) { stroke: var(--paper); stroke-width: 2; }
+  :global(.predict .d.below) { fill: var(--below); }
+  :global(.predict .d.above) { fill: var(--accent); }
+  :global(.predict .d.hero) { r: 10; stroke-width: 2.5; }
+
+  /* The slider is the keyboard path to the same value the pointer sets. It
+   * sits under the axis and is deliberately plain: it is a control, not a
+   * second chart. */
+  .slider { margin-top: var(--s-2); }
+  .slider input {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  /* A range input with no value parks its thumb at the midpoint and paints
+   * the track up to it, which reads as an answer already given — right next
+   * to the baseline, and so an anchor on very nearly the wrong number. Until
+   * the reader actually sets a value the control is drawn as inert. */
+  .predict:not([data-guessed]) .slider input {
+    accent-color: var(--paper-edge);
+    opacity: 0.6;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+    margin-top: var(--s-5);
+  }
+  .numfield {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    font-size: var(--t-sm);
+    color: var(--ink-soft);
+  }
+  .numfield input {
+    width: 5.5rem;
+    font-family: var(--mono);
+    font-size: var(--t-base);
+    font-variant-numeric: tabular-nums;
+    padding: var(--s-2);
+    border: 1px solid var(--paper-edge);
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .numfield .pct { font-family: var(--mono); color: var(--ink-faint); }
+
+  button {
+    font: inherit;
+    font-size: var(--t-sm);
+    padding: var(--s-2) var(--s-4);
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    cursor: pointer;
+  }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button:not(:disabled):hover { background: var(--ink-soft); border-color: var(--ink-soft); }
+
+  .nudge { font-size: var(--t-sm); margin: 0; }
+
+  .reveal { margin-top: var(--s-5); }
+
+  :global(.predict .scorecard) {
+    display: flex;
+    gap: var(--s-6);
+    flex-wrap: wrap;
+    margin: 0 0 var(--s-4);
+    padding: 0;
+  }
+  :global(.predict .scorecard dt) {
+    font-size: var(--t-sm);
+    color: var(--ink-soft);
+    margin: 0 0 var(--s-1);
+  }
+  :global(.predict .scorecard dd) {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: var(--t-lg);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  :global(.predict .scorecard dd.bad) { color: var(--below); }
+  :global(.predict .line) { margin: 0; max-width: 44rem; line-height: 1.5; }
+  :global(.predict .line b) { font-weight: 600; }
+
+  .acts { margin-top: var(--s-5); }
+  .act-note {
+    margin: var(--s-3) 0 0;
+    font-size: var(--t-sm);
+    color: var(--ink-soft);
+    max-width: 44rem;
+    line-height: 1.5;
+  }
+  :global(.predict .act-note b) { color: var(--ink); font-weight: 600; }
+
+  .tnum { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.predict .d) { transition: none !important; opacity: 1 !important; }
+  }
+
+  @media (max-width: 34rem) {
+    .predict { padding: var(--s-5) var(--s-4) var(--s-4); }
+    .controls { gap: var(--s-3); }
+  }
+</style>

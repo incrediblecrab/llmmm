@@ -81,6 +81,7 @@
   --t-3xl:  3.75rem;
 
   --measure: 34rem;   /* ~68 characters — the column prose is set to */
+  --head-measure: 46rem;   /* display type, which stacks badly at the measure */
   --wide:    64rem;   /* tables and figures, which need the room */
   --shell:   78rem;   /* rails and reading column together, centred */
 
@@ -215,6 +216,7 @@ main > * {
   max-width: var(--measure);
   margin-inline: 0;
 }
+main > .head { max-width: var(--head-measure); }
 main > figure,
 main > .wide,
 main > .wide-figure,
