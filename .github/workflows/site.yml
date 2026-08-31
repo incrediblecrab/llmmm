@@ -49,7 +49,7 @@ jobs:
           # Project page under the repository name. Set explicitly rather
           # than relying on the default, so the deployed path is visible in
           # the workflow rather than buried in a config file.
-          SITE_BASE: /ingredients
+          SITE_BASE: /llmmm
 
       # Fails the build rather than publishing a demo that 404s on its own
       # model. The matrix is the one file the front page cannot do without,

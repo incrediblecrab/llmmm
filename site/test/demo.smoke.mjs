@@ -47,7 +47,7 @@ const SIGMAS = 3.5;
  * path is exactly the kind of thing that works locally and 404s in
  * production, so the test exercises the prefixed case by default — the same
  * default astro.config.mjs uses. */
-const BASE = (process.env.SITE_BASE ?? "/ingredients").replace(/\/+$/, "");
+const BASE = (process.env.SITE_BASE ?? "/llmmm").replace(/\/+$/, "");
 
 /* Not hardcoded: this is what the harness scores on the demo's own recipe
  * pool, written by scripts/export_site.py. If the export changes, the

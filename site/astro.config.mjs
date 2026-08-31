@@ -17,14 +17,14 @@ import sitemap from "@astrojs/sitemap";
  * that is the case with a prefix and therefore the case that breaks if it is
  * never exercised.
  *
- *   SITE_BASE=/ingredients   default — project page
+ *   SITE_BASE=/llmmm        default — project page
  *   SITE_BASE=/              user page or custom domain
  */
-const base = process.env.SITE_BASE ?? "/ingredients";
+const base = process.env.SITE_BASE ?? "/llmmm";
 
 export default defineConfig({
   base,
-  site: process.env.SITE_URL ?? "https://incrediblecrab.github.io/ingredients",
+  site: process.env.SITE_URL ?? "https://incrediblecrab.github.io/llmmm",
 
   build: {
     // Directory routes, so /models/ is a real path rather than /models.html.

@@ -23,7 +23,7 @@ import { extname, join } from "path";
 
 const ROUNDS = Number(process.env.ROUNDS ?? 3);
 const PORT = 8097;
-const BASE = "/ingredients";
+const BASE = (process.env.SITE_BASE ?? "/llmmm").replace(/\/+$/, "");
 
 const TYPES = {
   ".html": "text/html", ".css": "text/css", ".js": "text/javascript",

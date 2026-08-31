@@ -22,7 +22,7 @@ import { readFile } from "fs/promises";
 import { extname, join } from "path";
 
 const PORT = 8101;
-const BASE = (process.env.SITE_BASE ?? "/ingredients").replace(/\/+$/, "");
+const BASE = (process.env.SITE_BASE ?? "/llmmm").replace(/\/+$/, "");
 
 /* The nine pages of the argument. `dist/data/` sits beside them but is the
  * public asset directory, not a route — an earlier version of this list
