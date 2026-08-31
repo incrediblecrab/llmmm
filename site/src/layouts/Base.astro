@@ -354,7 +354,7 @@ const showToc = headings.length > 1;
       main {
         width: 100%;
         max-width: var(--wide);
-        justify-self: center;
+        justify-self: start;
         padding: var(--s-7) var(--s-5) var(--s-9);
         /* Lets a figure inside a prose block measure itself against the
          * reading column with `cqw` instead of guessing from the viewport. */
@@ -365,10 +365,11 @@ const showToc = headings.length > 1;
        * viewport, which is underneath the sticky bar. This puts it back. */
       main :global(h2[id]) { scroll-margin-top: 4.5rem; }
 
-      /* Below the wider breakpoint the page contents rail is the first thing
-       * to go: it is a convenience, while the section rail is the only way
-       * to reach the other eight pages. */
-      @media (max-width: 86rem) {
+      /* Below this the page contents rail is the first thing to go: it is a
+       * convenience, while the section rail is the only way to reach the
+       * other eight pages. The threshold is the narrowest width at which
+       * all three columns still leave the prose its full measure. */
+      @media (max-width: 71rem) {
         .shell { grid-template-columns: 15rem minmax(0, 1fr); }
         .toc { display: none; }
       }

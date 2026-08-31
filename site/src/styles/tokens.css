@@ -194,22 +194,25 @@ code, kbd, samp { font-family: var(--mono); font-size: 0.88em; }
  * into a narrow column. The width of a figure is a property of the figure,
  * not of the page that holds it.
  *
- * So `main` is always the wide frame, text is always set to the measure,
- * and figures are allowed to outgrow it. Everything is centred on the same
- * line, which is what keeps a wide table and the paragraph above it looking
- * like one column rather than two unrelated blocks.
+ * So `main` is always the reading column, text is always set to the measure,
+ * and figures are allowed to outgrow it. Everything shares one *left* edge,
+ * which is what keeps a wide table and the paragraph above it looking like
+ * one column rather than two unrelated blocks.
  *
- * Centring was tried once before and reverted because only some elements
- * received the rule, which produced three different left margins. The fix
- * is to apply it to every child, not to abandon it: with a shared centre
- * and differing widths, the margins cannot disagree.
+ * That axis is the left edge and not the centre line. Centring was correct
+ * while `main` was the whole page, and became wrong the moment a sidebar
+ * appeared beside it: centring a 34rem measure inside a 63rem column opens
+ * a 15rem gap between the sidebar and the first word, and leaves the prose
+ * and the figure below it starting at two different places because they are
+ * centred at two different widths. Aligning left closes the gap and gives
+ * every element on the page the same starting point.
  *
  * This lives here rather than in the layout because Astro scopes a
  * component's styles to its own markup, and these children belong to the
  * page slotted into the layout, not to the layout itself. */
 main > * {
   max-width: var(--measure);
-  margin-inline: auto;
+  margin-inline: 0;
 }
 main > figure,
 main > .wide,
@@ -222,35 +225,29 @@ main > table {
  * `margin-block` on a figure — which is the correct way to avoid clobbering
  * auto inline margins — leaves that 40px in place, so every chart on the
  * site was quietly inset by 40px a side and no figure reached the width it
- * declared. `auto` rather than `0` because it does the right thing in both
- * cases: a full-width figure resolves it to 0 and spans the wide frame,
- * while a figure that sets a narrower max-width is centred, which puts it on
- * the same axis as the prose instead of against the wide frame's left edge. */
+ * declared. Zeroing it puts figures on the same left edge as the prose. */
 main figure {
-  margin-inline: auto;
+  margin-inline: 0;
 }
 
 /* A figure may be wider than the text, but its caption is text and belongs
- * on the text's axis. Without this a caption starts at the left edge of a
- * 61rem chart while the paragraph above it starts 13rem further in, which
- * reads as two columns that happen to be stacked. Narrow graphics inside a
- * wide figure are centred for the same reason. */
+ * on the text's measure. Without this a caption runs the full width of a
+ * 64rem chart while the paragraph above it stops at 34rem, which reads as
+ * two columns that happen to be stacked. */
 main > figure > figcaption,
 main figure > table > caption {
   max-width: var(--measure);
-  margin-inline: auto;
+  margin-inline: 0;
 }
 main > figure > svg {
   display: block;
-  margin-inline: auto;
+  margin-inline: 0;
 }
 
 /* A wide figure does not always get to be a direct child of `main` — some
  * sit inside a conditional block alongside the prose that introduces them.
- * Because the reading column is centred, such a figure can still reach its
- * full width by starting at the column's centre line and pulling itself
- * back by half its own width. It ends up centred on the same axis as every
- * other figure, without the markup having to be reorganised around it.
+ * Such a figure keeps the shared left edge and simply grows to the right,
+ * out of the measure its parent is set to.
  *
  * The width is measured in container query units against `main`, not in
  * `vw`. Under the three-column shell the viewport also holds a sidebar and
@@ -262,8 +259,6 @@ main > figure > svg {
 .prose > .wide {
   width: min(var(--wide), 100cqw);
   max-width: none;
-  margin-left: 50%;
-  translate: -50%;
 }
 
 .wide { max-width: var(--wide); }
