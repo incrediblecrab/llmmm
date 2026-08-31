@@ -1,7 +1,7 @@
 PY := ./.venv/bin/python
 PIP := ./.venv/bin/pip
 
-.PHONY: help setup data test gate list baselines report clean check sanity recipes text coverage aliases rebuild
+.PHONY: help setup data test gate list baselines report clean check sanity recipes text coverage aliases rebuild docs
 
 help:
 	@echo "setup      create .venv and install the package"
@@ -9,7 +9,8 @@ help:
 	@echo "gate       Phase-0 control gate — must pass before any result counts"
 	@echo "test       run the test suite"
 	@echo "sanity     adversarial checks against the recorded results"
-	@echo "check      gate + tests + sanity, the full pre-commit check"
+	@echo "docs       fail if a number in the docs matches no artefact"
+	@echo "check      gate + tests + sanity + docs, the full pre-commit check"
 	@echo "recipes    prove every recipe is readable, and show the source mix"
 	@echo "text       rejoin titles, quantities and instructions to the corpus"
 	@echo "coverage   measure what normalisation discards, and why"
@@ -51,10 +52,16 @@ text:
 	$(PY) scripts/check_text_alignment.py
 	$(PY) scripts/build_text_index.py
 
+# Fails when a number in the documentation matches no artefact. Cheap, and it
+# catches the failure that review does not: a figure that was correct when it
+# was written and quietly stopped being correct when something upstream moved.
+docs:
+	$(PY) scripts/check_docs.py
+
 # The gate comes first deliberately. If the metrics rate random vectors above
 # chance, every number produced afterwards is void, so there is no point running
 # anything else.
-check: gate test sanity
+check: gate test sanity docs
 
 baselines:
 	$(PY) -m ingredient_model.cli sweep experiments/baselines.yaml

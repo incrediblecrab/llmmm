@@ -1,0 +1,38 @@
+{
+  "run_id": "residual-svdppmi-sgnscooc-recipe-holdout-s0",
+  "model": "residual",
+  "family": "hybrid",
+  "graph": "ii_graph_rh_train.npz",
+  "seed": 0,
+  "params": {
+    "base": "svd-ppmi-recipe-holdout-s0",
+    "correction": "sgns-cooc-recipe-holdout-s0",
+    "d_model": 300,
+    "strength": 1.0,
+    "split": "recipe-holdout"
+  },
+  "created": "2026-08-30T17:20:53-0400",
+  "duration_s": 0.09261703491210938,
+  "shape": [
+    1790,
+    300
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0",
+    "git": "d7aa92a",
+    "corpus_generation": "v2"
+  },
+  "metadata": {
+    "base": "svd-ppmi-recipe-holdout-s0",
+    "correction": "sgns-cooc-recipe-holdout-s0",
+    "variance_explained_by_base": 0.608449750023442,
+    "d_out": 300,
+    "d_model": 300,
+    "ridge": 1.0,
+    "strength": 1.0
+  }
+}

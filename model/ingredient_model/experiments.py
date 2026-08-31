@@ -88,6 +88,15 @@ def expand(spec: dict) -> list[Trial]:
     block: each one names *different* inputs. Without this, running every model
     means one file per blend and no single command that reproduces the
     leaderboard.
+
+    Parameter values may contain ``{seed}`` and ``{split}``, substituted per
+    trial. This exists because a run id names a specific protocol: a blend whose
+    input is written ``svd-ppmi-recipe-holdout-s0`` consumes seed 0 *at every
+    seed*, so a five-seed sweep would report blends with no seed variance,
+    silently built from another seed's parents. Writing the input as
+    ``svd-ppmi-{split}-s{seed}`` makes the dependency correct by construction
+    rather than by the author remembering. Non-string values pass through
+    untouched.
     """
     models = spec.get("models") or [spec["model"]]
     seeds = spec.get("seeds", [0])
@@ -108,9 +117,26 @@ def expand(spec: dict) -> list[Trial]:
         for s in splits:
             for sd in seeds:
                 for combo in combos:
+                    merged = {**fixed, **mparams, **combo}
                     out.append(Trial(model=mname, split=s, seed=int(sd),
-                                     params={**fixed, **mparams, **combo},
+                                     params=_bind(merged, s, int(sd)),
                                      label=label))
+    return out
+
+
+def _bind(params: dict, split: str, seed: int) -> dict:
+    """Substitute {split} and {seed} into string parameter values.
+
+    Only these two placeholders are supported, and an unknown one is left
+    alone rather than raising: parameters legitimately carry braces in other
+    contexts, and a sweep should not fail because a value looked like a
+    template.
+    """
+    out = {}
+    for k, v in params.items():
+        if isinstance(v, str) and ("{split}" in v or "{seed}" in v):
+            v = v.replace("{split}", split).replace("{seed}", str(seed))
+        out[k] = v
     return out
 
 

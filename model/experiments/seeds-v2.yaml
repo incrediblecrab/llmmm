@@ -1,0 +1,58 @@
+name: seeds-v2
+description: >
+  The same sixteen models as all-v2, across five seeds. This exists because
+  every stored run in the repository before it was seed 0, which means the
+  leaderboard — and the claim that nine of sixteen models score below a
+  popularity baseline — rested on a single draw of the random number generator.
+
+  The question is not whether the individual numbers move. It is whether the
+  *ranking* moves, because the ranking is what every statement about these
+  models actually asserts. A model whose rank swings by five places between
+  seeds is not "seventh best"; it is unresolved, and saying otherwise is the
+  same error as quoting an absolute delta across two different test sets.
+
+  Seeds are named rather than counted. "Five seeds" is not reproducible.
+
+  Note the {seed} and {split} placeholders below. Written literally as
+  svd-ppmi-recipe-holdout-s0, a blend would consume seed 0's parents at every
+  seed, and the sweep would report five identical blend rows while appearing to
+  measure variance. That failure is silent, which is why the templating exists.
+
+splits: [recipe-holdout]
+seeds: [0, 1, 2, 3, 4]
+
+timeout_s: 10800
+
+models:
+  - svd-ppmi
+  - chem-svd
+  - sgc
+  - ease
+  - glove
+  - lightgcn
+  - sgns-cooc
+  - sgns-chem
+  - sgns-core
+  - ials
+  - item2vec
+  - masked-set
+  - text-embed
+
+  - name: text-aligned
+    id: text-aligned-svdppmi
+    params:
+      source_run: svd-ppmi-{split}-s{seed}
+
+  - name: concat
+    id: concat-svdppmi-sgnscooc
+    params:
+      runs: svd-ppmi-{split}-s{seed},sgns-cooc-{split}-s{seed}
+      d_model: 300
+
+  - name: residual
+    id: residual-svdppmi-sgnscooc
+    params:
+      base: svd-ppmi-{split}-s{seed}
+      correction: sgns-cooc-{split}-s{seed}
+      d_model: 300
+      strength: 1.0

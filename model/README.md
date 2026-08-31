@@ -27,9 +27,9 @@ ingredient-ingredient co-occurrence graph; recipe models read the recipes
 themselves. Hiding 10% of the *graph's edges* hides nothing from a model that
 reads recipes — the recipes that produced those pairs are still right there.
 
-This is not theoretical. EASE scores **M4 0.6898** on the edge split and
-**0.5644** on the honest one. The difference is 18× the confidence interval, and
-the flattering number is the one you get by default if nobody stops you.
+This is not theoretical. EASE scores **M4 0.6844** on the edge split and
+**0.5598** on the honest one. The difference is 18.9× the confidence interval,
+and the flattering number is the one you get by default if nobody stops you.
 
 So `ingredient_model/data/splits.py` stops you:
 
@@ -116,7 +116,7 @@ exactly and share no held-out edge; the popularity baseline reproduces from raw
 counts through a separate hand-written ranking loop (0.3635 vs 0.3659); random
 vectors and collapsed spaces score at or below chance; row-shuffling an
 embedding destroys M2 and M6; and the leakage claim reproduces end-to-end
-(M4 0.6898 leaky vs 0.5644 honest, 18.2x the CI).
+(M4 0.6844 leaky vs 0.5598 honest, 18.9x the CI).
 
 ### What 28 passing checks did not catch
 

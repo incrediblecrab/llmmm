@@ -1,0 +1,33 @@
+{
+  "run_id": "text-embed-recipe-holdout-s0",
+  "model": "text-embed",
+  "family": "text_embedding",
+  "graph": "ii_graph_rh_train.npz",
+  "seed": 0,
+  "params": {
+    "split": "recipe-holdout"
+  },
+  "created": "2026-08-30T17:20:39-0400",
+  "duration_s": 0.009882211685180664,
+  "shape": [
+    1790,
+    1536
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0",
+    "git": "d7aa92a",
+    "corpus_generation": "v2"
+  },
+  "metadata": {
+    "native_dim": 1536,
+    "model": "text-embedding-3-small",
+    "d_model": 0,
+    "batch": 256,
+    "prompt": "{name}",
+    "cache": true
+  }
+}

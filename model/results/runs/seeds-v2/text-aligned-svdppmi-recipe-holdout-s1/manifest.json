@@ -1,0 +1,35 @@
+{
+  "run_id": "text-aligned-svdppmi-recipe-holdout-s1",
+  "model": "text-aligned",
+  "family": "text_embedding",
+  "graph": "ii_graph_rh_train.npz",
+  "seed": 1,
+  "params": {
+    "source_run": "svd-ppmi-recipe-holdout-s1",
+    "split": "recipe-holdout"
+  },
+  "created": "2026-08-30T17:20:48-0400",
+  "duration_s": 0.0693659782409668,
+  "shape": [
+    1790,
+    300
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0",
+    "git": "d7aa92a",
+    "corpus_generation": "v2"
+  },
+  "metadata": {
+    "relative_residual": 0.820034882023601,
+    "mean_cosine_to_target": 0.5196270957986794,
+    "model": "text-embedding-3-small",
+    "source_run": "svd-ppmi-recipe-holdout-s1",
+    "d_model": 300,
+    "ridge": 1.0,
+    "cache": true
+  }
+}

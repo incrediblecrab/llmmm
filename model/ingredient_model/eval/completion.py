@@ -96,28 +96,28 @@ def _rank_of_target(scores: np.ndarray, target: np.ndarray,
     return greater + 1.0 + (equal - 1) / 2.0
 
 
-def recipe_completion(W: np.ndarray, corpus, *, n_test: int = 20_000,
-                      seed: int = SEED, unigram: np.ndarray | None = None,
-                      scorer=None) -> dict:
-    """Hide one ingredient per recipe and rank all candidates from the rest.
+def completion_ranks(W: np.ndarray, corpus, *, n_test: int = 20_000,
+                     seed: int = SEED, unigram: np.ndarray | None = None,
+                     scorer=None) -> dict[str, np.ndarray]:
+    """Per-instance ranks of the hidden ingredient, for each ranker.
 
-    Context is pooled by summing the unit vectors of the visible ingredients.
-    Summing rather than averaging is deliberate: the candidate ranking is
-    invariant to the scale of the pooled vector, so the two are identical here,
-    and summing avoids a division that would differ across recipe lengths for no
-    effect.
+    Split out from :func:`recipe_completion` so that the rank vectors are
+    available unreduced. A mean over these is the reported metric; a bootstrap
+    over them is its confidence interval, and both must come from the same
+    ranking code or the interval describes something other than the number it
+    is attached to.
 
-    ``scorer`` is an optional native conditional model. When given, its ranking
-    is reported alongside the embedding one rather than instead of it — the
-    embedding number is what makes families comparable, the native number is
-    what the model would actually serve.
+    The draw is a function of ``seed`` and the corpus alone, so two models
+    evaluated with the same arguments see the same instances with the same
+    ingredient hidden, in the same order. That is what makes a paired
+    comparison across models legitimate.
     """
     rng = np.random.default_rng(seed)
     lens = corpus.sizes
     # A recipe needs 3 ingredients so that hiding one still leaves two to query.
     eligible = np.flatnonzero(lens >= 3)
     if not len(eligible):
-        return {"M6_n": 0}
+        return {}
     pick = rng.choice(eligible, min(n_test, len(eligible)), replace=False)
 
     U = unit(W)
@@ -146,7 +146,36 @@ def recipe_completion(W: np.ndarray, corpus, *, n_test: int = 20_000,
             native_ranks.append(
                 _rank_of_target(np.asarray(scorer(ctx), float), target, forbid))
 
-    r = np.concatenate(ranks)
+    out = {"embedding": np.concatenate(ranks)}
+    if pop_ranks:
+        out["popularity"] = np.concatenate(pop_ranks)
+    if native_ranks:
+        out["native"] = np.concatenate(native_ranks)
+    return out
+
+
+def recipe_completion(W: np.ndarray, corpus, *, n_test: int = 20_000,
+                      seed: int = SEED, unigram: np.ndarray | None = None,
+                      scorer=None) -> dict:
+    """Hide one ingredient per recipe and rank all candidates from the rest.
+
+    Context is pooled by summing the unit vectors of the visible ingredients.
+    Summing rather than averaging is deliberate: the candidate ranking is
+    invariant to the scale of the pooled vector, so the two are identical here,
+    and summing avoids a division that would differ across recipe lengths for no
+    effect.
+
+    ``scorer`` is an optional native conditional model. When given, its ranking
+    is reported alongside the embedding one rather than instead of it — the
+    embedding number is what makes families comparable, the native number is
+    what the model would actually serve.
+    """
+    got = completion_ranks(W, corpus, n_test=n_test, seed=seed,
+                           unigram=unigram, scorer=scorer)
+    if not got:
+        return {"M6_n": 0}
+
+    r = got["embedding"]
     out = {
         "M6_n": int(len(r)),
         "M6_recall_at_10": float((r <= 10).mean()),
@@ -154,23 +183,23 @@ def recipe_completion(W: np.ndarray, corpus, *, n_test: int = 20_000,
         "M6_mrr": float((1.0 / r).mean()),
         "M6_median_rank": float(np.median(r)),
     }
-    if pop_ranks:
-        p = np.concatenate(pop_ranks)
+    if "popularity" in got:
+        p = got["popularity"]
         out.update({
             "M6_popularity_recall_at_10": float((p <= 10).mean()),
             "M6_popularity_mrr": float((1.0 / p).mean()),
             "M6_lift_over_popularity":
                 float((r <= 10).mean() - (p <= 10).mean()),
         })
-    if native_ranks:
-        nr = np.concatenate(native_ranks)
+    if "native" in got:
+        nr = got["native"]
         out.update({
             "M6_native_recall_at_10": float((nr <= 10).mean()),
             "M6_native_recall_at_50": float((nr <= 50).mean()),
             "M6_native_mrr": float((1.0 / nr).mean()),
             "M6_native_median_rank": float(np.median(nr)),
         })
-        if pop_ranks:
+        if "popularity" in got:
             out["M6_native_lift_over_popularity"] = float(
-                (nr <= 10).mean() - (np.concatenate(pop_ranks) <= 10).mean())
+                (nr <= 10).mean() - (got["popularity"] <= 10).mean())
     return out

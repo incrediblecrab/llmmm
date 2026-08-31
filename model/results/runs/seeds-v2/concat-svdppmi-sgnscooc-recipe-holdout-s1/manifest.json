@@ -1,0 +1,38 @@
+{
+  "run_id": "concat-svdppmi-sgnscooc-recipe-holdout-s1",
+  "model": "concat",
+  "family": "hybrid",
+  "graph": "ii_graph_rh_train.npz",
+  "seed": 1,
+  "params": {
+    "runs": "svd-ppmi-recipe-holdout-s1,sgns-cooc-recipe-holdout-s1",
+    "d_model": 300,
+    "split": "recipe-holdout"
+  },
+  "created": "2026-08-30T17:20:51-0400",
+  "duration_s": 0.12087392807006836,
+  "shape": [
+    1790,
+    300
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0",
+    "git": "d7aa92a",
+    "corpus_generation": "v2"
+  },
+  "metadata": {
+    "sources": [
+      "svd-ppmi-recipe-holdout-s1",
+      "sgns-cooc-recipe-holdout-s1"
+    ],
+    "weights": "",
+    "d_out": 300,
+    "runs": "svd-ppmi-recipe-holdout-s1,sgns-cooc-recipe-holdout-s1",
+    "d_model": 300,
+    "whiten_each": false
+  }
+}

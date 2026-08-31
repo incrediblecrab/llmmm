@@ -91,9 +91,12 @@ class IIGraph:
         return set((lo * n + hi).tolist())
 
     def dense(self, weight: str = "count") -> np.ndarray:
-        """Symmetric dense matrix. At n=1,790 this is 25 MB — small enough that
-        closed-form factorisation is a seconds-long operation, which is why the
-        factorisation compartment can exist at all."""
+        """Symmetric dense matrix.
+
+        At this vocabulary size it is small enough that closed-form
+        factorisation is a seconds-long operation, which is why the
+        factorisation compartment can exist at all.
+        """
         n = self.n_vocab
         vals = {"count": self.count, "npmi": self.npmi}[weight].astype(np.float64)
         M = np.zeros((n, n), np.float64)

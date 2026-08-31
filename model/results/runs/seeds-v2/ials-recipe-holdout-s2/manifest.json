@@ -1,0 +1,34 @@
+{
+  "run_id": "ials-recipe-holdout-s2",
+  "model": "ials",
+  "family": "recipe_basket",
+  "graph": "ii_graph_rh_train.npz",
+  "seed": 2,
+  "params": {
+    "split": "recipe-holdout"
+  },
+  "created": "2026-08-30T16:19:40-0400",
+  "duration_s": 581.3333630561829,
+  "shape": [
+    1790,
+    128
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0",
+    "git": "d7aa92a",
+    "corpus_generation": "v2"
+  },
+  "metadata": {
+    "n_recipes": 400000,
+    "d_model": 128,
+    "iterations": 15,
+    "reg": 0.05,
+    "alpha": 40.0,
+    "max_recipes": 400000,
+    "chunk": 4096
+  }
+}

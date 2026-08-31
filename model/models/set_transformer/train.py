@@ -68,6 +68,77 @@ def _build(vocab: int, p: dict, device: str):
     return MaskedSetModel().to(device)
 
 
+def _make_scorer(model, mask_id: int, device: str):
+    """Wrap a built model as the conditional scorer the evaluation calls.
+
+    Shared by training and by :func:`restore` so that a rebuilt model scores
+    through exactly the code the reported number came from. A second
+    implementation here would be free to drift, and the whole point of
+    restoring the model is to reproduce a published figure.
+    """
+    import torch
+
+    def scorer(ctx_ids: np.ndarray) -> np.ndarray:
+        """Score every candidate against the encoded context.
+
+        This is the model. Ranking by cosine between the exported token table
+        and a summed context — which is what the embedding path does — measures
+        a bag-of-words shadow of an attention model, so both numbers are
+        reported and this is the one that reflects what would be served.
+        """
+        was_training = model.training
+        model.eval()
+        m, k = ctx_ids.shape
+        padded = np.concatenate(
+            [ctx_ids, np.full((m, 1), mask_id, np.int64)], axis=1)
+        outs = []
+        with torch.no_grad():
+            for i in range(0, m, 4096):
+                chunk = torch.from_numpy(padded[i:i + 4096]).to(device)
+                pad = torch.zeros(chunk.shape, dtype=torch.bool, device=device)
+                pos = torch.full((len(chunk),), k, dtype=torch.long, device=device)
+                outs.append(model(chunk, pad, pos).cpu().numpy())
+        if was_training:
+            model.train()
+        return np.concatenate(outs)
+
+    return scorer
+
+
+def restore(run_dir, vocab: int, device: str = "cpu"):
+    """Rebuild this run's trained scorer from the state tensors it saved.
+
+    The set transformer is the one model whose served scorer is not a matrix
+    that can simply be loaded — it is a forward pass — so anything wanting to
+    re-score it later (a bootstrap over the completion instances, say) would
+    otherwise have to retrain. The weights were already persisted as
+    `extra_arrays`; this is the inverse of that flattening.
+
+    Hyperparameters come from the run's own manifest rather than from
+    ``DEFAULTS``, so a run trained with overrides restores as itself.
+    """
+    import json
+    from pathlib import Path
+
+    import torch
+
+    run_dir = Path(run_dir)
+    meta = json.loads((run_dir / "manifest.json").read_text()).get("metadata", {})
+    p = {**DEFAULTS, **{k: v for k, v in meta.items() if k in DEFAULTS}}
+
+    state = {}
+    for f in sorted(run_dir.glob("state__*.npy")):
+        key = f.name[len("state__"):-len(".npy")].replace("__", ".")
+        state[key] = torch.from_numpy(np.load(f))
+    if not state:
+        raise FileNotFoundError(f"no state__*.npy tensors in {run_dir}")
+
+    model = _build(vocab, p, device)
+    model.load_state_dict(state)
+    model.eval()
+    return _make_scorer(model, vocab, device)
+
+
 @register(name="masked-set", family="set_transformer", cost_hint="heavy",
           defaults=DEFAULTS, tags=("recipes", "conditional", "transformer"),
           requires=("recipes",),
@@ -134,27 +205,7 @@ def train_masked_set(ctx: TrainContext) -> TrainResult:
     W = model.tok.weight.detach().cpu().numpy()[:vocab]
     state = {k: v.cpu().numpy() for k, v in model.state_dict().items()}
 
-    def scorer(ctx_ids: np.ndarray) -> np.ndarray:
-        """Score every candidate against the encoded context.
-
-        This is the model. Ranking by cosine between the exported token table
-        and a summed context — which is what the embedding path does — measures
-        a bag-of-words shadow of an attention model, so both numbers are
-        reported and this is the one that reflects what would be served.
-        """
-        model.eval()
-        m, k = ctx_ids.shape
-        padded = np.concatenate(
-            [ctx_ids, np.full((m, 1), mask_id, np.int64)], axis=1)
-        outs = []
-        with torch.no_grad():
-            for i in range(0, m, 4096):
-                chunk = torch.from_numpy(padded[i:i + 4096]).to(device)
-                pad = torch.zeros(chunk.shape, dtype=torch.bool, device=device)
-                pos = torch.full((len(chunk),), k, dtype=torch.long, device=device)
-                outs.append(model(chunk, pad, pos).cpu().numpy())
-        model.train()
-        return np.concatenate(outs)
+    scorer = _make_scorer(model, mask_id, device)
 
     return TrainResult(
         embedding=W,

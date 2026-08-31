@@ -1,0 +1,46 @@
+{
+  "run_id": "masked-set-recipe-holdout-s3",
+  "model": "masked-set",
+  "family": "set_transformer",
+  "graph": "ii_graph_rh_train.npz",
+  "seed": 3,
+  "params": {
+    "split": "recipe-holdout"
+  },
+  "created": "2026-08-30T17:14:59-0400",
+  "duration_s": 326.12251687049866,
+  "shape": [
+    1790,
+    256
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0",
+    "git": "d7aa92a",
+    "corpus_generation": "v2"
+  },
+  "metadata": {
+    "loss_history": [
+      4.318378004716058,
+      3.791830124998261,
+      3.689510866946972
+    ],
+    "n_recipes": 600000,
+    "perplexity": 40.025264488643224,
+    "d_model": 256,
+    "n_heads": 4,
+    "n_layers": 2,
+    "ff_mult": 2,
+    "dropout": 0.1,
+    "epochs": 3,
+    "lr": 0.001,
+    "batch_size": 512,
+    "max_recipes": 600000,
+    "max_len": 32,
+    "tie_output": true,
+    "warmup": 500
+  }
+}

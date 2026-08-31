@@ -1,0 +1,1794 @@
+experiment seeds-v2  —  80 trials  —  corpus v2
+  The same sixteen models as all-v2, across five seeds. This exists because every stored run in the repository before it was seed 0, which means the leaderboard — and the claim that nine of sixteen models score below a popularity baseline — rested on a single draw of the random number generator.
+The question is not whether the individual numbers move. It is whether the *ranking* moves, because the ranking is what every statement about these models actually asserts. A model whose rank swings by five places between seeds is not "seventh best"; it is unresolved, and saying otherwise is the same error as quoting an absolute delta across two different test sets.
+Seeds are named rather than counted. "Five seeds" is not reproducible.
+Note the {seed} and {split} placeholders below. Written literally as svd-ppmi-recipe-holdout-s0, a blend would consume seed 0's parents at every seed, and the sweep would report five identical blend rows while appearing to measure variance. That failure is silent, which is why the templating exists.
+
+
+  svd-ppmi-recipe-holdout-s0
+  svd-ppmi-recipe-holdout-s1
+  svd-ppmi-recipe-holdout-s2
+  svd-ppmi-recipe-holdout-s3
+  svd-ppmi-recipe-holdout-s4
+  chem-svd-recipe-holdout-s0
+  chem-svd-recipe-holdout-s1
+  chem-svd-recipe-holdout-s2
+  chem-svd-recipe-holdout-s3
+  chem-svd-recipe-holdout-s4
+  sgc-recipe-holdout-s0
+  sgc-recipe-holdout-s1
+  sgc-recipe-holdout-s2
+  sgc-recipe-holdout-s3
+  sgc-recipe-holdout-s4
+  ease-recipe-holdout-s0
+  ease-recipe-holdout-s1
+  ease-recipe-holdout-s2
+  ease-recipe-holdout-s3
+  ease-recipe-holdout-s4
+  glove-recipe-holdout-s0
+  glove-recipe-holdout-s1
+  glove-recipe-holdout-s2
+  glove-recipe-holdout-s3
+  glove-recipe-holdout-s4
+  lightgcn-recipe-holdout-s0
+  lightgcn-recipe-holdout-s1
+  lightgcn-recipe-holdout-s2
+  lightgcn-recipe-holdout-s3
+  lightgcn-recipe-holdout-s4
+  sgns-cooc-recipe-holdout-s0
+  sgns-cooc-recipe-holdout-s1
+  sgns-cooc-recipe-holdout-s2
+  sgns-cooc-recipe-holdout-s3
+  sgns-cooc-recipe-holdout-s4
+  sgns-chem-recipe-holdout-s0
+  sgns-chem-recipe-holdout-s1
+  sgns-chem-recipe-holdout-s2
+  sgns-chem-recipe-holdout-s3
+  sgns-chem-recipe-holdout-s4
+  sgns-core-recipe-holdout-s0
+  sgns-core-recipe-holdout-s1
+  sgns-core-recipe-holdout-s2
+  sgns-core-recipe-holdout-s3
+  sgns-core-recipe-holdout-s4
+  ials-recipe-holdout-s0
+  ials-recipe-holdout-s1
+  ials-recipe-holdout-s2
+  ials-recipe-holdout-s3
+  ials-recipe-holdout-s4
+  item2vec-recipe-holdout-s0
+  item2vec-recipe-holdout-s1
+  item2vec-recipe-holdout-s2
+  item2vec-recipe-holdout-s3
+  item2vec-recipe-holdout-s4
+  masked-set-recipe-holdout-s0
+  masked-set-recipe-holdout-s1
+  masked-set-recipe-holdout-s2
+  masked-set-recipe-holdout-s3
+  masked-set-recipe-holdout-s4
+  text-embed-recipe-holdout-s0
+  text-embed-recipe-holdout-s1
+  text-embed-recipe-holdout-s2
+  text-embed-recipe-holdout-s3
+  text-embed-recipe-holdout-s4
+  text-aligned-svdppmi-recipe-holdout-s0   after svd-ppmi-recipe-holdout-s0
+  text-aligned-svdppmi-recipe-holdout-s1   after svd-ppmi-recipe-holdout-s1
+  text-aligned-svdppmi-recipe-holdout-s2   after svd-ppmi-recipe-holdout-s2
+  text-aligned-svdppmi-recipe-holdout-s3   after svd-ppmi-recipe-holdout-s3
+  text-aligned-svdppmi-recipe-holdout-s4   after svd-ppmi-recipe-holdout-s4
+  concat-svdppmi-sgnscooc-recipe-holdout-s0   after sgns-cooc-recipe-holdout-s0, svd-ppmi-recipe-holdout-s0
+  concat-svdppmi-sgnscooc-recipe-holdout-s1   after sgns-cooc-recipe-holdout-s1, svd-ppmi-recipe-holdout-s1
+  concat-svdppmi-sgnscooc-recipe-holdout-s2   after sgns-cooc-recipe-holdout-s2, svd-ppmi-recipe-holdout-s2
+  concat-svdppmi-sgnscooc-recipe-holdout-s3   after sgns-cooc-recipe-holdout-s3, svd-ppmi-recipe-holdout-s3
+  concat-svdppmi-sgnscooc-recipe-holdout-s4   after sgns-cooc-recipe-holdout-s4, svd-ppmi-recipe-holdout-s4
+  residual-svdppmi-sgnscooc-recipe-holdout-s0   after sgns-cooc-recipe-holdout-s0, svd-ppmi-recipe-holdout-s0
+  residual-svdppmi-sgnscooc-recipe-holdout-s1   after sgns-cooc-recipe-holdout-s1, svd-ppmi-recipe-holdout-s1
+  residual-svdppmi-sgnscooc-recipe-holdout-s2   after sgns-cooc-recipe-holdout-s2, svd-ppmi-recipe-holdout-s2
+  residual-svdppmi-sgnscooc-recipe-holdout-s3   after sgns-cooc-recipe-holdout-s3, svd-ppmi-recipe-holdout-s3
+  residual-svdppmi-sgnscooc-recipe-holdout-s4   after sgns-cooc-recipe-holdout-s4, svd-ppmi-recipe-holdout-s4
+
+[1/80] svd-ppmi-recipe-holdout-s0
+  svd-ppmi-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      210.4  / 300
+    M2 triplet acc [broad ]    0.7708  +/-0.0058  (chance 0.50)
+    M2 triplet acc [strict]    0.8674  +/-0.0047  (chance 0.50)
+    M3 recall@10   [broad ]    0.1146
+    M3 recall@10   [strict]    0.2275
+    M4 held-out link AUC       0.6227  +/-0.0064  (chance 0.50)
+    M5 max PC-freq corr        0.1778
+    M5 top20 freq jaccard      0.0256
+    M6 completion recall@10    0.4505   mrr 0.2321   n=20,000
+       vs popularity baseline   0.3650   lift +0.0855
+
+[2/80] svd-ppmi-recipe-holdout-s1
+  svd-ppmi-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio      210.4  / 300
+    M2 triplet acc [broad ]    0.7708  +/-0.0058  (chance 0.50)
+    M2 triplet acc [strict]    0.8674  +/-0.0047  (chance 0.50)
+    M3 recall@10   [broad ]    0.1146
+    M3 recall@10   [strict]    0.2275
+    M4 held-out link AUC       0.6227  +/-0.0064  (chance 0.50)
+    M5 max PC-freq corr        0.1778
+    M5 top20 freq jaccard      0.0256
+    M6 completion recall@10    0.4505   mrr 0.2321   n=20,000
+       vs popularity baseline   0.3650   lift +0.0855
+
+[3/80] svd-ppmi-recipe-holdout-s2
+  svd-ppmi-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio      210.4  / 300
+    M2 triplet acc [broad ]    0.7708  +/-0.0058  (chance 0.50)
+    M2 triplet acc [strict]    0.8674  +/-0.0047  (chance 0.50)
+    M3 recall@10   [broad ]    0.1146
+    M3 recall@10   [strict]    0.2275
+    M4 held-out link AUC       0.6227  +/-0.0064  (chance 0.50)
+    M5 max PC-freq corr        0.1778
+    M5 top20 freq jaccard      0.0256
+    M6 completion recall@10    0.4505   mrr 0.2321   n=20,000
+       vs popularity baseline   0.3650   lift +0.0855
+
+[4/80] svd-ppmi-recipe-holdout-s3
+  svd-ppmi-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio      210.4  / 300
+    M2 triplet acc [broad ]    0.7708  +/-0.0058  (chance 0.50)
+    M2 triplet acc [strict]    0.8674  +/-0.0047  (chance 0.50)
+    M3 recall@10   [broad ]    0.1146
+    M3 recall@10   [strict]    0.2275
+    M4 held-out link AUC       0.6227  +/-0.0064  (chance 0.50)
+    M5 max PC-freq corr        0.1778
+    M5 top20 freq jaccard      0.0256
+    M6 completion recall@10    0.4505   mrr 0.2321   n=20,000
+       vs popularity baseline   0.3650   lift +0.0855
+
+[5/80] svd-ppmi-recipe-holdout-s4
+  svd-ppmi-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio      210.4  / 300
+    M2 triplet acc [broad ]    0.7708  +/-0.0058  (chance 0.50)
+    M2 triplet acc [strict]    0.8674  +/-0.0047  (chance 0.50)
+    M3 recall@10   [broad ]    0.1146
+    M3 recall@10   [strict]    0.2275
+    M4 held-out link AUC       0.6227  +/-0.0064  (chance 0.50)
+    M5 max PC-freq corr        0.1778
+    M5 top20 freq jaccard      0.0256
+    M6 completion recall@10    0.4505   mrr 0.2321   n=20,000
+       vs popularity baseline   0.3650   lift +0.0855
+
+[6/80] chem-svd-recipe-holdout-s0
+  chem-svd-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      140.4  / 300
+    M2 triplet acc [broad ]    0.5824  +/-0.0068  (chance 0.50)
+    M2 triplet acc [strict]    0.6483  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0367
+    M3 recall@10   [strict]    0.0811
+    M4 held-out link AUC       0.5019  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.3878
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0152   mrr 0.0122   n=20,000
+       vs popularity baseline   0.3650   lift -0.3498
+
+[7/80] chem-svd-recipe-holdout-s1
+  chem-svd-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio      140.4  / 300
+    M2 triplet acc [broad ]    0.5824  +/-0.0068  (chance 0.50)
+    M2 triplet acc [strict]    0.6483  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0367
+    M3 recall@10   [strict]    0.0811
+    M4 held-out link AUC       0.5019  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.3878
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0152   mrr 0.0122   n=20,000
+       vs popularity baseline   0.3650   lift -0.3498
+
+[8/80] chem-svd-recipe-holdout-s2
+  chem-svd-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio      140.4  / 300
+    M2 triplet acc [broad ]    0.5824  +/-0.0068  (chance 0.50)
+    M2 triplet acc [strict]    0.6483  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0367
+    M3 recall@10   [strict]    0.0811
+    M4 held-out link AUC       0.5019  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.3878
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0152   mrr 0.0122   n=20,000
+       vs popularity baseline   0.3650   lift -0.3498
+
+[9/80] chem-svd-recipe-holdout-s3
+  chem-svd-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio      140.4  / 300
+    M2 triplet acc [broad ]    0.5824  +/-0.0068  (chance 0.50)
+    M2 triplet acc [strict]    0.6483  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0367
+    M3 recall@10   [strict]    0.0811
+    M4 held-out link AUC       0.5019  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.3878
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0152   mrr 0.0122   n=20,000
+       vs popularity baseline   0.3650   lift -0.3498
+
+[10/80] chem-svd-recipe-holdout-s4
+  chem-svd-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio      140.4  / 300
+    M2 triplet acc [broad ]    0.5824  +/-0.0068  (chance 0.50)
+    M2 triplet acc [strict]    0.6483  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0367
+    M3 recall@10   [strict]    0.0811
+    M4 held-out link AUC       0.5019  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.3878
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0152   mrr 0.0122   n=20,000
+       vs popularity baseline   0.3650   lift -0.3498
+
+[11/80] sgc-recipe-holdout-s0
+  sgc-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      244.9  / 300
+    M2 triplet acc [broad ]    0.7772  +/-0.0058  (chance 0.50)
+    M2 triplet acc [strict]    0.8401  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.0640
+    M3 recall@10   [strict]    0.1237
+    M4 held-out link AUC       0.6806  +/-0.0062  (chance 0.50)
+    M5 max PC-freq corr        0.0760
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0777   mrr 0.0376   n=20,000
+       vs popularity baseline   0.3650   lift -0.2873
+
+[12/80] sgc-recipe-holdout-s1
+  sgc-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio      244.9  / 300
+    M2 triplet acc [broad ]    0.7772  +/-0.0058  (chance 0.50)
+    M2 triplet acc [strict]    0.8401  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.0640
+    M3 recall@10   [strict]    0.1237
+    M4 held-out link AUC       0.6806  +/-0.0062  (chance 0.50)
+    M5 max PC-freq corr        0.0760
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0777   mrr 0.0376   n=20,000
+       vs popularity baseline   0.3650   lift -0.2873
+
+[13/80] sgc-recipe-holdout-s2
+  sgc-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio      244.9  / 300
+    M2 triplet acc [broad ]    0.7772  +/-0.0058  (chance 0.50)
+    M2 triplet acc [strict]    0.8401  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.0640
+    M3 recall@10   [strict]    0.1237
+    M4 held-out link AUC       0.6806  +/-0.0062  (chance 0.50)
+    M5 max PC-freq corr        0.0760
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0777   mrr 0.0376   n=20,000
+       vs popularity baseline   0.3650   lift -0.2873
+
+[14/80] sgc-recipe-holdout-s3
+  sgc-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio      244.9  / 300
+    M2 triplet acc [broad ]    0.7772  +/-0.0058  (chance 0.50)
+    M2 triplet acc [strict]    0.8401  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.0640
+    M3 recall@10   [strict]    0.1237
+    M4 held-out link AUC       0.6806  +/-0.0062  (chance 0.50)
+    M5 max PC-freq corr        0.0760
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0777   mrr 0.0376   n=20,000
+       vs popularity baseline   0.3650   lift -0.2873
+
+[15/80] sgc-recipe-holdout-s4
+  sgc-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio      244.9  / 300
+    M2 triplet acc [broad ]    0.7772  +/-0.0058  (chance 0.50)
+    M2 triplet acc [strict]    0.8401  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.0640
+    M3 recall@10   [strict]    0.1237
+    M4 held-out link AUC       0.6806  +/-0.0062  (chance 0.50)
+    M5 max PC-freq corr        0.0760
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0777   mrr 0.0376   n=20,000
+       vs popularity baseline   0.3650   lift -0.2873
+
+[16/80] ease-recipe-holdout-s0
+  gram matrix over 3,257,401 recipes
+  d=300  spectrum retained 46.8%
+  ease-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      158.3  / 300
+    M2 triplet acc [broad ]    0.6968  +/-0.0064  (chance 0.50)
+    M2 triplet acc [strict]    0.7775  +/-0.0058  (chance 0.50)
+    M3 recall@10   [broad ]    0.1414
+    M3 recall@10   [strict]    0.1995
+    M4 held-out link AUC       0.5598  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1550
+    M5 top20 freq jaccard      0.2121
+    M6 completion recall@10    0.1422   mrr 0.0693   n=20,000
+       vs popularity baseline   0.3650   lift -0.2228
+       native scorer            0.5872   mrr 0.3389   lift +0.2222
+
+[17/80] ease-recipe-holdout-s1
+  gram matrix over 3,257,401 recipes
+  d=300  spectrum retained 46.8%
+  ease-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio      158.3  / 300
+    M2 triplet acc [broad ]    0.6968  +/-0.0064  (chance 0.50)
+    M2 triplet acc [strict]    0.7775  +/-0.0058  (chance 0.50)
+    M3 recall@10   [broad ]    0.1414
+    M3 recall@10   [strict]    0.1995
+    M4 held-out link AUC       0.5598  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1550
+    M5 top20 freq jaccard      0.2121
+    M6 completion recall@10    0.1422   mrr 0.0693   n=20,000
+       vs popularity baseline   0.3650   lift -0.2228
+       native scorer            0.5872   mrr 0.3389   lift +0.2222
+
+[18/80] ease-recipe-holdout-s2
+  gram matrix over 3,257,401 recipes
+  d=300  spectrum retained 46.8%
+  ease-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio      158.3  / 300
+    M2 triplet acc [broad ]    0.6968  +/-0.0064  (chance 0.50)
+    M2 triplet acc [strict]    0.7775  +/-0.0058  (chance 0.50)
+    M3 recall@10   [broad ]    0.1414
+    M3 recall@10   [strict]    0.1995
+    M4 held-out link AUC       0.5598  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1550
+    M5 top20 freq jaccard      0.2121
+    M6 completion recall@10    0.1422   mrr 0.0693   n=20,000
+       vs popularity baseline   0.3650   lift -0.2228
+       native scorer            0.5872   mrr 0.3389   lift +0.2222
+
+[19/80] ease-recipe-holdout-s3
+  gram matrix over 3,257,401 recipes
+  d=300  spectrum retained 46.8%
+  ease-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio      158.3  / 300
+    M2 triplet acc [broad ]    0.6968  +/-0.0064  (chance 0.50)
+    M2 triplet acc [strict]    0.7775  +/-0.0058  (chance 0.50)
+    M3 recall@10   [broad ]    0.1414
+    M3 recall@10   [strict]    0.1995
+    M4 held-out link AUC       0.5598  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1550
+    M5 top20 freq jaccard      0.2121
+    M6 completion recall@10    0.1422   mrr 0.0693   n=20,000
+       vs popularity baseline   0.3650   lift -0.2228
+       native scorer            0.5872   mrr 0.3389   lift +0.2222
+
+[20/80] ease-recipe-holdout-s4
+  gram matrix over 3,257,401 recipes
+  d=300  spectrum retained 46.8%
+  ease-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio      158.3  / 300
+    M2 triplet acc [broad ]    0.6968  +/-0.0064  (chance 0.50)
+    M2 triplet acc [strict]    0.7775  +/-0.0058  (chance 0.50)
+    M3 recall@10   [broad ]    0.1414
+    M3 recall@10   [strict]    0.1995
+    M4 held-out link AUC       0.5598  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1550
+    M5 top20 freq jaccard      0.2121
+    M6 completion recall@10    0.1422   mrr 0.0693   n=20,000
+       vs popularity baseline   0.3650   lift -0.2228
+       native scorer            0.5872   mrr 0.3389   lift +0.2222
+
+[21/80] glove-recipe-holdout-s0
+  glove epoch 1/200  loss 4,409,316.3
+  glove epoch 51/200  loss 82,071.2
+  glove epoch 101/200  loss 46,084.9
+  glove epoch 151/200  loss 32,586.4
+  glove epoch 200/200  loss 25,492.0
+  glove-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio       14.0  / 300
+    M2 triplet acc [broad ]    0.8350  +/-0.0051  (chance 0.50)
+    M2 triplet acc [strict]    0.8914  +/-0.0043  (chance 0.50)
+    M3 recall@10   [broad ]    0.1170
+    M3 recall@10   [strict]    0.2032
+    M4 held-out link AUC       0.6611  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.9241
+    M5 top20 freq jaccard      0.1429
+    M6 completion recall@10    0.2211   mrr 0.0842   n=20,000
+       vs popularity baseline   0.3650   lift -0.1439
+
+[22/80] glove-recipe-holdout-s1
+  glove epoch 1/200  loss 4,409,316.3
+  glove epoch 51/200  loss 81,967.2
+  glove epoch 101/200  loss 45,990.7
+  glove epoch 151/200  loss 32,916.3
+  glove epoch 200/200  loss 25,879.7
+  glove-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio       13.8  / 300
+    M2 triplet acc [broad ]    0.8362  +/-0.0051  (chance 0.50)
+    M2 triplet acc [strict]    0.8934  +/-0.0043  (chance 0.50)
+    M3 recall@10   [broad ]    0.1173
+    M3 recall@10   [strict]    0.2057
+    M4 held-out link AUC       0.6644  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.9238
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.2130   mrr 0.0838   n=20,000
+       vs popularity baseline   0.3650   lift -0.1520
+
+[23/80] glove-recipe-holdout-s2
+  glove epoch 1/200  loss 4,409,316.3
+  glove epoch 51/200  loss 81,047.1
+  glove epoch 101/200  loss 46,024.0
+  glove epoch 151/200  loss 33,137.3
+  glove epoch 200/200  loss 25,967.2
+  glove-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio       13.8  / 300
+    M2 triplet acc [broad ]    0.8371  +/-0.0051  (chance 0.50)
+    M2 triplet acc [strict]    0.8929  +/-0.0043  (chance 0.50)
+    M3 recall@10   [broad ]    0.1176
+    M3 recall@10   [strict]    0.2057
+    M4 held-out link AUC       0.6630  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.9230
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.2212   mrr 0.0857   n=20,000
+       vs popularity baseline   0.3650   lift -0.1438
+
+[24/80] glove-recipe-holdout-s3
+  glove epoch 1/200  loss 4,409,316.0
+  glove epoch 51/200  loss 82,078.0
+  glove epoch 101/200  loss 46,137.8
+  glove epoch 151/200  loss 32,969.7
+  glove epoch 200/200  loss 25,750.1
+  glove-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio       14.0  / 300
+    M2 triplet acc [broad ]    0.8358  +/-0.0051  (chance 0.50)
+    M2 triplet acc [strict]    0.8926  +/-0.0043  (chance 0.50)
+    M3 recall@10   [broad ]    0.1159
+    M3 recall@10   [strict]    0.2031
+    M4 held-out link AUC       0.6613  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.9248
+    M5 top20 freq jaccard      0.1429
+    M6 completion recall@10    0.2163   mrr 0.0857   n=20,000
+       vs popularity baseline   0.3650   lift -0.1487
+
+[25/80] glove-recipe-holdout-s4
+  glove epoch 1/200  loss 4,409,316.2
+  glove epoch 51/200  loss 82,972.3
+  glove epoch 101/200  loss 46,695.7
+  glove epoch 151/200  loss 33,453.4
+  glove epoch 200/200  loss 26,213.5
+  glove-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio       13.7  / 300
+    M2 triplet acc [broad ]    0.8363  +/-0.0051  (chance 0.50)
+    M2 triplet acc [strict]    0.8929  +/-0.0043  (chance 0.50)
+    M3 recall@10   [broad ]    0.1148
+    M3 recall@10   [strict]    0.2051
+    M4 held-out link AUC       0.6624  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.9251
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.2181   mrr 0.0854   n=20,000
+       vs popularity baseline   0.3650   lift -0.1469
+
+[26/80] lightgcn-recipe-holdout-s0
+  epoch   1/60  loss 0.5613  0s
+  epoch  11/60  loss 0.2978  3s
+  epoch  21/60  loss 0.2734  5s
+  epoch  31/60  loss 0.2612  7s
+  epoch  41/60  loss 0.2537  10s
+  epoch  51/60  loss 0.2463  12s
+  epoch  60/60  loss 0.2448  14s
+  lightgcn-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio        4.0  / 300
+    M2 triplet acc [broad ]    0.7470  +/-0.0060  (chance 0.50)
+    M2 triplet acc [strict]    0.7973  +/-0.0056  (chance 0.50)
+    M3 recall@10   [broad ]    0.0702
+    M3 recall@10   [strict]    0.1155
+    M4 held-out link AUC       0.7565  +/-0.0057  (chance 0.50)
+    M5 max PC-freq corr        0.6804
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.1837   mrr 0.0817   n=20,000
+       vs popularity baseline   0.3650   lift -0.1813
+
+[27/80] lightgcn-recipe-holdout-s1
+  epoch   1/60  loss 0.5608  0s
+  epoch  11/60  loss 0.2961  3s
+  epoch  21/60  loss 0.2707  5s
+  epoch  31/60  loss 0.2581  7s
+  epoch  41/60  loss 0.2572  10s
+  epoch  51/60  loss 0.2491  12s
+  epoch  60/60  loss 0.2459  14s
+  lightgcn-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio        4.0  / 300
+    M2 triplet acc [broad ]    0.7472  +/-0.0060  (chance 0.50)
+    M2 triplet acc [strict]    0.7976  +/-0.0056  (chance 0.50)
+    M3 recall@10   [broad ]    0.0722
+    M3 recall@10   [strict]    0.1026
+    M4 held-out link AUC       0.7529  +/-0.0057  (chance 0.50)
+    M5 max PC-freq corr        0.6792
+    M5 top20 freq jaccard      0.0811
+    M6 completion recall@10    0.1860   mrr 0.0848   n=20,000
+       vs popularity baseline   0.3650   lift -0.1790
+
+[28/80] lightgcn-recipe-holdout-s2
+  epoch   1/60  loss 0.5631  0s
+  epoch  11/60  loss 0.3001  3s
+  epoch  21/60  loss 0.2760  5s
+  epoch  31/60  loss 0.2627  7s
+  epoch  41/60  loss 0.2575  10s
+  epoch  51/60  loss 0.2474  12s
+  epoch  60/60  loss 0.2472  14s
+  lightgcn-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio        4.1  / 300
+    M2 triplet acc [broad ]    0.7461  +/-0.0060  (chance 0.50)
+    M2 triplet acc [strict]    0.7943  +/-0.0056  (chance 0.50)
+    M3 recall@10   [broad ]    0.0673
+    M3 recall@10   [strict]    0.0999
+    M4 held-out link AUC       0.7506  +/-0.0058  (chance 0.50)
+    M5 max PC-freq corr        0.6781
+    M5 top20 freq jaccard      0.0526
+    M6 completion recall@10    0.1887   mrr 0.0856   n=20,000
+       vs popularity baseline   0.3650   lift -0.1763
+
+[29/80] lightgcn-recipe-holdout-s3
+  epoch   1/60  loss 0.5612  0s
+  epoch  11/60  loss 0.3010  3s
+  epoch  21/60  loss 0.2732  5s
+  epoch  31/60  loss 0.2598  8s
+  epoch  41/60  loss 0.2531  10s
+  epoch  51/60  loss 0.2497  12s
+  epoch  60/60  loss 0.2443  15s
+  lightgcn-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio        3.9  / 300
+    M2 triplet acc [broad ]    0.7403  +/-0.0061  (chance 0.50)
+    M2 triplet acc [strict]    0.7941  +/-0.0056  (chance 0.50)
+    M3 recall@10   [broad ]    0.0689
+    M3 recall@10   [strict]    0.1061
+    M4 held-out link AUC       0.7578  +/-0.0057  (chance 0.50)
+    M5 max PC-freq corr        0.6815
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.1780   mrr 0.0780   n=20,000
+       vs popularity baseline   0.3650   lift -0.1870
+
+[30/80] lightgcn-recipe-holdout-s4
+  epoch   1/60  loss 0.5625  0s
+  epoch  11/60  loss 0.2990  3s
+  epoch  21/60  loss 0.2714  5s
+  epoch  31/60  loss 0.2607  8s
+  epoch  41/60  loss 0.2515  10s
+  epoch  51/60  loss 0.2498  12s
+  epoch  60/60  loss 0.2457  14s
+  lightgcn-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio        4.0  / 300
+    M2 triplet acc [broad ]    0.7418  +/-0.0061  (chance 0.50)
+    M2 triplet acc [strict]    0.7959  +/-0.0056  (chance 0.50)
+    M3 recall@10   [broad ]    0.0728
+    M3 recall@10   [strict]    0.1111
+    M4 held-out link AUC       0.7578  +/-0.0057  (chance 0.50)
+    M5 max PC-freq corr        0.6787
+    M5 top20 freq jaccard      0.0256
+    M6 completion recall@10    0.1792   mrr 0.0858   n=20,000
+       vs popularity baseline   0.3650   lift -0.1858
+
+[31/80] sgns-cooc-recipe-holdout-s0
+  epoch  1/20  loss 2.2971  walks 155,300  windows 6,988,500  58s
+  epoch  2/20  loss 2.0653  walks 155,300  windows 6,988,500  116s
+  epoch  3/20  loss 2.0596  walks 155,300  windows 6,988,500  174s
+  epoch  4/20  loss 2.0565  walks 155,300  windows 6,988,500  232s
+  epoch  5/20  loss 2.0553  walks 155,300  windows 6,988,500  291s
+  epoch  6/20  loss 2.0540  walks 155,300  windows 6,988,500  349s
+  epoch  7/20  loss 2.0533  walks 155,300  windows 6,988,500  408s
+  epoch  8/20  loss 2.0536  walks 155,300  windows 6,988,500  467s
+  epoch  9/20  loss 2.0528  walks 155,300  windows 6,988,500  531s
+  epoch 10/20  loss 2.0526  walks 155,300  windows 6,988,500  602s
+  epoch 11/20  loss 2.0525  walks 155,300  windows 6,988,500  667s
+  epoch 12/20  loss 2.0517  walks 155,300  windows 6,988,500  732s
+  epoch 13/20  loss 2.0525  walks 155,300  windows 6,988,500  794s
+  epoch 14/20  loss 2.0523  walks 155,300  windows 6,988,500  854s
+  epoch 15/20  loss 2.0523  walks 155,300  windows 6,988,500  915s
+  epoch 16/20  loss 2.0517  walks 155,300  windows 6,988,500  982s
+  epoch 17/20  loss 2.0523  walks 155,300  windows 6,988,500  1046s
+  epoch 18/20  loss 2.0516  walks 155,300  windows 6,988,500  1111s
+  epoch 19/20  loss 2.0516  walks 155,300  windows 6,988,500  1169s
+  epoch 20/20  loss 2.0515  walks 155,300  windows 6,988,500  1227s
+  sgns-cooc-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      112.5  / 300
+    M2 triplet acc [broad ]    0.8674  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9187  +/-0.0038  (chance 0.50)
+    M3 recall@10   [broad ]    0.1449
+    M3 recall@10   [strict]    0.2470
+    M4 held-out link AUC       0.7356  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.3811
+    M5 top20 freq jaccard      0.1429
+    M6 completion recall@10    0.3885   mrr 0.1953   n=20,000
+       vs popularity baseline   0.3650   lift +0.0235
+
+[32/80] sgns-cooc-recipe-holdout-s1
+  epoch  1/20  loss 2.2957  walks 155,300  windows 6,988,500  58s
+  epoch  2/20  loss 2.0653  walks 155,300  windows 6,988,500  116s
+  epoch  3/20  loss 2.0596  walks 155,300  windows 6,988,500  174s
+  epoch  4/20  loss 2.0570  walks 155,300  windows 6,988,500  232s
+  epoch  5/20  loss 2.0554  walks 155,300  windows 6,988,500  290s
+  epoch  6/20  loss 2.0541  walks 155,300  windows 6,988,500  348s
+  epoch  7/20  loss 2.0536  walks 155,300  windows 6,988,500  406s
+  epoch  8/20  loss 2.0531  walks 155,300  windows 6,988,500  464s
+  epoch  9/20  loss 2.0528  walks 155,300  windows 6,988,500  522s
+  epoch 10/20  loss 2.0530  walks 155,300  windows 6,988,500  579s
+  epoch 11/20  loss 2.0524  walks 155,300  windows 6,988,500  635s
+  epoch 12/20  loss 2.0525  walks 155,300  windows 6,988,500  690s
+  epoch 13/20  loss 2.0524  walks 155,300  windows 6,988,500  745s
+  epoch 14/20  loss 2.0521  walks 155,300  windows 6,988,500  800s
+  epoch 15/20  loss 2.0512  walks 155,300  windows 6,988,500  856s
+  epoch 16/20  loss 2.0525  walks 155,300  windows 6,988,500  912s
+  epoch 17/20  loss 2.0517  walks 155,300  windows 6,988,500  968s
+  epoch 18/20  loss 2.0516  walks 155,300  windows 6,988,500  1024s
+  epoch 19/20  loss 2.0523  walks 155,300  windows 6,988,500  1081s
+  epoch 20/20  loss 2.0515  walks 155,300  windows 6,988,500  1138s
+  sgns-cooc-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio      113.1  / 300
+    M2 triplet acc [broad ]    0.8668  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9209  +/-0.0037  (chance 0.50)
+    M3 recall@10   [broad ]    0.1466
+    M3 recall@10   [strict]    0.2561
+    M4 held-out link AUC       0.7342  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4298
+    M5 top20 freq jaccard      0.2500
+    M6 completion recall@10    0.4034   mrr 0.2015   n=20,000
+       vs popularity baseline   0.3650   lift +0.0384
+
+[33/80] sgns-cooc-recipe-holdout-s2
+  epoch  1/20  loss 2.2993  walks 155,300  windows 6,988,500  57s
+  epoch  2/20  loss 2.0656  walks 155,300  windows 6,988,500  113s
+  epoch  3/20  loss 2.0591  walks 155,300  windows 6,988,500  169s
+  epoch  4/20  loss 2.0564  walks 155,300  windows 6,988,500  225s
+  epoch  5/20  loss 2.0564  walks 155,300  windows 6,988,500  281s
+  epoch  6/20  loss 2.0541  walks 155,300  windows 6,988,500  337s
+  epoch  7/20  loss 2.0533  walks 155,300  windows 6,988,500  393s
+  epoch  8/20  loss 2.0533  walks 155,300  windows 6,988,500  450s
+  epoch  9/20  loss 2.0528  walks 155,300  windows 6,988,500  504s
+  epoch 10/20  loss 2.0527  walks 155,300  windows 6,988,500  559s
+  epoch 11/20  loss 2.0521  walks 155,300  windows 6,988,500  614s
+  epoch 12/20  loss 2.0524  walks 155,300  windows 6,988,500  669s
+  epoch 13/20  loss 2.0519  walks 155,300  windows 6,988,500  724s
+  epoch 14/20  loss 2.0520  walks 155,300  windows 6,988,500  782s
+  epoch 15/20  loss 2.0524  walks 155,300  windows 6,988,500  842s
+  epoch 16/20  loss 2.0523  walks 155,300  windows 6,988,500  904s
+  epoch 17/20  loss 2.0518  walks 155,300  windows 6,988,500  964s
+  epoch 18/20  loss 2.0521  walks 155,300  windows 6,988,500  1022s
+  epoch 19/20  loss 2.0516  walks 155,300  windows 6,988,500  1077s
+  epoch 20/20  loss 2.0519  walks 155,300  windows 6,988,500  1131s
+  sgns-cooc-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio      108.4  / 300
+    M2 triplet acc [broad ]    0.8643  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9187  +/-0.0038  (chance 0.50)
+    M3 recall@10   [broad ]    0.1438
+    M3 recall@10   [strict]    0.2467
+    M4 held-out link AUC       0.7328  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4004
+    M5 top20 freq jaccard      0.2500
+    M6 completion recall@10    0.4002   mrr 0.1987   n=20,000
+       vs popularity baseline   0.3650   lift +0.0352
+
+[34/80] sgns-cooc-recipe-holdout-s3
+  epoch  1/20  loss 2.2988  walks 155,300  windows 6,988,500  55s
+  epoch  2/20  loss 2.0653  walks 155,300  windows 6,988,500  111s
+  epoch  3/20  loss 2.0594  walks 155,300  windows 6,988,500  166s
+  epoch  4/20  loss 2.0567  walks 155,300  windows 6,988,500  220s
+  epoch  5/20  loss 2.0551  walks 155,300  windows 6,988,500  274s
+  epoch  6/20  loss 2.0543  walks 155,300  windows 6,988,500  329s
+  epoch  7/20  loss 2.0534  walks 155,300  windows 6,988,500  383s
+  epoch  8/20  loss 2.0540  walks 155,300  windows 6,988,500  444s
+  epoch  9/20  loss 2.0530  walks 155,300  windows 6,988,500  507s
+  epoch 10/20  loss 2.0527  walks 155,300  windows 6,988,500  567s
+  epoch 11/20  loss 2.0529  walks 155,300  windows 6,988,500  625s
+  epoch 12/20  loss 2.0527  walks 155,300  windows 6,988,500  680s
+  epoch 13/20  loss 2.0528  walks 155,300  windows 6,988,500  734s
+  epoch 14/20  loss 2.0523  walks 155,300  windows 6,988,500  789s
+  epoch 15/20  loss 2.0520  walks 155,300  windows 6,988,500  845s
+  epoch 16/20  loss 2.0523  walks 155,300  windows 6,988,500  899s
+  epoch 17/20  loss 2.0515  walks 155,300  windows 6,988,500  957s
+  epoch 18/20  loss 2.0515  walks 155,300  windows 6,988,500  1012s
+  epoch 19/20  loss 2.0517  walks 155,300  windows 6,988,500  1069s
+  epoch 20/20  loss 2.0513  walks 155,300  windows 6,988,500  1126s
+  sgns-cooc-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio      109.4  / 300
+    M2 triplet acc [broad ]    0.8658  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9194  +/-0.0038  (chance 0.50)
+    M3 recall@10   [broad ]    0.1425
+    M3 recall@10   [strict]    0.2517
+    M4 held-out link AUC       0.7337  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4232
+    M5 top20 freq jaccard      0.2121
+    M6 completion recall@10    0.4031   mrr 0.2049   n=20,000
+       vs popularity baseline   0.3650   lift +0.0381
+
+[35/80] sgns-cooc-recipe-holdout-s4
+  epoch  1/20  loss 2.2978  walks 155,300  windows 6,988,500  59s
+  epoch  2/20  loss 2.0649  walks 155,300  windows 6,988,500  118s
+  epoch  3/20  loss 2.0597  walks 155,300  windows 6,988,500  177s
+  epoch  4/20  loss 2.0568  walks 155,300  windows 6,988,500  234s
+  epoch  5/20  loss 2.0550  walks 155,300  windows 6,988,500  292s
+  epoch  6/20  loss 2.0542  walks 155,300  windows 6,988,500  360s
+  epoch  7/20  loss 2.0541  walks 155,300  windows 6,988,500  437s
+  epoch  8/20  loss 2.0534  walks 155,300  windows 6,988,500  503s
+  epoch  9/20  loss 2.0530  walks 155,300  windows 6,988,500  565s
+  epoch 10/20  loss 2.0522  walks 155,300  windows 6,988,500  620s
+  epoch 11/20  loss 2.0525  walks 155,300  windows 6,988,500  675s
+  epoch 12/20  loss 2.0524  walks 155,300  windows 6,988,500  730s
+  epoch 13/20  loss 2.0523  walks 155,300  windows 6,988,500  785s
+  epoch 14/20  loss 2.0524  walks 155,300  windows 6,988,500  841s
+  epoch 15/20  loss 2.0521  walks 155,300  windows 6,988,500  898s
+  epoch 16/20  loss 2.0518  walks 155,300  windows 6,988,500  953s
+  epoch 17/20  loss 2.0525  walks 155,300  windows 6,988,500  1008s
+  epoch 18/20  loss 2.0513  walks 155,300  windows 6,988,500  1067s
+  epoch 19/20  loss 2.0520  walks 155,300  windows 6,988,500  1122s
+  epoch 20/20  loss 2.0521  walks 155,300  windows 6,988,500  1177s
+  sgns-cooc-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio      108.9  / 300
+    M2 triplet acc [broad ]    0.8636  +/-0.0048  (chance 0.50)
+    M2 triplet acc [strict]    0.9184  +/-0.0038  (chance 0.50)
+    M3 recall@10   [broad ]    0.1438
+    M3 recall@10   [strict]    0.2517
+    M4 held-out link AUC       0.7333  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.3062
+    M5 top20 freq jaccard      0.1429
+    M6 completion recall@10    0.4059   mrr 0.2029   n=20,000
+       vs popularity baseline   0.3650   lift +0.0409
+
+[36/80] sgns-chem-recipe-holdout-s0
+  epoch  1/20  loss 2.9731  walks 26,268  windows 1,182,060  9s
+  epoch  2/20  loss 1.1508  walks 26,268  windows 1,182,060  18s
+  epoch  3/20  loss 1.0650  walks 26,268  windows 1,182,060  28s
+  epoch  4/20  loss 1.0492  walks 26,268  windows 1,182,060  37s
+  epoch  5/20  loss 1.0316  walks 26,268  windows 1,182,060  46s
+  epoch  6/20  loss 1.0136  walks 26,268  windows 1,182,060  55s
+  epoch  7/20  loss 0.9995  walks 26,268  windows 1,182,060  64s
+  epoch  8/20  loss 0.9911  walks 26,268  windows 1,182,060  74s
+  epoch  9/20  loss 0.9846  walks 26,268  windows 1,182,060  83s
+  epoch 10/20  loss 0.9794  walks 26,268  windows 1,182,060  92s
+  epoch 11/20  loss 0.9743  walks 26,268  windows 1,182,060  101s
+  epoch 12/20  loss 0.9713  walks 26,268  windows 1,182,060  110s
+  epoch 13/20  loss 0.9682  walks 26,268  windows 1,182,060  119s
+  epoch 14/20  loss 0.9648  walks 26,268  windows 1,182,060  129s
+  epoch 15/20  loss 0.9638  walks 26,268  windows 1,182,060  138s
+  epoch 16/20  loss 0.9613  walks 26,268  windows 1,182,060  147s
+  epoch 17/20  loss 0.9599  walks 26,268  windows 1,182,060  157s
+  epoch 18/20  loss 0.9599  walks 26,268  windows 1,182,060  167s
+  epoch 19/20  loss 0.9582  walks 26,268  windows 1,182,060  177s
+  epoch 20/20  loss 0.9580  walks 26,268  windows 1,182,060  186s
+  sgns-chem-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio        2.7  / 300
+    M2 triplet acc [broad ]    0.5804  +/-0.0068  (chance 0.50)
+    M2 triplet acc [strict]    0.6394  +/-0.0067  (chance 0.50)
+    M3 recall@10   [broad ]    0.0358
+    M3 recall@10   [strict]    0.0870
+    M4 held-out link AUC       0.5044  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.4000
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0149   mrr 0.0101   n=20,000
+       vs popularity baseline   0.3650   lift -0.3502
+
+[37/80] sgns-chem-recipe-holdout-s1
+  epoch  1/20  loss 2.9642  walks 26,268  windows 1,182,060  10s
+  epoch  2/20  loss 1.1493  walks 26,268  windows 1,182,060  19s
+  epoch  3/20  loss 1.0664  walks 26,268  windows 1,182,060  28s
+  epoch  4/20  loss 1.0529  walks 26,268  windows 1,182,060  38s
+  epoch  5/20  loss 1.0356  walks 26,268  windows 1,182,060  47s
+  epoch  6/20  loss 1.0135  walks 26,268  windows 1,182,060  57s
+  epoch  7/20  loss 1.0012  walks 26,268  windows 1,182,060  66s
+  epoch  8/20  loss 0.9906  walks 26,268  windows 1,182,060  76s
+  epoch  9/20  loss 0.9850  walks 26,268  windows 1,182,060  85s
+  epoch 10/20  loss 0.9790  walks 26,268  windows 1,182,060  94s
+  epoch 11/20  loss 0.9743  walks 26,268  windows 1,182,060  103s
+  epoch 12/20  loss 0.9704  walks 26,268  windows 1,182,060  112s
+  epoch 13/20  loss 0.9692  walks 26,268  windows 1,182,060  121s
+  epoch 14/20  loss 0.9650  walks 26,268  windows 1,182,060  131s
+  epoch 15/20  loss 0.9631  walks 26,268  windows 1,182,060  140s
+  epoch 16/20  loss 0.9622  walks 26,268  windows 1,182,060  149s
+  epoch 17/20  loss 0.9598  walks 26,268  windows 1,182,060  158s
+  epoch 18/20  loss 0.9595  walks 26,268  windows 1,182,060  167s
+  epoch 19/20  loss 0.9589  walks 26,268  windows 1,182,060  177s
+  epoch 20/20  loss 0.9582  walks 26,268  windows 1,182,060  186s
+  sgns-chem-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio        2.7  / 300
+    M2 triplet acc [broad ]    0.5911  +/-0.0068  (chance 0.50)
+    M2 triplet acc [strict]    0.6575  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0378
+    M3 recall@10   [strict]    0.0842
+    M4 held-out link AUC       0.5053  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.4028
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0120   mrr 0.0083   n=20,000
+       vs popularity baseline   0.3650   lift -0.3529
+
+[38/80] sgns-chem-recipe-holdout-s2
+  epoch  1/20  loss 2.9794  walks 26,268  windows 1,182,060  9s
+  epoch  2/20  loss 1.1516  walks 26,268  windows 1,182,060  19s
+  epoch  3/20  loss 1.0672  walks 26,268  windows 1,182,060  28s
+  epoch  4/20  loss 1.0503  walks 26,268  windows 1,182,060  38s
+  epoch  5/20  loss 1.0322  walks 26,268  windows 1,182,060  47s
+  epoch  6/20  loss 1.0120  walks 26,268  windows 1,182,060  57s
+  epoch  7/20  loss 0.9994  walks 26,268  windows 1,182,060  67s
+  epoch  8/20  loss 0.9911  walks 26,268  windows 1,182,060  78s
+  epoch  9/20  loss 0.9839  walks 26,268  windows 1,182,060  89s
+  epoch 10/20  loss 0.9797  walks 26,268  windows 1,182,060  101s
+  epoch 11/20  loss 0.9747  walks 26,268  windows 1,182,060  111s
+  epoch 12/20  loss 0.9714  walks 26,268  windows 1,182,060  121s
+  epoch 13/20  loss 0.9690  walks 26,268  windows 1,182,060  131s
+  epoch 14/20  loss 0.9668  walks 26,268  windows 1,182,060  141s
+  epoch 15/20  loss 0.9640  walks 26,268  windows 1,182,060  152s
+  epoch 16/20  loss 0.9618  walks 26,268  windows 1,182,060  162s
+  epoch 17/20  loss 0.9613  walks 26,268  windows 1,182,060  172s
+  epoch 18/20  loss 0.9604  walks 26,268  windows 1,182,060  183s
+  epoch 19/20  loss 0.9585  walks 26,268  windows 1,182,060  196s
+  epoch 20/20  loss 0.9584  walks 26,268  windows 1,182,060  207s
+  sgns-chem-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio        2.7  / 300
+    M2 triplet acc [broad ]    0.5862  +/-0.0068  (chance 0.50)
+    M2 triplet acc [strict]    0.6484  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0349
+    M3 recall@10   [strict]    0.0791
+    M4 held-out link AUC       0.5058  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.3998
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0103   mrr 0.0077   n=20,000
+       vs popularity baseline   0.3650   lift -0.3548
+
+[39/80] sgns-chem-recipe-holdout-s3
+  epoch  1/20  loss 2.9670  walks 26,268  windows 1,182,060  12s
+  epoch  2/20  loss 1.1495  walks 26,268  windows 1,182,060  23s
+  epoch  3/20  loss 1.0640  walks 26,268  windows 1,182,060  33s
+  epoch  4/20  loss 1.0497  walks 26,268  windows 1,182,060  43s
+  epoch  5/20  loss 1.0289  walks 26,268  windows 1,182,060  52s
+  epoch  6/20  loss 1.0122  walks 26,268  windows 1,182,060  62s
+  epoch  7/20  loss 1.0000  walks 26,268  windows 1,182,060  71s
+  epoch  8/20  loss 0.9912  walks 26,268  windows 1,182,060  80s
+  epoch  9/20  loss 0.9838  walks 26,268  windows 1,182,060  89s
+  epoch 10/20  loss 0.9789  walks 26,268  windows 1,182,060  98s
+  epoch 11/20  loss 0.9758  walks 26,268  windows 1,182,060  107s
+  epoch 12/20  loss 0.9720  walks 26,268  windows 1,182,060  116s
+  epoch 13/20  loss 0.9672  walks 26,268  windows 1,182,060  125s
+  epoch 14/20  loss 0.9676  walks 26,268  windows 1,182,060  134s
+  epoch 15/20  loss 0.9638  walks 26,268  windows 1,182,060  143s
+  epoch 16/20  loss 0.9625  walks 26,268  windows 1,182,060  152s
+  epoch 17/20  loss 0.9600  walks 26,268  windows 1,182,060  162s
+  epoch 18/20  loss 0.9594  walks 26,268  windows 1,182,060  173s
+  epoch 19/20  loss 0.9581  walks 26,268  windows 1,182,060  184s
+  epoch 20/20  loss 0.9564  walks 26,268  windows 1,182,060  196s
+  sgns-chem-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio        2.7  / 300
+    M2 triplet acc [broad ]    0.5855  +/-0.0068  (chance 0.50)
+    M2 triplet acc [strict]    0.6463  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0321
+    M3 recall@10   [strict]    0.0801
+    M4 held-out link AUC       0.5069  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.4014
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0137   mrr 0.0089   n=20,000
+       vs popularity baseline   0.3650   lift -0.3513
+
+[40/80] sgns-chem-recipe-holdout-s4
+  epoch  1/20  loss 2.9649  walks 26,268  windows 1,182,060  10s
+  epoch  2/20  loss 1.1495  walks 26,268  windows 1,182,060  20s
+  epoch  3/20  loss 1.0651  walks 26,268  windows 1,182,060  29s
+  epoch  4/20  loss 1.0433  walks 26,268  windows 1,182,060  39s
+  epoch  5/20  loss 1.0228  walks 26,268  windows 1,182,060  50s
+  epoch  6/20  loss 1.0071  walks 26,268  windows 1,182,060  60s
+  epoch  7/20  loss 0.9970  walks 26,268  windows 1,182,060  69s
+  epoch  8/20  loss 0.9893  walks 26,268  windows 1,182,060  80s
+  epoch  9/20  loss 0.9836  walks 26,268  windows 1,182,060  90s
+  epoch 10/20  loss 0.9803  walks 26,268  windows 1,182,060  101s
+  epoch 11/20  loss 0.9738  walks 26,268  windows 1,182,060  112s
+  epoch 12/20  loss 0.9709  walks 26,268  windows 1,182,060  122s
+  epoch 13/20  loss 0.9688  walks 26,268  windows 1,182,060  132s
+  epoch 14/20  loss 0.9658  walks 26,268  windows 1,182,060  144s
+  epoch 15/20  loss 0.9633  walks 26,268  windows 1,182,060  154s
+  epoch 16/20  loss 0.9626  walks 26,268  windows 1,182,060  163s
+  epoch 17/20  loss 0.9606  walks 26,268  windows 1,182,060  172s
+  epoch 18/20  loss 0.9610  walks 26,268  windows 1,182,060  184s
+  epoch 19/20  loss 0.9586  walks 26,268  windows 1,182,060  194s
+  epoch 20/20  loss 0.9578  walks 26,268  windows 1,182,060  204s
+  sgns-chem-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio        2.7  / 300
+    M2 triplet acc [broad ]    0.5909  +/-0.0068  (chance 0.50)
+    M2 triplet acc [strict]    0.6433  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0363
+    M3 recall@10   [strict]    0.0846
+    M4 held-out link AUC       0.5102  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.4008
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0111   mrr 0.0082   n=20,000
+       vs popularity baseline   0.3650   lift -0.3539
+
+[41/80] sgns-core-recipe-holdout-s0
+  epoch  1/20  loss 2.2958  walks 156,200  windows 7,029,000  60s
+  epoch  2/20  loss 2.0592  walks 156,200  windows 7,029,000  120s
+  epoch  3/20  loss 2.0521  walks 156,200  windows 7,029,000  188s
+  epoch  4/20  loss 2.0497  walks 156,200  windows 7,029,000  249s
+  epoch  5/20  loss 2.0488  walks 156,200  windows 7,029,000  317s
+  epoch  6/20  loss 2.0472  walks 156,200  windows 7,029,000  383s
+  epoch  7/20  loss 2.0467  walks 156,200  windows 7,029,000  456s
+  epoch  8/20  loss 2.0455  walks 156,200  windows 7,029,000  524s
+  epoch  9/20  loss 2.0452  walks 156,200  windows 7,029,000  592s
+  epoch 10/20  loss 2.0460  walks 156,200  windows 7,029,000  653s
+  epoch 11/20  loss 2.0457  walks 156,200  windows 7,029,000  712s
+  epoch 12/20  loss 2.0457  walks 156,200  windows 7,029,000  787s
+  epoch 13/20  loss 2.0451  walks 156,200  windows 7,029,000  856s
+  epoch 14/20  loss 2.0449  walks 156,200  windows 7,029,000  928s
+  epoch 15/20  loss 2.0458  walks 156,200  windows 7,029,000  995s
+  epoch 16/20  loss 2.0448  walks 156,200  windows 7,029,000  1060s
+  epoch 17/20  loss 2.0447  walks 156,200  windows 7,029,000  1132s
+  epoch 18/20  loss 2.0441  walks 156,200  windows 7,029,000  1201s
+  epoch 19/20  loss 2.0442  walks 156,200  windows 7,029,000  1269s
+  epoch 20/20  loss 2.0444  walks 156,200  windows 7,029,000  1342s
+  sgns-core-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      111.0  / 300
+    M2 triplet acc [broad ]    0.8684  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9214  +/-0.0037  (chance 0.50)
+    M3 recall@10   [broad ]    0.1493
+    M3 recall@10   [strict]    0.2566
+    M4 held-out link AUC       0.7295  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4369
+    M5 top20 freq jaccard      0.2121
+    M6 completion recall@10    0.4065   mrr 0.2061   n=20,000
+       vs popularity baseline   0.3650   lift +0.0415
+
+[42/80] sgns-core-recipe-holdout-s1
+  epoch  1/20  loss 2.2942  walks 156,200  windows 7,029,000  70s
+  epoch  2/20  loss 2.0585  walks 156,200  windows 7,029,000  137s
+  epoch  3/20  loss 2.0525  walks 156,200  windows 7,029,000  201s
+  epoch  4/20  loss 2.0500  walks 156,200  windows 7,029,000  262s
+  epoch  5/20  loss 2.0482  walks 156,200  windows 7,029,000  340s
+  epoch  6/20  loss 2.0474  walks 156,200  windows 7,029,000  410s
+  epoch  7/20  loss 2.0472  walks 156,200  windows 7,029,000  480s
+  epoch  8/20  loss 2.0465  walks 156,200  windows 7,029,000  545s
+  epoch  9/20  loss 2.0463  walks 156,200  windows 7,029,000  609s
+  epoch 10/20  loss 2.0454  walks 156,200  windows 7,029,000  687s
+  epoch 11/20  loss 2.0454  walks 156,200  windows 7,029,000  753s
+  epoch 12/20  loss 2.0459  walks 156,200  windows 7,029,000  824s
+  epoch 13/20  loss 2.0450  walks 156,200  windows 7,029,000  884s
+  epoch 14/20  loss 2.0449  walks 156,200  windows 7,029,000  955s
+  epoch 15/20  loss 2.0445  walks 156,200  windows 7,029,000  1026s
+  epoch 16/20  loss 2.0447  walks 156,200  windows 7,029,000  1093s
+  epoch 17/20  loss 2.0446  walks 156,200  windows 7,029,000  1162s
+  epoch 18/20  loss 2.0446  walks 156,200  windows 7,029,000  1234s
+  epoch 19/20  loss 2.0444  walks 156,200  windows 7,029,000  1302s
+  epoch 20/20  loss 2.0441  walks 156,200  windows 7,029,000  1374s
+  sgns-core-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio      112.1  / 300
+    M2 triplet acc [broad ]    0.8649  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9204  +/-0.0038  (chance 0.50)
+    M3 recall@10   [broad ]    0.1469
+    M3 recall@10   [strict]    0.2549
+    M4 held-out link AUC       0.7248  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4275
+    M5 top20 freq jaccard      0.1765
+    M6 completion recall@10    0.3919   mrr 0.1949   n=20,000
+       vs popularity baseline   0.3650   lift +0.0269
+
+[43/80] sgns-core-recipe-holdout-s2
+  epoch  1/20  loss 2.2955  walks 156,200  windows 7,029,000  61s
+  epoch  2/20  loss 2.0592  walks 156,200  windows 7,029,000  119s
+  epoch  3/20  loss 2.0529  walks 156,200  windows 7,029,000  173s
+  epoch  4/20  loss 2.0500  walks 156,200  windows 7,029,000  237s
+  epoch  5/20  loss 2.0483  walks 156,200  windows 7,029,000  307s
+  epoch  6/20  loss 2.0474  walks 156,200  windows 7,029,000  375s
+  epoch  7/20  loss 2.0460  walks 156,200  windows 7,029,000  439s
+  epoch  8/20  loss 2.0464  walks 156,200  windows 7,029,000  495s
+  epoch  9/20  loss 2.0466  walks 156,200  windows 7,029,000  554s
+  epoch 10/20  loss 2.0457  walks 156,200  windows 7,029,000  612s
+  epoch 11/20  loss 2.0451  walks 156,200  windows 7,029,000  670s
+  epoch 12/20  loss 2.0456  walks 156,200  windows 7,029,000  730s
+  epoch 13/20  loss 2.0446  walks 156,200  windows 7,029,000  789s
+  epoch 14/20  loss 2.0449  walks 156,200  windows 7,029,000  845s
+  epoch 15/20  loss 2.0444  walks 156,200  windows 7,029,000  901s
+  epoch 16/20  loss 2.0449  walks 156,200  windows 7,029,000  957s
+  epoch 17/20  loss 2.0446  walks 156,200  windows 7,029,000  1019s
+  epoch 18/20  loss 2.0452  walks 156,200  windows 7,029,000  1080s
+  epoch 19/20  loss 2.0449  walks 156,200  windows 7,029,000  1140s
+  epoch 20/20  loss 2.0446  walks 156,200  windows 7,029,000  1198s
+  sgns-core-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio      107.6  / 300
+    M2 triplet acc [broad ]    0.8652  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9220  +/-0.0037  (chance 0.50)
+    M3 recall@10   [broad ]    0.1495
+    M3 recall@10   [strict]    0.2514
+    M4 held-out link AUC       0.7335  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.3621
+    M5 top20 freq jaccard      0.2500
+    M6 completion recall@10    0.4083   mrr 0.2096   n=20,000
+       vs popularity baseline   0.3650   lift +0.0433
+
+[44/80] sgns-core-recipe-holdout-s3
+  epoch  1/20  loss 2.2945  walks 156,200  windows 7,029,000  78s
+  epoch  2/20  loss 2.0588  walks 156,200  windows 7,029,000  153s
+  epoch  3/20  loss 2.0524  walks 156,200  windows 7,029,000  225s
+  epoch  4/20  loss 2.0504  walks 156,200  windows 7,029,000  298s
+  epoch  5/20  loss 2.0487  walks 156,200  windows 7,029,000  373s
+  epoch  6/20  loss 2.0473  walks 156,200  windows 7,029,000  444s
+  epoch  7/20  loss 2.0469  walks 156,200  windows 7,029,000  508s
+  epoch  8/20  loss 2.0455  walks 156,200  windows 7,029,000  581s
+  epoch  9/20  loss 2.0458  walks 156,200  windows 7,029,000  650s
+  epoch 10/20  loss 2.0460  walks 156,200  windows 7,029,000  718s
+  epoch 11/20  loss 2.0454  walks 156,200  windows 7,029,000  792s
+  epoch 12/20  loss 2.0455  walks 156,200  windows 7,029,000  861s
+  epoch 13/20  loss 2.0445  walks 156,200  windows 7,029,000  937s
+  epoch 14/20  loss 2.0451  walks 156,200  windows 7,029,000  1003s
+  epoch 15/20  loss 2.0451  walks 156,200  windows 7,029,000  1072s
+  epoch 16/20  loss 2.0448  walks 156,200  windows 7,029,000  1151s
+  epoch 17/20  loss 2.0447  walks 156,200  windows 7,029,000  1215s
+  epoch 18/20  loss 2.0447  walks 156,200  windows 7,029,000  1279s
+  epoch 19/20  loss 2.0448  walks 156,200  windows 7,029,000  1338s
+  epoch 20/20  loss 2.0444  walks 156,200  windows 7,029,000  1399s
+Python(21287) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  sgns-core-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio      108.2  / 300
+    M2 triplet acc [broad ]    0.8647  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9203  +/-0.0038  (chance 0.50)
+    M3 recall@10   [broad ]    0.1485
+    M3 recall@10   [strict]    0.2538
+    M4 held-out link AUC       0.7324  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.3632
+    M5 top20 freq jaccard      0.2121
+    M6 completion recall@10    0.4068   mrr 0.1997   n=20,000
+       vs popularity baseline   0.3650   lift +0.0418
+
+[45/80] sgns-core-recipe-holdout-s4
+  epoch  1/20  loss 2.2923  walks 156,200  windows 7,029,000  61s
+  epoch  2/20  loss 2.0594  walks 156,200  windows 7,029,000  120s
+  epoch  3/20  loss 2.0530  walks 156,200  windows 7,029,000  181s
+  epoch  4/20  loss 2.0499  walks 156,200  windows 7,029,000  247s
+  epoch  5/20  loss 2.0485  walks 156,200  windows 7,029,000  307s
+  epoch  6/20  loss 2.0478  walks 156,200  windows 7,029,000  368s
+  epoch  7/20  loss 2.0466  walks 156,200  windows 7,029,000  428s
+  epoch  8/20  loss 2.0456  walks 156,200  windows 7,029,000  488s
+  epoch  9/20  loss 2.0457  walks 156,200  windows 7,029,000  552s
+  epoch 10/20  loss 2.0453  walks 156,200  windows 7,029,000  612s
+  epoch 11/20  loss 2.0457  walks 156,200  windows 7,029,000  672s
+  epoch 12/20  loss 2.0449  walks 156,200  windows 7,029,000  732s
+  epoch 13/20  loss 2.0455  walks 156,200  windows 7,029,000  792s
+  epoch 14/20  loss 2.0444  walks 156,200  windows 7,029,000  850s
+  epoch 15/20  loss 2.0447  walks 156,200  windows 7,029,000  905s
+  epoch 16/20  loss 2.0449  walks 156,200  windows 7,029,000  961s
+  epoch 17/20  loss 2.0450  walks 156,200  windows 7,029,000  1014s
+  epoch 18/20  loss 2.0446  walks 156,200  windows 7,029,000  1069s
+  epoch 19/20  loss 2.0448  walks 156,200  windows 7,029,000  1127s
+  epoch 20/20  loss 2.0437  walks 156,200  windows 7,029,000  1190s
+Python(25188) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  sgns-core-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio      108.4  / 300
+    M2 triplet acc [broad ]    0.8668  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9213  +/-0.0037  (chance 0.50)
+    M3 recall@10   [broad ]    0.1465
+    M3 recall@10   [strict]    0.2530
+    M4 held-out link AUC       0.7322  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.3015
+    M5 top20 freq jaccard      0.2121
+    M6 completion recall@10    0.4051   mrr 0.2031   n=20,000
+       vs popularity baseline   0.3650   lift +0.0401
+
+[46/80] ials-recipe-holdout-s0
+  400,000 recipes x 1790 ingredients, d=128
+  iteration  1/15  |Y| 3.64  39s
+  iteration  2/15  |Y| 3.67  81s
+  iteration  3/15  |Y| 3.73  121s
+  iteration  4/15  |Y| 3.81  162s
+  iteration  5/15  |Y| 3.90  204s
+  iteration  6/15  |Y| 3.99  246s
+  iteration  7/15  |Y| 4.08  286s
+  iteration  8/15  |Y| 4.18  324s
+  iteration  9/15  |Y| 4.27  363s
+  iteration 10/15  |Y| 4.36  402s
+  iteration 11/15  |Y| 4.46  441s
+  iteration 12/15  |Y| 4.55  481s
+  iteration 13/15  |Y| 4.64  519s
+  iteration 14/15  |Y| 4.73  558s
+  iteration 15/15  |Y| 4.82  596s
+Python(27271) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  ials-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      101.3  / 128
+    M2 triplet acc [broad ]    0.6220  +/-0.0067  (chance 0.50)
+    M2 triplet acc [strict]    0.6623  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0794
+    M3 recall@10   [strict]    0.1112
+    M4 held-out link AUC       0.5371  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.0343
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0426   mrr 0.0220   n=20,000
+       vs popularity baseline   0.3650   lift -0.3224
+
+[47/80] ials-recipe-holdout-s1
+  400,000 recipes x 1790 ingredients, d=128
+  iteration  1/15  |Y| 3.66  39s
+  iteration  2/15  |Y| 3.70  77s
+  iteration  3/15  |Y| 3.76  116s
+  iteration  4/15  |Y| 3.84  155s
+  iteration  5/15  |Y| 3.92  193s
+  iteration  6/15  |Y| 4.01  232s
+  iteration  7/15  |Y| 4.11  271s
+  iteration  8/15  |Y| 4.20  309s
+  iteration  9/15  |Y| 4.29  348s
+  iteration 10/15  |Y| 4.38  386s
+  iteration 11/15  |Y| 4.48  425s
+  iteration 12/15  |Y| 4.57  464s
+  iteration 13/15  |Y| 4.66  502s
+  iteration 14/15  |Y| 4.74  541s
+  iteration 15/15  |Y| 4.83  580s
+Python(28194) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  ials-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio      101.0  / 128
+    M2 triplet acc [broad ]    0.6238  +/-0.0067  (chance 0.50)
+    M2 triplet acc [strict]    0.6618  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0805
+    M3 recall@10   [strict]    0.1085
+    M4 held-out link AUC       0.5377  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.0257
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0404   mrr 0.0219   n=20,000
+       vs popularity baseline   0.3650   lift -0.3246
+
+[48/80] ials-recipe-holdout-s2
+  400,000 recipes x 1790 ingredients, d=128
+  iteration  1/15  |Y| 3.63  39s
+  iteration  2/15  |Y| 3.67  78s
+  iteration  3/15  |Y| 3.73  116s
+  iteration  4/15  |Y| 3.81  155s
+  iteration  5/15  |Y| 3.90  194s
+  iteration  6/15  |Y| 3.99  232s
+  iteration  7/15  |Y| 4.08  271s
+  iteration  8/15  |Y| 4.18  310s
+  iteration  9/15  |Y| 4.27  348s
+  iteration 10/15  |Y| 4.37  387s
+  iteration 11/15  |Y| 4.46  426s
+  iteration 12/15  |Y| 4.55  465s
+  iteration 13/15  |Y| 4.64  504s
+  iteration 14/15  |Y| 4.73  542s
+  iteration 15/15  |Y| 4.82  581s
+Python(28698) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  ials-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio      101.2  / 128
+    M2 triplet acc [broad ]    0.6255  +/-0.0067  (chance 0.50)
+    M2 triplet acc [strict]    0.6582  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0829
+    M3 recall@10   [strict]    0.1116
+    M4 held-out link AUC       0.5389  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.0087
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0421   mrr 0.0219   n=20,000
+       vs popularity baseline   0.3650   lift -0.3228
+
+[49/80] ials-recipe-holdout-s3
+  400,000 recipes x 1790 ingredients, d=128
+  iteration  1/15  |Y| 3.64  39s
+  iteration  2/15  |Y| 3.68  80s
+  iteration  3/15  |Y| 3.74  118s
+  iteration  4/15  |Y| 3.82  157s
+  iteration  5/15  |Y| 3.91  196s
+  iteration  6/15  |Y| 4.00  237s
+  iteration  7/15  |Y| 4.10  277s
+  iteration  8/15  |Y| 4.19  321s
+  iteration  9/15  |Y| 4.28  360s
+  iteration 10/15  |Y| 4.38  399s
+  iteration 11/15  |Y| 4.47  438s
+  iteration 12/15  |Y| 4.56  486s
+  iteration 13/15  |Y| 4.65  529s
+  iteration 14/15  |Y| 4.74  571s
+  iteration 15/15  |Y| 4.83  616s
+Python(35059) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  ials-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio      101.2  / 128
+    M2 triplet acc [broad ]    0.6260  +/-0.0067  (chance 0.50)
+    M2 triplet acc [strict]    0.6701  +/-0.0065  (chance 0.50)
+    M3 recall@10   [broad ]    0.0840
+    M3 recall@10   [strict]    0.1001
+    M4 held-out link AUC       0.5377  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.0173
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0437   mrr 0.0229   n=20,000
+       vs popularity baseline   0.3650   lift -0.3213
+
+[50/80] ials-recipe-holdout-s4
+  400,000 recipes x 1790 ingredients, d=128
+  iteration  1/15  |Y| 3.66  45s
+  iteration  2/15  |Y| 3.69  87s
+  iteration  3/15  |Y| 3.74  126s
+  iteration  4/15  |Y| 3.82  167s
+  iteration  5/15  |Y| 3.90  207s
+  iteration  6/15  |Y| 4.00  247s
+  iteration  7/15  |Y| 4.09  286s
+  iteration  8/15  |Y| 4.18  326s
+  iteration  9/15  |Y| 4.28  365s
+  iteration 10/15  |Y| 4.37  406s
+  iteration 11/15  |Y| 4.46  454s
+  iteration 12/15  |Y| 4.55  498s
+  iteration 13/15  |Y| 4.64  542s
+  iteration 14/15  |Y| 4.73  585s
+  iteration 15/15  |Y| 4.82  633s
+Python(44217) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  ials-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio      100.8  / 128
+    M2 triplet acc [broad ]    0.6215  +/-0.0067  (chance 0.50)
+    M2 triplet acc [strict]    0.6564  +/-0.0066  (chance 0.50)
+    M3 recall@10   [broad ]    0.0776
+    M3 recall@10   [strict]    0.1072
+    M4 held-out link AUC       0.5403  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.0275
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0426   mrr 0.0224   n=20,000
+       vs popularity baseline   0.3650   lift -0.3224
+
+[51/80] item2vec-recipe-holdout-s0
+  epoch  1/5  loss 2.6235  pairs 5,249,552  33s
+  epoch  2/5  loss 2.1268  pairs 5,258,199  60s
+  epoch  3/5  loss 2.0800  pairs 5,247,828  87s
+  epoch  4/5  loss 2.0609  pairs 5,251,257  114s
+  epoch  5/5  loss 2.0496  pairs 5,248,336  141s
+Python(45094) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  item2vec-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio       28.6  / 300
+    M2 triplet acc [broad ]    0.7527  +/-0.0060  (chance 0.50)
+    M2 triplet acc [strict]    0.8404  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.1067
+    M3 recall@10   [strict]    0.1921
+    M4 held-out link AUC       0.7238  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4826
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0123   mrr 0.0103   n=20,000
+       vs popularity baseline   0.3650   lift -0.3528
+
+[52/80] item2vec-recipe-holdout-s1
+  epoch  1/5  loss 2.6116  pairs 5,244,841  27s
+  epoch  2/5  loss 2.1265  pairs 5,246,512  56s
+  epoch  3/5  loss 2.0807  pairs 5,256,385  85s
+  epoch  4/5  loss 2.0604  pairs 5,243,067  114s
+  epoch  5/5  loss 2.0527  pairs 5,254,035  142s
+Python(46279) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  item2vec-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio       29.1  / 300
+    M2 triplet acc [broad ]    0.7570  +/-0.0059  (chance 0.50)
+    M2 triplet acc [strict]    0.8411  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.1090
+    M3 recall@10   [strict]    0.1925
+    M4 held-out link AUC       0.7272  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4655
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0117   mrr 0.0102   n=20,000
+       vs popularity baseline   0.3650   lift -0.3533
+
+[53/80] item2vec-recipe-holdout-s2
+  epoch  1/5  loss 2.6160  pairs 5,244,888  27s
+  epoch  2/5  loss 2.1269  pairs 5,252,577  53s
+  epoch  3/5  loss 2.0808  pairs 5,249,274  81s
+  epoch  4/5  loss 2.0600  pairs 5,244,125  110s
+  epoch  5/5  loss 2.0504  pairs 5,247,944  138s
+Python(47090) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  item2vec-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio       29.1  / 300
+    M2 triplet acc [broad ]    0.7528  +/-0.0060  (chance 0.50)
+    M2 triplet acc [strict]    0.8397  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.1054
+    M3 recall@10   [strict]    0.1900
+    M4 held-out link AUC       0.7256  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4856
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0102   mrr 0.0098   n=20,000
+       vs popularity baseline   0.3650   lift -0.3548
+
+[54/80] item2vec-recipe-holdout-s3
+  epoch  1/5  loss 2.6145  pairs 5,254,772  29s
+  epoch  2/5  loss 2.1262  pairs 5,248,685  56s
+  epoch  3/5  loss 2.0792  pairs 5,251,428  83s
+  epoch  4/5  loss 2.0598  pairs 5,248,722  110s
+  epoch  5/5  loss 2.0496  pairs 5,252,271  137s
+Python(47872) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  item2vec-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio       29.0  / 300
+    M2 triplet acc [broad ]    0.7540  +/-0.0060  (chance 0.50)
+    M2 triplet acc [strict]    0.8396  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.1070
+    M3 recall@10   [strict]    0.1901
+    M4 held-out link AUC       0.7262  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4706
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0121   mrr 0.0099   n=20,000
+       vs popularity baseline   0.3650   lift -0.3529
+
+[55/80] item2vec-recipe-holdout-s4
+  epoch  1/5  loss 2.6146  pairs 5,249,839  26s
+  epoch  2/5  loss 2.1270  pairs 5,244,305  53s
+  epoch  3/5  loss 2.0801  pairs 5,248,185  80s
+  epoch  4/5  loss 2.0613  pairs 5,254,756  108s
+  epoch  5/5  loss 2.0503  pairs 5,251,956  136s
+Python(48574) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  item2vec-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio       28.5  / 300
+    M2 triplet acc [broad ]    0.7539  +/-0.0060  (chance 0.50)
+    M2 triplet acc [strict]    0.8400  +/-0.0051  (chance 0.50)
+    M3 recall@10   [broad ]    0.1096
+    M3 recall@10   [strict]    0.1921
+    M4 held-out link AUC       0.7259  +/-0.0059  (chance 0.50)
+    M5 max PC-freq corr        0.4691
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.0112   mrr 0.0097   n=20,000
+       vs popularity baseline   0.3650   lift -0.3538
+
+[56/80] masked-set-recipe-holdout-s0
+/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
+  600,000 recipes, vocab 1790, 1,515,006 parameters
+  epoch 1/3  loss 4.3114  steps 1,132  124s
+  epoch 2/3  loss 3.7900  steps 1,132  241s
+  epoch 3/3  loss 3.6904  steps 1,132  359s
+Python(51756) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  masked-set-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio       50.3  / 256
+    M2 triplet acc [broad ]    0.5716  +/-0.0069  (chance 0.50)
+    M2 triplet acc [strict]    0.7543  +/-0.0060  (chance 0.50)
+    M3 recall@10   [broad ]    0.0821
+    M3 recall@10   [strict]    0.2082
+    M4 held-out link AUC       0.5726  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.9654
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1229   mrr 0.0585   n=20,000
+       vs popularity baseline   0.3650   lift -0.2421
+       native scorer            0.6178   mrr 0.3621   lift +0.2528
+
+[57/80] masked-set-recipe-holdout-s1
+/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
+  600,000 recipes, vocab 1790, 1,515,006 parameters
+  epoch 1/3  loss 4.3167  steps 1,132  119s
+  epoch 2/3  loss 3.7856  steps 1,132  236s
+  epoch 3/3  loss 3.6861  steps 1,132  348s
+Python(54003) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  masked-set-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio       52.8  / 256
+    M2 triplet acc [broad ]    0.5710  +/-0.0069  (chance 0.50)
+    M2 triplet acc [strict]    0.7567  +/-0.0059  (chance 0.50)
+    M3 recall@10   [broad ]    0.0815
+    M3 recall@10   [strict]    0.2086
+    M4 held-out link AUC       0.5722  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.9671
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1265   mrr 0.0575   n=20,000
+       vs popularity baseline   0.3650   lift -0.2384
+       native scorer            0.6118   mrr 0.3589   lift +0.2468
+
+[58/80] masked-set-recipe-holdout-s2
+/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
+  600,000 recipes, vocab 1790, 1,515,006 parameters
+  epoch 1/3  loss 4.3124  steps 1,131  111s
+  epoch 2/3  loss 3.7831  steps 1,131  222s
+  epoch 3/3  loss 3.6809  steps 1,131  333s
+Python(56125) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  masked-set-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio       49.9  / 256
+    M2 triplet acc [broad ]    0.5636  +/-0.0069  (chance 0.50)
+    M2 triplet acc [strict]    0.7514  +/-0.0060  (chance 0.50)
+    M3 recall@10   [broad ]    0.0845
+    M3 recall@10   [strict]    0.2118
+    M4 held-out link AUC       0.5686  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.9715
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1218   mrr 0.0554   n=20,000
+       vs popularity baseline   0.3650   lift -0.2431
+       native scorer            0.6177   mrr 0.3615   lift +0.2527
+
+[59/80] masked-set-recipe-holdout-s3
+/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
+  600,000 recipes, vocab 1790, 1,515,006 parameters
+  epoch 1/3  loss 4.3184  steps 1,132  109s
+  epoch 2/3  loss 3.7918  steps 1,132  216s
+  epoch 3/3  loss 3.6895  steps 1,132  326s
+Python(56928) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  masked-set-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio       50.8  / 256
+    M2 triplet acc [broad ]    0.5714  +/-0.0069  (chance 0.50)
+    M2 triplet acc [strict]    0.7620  +/-0.0059  (chance 0.50)
+    M3 recall@10   [broad ]    0.0845
+    M3 recall@10   [strict]    0.2111
+    M4 held-out link AUC       0.5710  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.9684
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1187   mrr 0.0547   n=20,000
+       vs popularity baseline   0.3650   lift -0.2463
+       native scorer            0.6144   mrr 0.3628   lift +0.2494
+
+[60/80] masked-set-recipe-holdout-s4
+/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
+  600,000 recipes, vocab 1790, 1,515,006 parameters
+  epoch 1/3  loss 4.3064  steps 1,132  113s
+  epoch 2/3  loss 3.7839  steps 1,132  226s
+  epoch 3/3  loss 3.6780  steps 1,132  337s
+Python(58076) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  masked-set-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio       51.0  / 256
+    M2 triplet acc [broad ]    0.5614  +/-0.0069  (chance 0.50)
+    M2 triplet acc [strict]    0.7516  +/-0.0060  (chance 0.50)
+    M3 recall@10   [broad ]    0.0781
+    M3 recall@10   [strict]    0.2077
+    M4 held-out link AUC       0.5665  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.9680
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1214   mrr 0.0560   n=20,000
+       vs popularity baseline   0.3650   lift -0.2436
+       native scorer            0.6140   mrr 0.3629   lift +0.2490
+
+[61/80] text-embed-recipe-holdout-s0
+Python(58081) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  cache hit bced7e2e8b639e58.npy
+  text-embed-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      112.8  / 1536
+    M2 triplet acc [broad ]    0.8627  +/-0.0048  (chance 0.50)
+    M2 triplet acc [strict]    0.9313  +/-0.0035  (chance 0.50)
+    M3 recall@10   [broad ]    0.2147
+    M3 recall@10   [strict]    0.3197
+    M4 held-out link AUC       0.5799  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1854
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1077   mrr 0.0509   n=20,000
+       vs popularity baseline   0.3650   lift -0.2573
+
+[62/80] text-embed-recipe-holdout-s1
+Python(58082) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  cache hit bced7e2e8b639e58.npy
+  text-embed-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio      112.8  / 1536
+    M2 triplet acc [broad ]    0.8627  +/-0.0048  (chance 0.50)
+    M2 triplet acc [strict]    0.9313  +/-0.0035  (chance 0.50)
+    M3 recall@10   [broad ]    0.2147
+    M3 recall@10   [strict]    0.3197
+    M4 held-out link AUC       0.5799  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1854
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1077   mrr 0.0509   n=20,000
+       vs popularity baseline   0.3650   lift -0.2573
+
+[63/80] text-embed-recipe-holdout-s2
+Python(58095) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  cache hit bced7e2e8b639e58.npy
+  text-embed-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio      112.8  / 1536
+    M2 triplet acc [broad ]    0.8627  +/-0.0048  (chance 0.50)
+    M2 triplet acc [strict]    0.9313  +/-0.0035  (chance 0.50)
+    M3 recall@10   [broad ]    0.2147
+    M3 recall@10   [strict]    0.3197
+    M4 held-out link AUC       0.5799  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1854
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1077   mrr 0.0509   n=20,000
+       vs popularity baseline   0.3650   lift -0.2573
+
+[64/80] text-embed-recipe-holdout-s3
+Python(58100) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  cache hit bced7e2e8b639e58.npy
+  text-embed-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio      112.8  / 1536
+    M2 triplet acc [broad ]    0.8627  +/-0.0048  (chance 0.50)
+    M2 triplet acc [strict]    0.9313  +/-0.0035  (chance 0.50)
+    M3 recall@10   [broad ]    0.2147
+    M3 recall@10   [strict]    0.3197
+    M4 held-out link AUC       0.5799  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1854
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1077   mrr 0.0509   n=20,000
+       vs popularity baseline   0.3650   lift -0.2573
+
+[65/80] text-embed-recipe-holdout-s4
+Python(58107) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  cache hit bced7e2e8b639e58.npy
+  text-embed-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio      112.8  / 1536
+    M2 triplet acc [broad ]    0.8627  +/-0.0048  (chance 0.50)
+    M2 triplet acc [strict]    0.9313  +/-0.0035  (chance 0.50)
+    M3 recall@10   [broad ]    0.2147
+    M3 recall@10   [strict]    0.3197
+    M4 held-out link AUC       0.5799  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.1854
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.1077   mrr 0.0509   n=20,000
+       vs popularity baseline   0.3650   lift -0.2573
+
+[66/80] text-aligned-svdppmi-recipe-holdout-s0
+Python(58133) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  cache hit bced7e2e8b639e58.npy
+  relative residual 0.8200   mean cosine to target 0.5196
+  text-aligned-svdppmi-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio       49.5  / 300
+    M2 triplet acc [broad ]    0.8684  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9424  +/-0.0032  (chance 0.50)
+    M3 recall@10   [broad ]    0.2399
+    M3 recall@10   [strict]    0.3443
+    M4 held-out link AUC       0.6510  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.3226
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.3216   mrr 0.1587   n=20,000
+       vs popularity baseline   0.3650   lift -0.0433
+
+[67/80] text-aligned-svdppmi-recipe-holdout-s1
+Python(58135) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  cache hit bced7e2e8b639e58.npy
+  relative residual 0.8200   mean cosine to target 0.5196
+  text-aligned-svdppmi-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio       49.5  / 300
+    M2 triplet acc [broad ]    0.8684  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9424  +/-0.0032  (chance 0.50)
+    M3 recall@10   [broad ]    0.2399
+    M3 recall@10   [strict]    0.3443
+    M4 held-out link AUC       0.6510  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.3226
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.3216   mrr 0.1587   n=20,000
+       vs popularity baseline   0.3650   lift -0.0433
+
+[68/80] text-aligned-svdppmi-recipe-holdout-s2
+Python(58141) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  cache hit bced7e2e8b639e58.npy
+  relative residual 0.8200   mean cosine to target 0.5196
+  text-aligned-svdppmi-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio       49.5  / 300
+    M2 triplet acc [broad ]    0.8684  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9424  +/-0.0032  (chance 0.50)
+    M3 recall@10   [broad ]    0.2399
+    M3 recall@10   [strict]    0.3443
+    M4 held-out link AUC       0.6510  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.3226
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.3216   mrr 0.1587   n=20,000
+       vs popularity baseline   0.3650   lift -0.0433
+
+[69/80] text-aligned-svdppmi-recipe-holdout-s3
+Python(58150) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  cache hit bced7e2e8b639e58.npy
+  relative residual 0.8200   mean cosine to target 0.5196
+  text-aligned-svdppmi-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio       49.5  / 300
+    M2 triplet acc [broad ]    0.8684  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9424  +/-0.0032  (chance 0.50)
+    M3 recall@10   [broad ]    0.2399
+    M3 recall@10   [strict]    0.3443
+    M4 held-out link AUC       0.6510  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.3226
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.3216   mrr 0.1587   n=20,000
+       vs popularity baseline   0.3650   lift -0.0433
+
+[70/80] text-aligned-svdppmi-recipe-holdout-s4
+Python(58152) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  cache hit bced7e2e8b639e58.npy
+  relative residual 0.8200   mean cosine to target 0.5196
+  text-aligned-svdppmi-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio       49.5  / 300
+    M2 triplet acc [broad ]    0.8684  +/-0.0047  (chance 0.50)
+    M2 triplet acc [strict]    0.9424  +/-0.0032  (chance 0.50)
+    M3 recall@10   [broad ]    0.2399
+    M3 recall@10   [strict]    0.3443
+    M4 held-out link AUC       0.6510  +/-0.0063  (chance 0.50)
+    M5 max PC-freq corr        0.3226
+    M5 top20 freq jaccard      0.1111
+    M6 completion recall@10    0.3216   mrr 0.1587   n=20,000
+       vs popularity baseline   0.3650   lift -0.0433
+
+[71/80] concat-svdppmi-sgnscooc-recipe-holdout-s0
+Python(58153) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  svd-ppmi-recipe-holdout-s0              d=300   weight 1.0
+  sgns-cooc-recipe-holdout-s0             d=300   weight 1.0
+  concat-svdppmi-sgnscooc-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      125.0  / 300
+    M2 triplet acc [broad ]    0.8046  +/-0.0055  (chance 0.50)
+    M2 triplet acc [strict]    0.8980  +/-0.0042  (chance 0.50)
+    M3 recall@10   [broad ]    0.1270
+    M3 recall@10   [strict]    0.2479
+    M4 held-out link AUC       0.7138  +/-0.0060  (chance 0.50)
+    M5 max PC-freq corr        0.7554
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4446   mrr 0.2294   n=20,000
+       vs popularity baseline   0.3650   lift +0.0796
+
+[72/80] concat-svdppmi-sgnscooc-recipe-holdout-s1
+Python(58154) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  svd-ppmi-recipe-holdout-s1              d=300   weight 1.0
+  sgns-cooc-recipe-holdout-s1             d=300   weight 1.0
+  concat-svdppmi-sgnscooc-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio      124.9  / 300
+    M2 triplet acc [broad ]    0.8049  +/-0.0055  (chance 0.50)
+    M2 triplet acc [strict]    0.9007  +/-0.0041  (chance 0.50)
+    M3 recall@10   [broad ]    0.1297
+    M3 recall@10   [strict]    0.2517
+    M4 held-out link AUC       0.7185  +/-0.0060  (chance 0.50)
+    M5 max PC-freq corr        0.6830
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4480   mrr 0.2325   n=20,000
+       vs popularity baseline   0.3650   lift +0.0830
+
+[73/80] concat-svdppmi-sgnscooc-recipe-holdout-s2
+Python(58155) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  svd-ppmi-recipe-holdout-s2              d=300   weight 1.0
+  sgns-cooc-recipe-holdout-s2             d=300   weight 1.0
+  concat-svdppmi-sgnscooc-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio      122.7  / 300
+    M2 triplet acc [broad ]    0.8043  +/-0.0055  (chance 0.50)
+    M2 triplet acc [strict]    0.9009  +/-0.0041  (chance 0.50)
+    M3 recall@10   [broad ]    0.1302
+    M3 recall@10   [strict]    0.2476
+    M4 held-out link AUC       0.7170  +/-0.0060  (chance 0.50)
+    M5 max PC-freq corr        0.6790
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4461   mrr 0.2303   n=20,000
+       vs popularity baseline   0.3650   lift +0.0811
+
+[74/80] concat-svdppmi-sgnscooc-recipe-holdout-s3
+Python(58158) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  svd-ppmi-recipe-holdout-s3              d=300   weight 1.0
+  sgns-cooc-recipe-holdout-s3             d=300   weight 1.0
+  concat-svdppmi-sgnscooc-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio      123.2  / 300
+    M2 triplet acc [broad ]    0.8043  +/-0.0055  (chance 0.50)
+    M2 triplet acc [strict]    0.9003  +/-0.0042  (chance 0.50)
+    M3 recall@10   [broad ]    0.1282
+    M3 recall@10   [strict]    0.2512
+    M4 held-out link AUC       0.7138  +/-0.0060  (chance 0.50)
+    M5 max PC-freq corr        0.6950
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4454   mrr 0.2297   n=20,000
+       vs popularity baseline   0.3650   lift +0.0804
+
+[75/80] concat-svdppmi-sgnscooc-recipe-holdout-s4
+Python(58159) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  svd-ppmi-recipe-holdout-s4              d=300   weight 1.0
+  sgns-cooc-recipe-holdout-s4             d=300   weight 1.0
+  concat-svdppmi-sgnscooc-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio      122.9  / 300
+    M2 triplet acc [broad ]    0.8075  +/-0.0055  (chance 0.50)
+    M2 triplet acc [strict]    0.8999  +/-0.0042  (chance 0.50)
+    M3 recall@10   [broad ]    0.1282
+    M3 recall@10   [strict]    0.2517
+    M4 held-out link AUC       0.7161  +/-0.0060  (chance 0.50)
+    M5 max PC-freq corr        0.7377
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4466   mrr 0.2300   n=20,000
+       vs popularity baseline   0.3650   lift +0.0816
+
+[76/80] residual-svdppmi-sgnscooc-recipe-holdout-s0
+Python(58160) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  base explains 60.8% of the correction space; appending the remaining 39.2%
+  residual-svdppmi-sgnscooc-recipe-holdout-s0   [split: recipe-holdout]
+    M1 participation ratio      250.1  / 300
+    M2 triplet acc [broad ]    0.7225  +/-0.0062  (chance 0.50)
+    M2 triplet acc [strict]    0.8207  +/-0.0053  (chance 0.50)
+    M3 recall@10   [broad ]    0.1086
+    M3 recall@10   [strict]    0.2073
+    M4 held-out link AUC       0.5870  +/-0.0065  (chance 0.50)
+    M5 max PC-freq corr        0.4661
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4235   mrr 0.2163   n=20,000
+       vs popularity baseline   0.3650   lift +0.0585
+
+[77/80] residual-svdppmi-sgnscooc-recipe-holdout-s1
+Python(58161) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  base explains 60.8% of the correction space; appending the remaining 39.2%
+  residual-svdppmi-sgnscooc-recipe-holdout-s1   [split: recipe-holdout]
+    M1 participation ratio      249.7  / 300
+    M2 triplet acc [broad ]    0.7320  +/-0.0061  (chance 0.50)
+    M2 triplet acc [strict]    0.8293  +/-0.0052  (chance 0.50)
+    M3 recall@10   [broad ]    0.1054
+    M3 recall@10   [strict]    0.1939
+    M4 held-out link AUC       0.5834  +/-0.0066  (chance 0.50)
+    M5 max PC-freq corr        0.4670
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4264   mrr 0.2156   n=20,000
+       vs popularity baseline   0.3650   lift +0.0614
+
+[78/80] residual-svdppmi-sgnscooc-recipe-holdout-s2
+Python(58162) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  base explains 61.0% of the correction space; appending the remaining 39.0%
+  residual-svdppmi-sgnscooc-recipe-holdout-s2   [split: recipe-holdout]
+    M1 participation ratio      249.9  / 300
+    M2 triplet acc [broad ]    0.7211  +/-0.0062  (chance 0.50)
+    M2 triplet acc [strict]    0.8245  +/-0.0053  (chance 0.50)
+    M3 recall@10   [broad ]    0.1059
+    M3 recall@10   [strict]    0.2030
+    M4 held-out link AUC       0.5876  +/-0.0065  (chance 0.50)
+    M5 max PC-freq corr        0.4639
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4217   mrr 0.2128   n=20,000
+       vs popularity baseline   0.3650   lift +0.0567
+
+[79/80] residual-svdppmi-sgnscooc-recipe-holdout-s3
+Python(58164) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  base explains 61.0% of the correction space; appending the remaining 39.0%
+  residual-svdppmi-sgnscooc-recipe-holdout-s3   [split: recipe-holdout]
+    M1 participation ratio      250.0  / 300
+    M2 triplet acc [broad ]    0.7238  +/-0.0062  (chance 0.50)
+    M2 triplet acc [strict]    0.8221  +/-0.0053  (chance 0.50)
+    M3 recall@10   [broad ]    0.1082
+    M3 recall@10   [strict]    0.1976
+    M4 held-out link AUC       0.5865  +/-0.0065  (chance 0.50)
+    M5 max PC-freq corr        0.4633
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4243   mrr 0.2135   n=20,000
+       vs popularity baseline   0.3650   lift +0.0593
+
+[80/80] residual-svdppmi-sgnscooc-recipe-holdout-s4
+Python(58169) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+  base explains 61.0% of the correction space; appending the remaining 39.0%
+  residual-svdppmi-sgnscooc-recipe-holdout-s4   [split: recipe-holdout]
+    M1 participation ratio      250.0  / 300
+    M2 triplet acc [broad ]    0.7222  +/-0.0062  (chance 0.50)
+    M2 triplet acc [strict]    0.8216  +/-0.0053  (chance 0.50)
+    M3 recall@10   [broad ]    0.1093
+    M3 recall@10   [strict]    0.2039
+    M4 held-out link AUC       0.5866  +/-0.0065  (chance 0.50)
+    M5 max PC-freq corr        0.4640
+    M5 top20 freq jaccard      0.0000
+    M6 completion recall@10    0.4263   mrr 0.2140   n=20,000
+       vs popularity baseline   0.3650   lift +0.0613
+
+80 succeeded, 0 failed
+
+| model | run | family | split | M1 | M2 broad | M2 strict | M3@10 | M4 AUC | M5 freq | M6@10 | M6 best | vs pop |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| masked-set | seeds-v2 | set_transformer | recipe-holdout | 50.3 | 0.5716 | 0.7543 | 0.0821 | 0.5726 | 0.0000 | 0.1229 | 0.6178 | +0.2528 |
+| masked-set | seeds-v2 | set_transformer | recipe-holdout | 49.9 | 0.5636 | 0.7514 | 0.0845 | 0.5686 | 0.0000 | 0.1218 | 0.6177 | +0.2527 |
+| masked-set | seeds-v2 | set_transformer | recipe-holdout | 50.8 | 0.5714 | 0.7620 | 0.0845 | 0.5710 | 0.0000 | 0.1187 | 0.6144 | +0.2494 |
+| masked-set | seeds-v2 | set_transformer | recipe-holdout | 51.0 | 0.5614 | 0.7516 | 0.0781 | 0.5665 | 0.0000 | 0.1214 | 0.6140 | +0.2490 |
+| masked-set | seeds-v2 | set_transformer | recipe-holdout | 52.8 | 0.5710 | 0.7567 | 0.0815 | 0.5722 | 0.0000 | 0.1265 | 0.6118 | +0.2468 |
+| ease | seeds-v2 | recipe_basket | recipe-holdout | 158.3 | 0.6968 | 0.7775 | 0.1414 | 0.5598 | 0.2121 | 0.1422 | 0.5872 | +0.2222 |
+| ease | seeds-v2 | recipe_basket | recipe-holdout | 158.3 | 0.6968 | 0.7775 | 0.1414 | 0.5598 | 0.2121 | 0.1422 | 0.5872 | +0.2222 |
+| ease | seeds-v2 | recipe_basket | recipe-holdout | 158.3 | 0.6968 | 0.7775 | 0.1414 | 0.5598 | 0.2121 | 0.1422 | 0.5872 | +0.2222 |
+| ease | seeds-v2 | recipe_basket | recipe-holdout | 158.3 | 0.6968 | 0.7775 | 0.1414 | 0.5598 | 0.2121 | 0.1422 | 0.5872 | +0.2222 |
+| ease | seeds-v2 | recipe_basket | recipe-holdout | 158.3 | 0.6968 | 0.7775 | 0.1414 | 0.5598 | 0.2121 | 0.1422 | 0.5872 | +0.2222 |
+| svd-ppmi | seeds-v2 | factorization | recipe-holdout | 210.4 | 0.7708 | 0.8674 | 0.1146 | 0.6227 | 0.0256 | 0.4505 | 0.4505 | +0.0855 |
+| svd-ppmi | seeds-v2 | factorization | recipe-holdout | 210.4 | 0.7708 | 0.8674 | 0.1146 | 0.6227 | 0.0256 | 0.4505 | 0.4505 | +0.0855 |
+| svd-ppmi | seeds-v2 | factorization | recipe-holdout | 210.4 | 0.7708 | 0.8674 | 0.1146 | 0.6227 | 0.0256 | 0.4505 | 0.4505 | +0.0855 |
+| svd-ppmi | seeds-v2 | factorization | recipe-holdout | 210.4 | 0.7708 | 0.8674 | 0.1146 | 0.6227 | 0.0256 | 0.4505 | 0.4505 | +0.0855 |
+| svd-ppmi | seeds-v2 | factorization | recipe-holdout | 210.4 | 0.7708 | 0.8674 | 0.1146 | 0.6227 | 0.0256 | 0.4505 | 0.4505 | +0.0855 |
+| concat | seeds-v2 | hybrid | recipe-holdout | 124.9 | 0.8049 | 0.9007 | 0.1297 | 0.7185 | 0.0000 | 0.4480 | 0.4480 | +0.0830 |
+| concat | seeds-v2 | hybrid | recipe-holdout | 122.9 | 0.8075 | 0.8999 | 0.1282 | 0.7161 | 0.0000 | 0.4466 | 0.4466 | +0.0816 |
+| concat | seeds-v2 | hybrid | recipe-holdout | 122.7 | 0.8043 | 0.9009 | 0.1302 | 0.7170 | 0.0000 | 0.4461 | 0.4461 | +0.0811 |
+| concat | seeds-v2 | hybrid | recipe-holdout | 123.2 | 0.8043 | 0.9003 | 0.1282 | 0.7138 | 0.0000 | 0.4454 | 0.4454 | +0.0804 |
+| concat | seeds-v2 | hybrid | recipe-holdout | 125.0 | 0.8046 | 0.8980 | 0.1270 | 0.7138 | 0.0000 | 0.4446 | 0.4446 | +0.0796 |
+| residual | seeds-v2 | hybrid | recipe-holdout | 249.7 | 0.7320 | 0.8293 | 0.1054 | 0.5834 | 0.0000 | 0.4264 | 0.4264 | +0.0614 |
+| residual | seeds-v2 | hybrid | recipe-holdout | 250.0 | 0.7222 | 0.8216 | 0.1093 | 0.5866 | 0.0000 | 0.4263 | 0.4263 | +0.0613 |
+| residual | seeds-v2 | hybrid | recipe-holdout | 250.0 | 0.7238 | 0.8221 | 0.1082 | 0.5865 | 0.0000 | 0.4243 | 0.4243 | +0.0593 |
+| residual | seeds-v2 | hybrid | recipe-holdout | 250.1 | 0.7225 | 0.8207 | 0.1086 | 0.5870 | 0.0000 | 0.4235 | 0.4235 | +0.0585 |
+| residual | seeds-v2 | hybrid | recipe-holdout | 249.9 | 0.7211 | 0.8245 | 0.1059 | 0.5876 | 0.0000 | 0.4217 | 0.4217 | +0.0567 |
+| sgns-core | seeds-v2 | sgns_walk | recipe-holdout | 107.6 | 0.8652 | 0.9220 | 0.1495 | 0.7335 | 0.2500 | 0.4083 | 0.4083 | +0.0433 |
+| sgns-core | seeds-v2 | sgns_walk | recipe-holdout | 108.2 | 0.8647 | 0.9203 | 0.1485 | 0.7324 | 0.2121 | 0.4068 | 0.4068 | +0.0418 |
+| sgns-core | seeds-v2 | sgns_walk | recipe-holdout | 111.0 | 0.8684 | 0.9214 | 0.1493 | 0.7295 | 0.2121 | 0.4065 | 0.4065 | +0.0415 |
+| sgns-cooc | seeds-v2 | sgns_walk | recipe-holdout | 108.9 | 0.8636 | 0.9184 | 0.1438 | 0.7333 | 0.1429 | 0.4059 | 0.4059 | +0.0409 |
+| sgns-core | seeds-v2 | sgns_walk | recipe-holdout | 108.4 | 0.8668 | 0.9213 | 0.1465 | 0.7322 | 0.2121 | 0.4051 | 0.4051 | +0.0401 |
+| sgns-cooc | seeds-v2 | sgns_walk | recipe-holdout | 113.1 | 0.8668 | 0.9209 | 0.1466 | 0.7342 | 0.2500 | 0.4034 | 0.4034 | +0.0384 |
+| sgns-cooc | seeds-v2 | sgns_walk | recipe-holdout | 109.4 | 0.8658 | 0.9194 | 0.1425 | 0.7337 | 0.2121 | 0.4031 | 0.4031 | +0.0381 |
+| sgns-cooc | seeds-v2 | sgns_walk | recipe-holdout | 108.4 | 0.8643 | 0.9187 | 0.1438 | 0.7328 | 0.2500 | 0.4002 | 0.4002 | +0.0352 |
+| sgns-core | seeds-v2 | sgns_walk | recipe-holdout | 112.1 | 0.8649 | 0.9204 | 0.1469 | 0.7248 | 0.1765 | 0.3919 | 0.3919 | +0.0269 |
+| sgns-cooc | seeds-v2 | sgns_walk | recipe-holdout | 112.5 | 0.8674 | 0.9187 | 0.1449 | 0.7356 | 0.1429 | 0.3885 | 0.3885 | +0.0235 |
+| text-aligned | seeds-v2 | text_embedding | recipe-holdout | 49.5 | 0.8684 | 0.9424 | 0.2399 | 0.6510 | 0.1111 | 0.3216 | 0.3216 | -0.0433 |
+| text-aligned | seeds-v2 | text_embedding | recipe-holdout | 49.5 | 0.8684 | 0.9424 | 0.2399 | 0.6510 | 0.1111 | 0.3216 | 0.3216 | -0.0433 |
+| text-aligned | seeds-v2 | text_embedding | recipe-holdout | 49.5 | 0.8684 | 0.9424 | 0.2399 | 0.6510 | 0.1111 | 0.3216 | 0.3216 | -0.0433 |
+| text-aligned | seeds-v2 | text_embedding | recipe-holdout | 49.5 | 0.8684 | 0.9424 | 0.2399 | 0.6510 | 0.1111 | 0.3216 | 0.3216 | -0.0433 |
+| text-aligned | seeds-v2 | text_embedding | recipe-holdout | 49.5 | 0.8684 | 0.9424 | 0.2399 | 0.6510 | 0.1111 | 0.3216 | 0.3216 | -0.0433 |
+| glove | seeds-v2 | factorization | recipe-holdout | 13.8 | 0.8371 | 0.8929 | 0.1176 | 0.6630 | 0.1111 | 0.2212 | 0.2212 | -0.1438 |
+| glove | seeds-v2 | factorization | recipe-holdout | 14.0 | 0.8350 | 0.8914 | 0.1170 | 0.6611 | 0.1429 | 0.2211 | 0.2211 | -0.1439 |
+| glove | seeds-v2 | factorization | recipe-holdout | 13.7 | 0.8363 | 0.8929 | 0.1148 | 0.6624 | 0.1111 | 0.2181 | 0.2181 | -0.1469 |
+| glove | seeds-v2 | factorization | recipe-holdout | 14.0 | 0.8358 | 0.8926 | 0.1159 | 0.6613 | 0.1429 | 0.2163 | 0.2163 | -0.1487 |
+| glove | seeds-v2 | factorization | recipe-holdout | 13.8 | 0.8362 | 0.8934 | 0.1173 | 0.6644 | 0.1111 | 0.2130 | 0.2130 | -0.1520 |
+| lightgcn | seeds-v2 | graph_neural | recipe-holdout | 4.1 | 0.7461 | 0.7943 | 0.0673 | 0.7506 | 0.0526 | 0.1887 | 0.1887 | -0.1763 |
+| lightgcn | seeds-v2 | graph_neural | recipe-holdout | 4.0 | 0.7472 | 0.7976 | 0.0722 | 0.7529 | 0.0811 | 0.1860 | 0.1860 | -0.1790 |
+| lightgcn | seeds-v2 | graph_neural | recipe-holdout | 4.0 | 0.7470 | 0.7973 | 0.0702 | 0.7565 | 0.1111 | 0.1837 | 0.1837 | -0.1813 |
+| lightgcn | seeds-v2 | graph_neural | recipe-holdout | 4.0 | 0.7418 | 0.7959 | 0.0728 | 0.7578 | 0.0256 | 0.1792 | 0.1792 | -0.1858 |
+| lightgcn | seeds-v2 | graph_neural | recipe-holdout | 3.9 | 0.7403 | 0.7941 | 0.0689 | 0.7578 | 0.1111 | 0.1780 | 0.1780 | -0.1870 |
+| text-embed | seeds-v2 | text_embedding | recipe-holdout | 112.8 | 0.8627 | 0.9313 | 0.2147 | 0.5799 | 0.0000 | 0.1077 | 0.1077 | -0.2573 |
+| text-embed | seeds-v2 | text_embedding | recipe-holdout | 112.8 | 0.8627 | 0.9313 | 0.2147 | 0.5799 | 0.0000 | 0.1077 | 0.1077 | -0.2573 |
+| text-embed | seeds-v2 | text_embedding | recipe-holdout | 112.8 | 0.8627 | 0.9313 | 0.2147 | 0.5799 | 0.0000 | 0.1077 | 0.1077 | -0.2573 |
+| text-embed | seeds-v2 | text_embedding | recipe-holdout | 112.8 | 0.8627 | 0.9313 | 0.2147 | 0.5799 | 0.0000 | 0.1077 | 0.1077 | -0.2573 |
+| text-embed | seeds-v2 | text_embedding | recipe-holdout | 112.8 | 0.8627 | 0.9313 | 0.2147 | 0.5799 | 0.0000 | 0.1077 | 0.1077 | -0.2573 |
+| sgc | seeds-v2 | graph_neural | recipe-holdout | 244.9 | 0.7772 | 0.8401 | 0.0640 | 0.6806 | 0.0000 | 0.0777 | 0.0777 | -0.2873 |
+| sgc | seeds-v2 | graph_neural | recipe-holdout | 244.9 | 0.7772 | 0.8401 | 0.0640 | 0.6806 | 0.0000 | 0.0777 | 0.0777 | -0.2873 |
+| sgc | seeds-v2 | graph_neural | recipe-holdout | 244.9 | 0.7772 | 0.8401 | 0.0640 | 0.6806 | 0.0000 | 0.0777 | 0.0777 | -0.2873 |
+| sgc | seeds-v2 | graph_neural | recipe-holdout | 244.9 | 0.7772 | 0.8401 | 0.0640 | 0.6806 | 0.0000 | 0.0777 | 0.0777 | -0.2873 |
+| sgc | seeds-v2 | graph_neural | recipe-holdout | 244.9 | 0.7772 | 0.8401 | 0.0640 | 0.6806 | 0.0000 | 0.0777 | 0.0777 | -0.2873 |
+| ials | seeds-v2 | recipe_basket | recipe-holdout | 101.2 | 0.6260 | 0.6701 | 0.0840 | 0.5377 | 0.0000 | 0.0437 | 0.0437 | -0.3213 |
+| ials | seeds-v2 | recipe_basket | recipe-holdout | 101.3 | 0.6220 | 0.6623 | 0.0794 | 0.5371 | 0.0000 | 0.0426 | 0.0426 | -0.3224 |
+| ials | seeds-v2 | recipe_basket | recipe-holdout | 100.8 | 0.6215 | 0.6564 | 0.0776 | 0.5403 | 0.0000 | 0.0426 | 0.0426 | -0.3224 |
+| ials | seeds-v2 | recipe_basket | recipe-holdout | 101.2 | 0.6255 | 0.6582 | 0.0829 | 0.5389 | 0.0000 | 0.0421 | 0.0421 | -0.3228 |
+| ials | seeds-v2 | recipe_basket | recipe-holdout | 101.0 | 0.6238 | 0.6618 | 0.0805 | 0.5377 | 0.0000 | 0.0404 | 0.0404 | -0.3246 |
+| chem-svd | seeds-v2 | factorization | recipe-holdout | 140.4 | 0.5824 | 0.6483 | 0.0367 | 0.5019 | 0.0000 | 0.0152 | 0.0152 | -0.3498 |
+| chem-svd | seeds-v2 | factorization | recipe-holdout | 140.4 | 0.5824 | 0.6483 | 0.0367 | 0.5019 | 0.0000 | 0.0152 | 0.0152 | -0.3498 |
+| chem-svd | seeds-v2 | factorization | recipe-holdout | 140.4 | 0.5824 | 0.6483 | 0.0367 | 0.5019 | 0.0000 | 0.0152 | 0.0152 | -0.3498 |
+| chem-svd | seeds-v2 | factorization | recipe-holdout | 140.4 | 0.5824 | 0.6483 | 0.0367 | 0.5019 | 0.0000 | 0.0152 | 0.0152 | -0.3498 |
+| chem-svd | seeds-v2 | factorization | recipe-holdout | 140.4 | 0.5824 | 0.6483 | 0.0367 | 0.5019 | 0.0000 | 0.0152 | 0.0152 | -0.3498 |
+| sgns-chem | seeds-v2 | sgns_walk | recipe-holdout | 2.7 | 0.5804 | 0.6394 | 0.0358 | 0.5044 | 0.0000 | 0.0149 | 0.0149 | -0.3502 |
+| sgns-chem | seeds-v2 | sgns_walk | recipe-holdout | 2.7 | 0.5855 | 0.6463 | 0.0321 | 0.5069 | 0.0000 | 0.0137 | 0.0137 | -0.3513 |
+| item2vec | seeds-v2 | recipe_basket | recipe-holdout | 28.6 | 0.7527 | 0.8404 | 0.1067 | 0.7238 | 0.0000 | 0.0123 | 0.0123 | -0.3528 |
+| item2vec | seeds-v2 | recipe_basket | recipe-holdout | 29.0 | 0.7540 | 0.8396 | 0.1070 | 0.7262 | 0.0000 | 0.0121 | 0.0121 | -0.3529 |
+| sgns-chem | seeds-v2 | sgns_walk | recipe-holdout | 2.7 | 0.5911 | 0.6575 | 0.0378 | 0.5053 | 0.0000 | 0.0120 | 0.0120 | -0.3529 |
+| item2vec | seeds-v2 | recipe_basket | recipe-holdout | 29.1 | 0.7570 | 0.8411 | 0.1090 | 0.7272 | 0.0000 | 0.0117 | 0.0117 | -0.3533 |
+| item2vec | seeds-v2 | recipe_basket | recipe-holdout | 28.5 | 0.7539 | 0.8400 | 0.1096 | 0.7259 | 0.0000 | 0.0112 | 0.0112 | -0.3538 |
+| sgns-chem | seeds-v2 | sgns_walk | recipe-holdout | 2.7 | 0.5909 | 0.6433 | 0.0363 | 0.5102 | 0.0000 | 0.0111 | 0.0111 | -0.3539 |
+| sgns-chem | seeds-v2 | sgns_walk | recipe-holdout | 2.7 | 0.5862 | 0.6484 | 0.0349 | 0.5058 | 0.0000 | 0.0103 | 0.0103 | -0.3548 |
+| item2vec | seeds-v2 | recipe_basket | recipe-holdout | 29.1 | 0.7528 | 0.8397 | 0.1054 | 0.7256 | 0.0000 | 0.0102 | 0.0102 | -0.3548 |

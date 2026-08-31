@@ -34,8 +34,8 @@ followed by a measure word, which stops `八角` (star anise), `三文鱼` (salm
 and `五香粉` (five-spice) from being read as "8 …", "3 …" and "5 …".
 
 **2. The lexicons are thin outside English.** 5,710 English aliases against 346
-Chinese, for a shared 1,790-concept vocabulary, while Chinese is 31% of the
-corpus. `EXTRA` carries the additions; see `data/aliases/`.
+Chinese aliases, for the same fixed concept vocabulary, while Chinese is 31% of
+the corpus. `EXTRA` carries the additions; see `data/aliases/`.
 
 Safety property that matters for Chinese
 ----------------------------------------

@@ -33,6 +33,28 @@ prior-study/data/
 *.bin
 *.safetensors
 
+# ---------------------------------------------------------------------------
+# The site's data bundle, re-admitted against the rule above.
+#
+# The rule is "if a script can produce it, it does not belong in git", and
+# scripts/export_site.py does produce all of this. But it produces it *from*
+# the weight blobs excluded above, which means a CI runner with a fresh clone
+# cannot regenerate it, and a deploy that cannot rebuild its own inputs is not
+# reproducible in any useful sense.
+#
+# So the bundle is tracked. It is roughly 10 MB, and almost all of it is two
+# things the browser cannot do without: the nearest-neighbour tables (5.5 MB
+# across ids and scores) and the EASE item-item matrix (1.2 MB, shipped as the
+# 366 rows the demo can actually index rather than all 1,790). The measurements
+# read from metrics.json are under 200 KB of it.
+#
+# Same reasoning as keeping metrics.json above — the artefact is small, it is
+# the published claim, and versioning it is what lets any figure on the site
+# be traced to a commit.
+# ---------------------------------------------------------------------------
+!site/public/data/
+!site/public/data/*.bin
+
 # Python
 __pycache__/
 *.py[cod]

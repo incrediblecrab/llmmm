@@ -1,0 +1,22 @@
+{
+  "split": "edge-holdout",
+  "n": 1790,
+  "d": 300,
+  "whitened": false,
+  "M1_participation_ratio": 162.5370044200236,
+  "M4_link_auc": 0.6843734643734644,
+  "M4_link_auc_ci95": 0.00638568071297152,
+  "M2_triplet_accuracy_broad": 0.6964973730297723,
+  "M2_triplet_accuracy_broad_ci95": 0.0063744829473900725,
+  "M3_recall_at_10_broad": 0.1428421300445319,
+  "M2_triplet_accuracy_strict": 0.7771494344910419,
+  "M2_triplet_accuracy_strict_ci95": 0.0057702646454487975,
+  "M3_recall_at_10_strict": 0.1966973709492352,
+  "M5_pc_freq_corr": [
+    0.007129805007166935,
+    0.1405807117593058,
+    0.0669034147386878
+  ],
+  "M5_max_pc_freq_corr": 0.1405807117593058,
+  "M5_top20_freq_jaccard": 0.21212121212121213
+}

@@ -76,6 +76,14 @@ families comparable at all. The graph is *rebuilt* from the training recipes
 rather than being edge-filtered, because an edge-filtered graph still encodes
 statistics computed from held-out recipes.
 
+## Artefact authority
+
+`model/data/` is the authoritative data tree for new model work. `prior-study/data/derived/` is a deliberate mirror for the replication and audit scripts that predate this package; it stays runnable on its own terms, but it is not the source of truth for new leaderboards.
+
+The one exception worth spelling out is the v1 edge split. `model/data/graphs/ii_graph_train.npz` and `model/data/graphs/ii_graph_heldout.npz` are byte-for-byte the prior-study v1 split, kept so the leakage contrast still compares against the same optimistic protocol. They are not rebuilt from v2, and no recipe-holdout leaderboard number depends on them.
+
+Within the recipe corpus, `model/data/recipes/recipe_ids.npz` is canonical. `model/data/recipes/recipe_ids_v1.npz` is the archived previous generation, kept for before/after checks and for explaining what changed; code that needs the live corpus reads `recipe_ids.npz`, with `data/GENERATION.json` recording which generation that filename currently names.
+
 ### A limit that cannot be engineered away
 
 Held-out edges under the recipe protocol are **rare pairs by construction**. A

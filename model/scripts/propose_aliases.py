@@ -5,10 +5,11 @@
 
 How a hallucination is prevented from entering the corpus
 ---------------------------------------------------------
-The model is never shown the 1,790-concept vocabulary and never asked to pick
-from it. It is asked only to translate a term into a plain English ingredient
-name. That name is then bound to a concept **through llmmm's own English alias
-table** — the same matcher that already normalises two million English recipes.
+The model is never shown the concept vocabulary and never asked to pick from
+it. It is asked only to translate a term into a plain English ingredient name.
+That name is then bound to a concept **through llmmm's own English alias
+table** — the same matcher that already normalises two million English
+recipes.
 
 So the model's answer is a hypothesis and the English lexicon is the judge. If
 it invents "purple yam cake flour", nothing binds and the term is dropped. It

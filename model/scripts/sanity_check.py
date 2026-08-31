@@ -59,9 +59,8 @@ def check_vocabulary_alignment() -> None:
     check("all artefacts agree on vocabulary size",
           len(set(sizes.values())) == 1, str(sizes))
 
-    # Element-wise, not just length: two lists of 1790 names can be the same
-    # length and a different order, which is the failure that produces
-    # believable nonsense.
+    # Element-wise, not just length: two same-sized lists can have a different
+    # order, which is the failure that produces believable nonsense.
     check("corpus and graph itos are element-wise identical",
           list(full.itos) == list(g_full.itos),
           f"first mismatch: {next((i for i, (a, b) in enumerate(zip(full.itos, g_full.itos)) if a != b), None)}")
@@ -190,7 +189,7 @@ def check_popularity_baseline() -> None:
 
     check("popularity is well above chance",
           reported > 0.20,
-          f"chance for recall@10 over 1790 candidates is "
+          f"chance for recall@10 over {ctx.n:,} candidates is "
           f"{10 / ctx.n:.4f}; popularity is {reported:.4f} — this is why it "
           f"must be reported alongside every model")
 

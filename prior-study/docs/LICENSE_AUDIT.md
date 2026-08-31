@@ -2,6 +2,8 @@
 
 > **Important transparency note:** The arXiv paper 2605.22391 ("Epicure: Navigating the Emergent Geometry of Food Ingredient Embeddings") was not independently verifiable by me at the time of writing (it is described as a 2026 preprint). The dataset sourcing below is based on the citations you provided, cross-referenced against live web searches and HuggingFace API responses. All claims are annotated with verification status.
 
+**Publication status update:** Since this audit was written, the repository owner has obtained permission from the data sources to publish. The source-by-source risk analysis below is therefore historical due diligence rather than a statement that publication is currently blocked; it remains useful for understanding provenance and downstream obligations.
+
 ---
 
 ## Master Table

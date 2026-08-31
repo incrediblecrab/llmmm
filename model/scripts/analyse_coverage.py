@@ -32,6 +32,8 @@ retention figures above 100% on the first attempt.
 """
 from __future__ import annotations
 
+import argparse
+import json
 import sys
 from collections import Counter
 from pathlib import Path
@@ -42,6 +44,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from ingredient_model.config import PATHS  # noqa: E402
+from ingredient_model.data.normalizer import get_normalizer  # noqa: E402
 from ingredient_model.data.recipes import load_recipes  # noqa: E402
 from ingredient_model.data.text import TEXT_FILE  # noqa: E402
 
@@ -52,6 +55,13 @@ SOURCES = [("01-recipenlg", "en"), ("02-xiachufang", "zh"),
 
 
 def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument(
+        "--normalizer", choices=("corrected", "base"), default=None,
+        help="which normaliser to measure. Defaults to whichever built the "
+             "canonical corpus, per data/GENERATION.json.")
+    a = ap.parse_args()
+
     path = PATHS.recipes / TEXT_FILE
     if not path.exists():
         print("no text index — run `make text` first", file=sys.stderr)
@@ -59,10 +69,25 @@ def main() -> int:
     if not (LLMMM / "normalize.py").exists():
         print(f"normaliser not found at {LLMMM}", file=sys.stderr)
         return 1
-    sys.path.insert(0, str(LLMMM))
-    import normalize as nm  # type: ignore
 
-    nz = nm.Normalizer()
+    # This script used to hardcode the upstream normaliser while comparing its
+    # output against the v2 corpus, which was built with the corrected one.
+    # Every line the correction rescued therefore counted as a lexicon gap,
+    # and the loss it reported was the loss of a normaliser the corpus no
+    # longer uses. It now defaults to the one that actually built the corpus,
+    # and `--normalizer base` still gives the historical figure — the two are
+    # simply no longer the same command.
+    gen = json.loads((PATHS.data / "GENERATION.json").read_text())
+    which = a.normalizer or gen.get("normalizer", "corrected")
+    if which == "base":
+        sys.path.insert(0, str(LLMMM))
+        import normalize as nm  # type: ignore
+        nz = nm.Normalizer()
+    else:
+        nz = get_normalizer()
+    print(f"normaliser: {which}"
+          f"{'' if a.normalizer else '  (from GENERATION.json)'}\n")
+
     corpus = load_recipes()
     vocab = set(corpus.itos)
     src = np.asarray(corpus.source)
