@@ -1,0 +1,286 @@
+/* Design tokens.
+ *
+ * The subject of this site is measurement, so its credibility rests on not
+ * looking like it is selling anything. Every choice below is aimed at reading
+ * as printed matter — a journal article or a lab notebook — rather than as a
+ * product page.
+ *
+ * Deliberately absent: violet-to-blue gradients, Inter, frosted glass,
+ * near-black backgrounds, and a chart library's default categorical palette.
+ * Those are the visual defaults of generated work, and a site arguing for
+ * careful measurement cannot afford to look careless about its own surface.
+ */
+
+:root {
+  /* White ground, near-black ink — the surface of a newsroom graphic.
+   *
+   * This replaces a bone-and-brown palette. The intent there was "printed
+   * matter", but warm paper plus brown ink plus brown data bars produced a
+   * muddy, low-chroma page in which the charts had no more colour than the
+   * furniture, and the finding the colour was supposed to carry could not be
+   * seen at a glance. White is not a default here, it is what lets a
+   * saturated data colour actually register. */
+  --paper:      #ffffff;
+  --paper-sunk: #f4f6f8;
+  --paper-edge: #e3e7ec;
+  --rule:       #cdd3da;
+
+  --ink:        #12161a;
+  --ink-soft:   #454d56;
+  --ink-faint:  #666f7a;
+
+  /* The palette is the finding.
+   *
+   * Every model on this site is measured against one line — the popularity
+   * baseline — so the encoding is diverging around that line rather than a
+   * sequence of decorative hues. Below the line is warm and loud; above it
+   * is cool and calm. A reader who never reads a caption still sees that
+   * most of the leaderboard is on the wrong side.
+   *
+   * Both clear 4.5:1 on white, so either can carry small text or a thin
+   * rule without a second colour underneath it. */
+  --below:      #d1441f;
+  --below-wash: #fdeee9;
+  --above:      #16688f;
+  --above-wash: #e8f2f7;
+
+  /* Interface colour is the same blue as `above`, so the page never
+   * introduces a hue that means nothing. `--accent-warm` is the one
+   * exception: it marks the hidden slot in the demo, where the point is that
+   * something is missing rather than that something is good or bad. */
+  --accent:      #16688f;
+  --accent-warm: #e8a020;
+  --accent-wash: #fff6e6;
+
+  /* Type. A grotesque for headlines and labels, a text serif for prose, and
+   * tabular-figure monospace for every number.
+   *
+   * Headlines move from serif to a heavy sans because a serif headline on a
+   * warm ground was most of what made the page read as a personal essay. The
+   * pairing here — sans display over serif body — is the newspaper
+   * convention, and it separates "what this section claims" from "the
+   * argument for it" without a rule or a box.
+   *
+   * Inter is deliberately absent; it is the house face of generated work. */
+  --serif: "Iowan Old Style", Charter, "Bitstream Charter", Georgia,
+           "Times New Roman", serif;
+  --sans:  "Helvetica Neue", Helvetica, -apple-system, "Segoe UI", Roboto,
+           Arial, sans-serif;
+  --mono:  ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas,
+           monospace;
+
+  /* A fourth-based scale. Fewer sizes used consistently reads as considered;
+   * many sizes used loosely reads as assembled. */
+  --t-xs:   0.75rem;
+  --t-sm:   0.8125rem;
+  --t-base: 1.0rem;
+  --t-md:   1.1875rem;
+  --t-lg:   1.5rem;
+  --t-xl:   2rem;
+  --t-2xl:  2.75rem;
+  --t-3xl:  3.75rem;
+
+  --measure: 34rem;   /* ~68 characters — the column prose is set to */
+  --wide:    64rem;   /* tables and figures, which need the room */
+
+  --s-1: 0.25rem;  --s-2: 0.5rem;   --s-3: 0.75rem;  --s-4: 1rem;
+  --s-5: 1.5rem;   --s-6: 2rem;     --s-7: 3rem;     --s-8: 4.5rem;
+  --s-9: 7rem;
+}
+
+/* Dark is opt-in, not automatic.
+ *
+ * This was a `prefers-color-scheme: dark` media query, which meant anyone
+ * whose OS is set to dark got a near-black page — the one surface this
+ * project's design direction explicitly rules out — and had no way to leave
+ * it. The palette below is unchanged; what changed is that the reader now
+ * chooses it, via the control in the masthead, and the choice sticks.
+ */
+:root[data-theme="dark"] {
+  /* Neutral dark, and the data colours brightened so they still separate
+   * from each other and clear contrast on a dark ground. */
+  --paper:      #0e1216;
+  --paper-sunk: #171c22;
+  --paper-edge: #232a32;
+  --rule:       #333c46;
+  --ink:        #eef2f6;
+  --ink-soft:   #b6c0cb;
+  --ink-faint:  #838e9a;
+  --below:      #ff7043;
+  --below-wash: #2a1610;
+  --above:      #4aa8d8;
+  --above-wash: #0f2029;
+  --accent:      #4aa8d8;
+  --accent-warm: #f0b13c;
+  --accent-wash: #241a08;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: var(--t-md);
+  line-height: 1.58;
+  /* Lining figures throughout. Old-style figures in running prose were part
+   * of the "printed essay" register this design moved away from, and they
+   * read as inconsistent next to the tabular lining figures every number on
+   * the site is set in. */
+  font-variant-numeric: lining-nums;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--sans);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.021em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+h1 { font-size: var(--t-3xl); letter-spacing: -0.028em; }
+h2 { font-size: var(--t-xl);  margin-block: var(--s-8) var(--s-4); }
+h3 { font-size: var(--t-lg);  margin-block: var(--s-6) var(--s-3); }
+
+p { margin-block: 0 var(--s-4); }
+
+a {
+  color: inherit;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+a:hover { text-decoration-thickness: 2px; }
+
+/* One visible focus treatment for the whole site, so keyboard use is never a
+ * second-class path. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+code, kbd, samp { font-family: var(--mono); font-size: 0.88em; }
+
+/* Small caps labels, used for column heads and eyebrows. Letterspaced
+ * uppercase at small sizes is the one typographic gesture borrowed from
+ * scientific publishing. */
+.label {
+  font-family: var(--sans);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.prose { max-width: var(--measure); }
+.prose > p + p { text-indent: 0; }
+
+/* One vertical axis for the whole site.
+ *
+ * Every page used to choose between a narrow centred column and a wide
+ * left-aligned one, so the reading column jumped sideways as you moved
+ * between pages — and `limits` ended up with a full-width chart squeezed
+ * into a narrow column. The width of a figure is a property of the figure,
+ * not of the page that holds it.
+ *
+ * So `main` is always the wide frame, text is always set to the measure,
+ * and figures are allowed to outgrow it. Everything is centred on the same
+ * line, which is what keeps a wide table and the paragraph above it looking
+ * like one column rather than two unrelated blocks.
+ *
+ * Centring was tried once before and reverted because only some elements
+ * received the rule, which produced three different left margins. The fix
+ * is to apply it to every child, not to abandon it: with a shared centre
+ * and differing widths, the margins cannot disagree.
+ *
+ * This lives here rather than in the layout because Astro scopes a
+ * component's styles to its own markup, and these children belong to the
+ * page slotted into the layout, not to the layout itself. */
+main > * {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+main > figure,
+main > .wide,
+main > .wide-figure,
+main > table {
+  max-width: var(--wide);
+}
+
+/* The UA stylesheet gives <figure> a 40px inline margin. Setting only
+ * `margin-block` on a figure — which is the correct way to avoid clobbering
+ * auto inline margins — leaves that 40px in place, so every chart on the
+ * site was quietly inset by 40px a side and no figure reached the width it
+ * declared. `auto` rather than `0` because it does the right thing in both
+ * cases: a full-width figure resolves it to 0 and spans the wide frame,
+ * while a figure that sets a narrower max-width is centred, which puts it on
+ * the same axis as the prose instead of against the wide frame's left edge. */
+main figure {
+  margin-inline: auto;
+}
+
+/* A figure may be wider than the text, but its caption is text and belongs
+ * on the text's axis. Without this a caption starts at the left edge of a
+ * 61rem chart while the paragraph above it starts 13rem further in, which
+ * reads as two columns that happen to be stacked. Narrow graphics inside a
+ * wide figure are centred for the same reason. */
+main > figure > figcaption,
+main figure > table > caption {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+main > figure > svg {
+  display: block;
+  margin-inline: auto;
+}
+
+/* A wide figure does not always get to be a direct child of `main` — some
+ * sit inside a conditional block alongside the prose that introduces them.
+ * Because the reading column is centred, such a figure can still reach its
+ * full width by starting at the column's centre line and pulling itself
+ * back by half its own width. It ends up centred on the same axis as every
+ * other figure, without the markup having to be reorganised around it. */
+.prose > .wide-figure,
+.prose > .wide {
+  width: min(
+    calc(var(--wide) - 2 * var(--s-5)),
+    calc(100vw - 2 * var(--s-5))
+  );
+  max-width: none;
+  margin-left: 50%;
+  translate: -50%;
+}
+
+.wide { max-width: var(--wide); }
+
+.muted { color: var(--ink-soft); }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin-block: var(--s-7);
+}
+
+/* Motion has exactly three jobs on this site: the reveal in the demo, figures
+ * drawing themselves once, and numbers transitioning when a control changes
+ * them. Anything else is decoration, and this rule removes all of it for
+ * readers who have asked for that. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

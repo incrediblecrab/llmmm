@@ -1,0 +1,450 @@
+{
+ "generation": {
+  "generation": "v2",
+  "corpus": "recipe_ids.npz",
+  "normalizer": "corrected",
+  "promoted_from": "recipe_ids_v2.npz",
+  "promoted_at": "2026-08-29T22:59:38-0400",
+  "recipes": 4653430,
+  "slots": 36707624,
+  "vocab": 1790,
+  "sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+  "ii_graph_edges": 220871,
+  "min_count": 2,
+  "threshold": -0.15,
+  "seed": 20260805,
+  "previous": {
+   "generation": "v1",
+   "recipes": 4647847,
+   "slots": 35783309,
+   "vocab": 1790,
+   "itos_sha": "abbc669198171aac"
+  }
+ },
+ "stats": {
+  "note": "Read-only replay of the original corpus readers. Duplicate and empty counts use the same rules as scripts/rebuild_corpus.py; kept counts by source and ingredient counts come from the promoted recipe_ids.npz artefact.",
+  "generation": {
+   "generation": "v2",
+   "corpus": "recipe_ids.npz",
+   "normalizer": "corrected",
+   "promoted_from": "recipe_ids_v2.npz",
+   "promoted_at": "2026-08-29T22:59:38-0400",
+   "recipes": 4653430,
+   "slots": 36707624,
+   "vocab": 1790,
+   "sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+   "ii_graph_edges": 220871,
+   "min_count": 2,
+   "threshold": -0.15,
+   "seed": 20260805,
+   "previous": {
+    "generation": "v1",
+    "recipes": 4647847,
+    "slots": 35783309,
+    "vocab": 1790,
+    "itos_sha": "abbc669198171aac"
+   }
+  },
+  "waterfall": {
+   "scanned": 5325676,
+   "scanned_pct": 100.0,
+   "dropped_duplicate": 655647,
+   "dropped_duplicate_pct": 12.311056849872204,
+   "dropped_matched_nothing": 16599,
+   "dropped_matched_nothing_pct": 0.31167874275491037,
+   "kept": 4653430,
+   "kept_pct": 87.37726440737289,
+   "dropped_total": 672246,
+   "dropped_total_pct": 12.622735592627114
+  },
+  "per_source": [
+   {
+    "source": "01-recipenlg",
+    "scanned": 2230569,
+    "dup": 233040,
+    "empty": 2713,
+    "kept": 1994816,
+    "survival_rate_pct": 89.43081339335389,
+    "final_corpus_share_pct": 42.86764816490202
+   },
+   {
+    "source": "02-xiachufang",
+    "scanned": 1549696,
+    "dup": 99929,
+    "empty": 11201,
+    "kept": 1438566,
+    "survival_rate_pct": 92.8289161229041,
+    "final_corpus_share_pct": 30.914099921993024
+   },
+   {
+    "source": "foodcom-522k",
+    "scanned": 522517,
+    "dup": 59114,
+    "empty": 69,
+    "kept": 463334,
+    "survival_rate_pct": 88.67347856624761,
+    "final_corpus_share_pct": 9.956827544413475
+   },
+   {
+    "source": "foodcom-raw-231k",
+    "scanned": 231637,
+    "dup": 52402,
+    "empty": 8,
+    "kept": 179227,
+    "survival_rate_pct": 77.3740809974227,
+    "final_corpus_share_pct": 3.851503084821304
+   },
+   {
+    "source": "03-povarenok",
+    "scanned": 146564,
+    "dup": 4499,
+    "empty": 7,
+    "kept": 142058,
+    "survival_rate_pct": 96.92557517535002,
+    "final_corpus_share_pct": 3.052758932658276
+   },
+   {
+    "source": "turkish-102k",
+    "scanned": 101811,
+    "dup": 1416,
+    "empty": 63,
+    "kept": 100332,
+    "survival_rate_pct": 98.54730824763533,
+    "final_corpus_share_pct": 2.156087015384351
+   },
+   {
+    "source": "thefoodprocessor-74k",
+    "scanned": 74465,
+    "dup": 2207,
+    "empty": 28,
+    "kept": 72230,
+    "survival_rate_pct": 96.99858994158329,
+    "final_corpus_share_pct": 1.5521883857713556
+   },
+   {
+    "source": "04-spanish",
+    "scanned": 75678,
+    "dup": 29129,
+    "empty": 103,
+    "kept": 46446,
+    "survival_rate_pct": 61.3731863949893,
+    "final_corpus_share_pct": 0.9981024749485863
+   },
+   {
+    "source": "allrecipes-33k",
+    "scanned": 32722,
+    "dup": 21,
+    "empty": 1,
+    "kept": 32700,
+    "survival_rate_pct": 99.93276694578572,
+    "final_corpus_share_pct": 0.7027074652460658
+   },
+   {
+    "source": "05-vietnamese",
+    "scanned": 60464,
+    "dup": 28445,
+    "empty": 133,
+    "kept": 31886,
+    "survival_rate_pct": 52.73551204022228,
+    "final_corpus_share_pct": 0.685214991952173
+   },
+   {
+    "source": "06-turkish",
+    "scanned": 25496,
+    "dup": 63,
+    "empty": 17,
+    "kept": 25416,
+    "survival_rate_pct": 99.68622529024161,
+    "final_corpus_share_pct": 0.5461777656481348
+   },
+   {
+    "source": "povarenok-detail",
+    "scanned": 154155,
+    "dup": 133398,
+    "empty": 0,
+    "kept": 20757,
+    "survival_rate_pct": 13.465018974408874,
+    "final_corpus_share_pct": 0.44605806899426875
+   },
+   {
+    "source": "bhuvii-17k",
+    "scanned": 17052,
+    "dup": 10,
+    "empty": 16,
+    "kept": 17026,
+    "survival_rate_pct": 99.84752521698334,
+    "final_corpus_share_pct": 0.36588065147643783
+   },
+   {
+    "source": "07-indian",
+    "scanned": 17117,
+    "dup": 412,
+    "empty": 554,
+    "kept": 16151,
+    "survival_rate_pct": 94.35648770228428,
+    "final_corpus_share_pct": 0.3470773171617495
+   },
+   {
+    "source": "08-indonesian",
+    "scanned": 15593,
+    "dup": 653,
+    "empty": 1,
+    "kept": 14939,
+    "survival_rate_pct": 95.80581029949336,
+    "final_corpus_share_pct": 0.3210320129452898
+   },
+   {
+    "source": "kaggle-food-13k",
+    "scanned": 13501,
+    "dup": 31,
+    "empty": 7,
+    "kept": 13463,
+    "survival_rate_pct": 99.71853936745427,
+    "final_corpus_share_pct": 0.289313474147027
+   },
+   {
+    "source": "hebrew-9.7k",
+    "scanned": 8731,
+    "dup": 2,
+    "empty": 31,
+    "kept": 8698,
+    "survival_rate_pct": 99.6220364219448,
+    "final_corpus_share_pct": 0.18691588785046728
+   },
+   {
+    "source": "indian-7k",
+    "scanned": 7096,
+    "dup": 58,
+    "empty": 985,
+    "kept": 6053,
+    "survival_rate_pct": 85.30157835400226,
+    "final_corpus_share_pct": 0.13007609440778092
+   },
+   {
+    "source": "persian-6k",
+    "scanned": 6660,
+    "dup": 853,
+    "empty": 14,
+    "kept": 5793,
+    "survival_rate_pct": 86.98198198198199,
+    "final_corpus_share_pct": 0.12448881792570211
+   },
+   {
+    "source": "greek-5k",
+    "scanned": 5434,
+    "dup": 13,
+    "empty": 540,
+    "kept": 4881,
+    "survival_rate_pct": 89.82333456017666,
+    "final_corpus_share_pct": 0.10489037118856413
+   },
+   {
+    "source": "09-chefkoch",
+    "scanned": 12190,
+    "dup": 7899,
+    "empty": 1,
+    "kept": 4290,
+    "survival_rate_pct": 35.19278096800656,
+    "final_corpus_share_pct": 0.09219006195430038
+   },
+   {
+    "source": "japanese-3k",
+    "scanned": 3756,
+    "dup": 1,
+    "empty": 63,
+    "kept": 3692,
+    "survival_rate_pct": 98.29605963791268,
+    "final_corpus_share_pct": 0.07933932604551912
+   },
+   {
+    "source": "moroccan-4.6k",
+    "scanned": 4105,
+    "dup": 1659,
+    "empty": 3,
+    "kept": 2443,
+    "survival_rate_pct": 59.51278928136419,
+    "final_corpus_share_pct": 0.05249890940660975
+   },
+   {
+    "source": "halal-2k",
+    "scanned": 2016,
+    "dup": 10,
+    "empty": 0,
+    "kept": 2006,
+    "survival_rate_pct": 99.50396825396825,
+    "final_corpus_share_pct": 0.04310798701173113
+   },
+   {
+    "source": "filipino-2k",
+    "scanned": 1988,
+    "dup": 4,
+    "empty": 0,
+    "kept": 1984,
+    "survival_rate_pct": 99.79879275653923,
+    "final_corpus_share_pct": 0.04263521746324754
+   },
+   {
+    "source": "taiwan-1.8k",
+    "scanned": 1799,
+    "dup": 17,
+    "empty": 34,
+    "kept": 1748,
+    "survival_rate_pct": 97.1650917176209,
+    "final_corpus_share_pct": 0.03756368957951447
+   },
+   {
+    "source": "thai-1k",
+    "scanned": 1023,
+    "dup": 0,
+    "empty": 0,
+    "kept": 1023,
+    "survival_rate_pct": 100.0,
+    "final_corpus_share_pct": 0.021983784004487014
+   },
+   {
+    "source": "romanian-881",
+    "scanned": 818,
+    "dup": 21,
+    "empty": 6,
+    "kept": 791,
+    "survival_rate_pct": 96.69926650366749,
+    "final_corpus_share_pct": 0.016998214220478227
+   },
+   {
+    "source": "thai-1k-seasoning",
+    "scanned": 1023,
+    "dup": 341,
+    "empty": 1,
+    "kept": 681,
+    "survival_rate_pct": 66.56891495601172,
+    "final_corpus_share_pct": 0.01463436647806027
+   }
+  ],
+  "n_sources": 29,
+  "ingredients": {
+   "slots": 36707624,
+   "top_20": [
+    {
+     "rank": 1,
+     "ingredient": "salt",
+     "count": 2301008,
+     "slot_share_pct": 6.268474363799738
+    },
+    {
+     "rank": 2,
+     "ingredient": "sugar",
+     "count": 1492560,
+     "slot_share_pct": 4.066076300661683
+    },
+    {
+     "rank": 3,
+     "ingredient": "egg",
+     "count": 1255817,
+     "slot_share_pct": 3.4211339856810126
+    },
+    {
+     "rank": 4,
+     "ingredient": "garlic",
+     "count": 1150586,
+     "slot_share_pct": 3.1344605687363476
+    },
+    {
+     "rank": 5,
+     "ingredient": "flour",
+     "count": 1012992,
+     "slot_share_pct": 2.7596229055849544
+    },
+    {
+     "rank": 6,
+     "ingredient": "butter",
+     "count": 985469,
+     "slot_share_pct": 2.68464393118988
+    },
+    {
+     "rank": 7,
+     "ingredient": "onion",
+     "count": 980722,
+     "slot_share_pct": 2.6717120127415495
+    },
+    {
+     "rank": 8,
+     "ingredient": "water",
+     "count": 979615,
+     "slot_share_pct": 2.6686962904490903
+    },
+    {
+     "rank": 9,
+     "ingredient": "black_pepper",
+     "count": 908423,
+     "slot_share_pct": 2.4747529287103953
+    },
+    {
+     "rank": 10,
+     "ingredient": "milk",
+     "count": 728408,
+     "slot_share_pct": 1.9843507168973944
+    },
+    {
+     "rank": 11,
+     "ingredient": "tomato",
+     "count": 580401,
+     "slot_share_pct": 1.5811456497429526
+    },
+    {
+     "rank": 12,
+     "ingredient": "vegetable_oil",
+     "count": 563021,
+     "slot_share_pct": 1.5337985373283762
+    },
+    {
+     "rank": 13,
+     "ingredient": "scallion",
+     "count": 554952,
+     "slot_share_pct": 1.5118167277729553
+    },
+    {
+     "rank": 14,
+     "ingredient": "ginger",
+     "count": 533894,
+     "slot_share_pct": 1.454449898473407
+    },
+    {
+     "rank": 15,
+     "ingredient": "olive_oil",
+     "count": 533530,
+     "slot_share_pct": 1.4534582788578199
+    },
+    {
+     "rank": 16,
+     "ingredient": "lemon",
+     "count": 468965,
+     "slot_share_pct": 1.2775683874281811
+    },
+    {
+     "rank": 17,
+     "ingredient": "vanilla",
+     "count": 458601,
+     "slot_share_pct": 1.249334470681077
+    },
+    {
+     "rank": 18,
+     "ingredient": "chicken",
+     "count": 442856,
+     "slot_share_pct": 1.2064414738475038
+    },
+    {
+     "rank": 19,
+     "ingredient": "carrot",
+     "count": 334672,
+     "slot_share_pct": 0.9117234065599016
+    },
+    {
+     "rank": 20,
+     "ingredient": "cream",
+     "count": 317952,
+     "slot_share_pct": 0.8661742857560053
+    }
+   ]
+  }
+ }
+}

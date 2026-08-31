@@ -1,0 +1,114 @@
+---
+/**
+ * A number.
+ *
+ * The most-used component on the site, and the reason it exists is that every
+ * figure has to be set the same way: tabular lining figures in the monospace,
+ * aligned on the decimal, at a fixed precision. Rendering numbers ad hoc in
+ * templates is how a table ends up with 0.5872 in one row and 0.59 in the
+ * next, and inconsistent precision reads as carelessness on a site whose
+ * argument is that the measurement was careful.
+ *
+ * `tone` is semantic. "below" is only ever used for a model that loses to the
+ * popularity baseline; it is not available as decoration.
+ */
+interface Props {
+  value: number | null | undefined;
+  /** Decimal places. Four is the precision the metrics are stored at, and one
+   *  is the default for percentages, where a fraction of a percent is usually
+   *  noise. Passing it explicitly overrides both. */
+  dp?: number;
+  /** Prepend + on positive values. For deltas and lifts, where the sign is
+   *  the point and a bare number hides it. */
+  signed?: boolean;
+  /** Render as a percentage. The underlying value is still a fraction. */
+  pct?: boolean;
+  tone?: "default" | "below" | "above" | "accent" | "faint";
+  /** Larger, for a number that is the subject of a sentence rather than a
+   *  cell in a table. */
+  size?: "inherit" | "lg" | "xl" | "display";
+  /** Thousands separators. Left undefined this groups integers of five
+   *  figures or more, which covers counts of recipes and slots while leaving
+   *  quantities that are conventionally unseparated — a rank, a dimension
+   *  count of 1536 — alone. Set it explicitly where that guess is wrong. */
+  group?: boolean;
+  /** Plus-or-minus half-width of a 95% interval, set smaller beside the
+   *  point estimate. An interval shown this way is harder to quote without
+   *  its uncertainty than one in an adjacent column. */
+  ci?: number | null;
+}
+
+const {
+  value, dp, signed = false, pct = false,
+  tone = "default", size = "inherit", ci = null, group,
+} = Astro.props;
+
+// Percentages default to one place and metrics to four, but an explicit dp
+// wins. It used to be discarded whenever pct was set, so a caller asking for
+// two places got one and had no way to tell.
+const places = dp ?? (pct ? 1 : 4);
+
+const missing = value == null || Number.isNaN(value);
+const shown = missing ? null : (pct ? value * 100 : value);
+// A seven-figure count set without separators is both harder to read and much
+// wider, and at display size the extra width is what made two of these
+// collide on the landing page.
+//
+// The digits come from toFixed and the separators are inserted afterwards,
+// rather than handing the whole job to toLocaleString. The two disagree on
+// exact-half values — 0.14225 prints as 0.1422 one way and 0.1423 the other,
+// and 0.1422 is a number this site and its README already publish. Grouping
+// is a presentation choice; it is not allowed to move a digit.
+const grouped = group ?? (places === 0 && Math.abs(shown ?? 0) >= 10000);
+const fixed = shown == null ? "" : shown.toFixed(places);
+const separated = grouped
+  ? fixed.replace(/^(-?\d+)/, (int) =>
+      int.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+  : fixed;
+const body = shown == null
+  ? "—"
+  : (signed && shown > 0 ? "+" : "") + separated;
+---
+
+<span class:list={["num", `tone-${tone}`, `size-${size}`, missing && "missing"]}>
+  {body}{pct && !missing && <span class="unit">%</span>}
+  {ci != null && !missing && (
+    <span class="ci" aria-label={`95% interval plus or minus ${ci.toFixed(places)}`}
+      >±{ci.toFixed(places)}</span>
+  )}
+</span>
+
+<style>
+  .num {
+    font-family: var(--mono);
+    /* Lining tabular figures: every digit the same width, so columns align
+     * without any layout work and a reader can compare down a column by eye. */
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    letter-spacing: -0.012em;
+    white-space: nowrap;
+  }
+  .missing { color: var(--ink-faint); }
+
+  .tone-below  { color: var(--below); }
+  .tone-above  { color: var(--above); }
+  .tone-accent { color: var(--accent); }
+  .tone-faint  { color: var(--ink-faint); }
+
+  .size-lg      { font-size: var(--t-lg); }
+  .size-xl      { font-size: var(--t-xl); }
+  .size-display {
+    font-size: var(--t-3xl);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+  }
+
+  .unit { font-size: 0.78em; margin-left: 0.05em; color: var(--ink-faint); }
+  .ci {
+    font-size: 0.72em;
+    color: var(--ink-faint);
+    margin-left: 0.35em;
+    letter-spacing: 0;
+  }
+</style>

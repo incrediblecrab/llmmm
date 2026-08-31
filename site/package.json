@@ -1,0 +1,31 @@
+{
+  "name": "ingredients-site",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "smoke": "node test/demo.smoke.mjs",
+    "keyboard": "node test/keyboard.smoke.mjs",
+    "test": "npm run smoke && npm run keyboard && npm run copy && npm run a11y",
+    "copy": "node test/copy.smoke.mjs",
+    "a11y": "node test/a11y.smoke.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.9",
+    "d3": "^7.9.0"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "playwright": "^1.62.1"
+  }
+}

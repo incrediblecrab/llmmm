@@ -1,0 +1,70 @@
+---
+import Base from "../layouts/Base.astro";
+import Leaderboard from "../components/Leaderboard.astro";
+import Num from "../components/Num.astro";
+import { leaderboard, ranked, belowLine, POPULARITY, byName, n, generation, href }
+  from "../lib/data";
+
+const best = ranked[0];
+const worst = ranked[ranked.length - 1];
+const families = [...new Set(leaderboard.models.map((m) => m.family))];
+---
+
+<Base
+  wide
+  title="Sixteen models, one line"
+  chapter="Two — the models"
+  standfirst="Every model here was trained on the same corpus, evaluated on the same held-out recipes, and scored against the same frequency table. The baseline is drawn where it falls."
+>
+  <div class="prose">
+    <p>
+      The column that matters is <b>served</b>: the score a model would
+      actually achieve if you deployed it. For most models that is the score
+      of its exported vectors, because vectors are all they produce. For two
+      of them it is the score of their own conditional rule, which is better
+      — that discrepancy is <a href={href("/native/")}>the next section</a>.
+    </p>
+    <p>
+      {belowLine.length} of {leaderboard.n_models} models finish below{" "}
+      <Num value={POPULARITY} tone="accent" />. The worst,{" "}
+      <code>{worst.model}</code>, reaches{" "}
+      <Num value={worst.best_recall_at_10} tone="below" /> — it is not
+      competing with the baseline so much as failing to do the task at all.
+    </p>
+  </div>
+
+  <Leaderboard />
+
+  <div class="prose">
+    <h2>What is not being claimed</h2>
+    <p>
+      Not that embeddings are useless. <code>{best.model}</code> reaches{" "}
+      <Num value={best.best_recall_at_10} tone="above" />, comfortably above
+      the line, and several others clear it honestly.
+    </p>
+    <p>
+      The claim is narrower and more awkward: <b>if you had picked a method
+      from this list without measuring, you would more likely than not have
+      shipped something worse than counting.</b> All {families.length}{" "}
+      families are represented — matrix factorisation, graph convolution,
+      word2vec objectives, autoencoders, a set transformer — and being below
+      the line is not confined to any one of them.
+    </p>
+    <h3>Why the baseline is not a strawman</h3>
+    <p>
+      A popularity recommender is the thing every recommender paper includes
+      to be beaten. It has no parameters, takes a single pass over the corpus
+      to build, and returns the same ten items to every user. On this task,
+      over {n(generation.recipes)} recipes and {n(generation.vocab)}{" "}
+      ingredients, it is a genuinely hard target — because recipes are
+      dominated by a small number of ingredients, and a model has to earn its
+      way past that before it has learned anything at all.
+    </p>
+    <p class="next"><a href={href("/native/")}>Continue: the vector is the lossy part →</a></p>
+  </div>
+</Base>
+
+<style>
+  .next { margin-top: var(--s-6); font-size: var(--t-md); }
+  code { background: var(--paper-sunk); padding: 0 0.25em; }
+</style>

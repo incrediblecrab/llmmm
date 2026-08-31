@@ -1,0 +1,19 @@
+{
+ "note": "The same model and the same metric under two split protocols. Hiding a tenth of the graph's edges hides nothing from a model that reads the recipes those edges came from.",
+ "metric": "M4_link_auc",
+ "model": "ease",
+ "leaky": {
+  "split": "edge-holdout",
+  "value": 0.6843734643734644,
+  "ci95": 0.00638568071297152,
+  "run_dir": "runs/leakage-demo/ease-edge-holdout-s0"
+ },
+ "honest": {
+  "split": "recipe-holdout",
+  "value": 0.5598361410291817,
+  "ci95": 0.006600910431713759,
+  "run_dir": "runs/all-v2/ease-recipe-holdout-s0"
+ },
+ "gap": 0.12453732334428269,
+ "gap_in_ci_units": 18.866688865516046
+}

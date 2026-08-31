@@ -1,0 +1,246 @@
+---
+import Num from "./Num.astro";
+import { ranked, POPULARITY, isBelow, leaderboard, bootstrap, ci } from "../lib/data";
+
+interface Props {
+  /** Show the embedding column beside the served column. Off by default
+   *  because on most pages it is a distraction; on the "lossy part" page it
+   *  is the entire point. */
+  showEmbedding?: boolean;
+  compact?: boolean;
+}
+const { showEmbedding = false, compact = false } = Astro.props;
+
+/* The popularity baseline is not a row appended at the bottom of the table.
+ * It is a rule drawn across the table at the position it actually occupies,
+ * so half the models are visibly beneath it. A baseline listed as the
+ * seventeenth row is a number; a baseline drawn as a line is an argument. */
+const insertAt = ranked.findIndex((m) => m.best_recall_at_10 < POPULARITY);
+const worst = Math.min(...ranked.map((m) => m.best_recall_at_10));
+const best = Math.max(...ranked.map((m) => m.best_recall_at_10), POPULARITY);
+const bar = (v: number) => Math.max(0, (v / best) * 100);
+
+/* The baseline is drawn down the whole bar column, not just on its own row,
+ * so every bar is seen either reaching it or falling short of it. Without
+ * this the bars encode rank, which the row order already gives you, and the
+ * one comparison the site is about has to be done in the reader's head. */
+const basePct = bar(POPULARITY);
+---
+
+<figure class:list={["lb", compact && "compact"]} style={`--base-pct:${basePct}%`}>
+  <table>
+    <caption class="label">
+      Recipe completion, recall@10 · held-out recipes · seed 0 ·
+      {" "}{leaderboard.n_below_popularity} of {leaderboard.n_models} below baseline
+      {bootstrap && (
+        <span class="cap-ci">
+          {" "}· brackets are 95% bootstrap intervals over
+          {" "}{bootstrap.n_instances.toLocaleString("en-US")} completion
+          {" "}instances, {bootstrap.n_boot.toLocaleString("en-US")} resamples
+        </span>
+      )}
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col" class="c-rank"></th>
+        <th scope="col" class="c-model">Model</th>
+        <th scope="col" class="c-fam">Family</th>
+        {showEmbedding && <th scope="col" class="c-num">Embedding</th>}
+        <th scope="col" class="c-num">Served</th>
+        <th scope="col" class="c-num">vs. baseline</th>
+        <th scope="col" class="c-bar">
+          <span class="axis-note">popularity baseline</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {ranked.map((m, i) => (
+        <>
+          {i === insertAt && (
+            <tr class="baseline-row">
+              <td></td>
+              <th scope="row">recommend the most common ingredients</th>
+              <td class="c-fam">baseline</td>
+              {showEmbedding && <td></td>}
+              <td class="c-num"><Num value={POPULARITY} tone="accent" /></td>
+              <td class="c-num"></td>
+              <td class="c-bar">
+                <span class="bar bar-base" style={`width:${bar(POPULARITY)}%`}></span>
+              </td>
+            </tr>
+          )}
+          <tr class:list={[isBelow(m) && "below"]}>
+            <td class="c-rank"><Num value={i + 1} dp={0} tone="faint" /></td>
+            <th scope="row" class="c-model">
+              {m.model}
+              {m.has_native && <span class="tag" title="scored under its own rule, not its exported vectors">native</span>}
+            </th>
+            <td class="c-fam">{m.family}</td>
+            {showEmbedding && (
+              <td class="c-num"><Num value={m.M6_recall_at_10} tone="faint" /></td>
+            )}
+            <td class="c-num">
+              <Num value={m.best_recall_at_10} />
+              {m.ci95 && <span class="ci">{ci(m.ci95)}</span>}
+            </td>
+            <td class="c-num">
+              <Num value={m.best_lift} signed tone={isBelow(m) ? "below" : "above"} />
+            </td>
+            <td class="c-bar">
+              <span class:list={["bar", isBelow(m) && "bar-below"]}
+                    style={`width:${bar(m.best_recall_at_10)}%`}></span>
+            </td>
+          </tr>
+        </>
+      ))}
+    </tbody>
+  </table>
+</figure>
+
+<style>
+  .lb { margin-block: var(--s-6); overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: var(--t-sm);
+  }
+
+  caption {
+    text-align: left;
+    padding-bottom: var(--s-3);
+    color: var(--ink-faint);
+    /* Caption above the table, as in a journal. Below it reads as an
+     * afterthought; above it tells you how to read what follows. */
+    caption-side: top;
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: var(--t-xs);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0 var(--s-3) var(--s-2) 0;
+    border-bottom: 1.5px solid var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  tbody th, tbody td {
+    padding: 0.42rem var(--s-3) 0.42rem 0;
+    border-bottom: 1px solid var(--paper-edge);
+    vertical-align: baseline;
+  }
+  tbody th { text-align: left; font-weight: 500; }
+  .compact tbody th, .compact tbody td { padding-block: 0.24rem; }
+
+  tbody tr:hover { background: var(--paper-sunk); }
+
+  /* The only use of red on the site. Below the popularity line, and nothing
+   * else. A quiet left rule rather than a filled row, so it reads as a margin
+   * mark on a proof rather than an error state in an app. */
+  tr.below th[scope="row"] {
+    box-shadow: inset 2px 0 0 var(--below);
+    padding-left: var(--s-2);
+    color: var(--below);
+  }
+
+  .baseline-row th {
+    font-style: normal;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .baseline-row td, .baseline-row th {
+    border-top: 1.5px solid var(--ink);
+    border-bottom: 1.5px solid var(--ink);
+    background: var(--paper-sunk);
+  }
+
+  .c-num { text-align: right; white-space: nowrap; }
+
+  /* The interval sits under its estimate rather than in a column of its own.
+   * A separate column would double the table's width to carry a quantity
+   * nobody scans vertically; set beneath the number it stays attached to the
+   * thing it qualifies. */
+  .ci {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--ink-faint);
+    letter-spacing: -0.01em;
+    margin-top: 0.05rem;
+  }
+  .cap-ci { font-size: var(--t-xs); }
+  .c-rank { width: 2rem; text-align: right; }
+  .c-fam { color: var(--ink-faint); font-size: var(--t-xs); }
+
+  /* The bar column is a chart, not an ornament, so it gets chart width and a
+   * drawn axis. The vertical rule is the popularity baseline at its true
+   * position; a bar that stops short of it is a model that lost. */
+  .c-bar {
+    width: 34%;
+    min-width: 8rem;
+    padding-right: 0 !important;
+    position: relative;
+  }
+  .c-bar::before {
+    content: "";
+    position: absolute;
+    left: var(--base-pct);
+    top: -1px;
+    bottom: -1px;
+    width: 1.5px;
+    background: var(--ink);
+    opacity: 0.75;
+  }
+
+  /* The rule is labelled where it is drawn. A vertical line a reader has to
+   * match against a caption is a legend; a line with its name on it is a
+   * chart. */
+  thead .c-bar { position: relative; overflow: visible; }
+  thead .c-bar::before { top: auto; height: 0.5rem; bottom: 0; }
+  .axis-note {
+    position: absolute;
+    left: var(--base-pct);
+    bottom: 0.7rem;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .bar {
+    display: block;
+    height: 0.62rem;
+    background: var(--above);
+    border-radius: 1px;
+  }
+  /* Full strength on both sides. The earlier version faded the below-baseline
+   * bars to 55% opacity, which made the losing half the quietest thing on a
+   * page whose entire claim is that half the models lose. */
+  .bar-below { background: var(--below); }
+  .bar-base  { background: var(--ink); opacity: 0.75; }
+
+  .tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    padding: 0 0.28em;
+    margin-left: 0.45em;
+    vertical-align: 0.1em;
+    font-weight: 600;
+  }
+
+  @media (max-width: 40rem) {
+    .c-fam, .c-bar { display: none; }
+  }
+</style>

@@ -1,0 +1,25 @@
+{
+ "models": [
+  "chem-svd",
+  "concat",
+  "ease",
+  "glove",
+  "ials",
+  "item2vec",
+  "lightgcn",
+  "masked-set",
+  "residual",
+  "sgc",
+  "sgns-chem",
+  "sgns-cooc",
+  "sgns-core",
+  "svd-ppmi",
+  "text-aligned",
+  "text-embed"
+ ],
+ "k": 50,
+ "n": 1790,
+ "ids_dtype": "uint16",
+ "scores_dtype": "float16",
+ "layout": "models x n x k, model order as listed"
+}

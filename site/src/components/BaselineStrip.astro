@@ -1,0 +1,102 @@
+---
+/* The whole result on one axis.
+ *
+ * The leaderboard table on /models/ is the authoritative version of this and
+ * carries every number. This is deliberately not that: it is the *shape* of
+ * the finding, sized to be read in about a second, so the landing page opens
+ * with the result rather than with three paragraphs describing it.
+ *
+ * Dots are dodged vertically only when they would otherwise overlap, so
+ * horizontal position is always exactly the score and vertical position
+ * carries no meaning at all. That is the one property a beeswarm has to keep.
+ */
+import { ranked, POPULARITY, isBelow } from "../lib/data";
+import { frame, scaleLinear, ticks, f2 } from "../lib/chart";
+
+const R = 7;          // dot radius
+const ROW = 2 * R + 3; // vertical step when dodging
+
+const pts = [...ranked]
+  .map((m) => ({ model: m.model, v: m.best_recall_at_10, below: isBelow(m) }))
+  .sort((a, b) => a.v - b.v);
+
+const F = frame(660, 150, { top: 10, right: 14, bottom: 30, left: 14 });
+const x = scaleLinear()
+  .domain([0, Math.max(...pts.map((p) => p.v), POPULARITY)])
+  .nice()
+  .range([F.x0, F.x1]);
+
+/* Greedy dodge: put each dot in the lowest row that has nothing within a
+   diameter of it. Points arrive in x order, so only the last dot placed in a
+   row can possibly collide. */
+const lastInRow: number[] = [];
+const placed = pts.map((p) => {
+  const px = x(p.v);
+  let row = 0;
+  while (lastInRow[row] !== undefined && px - lastInRow[row] < 2 * R) row++;
+  lastInRow[row] = px;
+  return { ...p, px, row };
+});
+const rows = lastInRow.length;
+const baseY = F.y1 - R - 2;
+const y = (row: number) => baseY - row * ROW;
+
+const axTicks = ticks(x, 6, f2);
+const basePx = x(POPULARITY);
+const nBelow = pts.filter((p) => p.below).length;
+const best = placed[placed.length - 1];
+---
+
+<figure class="strip">
+  <svg viewBox={F.viewBox} role="img"
+       aria-label={`Dot plot. Sixteen models placed by recall at 10. ${nBelow} fall below the popularity baseline of ${POPULARITY.toFixed(4)}.`}>
+    <!-- baseline first, so dots sit on top of it -->
+    <line class="baseline" x1={basePx} x2={basePx} y1={F.y0} y2={F.y1 - 2} />
+    <text class="baselabel" x={basePx - 8} y={F.y0 + 10} text-anchor="end"
+      >counting: {POPULARITY.toFixed(3)}</text>
+    <text class="side worse" x={basePx - 8} y={F.y0 + 26} text-anchor="end"
+      >{nBelow} models worse ←</text>
+    <text class="side better" x={basePx + 8} y={F.y0 + 26}
+      >→ {pts.length - nBelow} better</text>
+
+    <line class="axis" x1={F.x0} x2={F.x1} y1={F.y1} y2={F.y1} />
+    {axTicks.map((t) => (
+      <text class="tick" x={t.pos} y={F.y1 + 15} text-anchor="middle">{t.label}</text>
+    ))}
+
+    {placed.map((p) => (
+      <circle class:list={["dot", p.below ? "below" : "above"]}
+              cx={p.px} cy={y(p.row)} r={R}>
+        <title>{p.model} — {p.v.toFixed(4)}</title>
+      </circle>
+    ))}
+    <text class="best" x={best.px + R} y={y(best.row) - R - 7}
+          text-anchor="end">{best.model}</text>
+  </svg>
+  <figcaption class="label">
+    Recall@10 at finishing a held-out recipe. One dot per model; dots are
+    nudged upward only where they would overlap.
+  </figcaption>
+</figure>
+
+<style>
+  .strip { margin-block: var(--s-5) var(--s-6); }
+  .strip svg { width: 100%; height: auto; overflow: visible; display: block; }
+  figcaption { margin-top: var(--s-3); color: var(--ink-faint); }
+
+  .axis { stroke: var(--rule); stroke-width: 1; }
+  .tick { font-family: var(--mono); font-size: 11px; fill: var(--ink-faint); }
+
+  .baseline { stroke: var(--ink); stroke-width: 1.5; }
+  .baselabel { font-family: var(--mono); font-size: 11.5px; fill: var(--ink);
+               font-weight: 600; }
+  .side { font-family: var(--sans); font-size: 11px; letter-spacing: 0.04em;
+          text-transform: uppercase; }
+  .worse { fill: var(--below); }
+  .better { fill: var(--above); }
+
+  .dot { stroke: var(--paper); stroke-width: 1.5; }
+  .dot.below { fill: var(--below); }
+  .dot.above { fill: var(--above); }
+  .best { font-family: var(--mono); font-size: 12px; fill: var(--ink); }
+</style>

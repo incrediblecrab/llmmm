@@ -1,0 +1,88 @@
+# Build and publish the static site.
+#
+# The site's data bundle is committed (see the note in .gitignore), so this
+# runner needs nothing from the 7.4 GB corpus or the untracked weight blobs —
+# it installs the site's own dependencies and builds. If the bundle were
+# regenerated here instead, the deploy would depend on artefacts the
+# repository does not contain, and would silently drift from the leaderboard
+# it claims to describe.
+name: site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/workflows/site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it: a half-published
+# Pages deployment is worse than a slightly stale one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          # Project page under the repository name. Set explicitly rather
+          # than relying on the default, so the deployed path is visible in
+          # the workflow rather than buried in a config file.
+          SITE_BASE: /ingredients
+
+      # Fails the build rather than publishing a demo that 404s on its own
+      # model. The matrix is the one file the front page cannot do without,
+      # and a missing binary would otherwise only show up in the browser.
+      - name: Check the demo's data survived the build
+        run: |
+          test -s dist/data/ease_scores.bin
+          test -s dist/data/leaderboard.json
+          test -s dist/data/demo_recipes.json
+
+      # Actually plays the demo in a real browser and checks it still scores
+      # like the harness did. The demo's failure mode is a page that renders
+      # perfectly and computes the wrong thing, which nothing above catches.
+      # `test` runs the scoring smoke test and the keyboard-reachability one:
+      # the second exists because a reveal that strands focus is invisible to
+      # a screenshot, to the build, and to the scoring check.
+      - name: Play the demo
+        run: |
+          npx playwright install --with-deps chromium
+          npm test
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

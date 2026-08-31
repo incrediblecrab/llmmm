@@ -1,0 +1,229 @@
+---
+import Base from "../layouts/Base.astro";
+import Num from "../components/Num.astro";
+import { POPULARITY, generation, n, leaderboard, href, bootstrap, countIsExact, splits, stability } from "../lib/data";
+
+/** Whether the count of models below the popularity baseline held across
+ *  retraining. This page's headline is a count, not an ordering, so the
+ *  count is the thing the seed sweep has to defend here — a pair of models
+ *  swapping rank on the same side of the line does not touch it. */
+const belowBySeed = stability
+  ? Object.values(stability.n_below_popularity_by_seed) : [];
+const belowHeld = belowBySeed.length > 0 && new Set(belowBySeed).size === 1;
+---
+
+<Base
+  title="Why you should believe any of this"
+  chapter="Five — controls"
+  standfirst="An evaluation that cannot fail is not an evaluation. These are the three places this one was built to fail, and did not."
+>
+  <div class="prose">
+    <p>
+      Everything on the previous pages is a negative result about other
+      people's methods, which is exactly the kind of claim that deserves
+      scepticism. So this page is the defence.
+    </p>
+
+    <h2>1. The split that would have flattered everything</h2>
+    <p>
+      Graph models and recipe models cannot share an evaluation protocol.
+      Hiding a tenth of an ingredient-ingredient graph's edges hides nothing
+      from a model that reads recipes — the recipes that produced those pairs
+      are still in its training set.
+    </p>
+    <p>
+      The gap is not academic. <code>{splits.model}</code> scores{" "}
+      <Num value={splits.leaky.value} tone="below" /> on the edge split and{" "}
+      <Num value={splits.honest.value} /> on the honest one — the same model,
+      the same metric, a difference of{" "}
+      <Num value={splits.gap} signed tone="below" />, which is{" "}
+      <b>{splits.gap_in_ci_units!.toFixed(1)} times the confidence interval</b>
+      {" "}on the honest number. <b>The flattering number is the default if
+      nobody intervenes.</b>
+    </p>
+    <p>
+      So the code intervenes. <code>splits.py</code> raises rather than warns
+      when a model requests a split that leaks into it, on the reasoning that
+      an optimistic number which is merely flagged still gets quoted six
+      weeks later. Every result on this site is from{" "}
+      <code>recipe-holdout</code>: 30% of <i>recipes</i> removed, and the
+      graph rebuilt from what is left.
+    </p>
+
+    <h2>2. The gate that scores noise</h2>
+    <p>
+      Before any model is trusted, <code>control_gate()</code> runs the entire
+      metric suite on random vectors. If any metric rates pure noise above
+      chance, the run is blocked rather than reported.
+    </p>
+    <p>
+      This catches the failure mode where a metric is accidentally measuring
+      something structural — vocabulary order, vector norm, sampling
+      artefact — rather than anything the model learned. A metric that
+      rewards noise will reward a broken model just as happily.
+    </p>
+
+    <h2>3. The baseline printed beside every number</h2>
+    <p>
+      Every completion result carries the popularity score next to it, always,
+      with no option to suppress it. Recommending the most common ingredients
+      to everyone scores <Num value={POPULARITY} tone="accent" /> on this
+      split, and a model that has learned nothing but frequency looks
+      competent right up until you put it beside that line.
+    </p>
+    <p>
+      This is the mechanism that produced the site's headline. The finding
+      was not discovered by looking for it; it fell out of a baseline that
+      could not be turned off.
+    </p>
+
+    <h2>4. The interval on the headline</h2>
+    <p>
+      A count is a strange thing to publish without an error bar.
+      "{leaderboard.n_below_popularity} of {leaderboard.n_models}" is a
+      function of {leaderboard.n_models} comparisons that all share one set of
+      evaluation instances, so it cannot be assembled from
+      {" "}{leaderboard.n_models} independent intervals — the models rise and
+      fall together, mostly because some recipes are unguessable for everyone.
+    </p>
+    {bootstrap ? (
+      <>
+        <p>
+          So the leaderboard is resampled whole. One draw of instance indices
+          is applied to every model at once, producing a complete leaderboard
+          per replicate, {n(bootstrap.n_boot)} times over
+          {" "}{n(bootstrap.n_instances)} instances. The count of models below
+          the line is then read off each replicate rather than inferred.
+        </p>
+        <p>
+          The baseline itself lands at <Num value={POPULARITY} tone="accent" />
+          {" "}with a 95% interval of
+          {" "}<Num value={bootstrap.popularity_ci95[0]} tone="faint" />–<Num
+            value={bootstrap.popularity_ci95[1]} tone="faint" />, and the count
+          came out at exactly {leaderboard.n_below_popularity} in
+          {" "}{countIsExact()
+            ? `all ${n(bootstrap.n_boot)} replicates`
+            : `95% of replicates (${bootstrap.n_below_popularity_ci95[0]} to ${bootstrap.n_below_popularity_ci95[1]})`}.
+        </p>
+        <p class="caveat">
+          Worth being exact about what that does and does not cover. It says
+          the headline is not an artefact of <em>which recipes were drawn</em>.
+          It says nothing about whether retraining these models with a
+          different random seed would move any of them across the line — that
+          is a different source of variation, and it is
+          {" "}<a href={href("/robustness/")}>measured separately</a>.
+        </p>
+      </>
+    ) : (
+      <p class="caveat">
+        Intervals have not been computed for this export. Run
+        {" "}<code>scripts/bootstrap_m6.py</code> and re-export.
+      </p>
+    )}
+
+    <h2>The chain from claim to artefact</h2>
+    <p>
+      Every number on this site is read from a stored run at export time.
+      None is typed into a template — the export script is the only path from
+      results to page, so a figure that disagrees with its run cannot be
+      rendered.
+    </p>
+    <ol class="chain">
+      <li>
+        <span class="label">corpus</span>
+        <span class="what">
+          <code>data/GENERATION.json</code> names the canonical corpus,{" "}
+          {n(generation.recipes)} recipes, sha256{" "}
+          <code class="sha">{generation.sha256.slice(0, 16)}…</code>
+        </span>
+      </li>
+      <li>
+        <span class="label">run</span>
+        <span class="what">
+          Every run writes <code>manifest.json</code> — model, seed, split,
+          params, environment, corpus generation — beside its{" "}
+          <code>metrics.json</code>.
+        </span>
+      </li>
+      <li>
+        <span class="label">export</span>
+        <span class="what">
+          <code>scripts/export_site.py</code> reads those files and writes{" "}
+          <code>site/public/data/</code>.
+        </span>
+      </li>
+      <li>
+        <span class="label">page</span>
+        <span class="what">
+          Every component imports from that directory and nowhere else.
+        </span>
+      </li>
+    </ol>
+
+    <h2>What is still weak</h2>
+    {stability === null ? (
+    <p class="caveat">
+      Every model on this site was trained once, at seed 0. The intervals
+      above cover the evaluation draw, not the training draw, and those are
+      genuinely different things: a bootstrap over test instances cannot tell
+      you whether a model would land somewhere else if it were fitted again. A
+      five-seed sweep of all {leaderboard.n_models} models is running as this
+      is written, and until it lands the ranking should be read as one draw
+      rather than a settled ordering. The{" "}
+      <a href={href("/robustness/")}>robustness section</a> says what is and is not
+      yet established.
+    </p>
+    ) : (
+    <p class="caveat">
+      The intervals above cover the evaluation draw, not the training draw,
+      and those are genuinely different things: a bootstrap over test
+      instances cannot tell you whether a model would land somewhere else if
+      it were fitted again. That has since been measured directly — every
+      model retrained at {stability.seeds.length} seeds. {belowHeld
+        ? <Fragment>Every model landed on the same side of the popularity
+            baseline at every seed — <b>{belowBySeed[0]} below it each
+            time</b>, counted over embeddings — so the headline is a property
+            of the models rather than of one draw</Fragment>
+        : <Fragment>The count below the popularity baseline ranged from
+            {" "}<b>{Math.min(...belowBySeed)} to {Math.max(...belowBySeed)}</b>
+            {" "}across seeds, so the headline figure is seed-dependent and
+            should be read as a range</Fragment>}.
+      {stability.n_models_changing_rank > 0 && (
+        <Fragment>{" "}The <i>ordering</i> is a separate matter, and it did
+        move: {stability.n_models_changing_rank} of
+        {" "}{stability.n_models_complete} models change rank between seeds,
+        though {stability.n_models_crossing_baseline === 0
+          ? "none of those swaps carries a model across the baseline"
+          : `${stability.n_models_crossing_baseline} of them cross the baseline`}.</Fragment>
+      )}
+      {" "}The <a href={href("/robustness/")}>robustness section</a> reports it
+      per model.
+    </p>
+    )}
+    <p class="next"><a href={href("/robustness/")}>Continue: we tried to break it →</a></p>
+  </div>
+</Base>
+
+<style>
+  code { background: var(--paper-sunk); padding: 0 0.25em; }
+  .sha { font-size: 0.85em; }
+  .chain { list-style: none; padding: 0; counter-reset: step;
+           border-top: 1px solid var(--rule); margin-block: var(--s-5); }
+  .chain li { border-bottom: 1px solid var(--paper-edge);
+              padding: var(--s-4) 0 var(--s-4) 0;
+              display: grid; gap: var(--s-2);
+              grid-template-columns: 6rem 1fr; align-items: baseline;
+              font-size: var(--t-base); }
+  /* One element, so the row stays two columns. Left as loose text and
+   * <code>, grid promotes every element to its own item and wraps the text
+   * runs between them into separate anonymous ones, which sends half the
+   * sentence back into the 6rem label column. */
+  .chain .what { grid-column: 2; }
+  @media (max-width: 34rem) {
+    .chain li { grid-template-columns: 1fr; }
+    .chain .what { grid-column: 1; }
+  }
+  .caveat { border-left: 2px solid var(--accent); padding-left: var(--s-4);
+            color: var(--ink-soft); }
+  .next { margin-top: var(--s-6); font-size: var(--t-md); }
+</style>

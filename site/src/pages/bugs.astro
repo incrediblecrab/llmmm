@@ -1,0 +1,136 @@
+---
+import Base from "../layouts/Base.astro";
+import Num from "../components/Num.astro";
+import { byName, href } from "../lib/data";
+
+const ials = byName("ials")!;
+const item2vec = byName("item2vec")!;
+---
+
+<Base
+  title="What was broken"
+  chapter="Seven — what broke"
+  standfirst="Four bugs that produced plausible numbers. Each one would have survived review, because a wrong result that looks reasonable is invisible."
+>
+  <div class="prose">
+    <p>
+      Nobody publishes their own bugs, which is most of the reason this page
+      exists. The other reason is that all four of these produced output. None
+      of them crashed in a way that pointed at the cause, and two of them
+      produced <i>competitive</i> numbers.
+    </p>
+
+    <h2 class="bug">
+      <span class="label">One</span>
+      <code>ials</code> could never have completed
+    </h2>
+    <p>
+      Its item solve materialised one outer product per ingredient slot —
+      a <code>(slots, d, d)</code> array, over <b>100 GB</b> at this corpus
+      size. The operating system killed it before it finished a single
+      iteration.
+    </p>
+    <p>
+      It had never appeared in a leaderboard, so nothing had exposed it. The
+      fix is a reframing rather than an optimisation: with a vocabulary of
+      only 1,790, each ingredient's normal equations are the Gram matrix of
+      the recipe factors containing it, which is one BLAS call over a
+      gathered block. The rewrite matches the original to{" "}
+      <Num value={4.4e-7} dp={7} /> relative on a case small enough to run
+      both, and peaks at <b>3.6 GB</b>.
+    </p>
+    <p class="outcome">
+      It now runs, and finishes at{" "}
+      <Num value={ials.best_recall_at_10} tone="below" /> — far below the
+      baseline. The bug was hiding a model that turns out not to work here
+      anyway, which is exactly why it had to be fixed before it could be
+      reported.
+    </p>
+
+    <h2 class="bug">
+      <span class="label">Two</span>
+      <code>item2vec</code> was training ingredients alphabetically
+    </h2>
+    <p>
+      Its original run held the <b>best link-prediction score on the board</b>{" "}
+      while sitting at chance on recipe completion. The cause: recipe
+      ingredients are stored in id order, the vocabulary is sorted
+      alphabetically, and <code>np.triu_indices</code> emits pairs in a
+      systematic order. Together those meant each ingredient was trained in
+      proportion to how early its name sorts.
+    </p>
+    <p>
+      Quantified, the correlation between an ingredient's share of training
+      centres and its vocabulary index was{" "}
+      <Num value={-0.98} signed dp={3} tone="below" />. The first decile
+      served as centre 96% of the time.
+    </p>
+    <p class="outcome">
+      Fixed, pinned by a test, and now at{" "}
+      <Num value={item2vec.best_recall_at_10} tone="below" />. A model that
+      had looked like the best on the board was sorting the alphabet.
+    </p>
+
+    <h2 class="bug">
+      <span class="label">Three</span>
+      Sibling runs resolved to the wrong directory
+    </h2>
+    <p>
+      <code>PATHS.run_dir(name)</code> resolves to{" "}
+      <code>results/runs/&lt;id&gt;</code>, but a sweep writes to{" "}
+      <code>results/runs/&lt;experiment&gt;/&lt;id&gt;</code>. So any model
+      consuming another model's output would raise{" "}
+      <code>FileNotFoundError</code> — but only <i>after</i> every model it
+      depended on had already finished training.
+    </p>
+    <p class="outcome">
+      Resolution now searches most-specific-first and raises on ambiguity
+      rather than guessing. The failure mode being designed against is not
+      the crash; it is the silent match to a same-named run from a different
+      experiment.
+    </p>
+
+    <h2 class="bug">
+      <span class="label">Four</span>
+      Two call sites hardcoded the wrong normaliser
+    </h2>
+    <p>
+      <code>sanity_check.py</code> and <code>data/text.py</code> both
+      instantiated the base text normaliser while the corpus had been built
+      with the corrected one. It surfaced as a sanity check quietly dropping
+      to 97.51% and as a hard alignment failure at corpus row 89 of one
+      source.
+    </p>
+    <p class="outcome">
+      Both now read the normaliser from <code>data/GENERATION.json</code>, so
+      the provenance is recorded rather than inferred. This is the same
+      single-source-of-truth principle the whole site rests on: the mistake
+      was not choosing the wrong normaliser, it was having a second place
+      where the choice could be made.
+    </p>
+
+    <h2>The pattern</h2>
+    <p>
+      Two of these four produced <i>good-looking</i> numbers. A model that
+      cannot allocate its memory fails loudly; a model that trains on an
+      alphabetical bias reports a state-of-the-art link AUC and waits to be
+      believed.
+    </p>
+    <p>
+      That asymmetry is the argument for the controls on the{" "}
+      <a href={href("/trust/")}>previous page</a>. The bugs that matter are the ones
+      that return a plausible float.
+    </p>
+    <p class="next"><a href={href("/limits/")}>Continue: what this does not show →</a></p>
+  </div>
+</Base>
+
+<style>
+  code { background: var(--paper-sunk); padding: 0 0.25em; }
+  .bug { display: flex; flex-direction: column; gap: var(--s-2);
+         margin-top: var(--s-8); }
+  .bug .label { color: var(--accent); }
+  .outcome { border-left: 2px solid var(--rule); padding-left: var(--s-4);
+             color: var(--ink-soft); font-size: var(--t-base); }
+  .next { margin-top: var(--s-6); font-size: var(--t-md); }
+</style>

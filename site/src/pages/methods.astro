@@ -1,0 +1,181 @@
+---
+import Base from "../layouts/Base.astro";
+import Num from "../components/Num.astro";
+import { leaderboard, ranked, generation, provenance, n, POPULARITY }
+  from "../lib/data";
+
+const totalHours = leaderboard.models
+  .reduce((s, m) => s + (m.duration_s ?? 0), 0) / 3600;
+
+/* Training times here run from 0.06 seconds to 20 minutes, and a single unit
+ * cannot show that. Fixed at minutes, six of the sixteen printed "0.0 min",
+ * which reads as missing data and hides the most interesting thing in the
+ * column: several models that finish in well under a second score above ones
+ * that train for a quarter of an hour. */
+const duration = (s: number): [string, string] =>
+  s >= 60 ? [(s / 60).toFixed(1), "min"]
+  : s >= 1 ? [s.toFixed(1), "s"]
+  : [s.toFixed(2), "s"];
+---
+
+<Base
+  wide
+  title="Methods"
+  chapter="Nine — methods"
+  standfirst="What was run, how it was scored, and how to get from any number on this site back to the file that produced it."
+>
+  <div class="prose">
+    <h2>The task</h2>
+    <p>
+      Take a held-out recipe with at least three ingredients. Hide one at
+      random. Rank all {n(generation.vocab)} candidates using the remaining
+      ones, excluding the visible ingredients from the ranking. Score
+      recall@10 — did the hidden ingredient appear in the top ten? Repeat over{" "}
+      {n(leaderboard.models[0].M6_n ?? 20000)} instances.
+    </p>
+    <p>
+      For an embedding, the context is pooled by summing the unit vectors of
+      the visible ingredients and scoring candidates by dot product. Summing
+      rather than averaging is deliberate: the ranking is invariant to the
+      scale of the pooled vector, so the two are identical, and summing avoids
+      a division that would differ across recipe lengths for no effect.
+    </p>
+    <p>
+      The popularity baseline scores every candidate by{" "}
+      <code>log1p(count)</code>, identically for every instance, and is
+      reported beside every result.
+    </p>
+
+    <h2>The corpus</h2>
+    <dl class="facts">
+      <div><dt>Generation</dt><dd><code>{generation.generation}</code></dd></div>
+      <div><dt>Recipes</dt><dd><Num value={generation.recipes} dp={0} /></dd></div>
+      <div><dt>Ingredient slots</dt><dd><Num value={generation.slots} dp={0} /></dd></div>
+      <div><dt>Vocabulary</dt><dd><Num value={generation.vocab} dp={0} group /></dd></div>
+      <div><dt>Graph edges</dt><dd><Num value={generation.ii_graph_edges} dp={0} /></dd></div>
+      <div><dt>Minimum count</dt><dd><Num value={generation.min_count} dp={0} /></dd></div>
+      <div><dt>Normaliser</dt><dd><code>corrected</code></dd></div>
+      <div><dt>sha256</dt><dd><code class="sha">{generation.sha256.slice(0, 24)}…</code></dd></div>
+    </dl>
+    <p>
+      The vocabulary was held byte-identical across the corpus rebuild.
+      Embedding rows are vocabulary positions, so a silent vocabulary change
+      would invalidate every stored run rather than produce a comparable one;
+      the promotion script refuses the swap unless the vocabularies match
+      exactly.
+    </p>
+
+    <h2>The split</h2>
+    <p>
+      <code>recipe-holdout</code> — 30% of recipes removed, the
+      ingredient-ingredient graph rebuilt from the remainder. This is the only
+      split any number on this site comes from.
+    </p>
+    <p>
+      Two other splits exist and are deliberately not used here.{" "}
+      <code>edge-holdout</code> hides graph edges, which leaks into any model
+      that reads recipes. <code>full</code> trains on everything and is for
+      production artefacts, where held-out scoring is meaningless.
+    </p>
+  </div>
+
+  <h2>Every run behind every number</h2>
+  <figure class="runs">
+    <table>
+      <caption class="label">
+        {leaderboard.n_models} runs · {totalHours.toFixed(1)} hours of
+        training · all seed {leaderboard.models[0].seed}
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Model</th>
+          <th scope="col">Family</th>
+          <th scope="col" class="r">Dims</th>
+          <th scope="col" class="r">Train time</th>
+          <th scope="col">Run directory</th>
+        </tr>
+      </thead>
+      <tbody>
+        {ranked.map((m) => {
+          const [t, unit] = duration(m.duration_s ?? 0);
+          return (
+          <tr>
+            <th scope="row"><code>{m.model}</code></th>
+            <td class="fam">{m.family}</td>
+            <td class="r"><Num value={m.dims} dp={0} tone="faint" /></td>
+            <td class="r"><span class="t">{t}</span><span class="u">{unit}</span></td>
+            <td><code class="path">{m.run_dir}</code></td>
+          </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </figure>
+
+  <div class="prose">
+    <h2>Reproducing this</h2>
+    <p>
+      Each run directory contains a <code>manifest.json</code> recording the
+      model, family, seed, parameters, resolved dependencies, corpus
+      generation and environment, beside a <code>metrics.json</code> holding
+      every score. Those two files are tracked in the repository; the weights
+      are not, because they are regenerable and large.
+    </p>
+    <p>
+      The data behind this site is written by{" "}
+      <code>scripts/export_site.py</code>, which reads those directories and
+      nothing else. It is the only path from results to page.
+    </p>
+    <p>
+      The <code>--verify</code> flag on that script re-scores the browser
+      demo's exported matrix through the real evaluation harness. Halving the
+      precision to halve the download costs recall@10{" "}
+      <Num value={0.5872} /> → <Num value={0.5871} />: one instance in twenty
+      thousand.
+    </p>
+
+    <h2>Provenance of this build</h2>
+    <dl class="facts">
+      <div><dt>Commit</dt><dd><code>{provenance.commit}</code></dd></div>
+      <div><dt>Corpus</dt><dd><code>{generation.generation}</code></dd></div>
+      <div><dt>Split</dt><dd><code>{leaderboard.split}</code></dd></div>
+      <div><dt>Baseline</dt><dd><Num value={POPULARITY} tone="accent" /></dd></div>
+    </dl>
+  </div>
+</Base>
+
+<style>
+  code { background: var(--paper-sunk); padding: 0 0.25em; }
+  .sha, .path { font-size: 0.82em; }
+  .path { background: none; color: var(--ink-faint); padding: 0; }
+
+  .facts { display: grid; gap: 0; margin-block: var(--s-5);
+           border-top: 1px solid var(--rule); max-width: var(--measure); }
+  .facts > div { display: grid; grid-template-columns: 11rem 1fr;
+                 gap: var(--s-3); padding: var(--s-2) 0;
+                 border-bottom: 1px solid var(--paper-edge);
+                 font-family: var(--sans); font-size: var(--t-sm); }
+  .facts dt { color: var(--ink-faint); }
+  .facts dd { margin: 0; }
+
+  .runs { margin-block: var(--s-5) var(--s-7); overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse;
+          font-family: var(--sans); font-size: var(--t-sm); }
+  caption { caption-side: top; text-align: left; padding-bottom: var(--s-3);
+            color: var(--ink-faint); }
+  thead th { text-align: left; font-size: var(--t-xs); font-weight: 600;
+             letter-spacing: 0.07em; text-transform: uppercase;
+             color: var(--ink-faint); padding: 0 var(--s-3) var(--s-2) 0;
+             border-bottom: 1.5px solid var(--ink-soft); }
+  tbody th, tbody td { padding: 0.34rem var(--s-3) 0.34rem 0;
+                       border-bottom: 1px solid var(--paper-edge); }
+  tbody th { text-align: left; font-weight: 500; }
+  .r { text-align: right; }
+  .u { color: var(--ink-faint); font-size: var(--t-xs); margin-left: 0.25em; }
+  /* Set like every other figure on the site. The unit varies per row here,
+   * so this cell is built by hand rather than through <Num>, and it has to
+   * match it. */
+  .t { font-family: var(--mono); font-variant-numeric: tabular-nums lining-nums;
+       letter-spacing: -0.012em; }
+  .fam { color: var(--ink-faint); font-size: var(--t-xs); }
+</style>

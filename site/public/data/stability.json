@@ -1,0 +1,535 @@
+{
+ "note": "Each model retrained at several seeds on the same split. Answers whether the published ordering is a property of the models or of seed 0. Complementary to m6_intervals.json, which resamples the evaluation with training held fixed.",
+ "metric": "M6_recall_at_10",
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ],
+ "n_models_complete": 16,
+ "models_partial": [],
+ "baseline_by_seed": {
+  "0": 0.365,
+  "1": 0.365,
+  "2": 0.365,
+  "3": 0.365,
+  "4": 0.365
+ },
+ "n_below_popularity_by_seed": {
+  "0": 11,
+  "1": 11,
+  "2": 11,
+  "3": 11,
+  "4": 11
+ },
+ "below_popularity_scope": {
+  "basis": "M6_recall_at_10",
+  "note": "Counted over exported embeddings. The leaderboard headline scores each model at its best available scorer, so models with a native rule are counted there at that rule and the two totals differ by exactly those models. The sweep does not re-run native scorers, so it carries no seed evidence about them.",
+  "native_not_reseeded": [
+   {
+    "model": "ease",
+    "embedding": 0.14225,
+    "native": 0.5872,
+    "embedding_below_baseline": true,
+    "native_below_baseline": false
+   },
+   {
+    "model": "masked-set",
+    "embedding": 0.1229,
+    "native": 0.6178,
+    "embedding_below_baseline": true,
+    "native_below_baseline": false
+   }
+  ]
+ },
+ "n_models_changing_rank": 4,
+ "n_models_crossing_baseline": 0,
+ "seed_invariant": [
+  "chem-svd",
+  "ease",
+  "sgc",
+  "svd-ppmi",
+  "text-aligned"
+ ],
+ "max_seed_spread": 0.017449999999999966,
+ "min_adjacent_gap": 0.0008900000000000002,
+ "spearman_between_seeds": {
+  "pairs": [
+   [
+    0,
+    1
+   ],
+   [
+    0,
+    2
+   ],
+   [
+    0,
+    3
+   ],
+   [
+    0,
+    4
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    3
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    2,
+    3
+   ],
+   [
+    2,
+    4
+   ],
+   [
+    3,
+    4
+   ]
+  ],
+  "values": [
+   0.9970588235294118,
+   1.0,
+   1.0,
+   0.9941176470588236,
+   0.9970588235294118,
+   0.9970588235294118,
+   0.9970588235294118,
+   1.0,
+   0.9941176470588236,
+   0.9941176470588236
+  ],
+  "mean": 0.9970588235294118,
+  "min": 0.9941176470588236,
+  "ci95": [
+   0.9735294117647058,
+   1.0
+  ],
+  "n_boot": 10000
+ },
+ "models": [
+  {
+   "model": "chem-svd",
+   "mean": 0.01525,
+   "sd": 0.0,
+   "min": 0.01525,
+   "max": 0.01525,
+   "rank_best": 14,
+   "rank_worst": 14,
+   "rank_mean": 14.0,
+   "by_seed": {
+    "0": 0.01525,
+    "1": 0.01525,
+    "2": 0.01525,
+    "3": 0.01525,
+    "4": 0.01525
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "model": "concat",
+   "mean": 0.44611999999999996,
+   "sd": 0.0013060436439874428,
+   "min": 0.44455,
+   "max": 0.448,
+   "rank_best": 2,
+   "rank_worst": 2,
+   "rank_mean": 2.0,
+   "by_seed": {
+    "0": 0.44455,
+    "1": 0.448,
+    "2": 0.4461,
+    "3": 0.44535,
+    "4": 0.4466
+   },
+   "below_popularity": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  {
+   "model": "ease",
+   "mean": 0.14225,
+   "sd": 0.0,
+   "min": 0.14225,
+   "max": 0.14225,
+   "rank_best": 9,
+   "rank_worst": 9,
+   "rank_mean": 9.0,
+   "by_seed": {
+    "0": 0.14225,
+    "1": 0.14225,
+    "2": 0.14225,
+    "3": 0.14225,
+    "4": 0.14225
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "model": "glove",
+   "mean": 0.21793,
+   "sd": 0.0034723191097593554,
+   "min": 0.21295,
+   "max": 0.2212,
+   "rank_best": 7,
+   "rank_worst": 7,
+   "rank_mean": 7.0,
+   "by_seed": {
+    "0": 0.2211,
+    "1": 0.21295,
+    "2": 0.2212,
+    "3": 0.2163,
+    "4": 0.2181
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "model": "ials",
+   "mean": 0.04228,
+   "sd": 0.0011866970969881077,
+   "min": 0.0404,
+   "max": 0.04365,
+   "rank_best": 13,
+   "rank_worst": 13,
+   "rank_mean": 13.0,
+   "by_seed": {
+    "0": 0.0426,
+    "1": 0.0404,
+    "2": 0.04215,
+    "3": 0.04365,
+    "4": 0.0426
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "model": "item2vec",
+   "mean": 0.01148,
+   "sd": 0.0008326163582346912,
+   "min": 0.0102,
+   "max": 0.01225,
+   "rank_best": 15,
+   "rank_worst": 16,
+   "rank_mean": 15.8,
+   "by_seed": {
+    "0": 0.01225,
+    "1": 0.0117,
+    "2": 0.0102,
+    "3": 0.0121,
+    "4": 0.01115
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "model": "lightgcn",
+   "mean": 0.18308000000000002,
+   "sd": 0.00449549774774719,
+   "min": 0.178,
+   "max": 0.18865,
+   "rank_best": 8,
+   "rank_worst": 8,
+   "rank_mean": 8.0,
+   "by_seed": {
+    "0": 0.18365,
+    "1": 0.18595,
+    "2": 0.18865,
+    "3": 0.178,
+    "4": 0.17915
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "model": "masked-set",
+   "mean": 0.12227999999999999,
+   "sd": 0.002845742433882587,
+   "min": 0.1187,
+   "max": 0.12655,
+   "rank_best": 10,
+   "rank_worst": 10,
+   "rank_mean": 10.0,
+   "by_seed": {
+    "0": 0.1229,
+    "1": 0.12655,
+    "2": 0.12185,
+    "3": 0.1187,
+    "4": 0.1214
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "model": "residual",
+   "mean": 0.42443,
+   "sd": 0.0019521142384604452,
+   "min": 0.4217,
+   "max": 0.42635,
+   "rank_best": 3,
+   "rank_worst": 3,
+   "rank_mean": 3.0,
+   "by_seed": {
+    "0": 0.42355,
+    "1": 0.42635,
+    "2": 0.4217,
+    "3": 0.4243,
+    "4": 0.42625
+   },
+   "below_popularity": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  {
+   "model": "sgc",
+   "mean": 0.07775,
+   "sd": 0.0,
+   "min": 0.07775,
+   "max": 0.07775,
+   "rank_best": 12,
+   "rank_worst": 12,
+   "rank_mean": 12.0,
+   "by_seed": {
+    "0": 0.07775,
+    "1": 0.07775,
+    "2": 0.07775,
+    "3": 0.07775,
+    "4": 0.07775
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "model": "sgns-chem",
+   "mean": 0.01237,
+   "sd": 0.0018793615937333615,
+   "min": 0.01025,
+   "max": 0.01485,
+   "rank_best": 15,
+   "rank_worst": 16,
+   "rank_mean": 15.2,
+   "by_seed": {
+    "0": 0.01485,
+    "1": 0.01205,
+    "2": 0.01025,
+    "3": 0.01365,
+    "4": 0.01105
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "model": "sgns-cooc",
+   "mean": 0.40019,
+   "sd": 0.00687235403628188,
+   "min": 0.38845,
+   "max": 0.4059,
+   "rank_best": 4,
+   "rank_worst": 5,
+   "rank_mean": 4.6,
+   "by_seed": {
+    "0": 0.38845,
+    "1": 0.4034,
+    "2": 0.40015,
+    "3": 0.40305,
+    "4": 0.4059
+   },
+   "below_popularity": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  {
+   "model": "sgns-core",
+   "mean": 0.40372,
+   "sd": 0.006707887148722747,
+   "min": 0.3919,
+   "max": 0.4083,
+   "rank_best": 4,
+   "rank_worst": 5,
+   "rank_mean": 4.4,
+   "by_seed": {
+    "0": 0.4065,
+    "1": 0.3919,
+    "2": 0.4083,
+    "3": 0.40685,
+    "4": 0.40505
+   },
+   "below_popularity": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  {
+   "model": "svd-ppmi",
+   "mean": 0.4505,
+   "sd": 0.0,
+   "min": 0.4505,
+   "max": 0.4505,
+   "rank_best": 1,
+   "rank_worst": 1,
+   "rank_mean": 1.0,
+   "by_seed": {
+    "0": 0.4505,
+    "1": 0.4505,
+    "2": 0.4505,
+    "3": 0.4505,
+    "4": 0.4505
+   },
+   "below_popularity": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  {
+   "model": "text-aligned",
+   "mean": 0.32165,
+   "sd": 0.0,
+   "min": 0.32165,
+   "max": 0.32165,
+   "rank_best": 6,
+   "rank_worst": 6,
+   "rank_mean": 6.0,
+   "by_seed": {
+    "0": 0.32165,
+    "1": 0.32165,
+    "2": 0.32165,
+    "3": 0.32165,
+    "4": 0.32165
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "model": "text-embed",
+   "mean": 0.10769999999999999,
+   "sd": 1.5515838457795457e-17,
+   "min": 0.1077,
+   "max": 0.1077,
+   "rank_best": 11,
+   "rank_worst": 11,
+   "rank_mean": 11.0,
+   "by_seed": {
+    "0": 0.1077,
+    "1": 0.1077,
+    "2": 0.1077,
+    "3": 0.1077,
+    "4": 0.1077
+   },
+   "below_popularity": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  }
+ ],
+ "reproduces_published_seed0": {
+  "available": true,
+  "canonical_runs": "all-v2",
+  "n_compared": 16,
+  "n_mismatched": 0,
+  "max_abs_diff": 0.0,
+  "exact": true,
+  "models_compared": [
+   "chem-svd",
+   "concat",
+   "ease",
+   "glove",
+   "ials",
+   "item2vec",
+   "lightgcn",
+   "masked-set",
+   "residual",
+   "sgc",
+   "sgns-chem",
+   "sgns-cooc",
+   "sgns-core",
+   "svd-ppmi",
+   "text-aligned",
+   "text-embed"
+  ],
+  "not_yet_in_sweep": []
+ },
+ "complete": true
+}

@@ -1,0 +1,152 @@
+---
+import Base from "../layouts/Base.astro";
+import Demo from "../components/Demo.astro";
+import BaselineStrip from "../components/BaselineStrip.astro";
+import Num from "../components/Num.astro";
+import { leaderboard, generation, vocab, POPULARITY, n, href, bootstrap, countIsExact } from "../lib/data";
+
+const top = vocab.by_frequency.slice(0, 3).map((v) => v.name.replace(/_/g, " "));
+---
+
+<Base
+  title="You probably cannot beat salt."
+  chapter="One — the claim"
+  standfirst={`We trained ${leaderboard.n_models} ingredient models on ${n(generation.recipes)} recipes and asked each to finish a recipe it had never seen. ${leaderboard.n_below_popularity} of them lose to a ranked list of the most common ingredients.`}
+>
+  <div class="wide-figure hero">
+    <BaselineStrip />
+  </div>
+
+  <h2>Try it first</h2>
+  <div class="prose">
+    <p>
+      Here is the test the models took. Take a recipe, hide one ingredient,
+      and name it from what remains. You get one guess; the machines get ten,
+      from {n(vocab.n)} candidates. Play a few rounds before you read any
+      further — the rest of this site is easier to believe once you have lost
+      a round yourself.
+    </p>
+  </div>
+
+  <Demo />
+
+  <div class="prose">
+    <p class="muted small">
+      Recipes are drawn from the held-out set, so nothing scoring them was
+      trained on them. EASE runs in your browser on its own item-item matrix,
+      the same arithmetic the evaluation harness ran; re-scored from these
+      exact bytes it reaches recall@10 of{" "}
+      <Num value={0.5871} /> against <Num value={0.5872} /> at full precision.
+    </p>
+  </div>
+
+  <div class="prose">
+    <p>
+      Almost every system that recommends things learns a vector for each item
+      and puts similar items near each other. It is the standard move. It is
+      also, for this problem, frequently worse than counting.
+    </p>
+    <p>
+      Ranking by raw frequency — no learning, no vectors, just a sorted table
+      of how often each ingredient appears — recovers the hidden ingredient{" "}
+      <Num value={POPULARITY} pct dp={1} tone="accent" /> of the time.
+    </p>
+    <p>
+      That is the line to beat, and it is not a strawman. It suggests{" "}
+      {top[0]}, then {top[1]}, then {top[2]}. Recipes really are mostly made
+      of those.
+    </p>
+  </div>
+
+  <h2>What the models did</h2>
+  <div class="prose">
+    <p>
+      Sixteen models, spanning matrix factorisation, graph neural networks,
+      word2vec-style objectives, autoencoders and a set transformer. Each
+      trained on the same corpus, each evaluated on the same held-out recipes,
+      each scored against the same frequency table.
+    </p>
+    <p>
+      <b>{leaderboard.n_below_popularity} of {leaderboard.n_models} finish
+      below the line.</b> Not marginally — several are closer to zero than to
+      the baseline.
+      {bootstrap && countIsExact() && (
+        <>
+          {" "}Resampling the
+          {" "}{n(bootstrap.n_instances)} completion instances
+          {" "}{n(bootstrap.n_boot)} times returns the same count of
+          {" "}{leaderboard.n_below_popularity} every single time, so the
+          {" "}headline is not an artefact of which recipes were drawn. Whether
+          {" "}it survives retraining is
+          {" "}<a href={href("robustness/")}>a separate question</a>.
+        </>
+      )}
+    </p>
+  </div>
+
+  <div class="headline-stat">
+    <div class="figure-row">
+      <Num value={leaderboard.n_below_popularity} dp={0} size="display" tone="below" />
+      <p class="what">
+        of the {leaderboard.n_models} models score below a ranked frequency
+        table at finishing a recipe.
+      </p>
+    </div>
+    <p class="scale">
+      Trained on <Num value={generation.recipes} dp={0} /> recipes,{" "}
+      <Num value={generation.slots} dp={0} /> ingredient slots, a vocabulary
+      of <Num value={vocab.n} dp={0} group /> ingredients.
+    </p>
+  </div>
+
+  <div class="prose">
+    <p>
+      The next section shows the whole table, with the baseline drawn where it
+      actually falls rather than appended at the bottom.
+    </p>
+    <p class="next">
+      <a href={href("/models/")}
+        >Continue: the models →</a>
+    </p>
+  </div>
+</Base>
+
+<style>
+  .small { font-size: var(--t-sm); }
+
+  /* One number, set as the subject of a sentence it is actually part of.
+   * This was four figures of equal weight in a grid, which is the shape a
+   * dashboard uses when it has not decided what matters — and at seven and
+   * eight digits two of them overflowed their tracks and overlapped. Only
+   * the finding is set large now; the corpus figures are provenance and
+   * read as a caption, which is what they are. */
+  .headline-stat {
+    margin-block: var(--s-7);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--rule);
+  }
+  .figure-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-4);
+  }
+  .figure-row .what {
+    font-size: var(--t-lg);
+    line-height: 1.25;
+    max-width: 20rem;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .scale {
+    margin-top: var(--s-4);
+    color: var(--ink-faint);
+    font-size: var(--t-sm);
+  }
+
+  @media (max-width: 34rem) {
+    .figure-row { flex-direction: column; gap: var(--s-2); }
+  }
+
+  .next { margin-top: var(--s-6); font-size: var(--t-md); }
+  .next a { text-decoration-thickness: 2px; }
+</style>

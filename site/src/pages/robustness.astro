@@ -1,0 +1,429 @@
+---
+import Base from "../layouts/Base.astro";
+import Num from "../components/Num.astro";
+import { comparison, generation, n, leaderboard, href, stability, stabilityRanked, spreadRatio, ci } from "../lib/data";
+import { frame, scaleLinear, scaleBand, ticks, f1, f4 } from "../lib/chart";
+
+const KEY = "M6_lift_over_popularity";
+const rows = comparison.models
+  .filter((m) => m[KEY]?.before != null && m[KEY]?.after != null)
+  .sort((a, b) => b[KEY].after - a[KEY].after);
+
+/* Landscape rather than square, with the right-hand padding sized to hold
+ * the model names inside the drawing. The names are the point of a
+ * slopegraph — reading one means following a line to a label — so they get
+ * room in the layout instead of overflowing it. */
+const W = 560, H = 360;
+const PAD_L = 46, PAD_R = 172, PAD_T = 28, PAD_B = 40;
+const X0 = PAD_L, X1 = W - PAD_R;
+const vals = rows.flatMap((r) => [r[KEY].before, r[KEY].after]);
+/* d3 sets the domain and nices it, so the two ends of the slopegraph are not
+ * clamped to the most extreme model and the zero line has somewhere to sit. */
+const slopeY = scaleLinear()
+  .domain([Math.min(...vals), Math.max(...vals)])
+  .nice()
+  .range([H - PAD_B, PAD_T]);
+const y = (v: number) => slopeY(v);
+
+/** Whether the ranking survived reseeding. The plan for this page was that an
+ *  unstable ordering would replace the headline rather than be filed as a
+ *  caveat, so the heading and its framing are derived from the result instead
+ *  of asserting the outcome we expected. */
+const rankStable = stability !== null && stability.n_models_changing_rank === 0;
+const baselines = stability ? Object.values(stability.baseline_by_seed) : [];
+const baselineFixed = new Set(baselines).size === 1;
+const belowCounts = stability
+  ? Object.values(stability.n_below_popularity_by_seed) : [];
+const belowFixed = new Set(belowCounts).size === 1;
+/** The decisive quantity. A rank swap between neighbours is not the same
+ *  event as a model changing which side of the popularity line it is on, and
+ *  only the second one would revise the claim this site makes. */
+const crossings = stability?.n_models_crossing_baseline ?? 0;
+/** Models the headline scores at their own rule rather than their vector.
+ *  They are why this page's count and the leaderboard's differ. */
+const natives = (stability?.below_popularity_scope?.native_not_reseeded ?? [])
+  .filter((d) => d.embedding_below_baseline && !d.native_below_baseline);
+
+/* The seed strip. The claim this page makes is a claim about position
+ * relative to one vertical line, so the chart draws that line and puts every
+ * model's whole seed range beside it. Each mark spans min to max across the
+ * five seeds with round caps, so a model whose score never moved renders as a
+ * dot rather than needing a separate case — and the fact that almost all of
+ * them are dots, at a scale where the baseline is plainly far away, is the
+ * finding rather than a rendering artefact. */
+const seedRows = stability ? stabilityRanked(stability) : [];
+const SF = frame(660, 40 + (seedRows.length * 22) + 46,
+                 { top: 40, right: 34, bottom: 46, left: 100 });
+/* Domain reaches past the highest embedding score because the two native
+ * readings are plotted on the same axis; a scale that stopped at the
+ * embedding max would put them outside the frame. */
+const seedX = scaleLinear().domain([0, 0.65]).range([SF.x0, SF.x1]);
+const seedY = scaleBand<string>()
+  .domain(seedRows.map((m) => m.model))
+  .range([SF.y0, SF.y1])
+  .padding(0.35);
+const sx = (v: number) => seedX(v);
+const sy = (model: string) => seedY(model)! + seedY.bandwidth() / 2;
+const seedBase = baselines[0] ?? 0;
+const seedTicks = ticks(seedX, 6, f1);
+/** Where the two native-scored models land under their own rule, so the
+ *  reconciliation this page explains in prose is also visible in the chart.
+ *  Without it the strip shows ease near the bottom, which is true of its
+ *  vectors and misleading about the model. */
+const nativeAt = new Map(
+  (stability?.below_popularity_scope?.native_not_reseeded ?? [])
+    .map((d) => [d.model, d.native]));
+---
+
+<Base
+  wide
+  title="We tried to break it"
+  chapter="Six — breaking it"
+  standfirst="A finding that survives only under the conditions that produced it is not a finding. Here is what has been varied, what it changed, and what has not been varied yet."
+>
+  <div class="prose">
+    <h2>More data did not change the ranking</h2>
+    <p>
+      The corpus was rebuilt with a corrected normaliser, going from{" "}
+      {n(generation.previous.recipes)} recipes and{" "}
+      {n(generation.previous.slots)} ingredient slots to{" "}
+      {n(generation.recipes)} and {n(generation.slots)} — the vocabulary held
+      byte-identical, so every stored embedding row still means the same
+      ingredient.
+    </p>
+    <p>
+      Individual scores moved. The <b>order did not</b>. Models that were
+      below the popularity line stayed below it; models above stayed above.
+    </p>
+  </div>
+
+  <figure class="slope">
+    <figcaption class="label">
+      Lift over the popularity baseline, {comparison.before.generation} →
+      {comparison.after.generation}. Lines that cross would indicate a
+      ranking change.
+    </figcaption>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img"
+         aria-label="Slopegraph of lift over popularity before and after the corpus rebuild, showing no reordering">
+      <line x1={X0} y1={y(0)} x2={X1} y2={y(0)} class="zero" />
+      <text x={X0} y={y(0) - 7} class="zlabel">popularity baseline</text>
+      {rows.map((r) => (
+        <g class:list={["slp", r[KEY].after < 0 ? "below" : "above"]}>
+          <line x1={X0} y1={y(r[KEY].before)}
+                x2={X1} y2={y(r[KEY].after)} />
+          <circle cx={X0} cy={y(r[KEY].before)} r="3.2" />
+          <circle cx={X1} cy={y(r[KEY].after)} r="3.2" />
+          <text x={X1 + 9} y={y(r[KEY].after) + 4}>{r.model}</text>
+        </g>
+      ))}
+      <text x={X0} y={H - 12} class="axlabel" text-anchor="middle"
+        >{comparison.before.generation}</text>
+      <text x={X1} y={H - 12} class="axlabel" text-anchor="middle"
+        >{comparison.after.generation}</text>
+    </svg>
+  </figure>
+
+  <div class="prose">
+    <p class="caveat">
+      <b>The confound, stated rather than buried.</b> {comparison.caveat}
+      The ranking comparison survives this; the individual deltas do not, and
+      should not be quoted as the effect of the corpus alone.
+    </p>
+
+    {stability === null ? (
+    <Fragment>
+    <h2>More seeds — in progress</h2>
+    <p>
+      Every result published here so far comes from <b>seed 0</b>. All of
+      them. The thesis that {leaderboard.n_below_popularity} of{" "}
+      {leaderboard.n_models} models lose to a frequency table currently rests
+      on one draw of the random number generator, and that is the single
+      largest weakness on this site.
+    </p>
+    <p>
+      A sweep of all {leaderboard.n_models} models across five seeds is
+      running now — {leaderboard.n_models * 5} trials on the held-out split.
+      When it lands, this section will report each model's <i>rank
+      distribution</i> rather than its rank, and the leaderboard will be
+      redrawn as distributions rather than a list.
+    </p>
+    <p>
+      If the ordering turns out to be unstable, that is a more interesting
+      result than the ordering, and it will replace the headline rather than
+      be filed as a caveat.
+    </p>
+    </Fragment>
+    ) : (
+    <Fragment>
+    <h2>{rankStable
+      ? "More seeds did not change the ranking either"
+      : crossings === 0
+        ? "More seeds moved the order, not the finding"
+        : "More seeds changed the result"}</h2>
+    <p>
+      Every model was retrained at {stability.seeds.length} seeds on the same
+      held-out split — {stability.n_models_complete * stability.seeds.length}
+      {" "}trials in total. The question is not whether the scores moved. They
+      did. The question is whether the <i>order</i> moved, because the order
+      is what every claim on this site is made of.
+    </p>
+    {rankStable ? (
+    <p>
+      <b>No model changed rank at any seed.</b> The reason is a ratio rather
+      than a small number: the largest spread any model showed across seeds
+      was <Num value={stability.max_seed_spread} />, while the smallest gap
+      between two adjacent models on the leaderboard is <Num
+        value={stability.min_adjacent_gap} /> — <Num
+        value={spreadRatio(stability)} dp={1} />× larger. Seed noise is real,
+      and it is smaller than the distances it would have to cross.
+    </p>
+    ) : (
+    <p>
+      <b>{stability.n_models_changing_rank} of {stability.n_models_complete}
+      {" "}models changed rank across seeds</b>, and <b>{crossings === 0
+        ? "none crossed the popularity baseline"
+        : `${crossings} crossed the popularity baseline`}</b>. Those are
+      different events, and only the second one would matter: models trading
+      places changes the order of the list, while crossing the line changes
+      what the list is evidence for. {crossings === 0
+        ? `The exact ordering here is a single draw and the neighbouring
+           positions should not be read as settled. Which side of the
+           baseline each model falls on is not a single draw — that was the
+           same at every seed.`
+        : `The headline itself moves with the seed, so it is reported as a
+           range rather than a number.`} The largest spread any model showed
+      was <Num value={stability.max_seed_spread} /> against a smallest
+      adjacent gap of <Num value={stability.min_adjacent_gap} />.
+    </p>
+    )}
+    <p>
+      The popularity baseline is the line every other claim is measured
+      against, so it is worth stating what it does across seeds: {baselineFixed
+        ? <Fragment>it does not move at all, sitting at exactly <Num
+            value={baselines[0]} /> every time</Fragment>
+        : <Fragment>it ranges from <Num value={Math.min(...baselines)} /> to
+            {" "}<Num value={Math.max(...baselines)} /></Fragment>}.
+      {" "}The count of models below it was {belowFixed
+        ? `${belowCounts[0]} at every seed`
+        : `between ${Math.min(...belowCounts)} and ${Math.max(...belowCounts)} depending on the seed`}.
+    </p>
+
+    {natives.length > 0 && (
+    <p class="caveat">
+      That count is taken over exported embeddings, which is why it is larger
+      than the {leaderboard.n_below_popularity} on the leaderboard. {natives.map((d, i) => (
+        <Fragment>{i > 0 ? " and " : ""}<code>{d.model}</code> clears the
+          baseline through its own scorer (<Num value={d.native} /> against
+          {" "}<Num value={d.embedding} /> as a vector)</Fragment>
+      ))}, so the headline counts {belowCounts[0] - natives.length} rather
+      than {belowCounts[0]}. The sweep re-runs the embedding path only, so it
+      carries no seed evidence about {natives.length === 1 ? "that scorer" : "those scorers"} —
+      {" "}{natives.length === 1 ? "it sits" : "they sit"} well clear of the
+      line at seed 0 and {natives.length === 1 ? "was" : "were"} not reseeded.
+    </p>
+    )}
+
+    <figure class="wide-figure seedstrip">
+      <figcaption class="label">
+        Every model's full range across {stability.seeds.length} seeds. Marks
+        span worst to best seed; hollow rings are the two models scored under
+        their own rule rather than their exported vectors.
+      </figcaption>
+      <svg viewBox={SF.viewBox} role="img"
+           aria-label={`Recall at 10 for each of ${seedRows.length} models across ${stability.seeds.length} seeds, showing every model staying on the same side of the popularity baseline`}>
+        {seedTicks.map((t) => (
+          <g class="tick">
+            <line x1={t.pos} x2={t.pos} y1={SF.y0 - 8} y2={SF.y1} />
+            <text x={t.pos} y={SF.y1 + 18} text-anchor="middle">{t.label}</text>
+          </g>
+        ))}
+        <line class="base" x1={sx(seedBase)} x2={sx(seedBase)}
+              y1={SF.y0 - 22} y2={SF.y1} />
+        <text class="baselabel" x={sx(seedBase)} y={SF.y0 - 28} text-anchor="middle"
+          >popularity baseline {f4(seedBase)}</text>
+        {seedRows.map((m) => {
+          const below = m.below_popularity[0];
+          const nat = nativeAt.get(m.model);
+          const y = sy(m.model);
+          return (
+            <g class:list={["row", below && "below"]}>
+              <text class="name" x={SF.x0 - 10} y={y + 4} text-anchor="end">{m.model}</text>
+              {nat != null && (
+                <line class="connect" x1={sx(m.max)} x2={sx(nat)} y1={y} y2={y} />
+              )}
+              <line class="range" x1={sx(m.min)} x2={sx(m.max)} y1={y} y2={y} />
+              {nat != null && <circle class="native" cx={sx(nat)} cy={y} r="4.5" />}
+            </g>
+          );
+        })}
+        <text class="axlabel" x={(SF.x0 + SF.x1) / 2} y={SF.height - 6} text-anchor="middle"
+          >recall@10 →</text>
+      </svg>
+    </figure>
+
+    <figure class="seedfig">
+      <figcaption class="label">
+        M6 recall@10 by seed. Mean, spread, and the best and worst rank each
+        model reached. Recounted independently at every seed rather than
+        assumed from seed 0.
+      </figcaption>
+      <table class="seeds">
+        <thead>
+          <tr>
+            <th>model</th>
+            <th class="num">mean</th>
+            <th class="num">sd</th>
+            <th class="num">range</th>
+            <th class="num">rank</th>
+          </tr>
+        </thead>
+        <tbody>
+          {stabilityRanked(stability).map((m) => (
+            <tr class={m.below_popularity[0] ? "below" : ""}>
+              <td>{m.model}</td>
+              <td class="num"><Num value={m.mean} /></td>
+              <td class="num">{m.sd === 0
+                ? <span class="inv" title="identical at every seed">0</span>
+                : <Num value={m.sd} />}</td>
+              <td class="num"><Num value={m.max - m.min} /></td>
+              <td class="num">{m.rank_best === m.rank_worst
+                ? m.rank_best
+                : `${m.rank_best}–${m.rank_worst}`}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </figure>
+
+    <p>
+      {stability.seed_invariant.length > 0 && (
+        <Fragment>
+          <b>{stability.seed_invariant.length} of {stability.n_models_complete}
+          {" "}models are seed-invariant</b> — {stability.seed_invariant.join(", ")}
+          {" "}score identically at every seed, marked <span class="inv">0</span>
+          {" "}above. That is not a small variance; it is no variance. A
+          truncated SVD of a fixed matrix returns the same factorisation every
+          time, so reporting a standard deviation for them would suggest a
+          measurement where none was made.{" "}
+        </Fragment>
+      )}
+      Rank correlation between every pair of seeds is <Num
+        value={stability.spearman_between_seeds.mean} /> on average, with the
+      worst pair at <Num value={stability.spearman_between_seeds.min} /> and a
+      bootstrap interval of {ci(stability.spearman_between_seeds.ci95)} over
+      {" "}{stability.spearman_between_seeds.n_boot.toLocaleString()} resamples.
+    </p>
+    {stability.models_partial.length > 0 && (
+      <p class="caveat">
+        {stability.models_partial.join(", ")} did not finish at every seed and
+        {stability.models_partial.length === 1 ? " is" : " are"} excluded from
+        the ranking above rather than averaged over fewer draws.
+      </p>
+    )}
+    {stability.reproduces_published_seed0.available && (
+    <Fragment>
+    <h3>The sweep reproduces the published numbers exactly</h3>
+    <p>
+      A spread across seeds only means something if the pipeline itself held
+      still. So the sweep's own seed-0 trials were checked against the
+      single-seed runs this site already publishes: <b>
+      {stability.reproduces_published_seed0.n_compared} models,{" "}
+      {stability.reproduces_published_seed0.n_mismatched} mismatched</b>,
+      largest absolute difference{" "}
+      {stability.reproduces_published_seed0.exact
+        ? "exactly zero"
+        : stability.reproduces_published_seed0.max_abs_diff!.toExponential(1)}.
+      {stability.reproduces_published_seed0.exact
+        ? " Every retrained model returned its published value to the bit, so the variation above is the seed and nothing else."
+        : " The difference is small but not zero, which means some of the variation above is the pipeline rather than the seed."}
+    </p>
+    </Fragment>
+    )}
+    </Fragment>
+    )}
+
+    <h3>Why seeds are named, not counted</h3>
+    <p>
+      The sweep declares seeds explicitly rather than looping a count,
+      because models that consume other models' outputs have to consume the
+      output from <i>their own</i> seed. Writing a parent run id literally
+      would make all five children read seed 0's parent and produce five
+      identical rows presented as measured variance — a silent failure that
+      looks exactly like a real result.
+    </p>
+  </div>
+
+  <div class="prose">
+    <p class="next"><a href={href("/bugs/")}>Continue: what was broken →</a></p>
+  </div>
+</Base>
+
+<style>
+  .slope { margin-block: var(--s-6) var(--s-7); max-width: var(--measure); }
+  figcaption { color: var(--ink-faint); margin-bottom: var(--s-4);
+               max-width: var(--measure); }
+  svg { width: 100%; height: auto; font-family: var(--sans); overflow: visible; }
+  .zero { stroke: var(--ink); stroke-width: 1.2; stroke-dasharray: 4 3; }
+  .zlabel { font-size: 10px; fill: var(--ink); letter-spacing: 0.07em;
+            text-transform: uppercase; font-weight: 600; }
+  .slp line { stroke-width: 1.4; }
+  .slp text { font-size: 11px; }
+  .slp.above line { stroke: var(--above); }
+  .slp.above circle, .slp.above text { fill: var(--above); }
+  .slp.below line { stroke: var(--below); }
+  .slp.below circle, .slp.below text { fill: var(--below); }
+  .axlabel { font-size: 10px; fill: var(--ink-faint);
+             letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .caveat { border-left: 2px solid var(--rule); padding-left: var(--s-4);
+            color: var(--ink-soft); font-size: var(--t-base);
+            max-width: var(--measure); }
+  .next { margin-top: var(--s-6); font-size: var(--t-md); }
+
+  .seedfig { margin-block: var(--s-6) var(--s-5); }
+
+  /* The strip. Ticks recede, the baseline is the only emphasised rule, and
+   * the marks carry the one distinction that matters. */
+  .seedstrip { margin-block: var(--s-6) var(--s-6); }
+  .seedstrip .tick line { stroke: var(--paper-edge); stroke-width: 1; }
+  .seedstrip .tick text,
+  .seedstrip .axlabel { fill: var(--ink-faint); font-size: 11px;
+                        letter-spacing: 0.04em; }
+  .seedstrip .base { stroke: var(--ink); stroke-width: 1.5; }
+  .seedstrip .baselabel { fill: var(--ink); font-size: 11px; font-weight: 600;
+                          letter-spacing: 0.06em; text-transform: uppercase; }
+  .seedstrip .name { fill: var(--ink-soft); font-size: 12px;
+                     font-family: var(--mono); }
+  /* Round caps, so a model whose five seeds agree exactly still renders as a
+   * mark of the same weight instead of vanishing. */
+  .seedstrip .range { stroke: var(--above); stroke-width: 6;
+                      stroke-linecap: round; }
+  .seedstrip .row.below .range { stroke: var(--below); }
+  .seedstrip .row.below .name { fill: var(--below); }
+  /* The same model measured the other way. Hollow and connected by a hairline,
+   * so it reads as a second reading of one model rather than a second model. */
+  .seedstrip .connect { stroke: var(--ink-faint); stroke-width: 1;
+                        stroke-dasharray: 2 3; }
+  .seedstrip .native { fill: var(--paper); stroke: var(--above);
+                       stroke-width: 2; }
+  .seeds { width: 100%; border-collapse: collapse;
+           font-family: var(--sans); font-size: var(--t-sm); }
+  .seeds thead th { text-align: left; font-weight: 600;
+                    font-size: var(--t-xs); letter-spacing: 0.07em;
+                    text-transform: uppercase; color: var(--ink-faint);
+                    padding: 0 var(--s-3) var(--s-2) 0;
+                    border-bottom: 1.5px solid var(--ink-soft);
+                    white-space: nowrap; }
+  .seeds thead th.num { text-align: right; }
+  .seeds tbody td { padding: 0.42rem var(--s-3) 0.42rem 0;
+                    border-bottom: 1px solid var(--paper-edge);
+                    vertical-align: baseline; }
+  .seeds td.num { text-align: right; white-space: nowrap;
+                  font-family: var(--mono);
+                  font-variant-numeric: tabular-nums lining-nums;
+                  font-feature-settings: "tnum" 1, "lnum" 1;
+                  letter-spacing: -0.012em; }
+  .seeds tr.below td { color: var(--below); }
+  .inv { color: var(--ink-faint); font-family: var(--mono);
+         border-bottom: 1px dotted var(--ink-faint); cursor: help; }
+</style>

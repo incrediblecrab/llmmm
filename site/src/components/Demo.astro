@@ -1,0 +1,486 @@
+---
+/**
+ * Beat the baseline.
+ *
+ * The site's argument is that a well-known class of model loses to counting,
+ * and the fastest way to make that land is to let the reader lose to counting
+ * first. So this is a game before it is a demonstration: guess the hidden
+ * ingredient, then watch a frequency table and a real model guess the same
+ * one, and keep score across rounds.
+ *
+ * Two commitments make it honest rather than a toy:
+ *
+ *  - The recipes come from `held_out_recipes('recipe-holdout')`. No model
+ *    scoring them was trained on any of them. Using the full-split model
+ *    would give visibly better suggestions and would quietly contradict the
+ *    argument the rest of the site is making.
+ *
+ *  - The scoring is the same arithmetic the evaluation harness ran, not an
+ *    approximation of it: sum the item-item rows for the visible ingredients,
+ *    forbid the visible ones, rank the rest. Re-scored from these exact
+ *    exported bytes, recall@10 is 0.5871 against 0.5872 at full precision.
+ */
+import { vocab } from "../lib/data";
+import { statSync } from "node:fs";
+import { join } from "node:path";
+
+const N = vocab.n;
+/* The download size, read from the file that is actually served rather than
+ * typed here. It has already been wrong once: the matrix went from 6.1 MB to
+ * 1.2 MB when the export stopped shipping rows the demo cannot reach, and a
+ * literal in this template would still be promising six. Anchored on the
+ * project root, because import.meta.url points into the bundled chunk during
+ * a build, not at this file. */
+const matrix = join(process.cwd(), "public/data/ease_scores.bin");
+const payloadMb = (statSync(matrix).size / 1048576).toFixed(1);
+/* Ranked by corpus frequency, so the popularity baseline needs no model: it
+ * is this array, in order, minus whatever is already in the bowl. */
+const freqOrder = vocab.by_frequency.map((v) => v.id);
+const names = new Array<string>(N);
+for (const v of vocab.by_frequency) names[v.id] = v.name.replace(/_/g, " ");
+---
+
+<section class="demo" data-n={N}>
+  <script type="application/json" id="demo-names" set:html={JSON.stringify(names)} />
+  <script type="application/json" id="demo-freq" set:html={JSON.stringify(freqOrder)} />
+
+  <div class="scoreboard" role="status" aria-live="polite">
+    <div class="sb"><span class="label">You</span><b data-score="you">0</b></div>
+    <div class="sb"><span class="label">Frequency table</span><b data-score="pop">0</b></div>
+    <div class="sb"><span class="label">EASE</span><b data-score="model">0</b></div>
+    <div class="sb rounds"><span class="label">Rounds</span><b data-score="round">0</b></div>
+  </div>
+
+  <div class="stage" data-stage="idle">
+    <div class="panel loading" data-panel="loading">
+      <p class="muted">Loading the model — {payloadMb} MB, once.</p>
+      <div class="track"><span class="fill" data-fill></span></div>
+    </div>
+
+    <div class="panel play" data-panel="play" hidden>
+      <p class="label">A recipe with one ingredient removed</p>
+      <ul class="bowl" data-bowl></ul>
+      <form class="guess" data-form>
+        <label class="sr" for="guess-input">Your guess</label>
+        <input id="guess-input" data-input type="text" list="ingredients"
+               autocomplete="off" spellcheck="false"
+               placeholder="What's missing?" />
+        <datalist id="ingredients" data-list></datalist>
+        <button type="submit">Guess</button>
+      </form>
+      <p class="hint muted" data-hint>Type an ingredient, or guess something obvious and see how far it gets you.</p>
+    </div>
+
+    <div class="panel result" data-panel="result" hidden>
+      <p class="answer">The missing ingredient was <b data-answer></b>.</p>
+      <div class="verdicts">
+        <div class="verdict" data-v="you">
+          <span class="label">You said</span>
+          <span class="said" data-you-said></span>
+          <span class="mark" data-you-mark></span>
+        </div>
+        <div class="verdict" data-v="pop">
+          <span class="label">Frequency table, top 10</span>
+          <ol class="ranklist" data-pop-list></ol>
+          <span class="mark" data-pop-mark></span>
+        </div>
+        <div class="verdict" data-v="model">
+          <span class="label">EASE, top 10</span>
+          <ol class="ranklist" data-model-list></ol>
+          <span class="mark" data-model-mark></span>
+        </div>
+      </div>
+      <button class="again" data-again>Next recipe</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* Everything below runs in the browser. It is the only page on the site
+   * that ships JavaScript. */
+
+  const root = document.querySelector<HTMLElement>(".demo")!;
+  const N = Number(root.dataset.n);
+  const names: string[] = JSON.parse(
+    document.getElementById("demo-names")!.textContent!);
+  const freqOrder: number[] = JSON.parse(
+    document.getElementById("demo-freq")!.textContent!);
+
+  const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+  const stage = q<HTMLElement>(".stage");
+  const panels = {
+    loading: q<HTMLElement>('[data-panel="loading"]'),
+    play: q<HTMLElement>('[data-panel="play"]'),
+    result: q<HTMLElement>('[data-panel="result"]'),
+  };
+  const show = (k: keyof typeof panels) => {
+    // Hiding the panel that currently holds focus drops the user back at the
+    // top of the document. For a keyboard reader that means the control they
+    // were about to reach is suddenly sixteen tabs away, and the game becomes
+    // unplayable without a mouse. Focus moves with the panel instead — but
+    // only when it was inside the panel being hidden, so this never steals
+    // focus from someone reading elsewhere on the page, including on the
+    // first deal at boot.
+    const held = document.activeElement;
+    const followed = held instanceof HTMLElement
+      && Object.entries(panels).some(([n, el]) => n !== k && el.contains(held));
+    for (const [name, el] of Object.entries(panels)) el.hidden = name !== k;
+    stage.dataset.stage = k;
+    if (followed) {
+      panels[k].querySelector<HTMLElement>(
+        "input, button, [tabindex]:not([tabindex='-1'])")?.focus();
+    }
+  };
+
+  /* float16 decode by lookup table. Float16Array is not yet safe to assume,
+   * and the matrix is only ever read a few rows at a time, so a 65,536-entry
+   * table costs 256 KB once and makes every later read a single index. */
+  const HALF = (() => {
+    const t = new Float32Array(65536);
+    for (let h = 0; h < 65536; h++) {
+      const sign = h & 0x8000 ? -1 : 1;
+      const exp = (h >> 10) & 0x1f;
+      const frac = h & 0x3ff;
+      if (exp === 0) t[h] = sign * Math.pow(2, -14) * (frac / 1024);
+      else if (exp === 31) t[h] = frac ? NaN : sign * Infinity;
+      else t[h] = sign * Math.pow(2, exp - 15) * (1 + frac / 1024);
+    }
+    return t;
+  })();
+
+  let B: Uint16Array | null = null;   // item-item scores, still float16
+  let recipes: { ids: number[]; source: string }[] = [];
+  /** Ingredient id -> its row in B. The export ships only the rows the demo
+   *  can reach, so row i is not ingredient i and assuming otherwise would
+   *  score every bowl against the wrong ingredients while looking fine. */
+  let rowOf: Int32Array | null = null;
+
+  /** Score every candidate the way the harness does: sum the item-item rows
+   *  of the visible ingredients. Rows are decoded on demand, so the matrix
+   *  stays as float16 in memory and only the handful of rows a recipe needs
+   *  are ever expanded. */
+  function easeScores(ctx: number[]): Float32Array {
+    const out = new Float32Array(N);
+    for (const c of ctx) {
+      const row = rowOf![c];
+      // Unreachable for any recipe in demo_recipes.json, by construction.
+      // If it ever fires, the matrix and the recipes were exported from
+      // different runs, and silently scoring a zero row would show a
+      // plausible, wrong answer instead of an error.
+      if (row < 0) throw new Error(`no score row for ingredient ${c}`);
+      const base = row * N;
+      for (let j = 0; j < N; j++) out[j] += HALF[B![base + j]];
+    }
+    return out;
+  }
+
+  /** Top k, excluding what is already in the bowl. The harness forbids the
+   *  context the same way; a model that "predicts" an ingredient you can
+   *  already see has predicted nothing. */
+  function topK(scores: Float32Array, ctx: Set<number>, k = 10): number[] {
+    const idx: number[] = [];
+    for (let i = 0; i < N; i++) if (!ctx.has(i)) idx.push(i);
+    idx.sort((a, b) => scores[b] - scores[a]);
+    return idx.slice(0, k);
+  }
+
+  const state = { you: 0, pop: 0, model: 0, round: 0 };
+  let current: { ctx: number[]; target: number } | null = null;
+
+  function setScores() {
+    for (const k of ["you", "pop", "model", "round"] as const) {
+      q<HTMLElement>(`[data-score="${k}"]`).textContent = String(state[k]);
+    }
+  }
+
+  /* `focus: false` on the very first hand. Focusing an input during
+   * hydration makes the browser scroll it into view, which landed a reader
+   * halfway down the page with the headline above them. Every later deal is
+   * the result of the reader pressing a button, so moving focus there is
+   * what they asked for. */
+  function deal(opts: { focus?: boolean } = {}) {
+    const r = recipes[Math.floor(Math.random() * recipes.length)];
+    const hide = Math.floor(Math.random() * r.ids.length);
+    current = {
+      ctx: r.ids.filter((_, i) => i !== hide),
+      target: r.ids[hide],
+    };
+    const bowl = q<HTMLElement>("[data-bowl]");
+    bowl.innerHTML = "";
+    for (const id of current.ctx) {
+      const li = document.createElement("li");
+      li.textContent = names[id];
+      bowl.append(li);
+    }
+    const missing = document.createElement("li");
+    missing.className = "missing";
+    missing.textContent = "?";
+    bowl.append(missing);
+
+    const input = q<HTMLInputElement>("[data-input]");
+    input.value = "";
+    show("play");
+    if (opts.focus !== false) input.focus();
+  }
+
+  function reveal(guess: string) {
+    if (!B || !current) return;
+    const { ctx, target } = current;
+    const ctxSet = new Set(ctx);
+
+    const modelTop = topK(easeScores(ctx), ctxSet);
+    const popTop: number[] = [];
+    for (const id of freqOrder) {
+      if (popTop.length === 10) break;
+      if (!ctxSet.has(id)) popTop.push(id);
+    }
+
+    const youRight = guess.trim().toLowerCase() === names[target].toLowerCase();
+    const popRight = popTop.includes(target);
+    const modelRight = modelTop.includes(target);
+    state.round++;
+    if (youRight) state.you++;
+    if (popRight) state.pop++;
+    if (modelRight) state.model++;
+    setScores();
+
+    q<HTMLElement>("[data-answer]").textContent = names[target];
+    q<HTMLElement>("[data-you-said]").textContent = guess.trim() || "nothing";
+    const mark = (sel: string, ok: boolean, note: string) => {
+      const el = q<HTMLElement>(sel);
+      el.textContent = note;
+      el.dataset.ok = String(ok);
+    };
+    /* The reader gets one guess and the models get ten, which is stated
+     * rather than hidden. The asymmetry is the honest framing of recall@10,
+     * and pretending otherwise would make the game unfair in the reader's
+     * favour and the demonstration worthless. */
+    mark("[data-you-mark]", youRight, youRight ? "correct" : "missed");
+    mark("[data-pop-mark]", popRight,
+         popRight ? `caught it at #${popTop.indexOf(target) + 1}` : "missed");
+    mark("[data-model-mark]", modelRight,
+         modelRight ? `caught it at #${modelTop.indexOf(target) + 1}` : "missed");
+
+    const fill = (sel: string, ids: number[]) => {
+      const ol = q<HTMLElement>(sel);
+      ol.innerHTML = "";
+      ids.forEach((id) => {
+        const li = document.createElement("li");
+        li.textContent = names[id];
+        if (id === target) li.className = "hit";
+        ol.append(li);
+      });
+    };
+    fill("[data-pop-list]", popTop);
+    fill("[data-model-list]", modelTop);
+    show("result");
+    q<HTMLButtonElement>("[data-again]").focus();
+  }
+
+  async function boot() {
+    const list = q<HTMLElement>("[data-list]");
+    /* All 1,790 ingredients, frequency-ordered so the browser's own
+     * autocomplete surfaces plausible answers first. */
+    list.innerHTML = freqOrder
+      .map((id) => `<option value="${names[id]}"></option>`).join("");
+
+    const base = import.meta.env.BASE_URL.replace(/\/+$/, "");
+    const [rec, mat] = await Promise.all([
+      fetch(`${base}/data/demo_recipes.json`).then((r) => r.json()),
+      (async () => {
+        const res = await fetch(`${base}/data/ease_scores.bin`);
+        // Falls back to the exported size only if the server withholds a
+        // length; the fallback is a progress-bar denominator, never a
+        // correctness assumption.
+        const total = Number(res.headers.get("content-length")) || 1310520;
+        const reader = res.body!.getReader();
+        const chunks: Uint8Array[] = [];
+        let got = 0;
+        const fillEl = q<HTMLElement>("[data-fill]");
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+          got += value.length;
+          fillEl.style.width = `${Math.min(100, (got / total) * 100)}%`;
+        }
+        const buf = new Uint8Array(got);
+        let at = 0;
+        for (const c of chunks) { buf.set(c, at); at += c.length; }
+        return new Uint16Array(buf.buffer);
+      })(),
+    ]);
+    recipes = rec.recipes;
+    B = mat;
+
+    // Build the id -> row lookup once. -1 marks an ingredient whose row was
+    // not shipped, which easeScores turns into an error rather than a zero.
+    rowOf = new Int32Array(N).fill(-1);
+    const sent: number[] = rec.score_rows;
+    for (let r = 0; r < sent.length; r++) rowOf[sent[r]] = r;
+    if (mat.length !== sent.length * N) {
+      throw new Error(
+        `ease_scores.bin holds ${mat.length} values, expected ` +
+        `${sent.length} x ${N} — the matrix and demo_recipes.json disagree`);
+    }
+
+    deal({ focus: false });
+  }
+
+  q<HTMLFormElement>("[data-form]").addEventListener("submit", (e) => {
+    e.preventDefault();
+    reveal(q<HTMLInputElement>("[data-input]").value);
+  });
+  q<HTMLButtonElement>("[data-again]").addEventListener("click", () => deal());
+
+  boot().catch(() => {
+    q<HTMLElement>('[data-panel="loading"]').innerHTML =
+      '<p class="muted">The model could not be loaded. The rest of the site does not need it.</p>';
+  });
+</script>
+
+<style>
+  .demo {
+    border: 1px solid var(--rule);
+    background: var(--paper-sunk);
+    padding: var(--s-5);
+    margin-block: var(--s-6);
+  }
+
+  .scoreboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+    padding-bottom: var(--s-4);
+    margin-bottom: var(--s-5);
+    border-bottom: 1px solid var(--rule);
+  }
+  .sb { display: flex; flex-direction: column; gap: 2px; }
+  .sb b {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-size: var(--t-xl);
+    font-weight: 500;
+    line-height: 1;
+    /* The only number transition on the site, and it exists because a score
+     * that changes without moving is a score the reader misses. */
+    transition: color 220ms ease;
+  }
+  .sb.rounds b { color: var(--ink-faint); }
+
+  .bowl {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    padding: 0;
+    margin-block: var(--s-3) var(--s-5);
+  }
+  /* `:global` on the children, deliberately. These list items are created by
+   * the script at runtime, so they never receive the scoped-style attribute
+   * the compiler adds to authored markup, and a plain `.bowl li` rule
+   * silently does not apply to a single one of them. Scoping stays on the
+   * parent, which is authored. */
+  .bowl :global(li) {
+    font-family: var(--sans);
+    font-size: var(--t-sm);
+    background: var(--paper);
+    border: 1px solid var(--paper-edge);
+    padding: 0.22rem var(--s-3);
+    border-radius: 2px;
+  }
+  .bowl :global(li.missing) {
+    border-style: dashed;
+    border-color: var(--accent);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-weight: 700;
+    min-width: 2.6rem;
+    text-align: center;
+  }
+
+  .guess { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+  input[type="text"] {
+    flex: 1 1 14rem;
+    font-family: var(--serif);
+    font-size: var(--t-base);
+    padding: var(--s-2) var(--s-3);
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+  }
+  input[type="text"]:focus { border-color: var(--accent); }
+
+  button {
+    font-family: var(--sans);
+    font-size: var(--t-sm);
+    font-weight: 600;
+    padding: var(--s-2) var(--s-5);
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  button:hover { background: var(--ink-soft); border-color: var(--ink-soft); }
+  .again { margin-top: var(--s-5); background: none; color: var(--ink); }
+  .again:hover { background: var(--paper); }
+
+  .hint { font-size: var(--t-sm); margin-top: var(--s-3); }
+
+  .track {
+    height: 2px;
+    background: var(--paper-edge);
+    margin-top: var(--s-3);
+    max-width: 18rem;
+  }
+  .fill {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    transition: width 120ms linear;
+  }
+
+  .answer { font-size: var(--t-md); margin-bottom: var(--s-5); }
+  .answer b { color: var(--accent); }
+
+  .verdicts { display: grid; gap: var(--s-5); }
+  @media (min-width: 42rem) {
+    .verdicts { grid-template-columns: repeat(3, 1fr); }
+  }
+  .verdict { display: flex; flex-direction: column; gap: var(--s-2); }
+  .said { font-family: var(--sans); font-size: var(--t-sm); }
+
+  .ranklist {
+    font-family: var(--sans);
+    font-size: var(--t-xs);
+    margin: 0;
+    padding-left: 1.4em;
+    color: var(--ink-soft);
+    columns: 2;
+  }
+  /* Two-word ingredients otherwise split across the column break, which
+   * reads as two separate entries and quietly changes what the list says. */
+  .ranklist :global(li) { break-inside: avoid; }
+  .ranklist :global(li.hit) {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .mark {
+    font-family: var(--sans);
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .mark[data-ok="true"]  { color: var(--above); }
+  .mark[data-ok="false"] { color: var(--below); }
+
+  .sr {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+</style>

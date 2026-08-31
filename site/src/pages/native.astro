@@ -1,0 +1,153 @@
+---
+import Base from "../layouts/Base.astro";
+import Num from "../components/Num.astro";
+import Leaderboard from "../components/Leaderboard.astro";
+import { nativeGap, POPULARITY, byName, href } from "../lib/data";
+
+const ease = byName("ease")!;
+const masked = byName("masked-set")!;
+---
+
+<Base
+  wide
+  title="The vector is the lossy part"
+  chapter="Three — the lossy part"
+  standfirst="Two models here score four to five times better under their own rule than through the embeddings they export. The embedding is what almost everyone ships."
+>
+  <div class="prose">
+    <p>
+      A recommender usually has two faces. Inside, it has some way of scoring
+      one item against a set of others — a solved linear system, an attention
+      pass, a conditional distribution. Outside, it has a table of vectors,
+      one per item, which is what gets exported, cached, put in a vector
+      database and shipped to whatever consumes it.
+    </p>
+    <p>
+      Those two faces are not equally good, and the gap is not small.
+    </p>
+  </div>
+
+  <figure class="gap">
+    <table>
+      <caption class="label">
+        Recall@10 · the same model, scored two ways
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Model</th>
+          <th scope="col" class="r">As exported vectors</th>
+          <th scope="col" class="r">Under its own rule</th>
+          <th scope="col" class="r">Factor</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {nativeGap.map((g) => (
+          <tr>
+            <th scope="row"><code>{g.model}</code></th>
+            <td class="r"><Num value={g.embedding} tone="below" /></td>
+            <td class="r"><Num value={g.native} tone="above" /></td>
+            <td class="r"><Num value={g.ratio} dp={1} tone="accent" />×</td>
+            <td class="viz">
+              {/* Two ticks on a shared axis, with the baseline drawn between
+                  them. Bars would imply the quantities add; ticks say only
+                  "here, and also here", which is the actual claim. */}
+              <svg viewBox="0 0 200 22" role="img"
+                   aria-label={`embedding ${g.embedding.toFixed(4)}, native ${g.native.toFixed(4)}, baseline ${POPULARITY.toFixed(4)}`}>
+                <line x1="0" y1="11" x2="200" y2="11" class="axis" />
+                <line x1={POPULARITY * 280} y1="2" x2={POPULARITY * 280} y2="20"
+                      class="base" />
+                <circle cx={g.embedding * 280} cy="11" r="4" class="emb" />
+                <circle cx={g.native * 280} cy="11" r="4" class="nat" />
+                <line x1={g.embedding * 280} y1="11" x2={g.native * 280} y2="11"
+                      class="link" />
+              </svg>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <figcaption class="label">
+      Vertical rule is the popularity baseline at {POPULARITY.toFixed(4)}.
+      Both models cross it only under their own rule.
+    </figcaption>
+  </figure>
+
+  <div class="prose">
+    <p>
+      <code>ease</code> is the clearest case. As an embedding it scores{" "}
+      <Num value={ease.M6_recall_at_10} tone="below" /> — far below the
+      baseline, and on the strength of that number you would discard it.
+      Scored the way it actually works, by summing rows of its item-item
+      matrix, it reaches{" "}
+      <Num value={ease.M6_native_recall_at_10} tone="above" />. Same fitted
+      model. Same held-out recipes.{" "}
+      <b>The vectors lose {(ease.M6_native_recall_at_10! / ease.M6_recall_at_10! ).toFixed(1)}× of the model's ability.</b>
+    </p>
+    <p>
+      <code>masked-set</code> behaves the same way and is the best model on
+      the site at <Num value={masked.M6_native_recall_at_10} tone="above" />,
+      while its exported vectors sit at{" "}
+      <Num value={masked.M6_recall_at_10} tone="below" />, beneath the
+      baseline.
+    </p>
+
+    <h2>Why this matters more than the leaderboard</h2>
+    <p>
+      The embedding column is the one that makes families comparable — it is
+      the only thing a matrix factorisation, a graph network and a
+      transformer all produce. So it is the column an evaluation naturally
+      reports, and reporting it is how these two models end up looking like
+      failures.
+    </p>
+    <p>
+      It is also the column that describes production, because the vector
+      table is what gets deployed. Both readings are defensible and they
+      point in opposite directions, which is why this site reports both and
+      sorts by the one the model would actually serve.
+    </p>
+    <p class="aside">
+      The demo on the front page runs <code>ease</code> under its own rule,
+      in your browser, on the item-item matrix itself — not on its
+      embeddings. That is why it performs well there and badly in the
+      embedding column here.
+    </p>
+  </div>
+
+  <h2>The full table, both columns</h2>
+  <Leaderboard showEmbedding compact />
+
+  <div class="prose">
+    <p class="next"><a href={href("/metrics/")}>Continue: the metrics disagree →</a></p>
+  </div>
+</Base>
+
+<style>
+  .gap { margin-block: var(--s-6) var(--s-7); overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse;
+          font-family: var(--sans); font-size: var(--t-sm); }
+  caption { caption-side: top; text-align: left; padding-bottom: var(--s-3);
+            color: var(--ink-faint); }
+  figcaption { margin-top: var(--s-3); color: var(--ink-faint);
+               max-width: var(--measure); }
+  thead th { text-align: left; font-size: var(--t-xs); font-weight: 600;
+             letter-spacing: 0.07em; text-transform: uppercase;
+             color: var(--ink-faint); padding: 0 var(--s-3) var(--s-2) 0;
+             border-bottom: 1.5px solid var(--ink-soft); }
+  tbody th, tbody td { padding: var(--s-3) var(--s-3) var(--s-3) 0;
+                       border-bottom: 1px solid var(--paper-edge); }
+  tbody th { text-align: left; font-weight: 500; }
+  .r { text-align: right; }
+  .viz { width: 40%; min-width: 12rem; padding-right: 0 !important; }
+  svg { width: 100%; height: 22px; display: block; overflow: visible; }
+  .axis { stroke: var(--paper-edge); stroke-width: 1; }
+  .base { stroke: var(--accent); stroke-width: 1.5; }
+  .link { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 2 2; }
+  .emb  { fill: var(--below); }
+  .nat  { fill: var(--above); }
+
+  code { background: var(--paper-sunk); padding: 0 0.25em; }
+  .aside { border-left: 2px solid var(--rule); padding-left: var(--s-4);
+           color: var(--ink-soft); font-size: var(--t-base); }
+  .next { margin-top: var(--s-6); font-size: var(--t-md); }
+</style>

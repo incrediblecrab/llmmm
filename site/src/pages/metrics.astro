@@ -1,0 +1,226 @@
+---
+import Base from "../layouts/Base.astro";
+import Num from "../components/Num.astro";
+import { leaderboard, ranked, POPULARITY, byName, href } from "../lib/data";
+import { frame, scalePoint, d3range } from "../lib/chart";
+
+const A = leaderboard.agreement;
+const aucVsServed = A["M4_link_auc__vs__M6_served"];
+const m2VsServed = A["M2_triplet_accuracy_strict__vs__M6_served"];
+
+const lightgcn = byName("lightgcn")!;
+const textAligned = byName("text-aligned")!;
+
+/* Ranks under each metric, so the scatter can be read as a ranking
+ * disagreement rather than a scale one. */
+const byAuc = [...leaderboard.models].sort(
+  (a, b) => (b.M4_link_auc ?? 0) - (a.M4_link_auc ?? 0));
+const rankAuc = new Map(byAuc.map((m, i) => [m.model, i + 1]));
+const rankM6 = new Map(ranked.map((m, i) => [m.model, i + 1]));
+
+/* Rank against rank, both oriented so that better is further along the arrow:
+ * best link AUC to the right, best completion at the top. Agreement would
+ * therefore put every point on the rising diagonal, and the scatter is worth
+ * drawing precisely because it does not.
+ *
+ * d3 point scales, so rank 1 and rank 16 sit inside the frame with equal
+ * padding rather than on the axes, and the tick values come from the scale
+ * instead of a hand-kept array. */
+const nM = leaderboard.models.length;
+const F = frame(600, 470, { top: 26, right: 132, bottom: 58, left: 60 });
+const ranks = d3range(1, nM + 1);
+/* Reversed range: rank 1 is the best, and the axis reads "better →", so the
+ * best rank belongs at the right-hand end. Getting this backwards drew a
+ * chart that contradicted its own axis label. */
+const px = scalePoint<number>().domain(ranks).range([F.x1, F.x0]).padding(0.5);
+const py = scalePoint<number>().domain(ranks).range([F.y0, F.y1]).padding(0.5);
+const sx = (r: number) => px(r)!;
+const sy = (r: number) => py(r)!;
+/* Gridlines every four ranks: enough to read position against, sparse enough
+ * not to compete with the points. */
+const gridRanks = ranks.filter((r) => r % 4 === 0);
+
+
+const rows = [
+  ["M4_link_auc", "Link prediction AUC", "Can it rank held-out ingredient pairs?"],
+  ["M2_triplet_accuracy_strict", "Triplet accuracy", "Does it respect a curated similarity ordering?"],
+  ["M1_participation_ratio", "Participation ratio", "How many dimensions does it actually use?"],
+  ["M5_max_pc_freq_corr", "Frequency leakage", "Is a principal component just word frequency?"],
+] as const;
+---
+
+<Base
+  wide
+  title="The metrics disagree with each other"
+  chapter="Four — disagreement"
+  standfirst="The metric a graph paper would report ranks these models in an order that carries no information about whether they can finish a recipe."
+>
+  <div class="prose">
+    <p>
+      <code>lightgcn</code> is the best model on this site by link-prediction
+      AUC: <Num value={lightgcn.M4_link_auc} />, comfortably first of{" "}
+      {nM}. Asked to finish a recipe, it scores{" "}
+      <Num value={lightgcn.best_recall_at_10} tone="below" /> — below the
+      popularity baseline of <Num value={POPULARITY} tone="accent" />.
+    </p>
+    <p>
+      <code>text-aligned</code> tells the same story from the other side. It
+      is near the top on curated triplet agreement at{" "}
+      <Num value={textAligned.M2_triplet_accuracy_strict} />, and it also
+      finishes below the line at{" "}
+      <Num value={textAligned.best_recall_at_10} tone="below" />.
+    </p>
+    <p>
+      Across all {nM} models, link AUC and completion have a Spearman rank
+      correlation of{" "}
+      <Num value={aucVsServed.spearman} signed tone="accent" dp={3} />{" "}
+      (<i>p</i> = {aucVsServed.p.toFixed(2)}). That is not a weak
+      relationship. At this sample size it is{" "}
+      <b>indistinguishable from no relationship at all</b>.
+    </p>
+  </div>
+
+  <figure class="wide-figure scatter">
+    <figcaption class="label">
+      Rank under link AUC against rank under recipe completion. Points on the
+      diagonal would mean the two metrics agree.
+    </figcaption>
+    <svg viewBox={F.viewBox} role="img"
+         aria-label="Scatter of model rank under link prediction AUC versus rank under recipe completion, showing no relationship">
+      {gridRanks.map((r) => (
+        <g class="grid">
+          <line x1={sx(r)} x2={sx(r)} y1={F.y0} y2={F.y1} />
+          <line x1={F.x0} x2={F.x1} y1={sy(r)} y2={sy(r)} />
+        </g>
+      ))}
+      <line class="diag" x1={F.x0} y1={F.y1} x2={F.x1} y2={F.y0} />
+      {/* Set outside the plot at the end of the line it names. Rotated along
+          the diagonal it collided with whichever model happened to sit near
+          the middle, which is a label position that depends on the data. */}
+      <text class="diaglabel" x={F.x1} y={F.y0 - 8} text-anchor="end"
+        >↗ if the metrics agreed</text>
+      <line class="ax" x1={F.x0} y1={F.y1} x2={F.x1} y2={F.y1} />
+      <line class="ax" x1={F.x0} y1={F.y0} x2={F.x0} y2={F.y1} />
+      {leaderboard.models.map((m) => {
+        const x = sx(rankAuc.get(m.model)!);
+        const y = sy(rankM6.get(m.model)!);
+        const below = m.best_lift < 0;
+        // Labels sit to the right until there is no longer room for one, then
+        // flip inward. Fixed to the right, the best-ranked models ran off the
+        // edge of the viewBox and lost the end of their names.
+        const flip = x > F.x1 - 46;
+        return (
+          <g class:list={["pt", below && "below"]}>
+            <circle cx={x} cy={y} r="5" />
+            <text x={flip ? x - 10 : x + 10} y={y + 4}
+                  text-anchor={flip ? "end" : "start"}>{m.model}</text>
+          </g>
+        );
+      })}
+      <text x={(F.x0 + F.x1) / 2} y={F.height - 14} class="axlabel" text-anchor="middle"
+        >better on link AUC →</text>
+      <text x={18} y={(F.y0 + F.y1) / 2} class="axlabel"
+            transform={`rotate(-90 18 ${(F.y0 + F.y1) / 2})`} text-anchor="middle"
+        >better at completing recipes →</text>
+    </svg>
+  </figure>
+
+  <div class="prose">
+    <h2>Every metric, against the one that matters</h2>
+    <p>
+      Each row is an offline metric this workspace computes, and its rank
+      correlation with the task. None of them reaches a correlation you would
+      act on.
+    </p>
+  </div>
+
+  <figure class="agree">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Metric</th>
+          <th scope="col">What it asks</th>
+          <th scope="col" class="r">ρ with completion</th>
+          <th scope="col" class="r"><i>p</i></th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(([key, label, asks]) => {
+          const a = A[`${key}__vs__M6_served`];
+          if (!a) return null;
+          return (
+            <tr>
+              <th scope="row">{label}</th>
+              <td class="asks">{asks}</td>
+              <td class="r"><Num value={a.spearman} signed dp={3} /></td>
+              <td class="r">
+                <Num value={a.p} dp={2} tone={a.p < 0.05 ? "default" : "faint"} />
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </figure>
+
+  <div class="prose">
+    <h2>What to take from this</h2>
+    <p>
+      An offline metric is a proxy, and a proxy is only worth reporting if
+      moving it moves the thing you care about. Here, four of them do not.
+      A model selected on link AUC would have been selected essentially at
+      random with respect to whether it can do the job.
+    </p>
+    <p>
+      This is not an argument that link AUC is a bad metric. It is an
+      argument that <b>it is a different metric</b>, measuring a different
+      property, and that the substitution is usually made silently.
+    </p>
+    <p class="caveat">
+      Sixteen models is a small sample for a rank correlation, and the
+      confidence intervals on these ρ values are wide. The strong statement —
+      that the relationship is absent rather than merely small — rests on the
+      individual cases above it, where a first-place model on one metric
+      finishes below a frequency table on the other.
+    </p>
+    <p class="next"><a href={href("/trust/")}>Continue: why believe any of this →</a></p>
+  </div>
+</Base>
+
+<style>
+  .scatter { margin-block: var(--s-6) var(--s-7); }
+  figcaption { color: var(--ink-faint); margin-bottom: var(--s-4);
+               max-width: var(--measure); }
+  svg { width: 100%; height: auto; font-family: var(--sans); overflow: visible; }
+  /* Gridlines are for locating a point, not for looking at, so they sit at
+   * the very bottom of the contrast order. */
+  .grid line { stroke: var(--paper-edge); stroke-width: 1; }
+  .diag { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 3 3; }
+  .diaglabel { font-size: 11px; fill: var(--ink-faint); font-style: italic; }
+  .ax { stroke: var(--ink-soft); stroke-width: 1; }
+  .pt circle { fill: var(--ink); }
+  .pt text { font-size: 12px; fill: var(--ink-soft); font-family: var(--mono); }
+  .pt.below circle { fill: var(--below); }
+  .pt.below text { fill: var(--below); }
+  .axlabel { font-size: 11px; fill: var(--ink-faint);
+             letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .agree { margin-block: var(--s-5) var(--s-7); overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse;
+          font-family: var(--sans); font-size: var(--t-sm); }
+  thead th { text-align: left; font-size: var(--t-xs); font-weight: 600;
+             letter-spacing: 0.07em; text-transform: uppercase;
+             color: var(--ink-faint); padding: 0 var(--s-3) var(--s-2) 0;
+             border-bottom: 1.5px solid var(--ink-soft); }
+  tbody th, tbody td { padding: var(--s-3) var(--s-3) var(--s-3) 0;
+                       border-bottom: 1px solid var(--paper-edge);
+                       vertical-align: baseline; }
+  tbody th { text-align: left; font-weight: 500; }
+  .asks { color: var(--ink-faint); }
+  .r { text-align: right; }
+
+  code { background: var(--paper-sunk); padding: 0 0.25em; }
+  .caveat { border-left: 2px solid var(--rule); padding-left: var(--s-4);
+            color: var(--ink-soft); font-size: var(--t-base); }
+  .next { margin-top: var(--s-6); font-size: var(--t-md); }
+</style>

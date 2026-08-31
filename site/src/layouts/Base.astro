@@ -1,0 +1,262 @@
+---
+import "../styles/tokens.css";
+import { provenance, href } from "../lib/data";
+
+interface Props {
+  title: string;
+  /** One line under the title. Sets what the page is for before the reader
+   *  commits to it. */
+  standfirst?: string;
+  /** Section number in the argument, shown as an eyebrow. The site is a
+   *  sequence rather than a menu, and numbering says so. */
+  chapter?: string;
+  wide?: boolean;
+}
+
+const { title, standfirst, chapter, wide = false } = Astro.props;
+
+/* The order is the argument, not an alphabetised index. A reader who follows
+ * it top to bottom gets the case made in the order it has to be made in. */
+const NAV = [
+  { href: "/",            n: "1", label: "The claim" },
+  { href: "/models/",     n: "2", label: "The models" },
+  { href: "/native/",     n: "3", label: "The lossy part" },
+  { href: "/metrics/",    n: "4", label: "Disagreement" },
+  { href: "/trust/",      n: "5", label: "Controls" },
+  { href: "/robustness/", n: "6", label: "Breaking it" },
+  { href: "/bugs/",       n: "7", label: "What broke" },
+  { href: "/limits/",     n: "8", label: "Limits" },
+  { href: "/methods/",    n: "9", label: "Methods" },
+];
+
+const here = Astro.url.pathname.replace(/\/+$/, "") || "/";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — Ingredient embeddings</title>
+    <meta name="description" content={standfirst ?? title} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={href("/favicon.svg")} />
+    <script is:inline>
+      /* Applied before first paint, so a reader who chose dark never sees a
+         white flash. Inline and un-bundled on purpose: a deferred module
+         would run after the page has already painted in the wrong colour.
+         Light is the default — dark is a choice this reads back, not a
+         setting inherited from the operating system. */
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t === "dark") document.documentElement.dataset.theme = "dark";
+        } catch (e) {}
+        document.documentElement.classList.add("js");
+      })();
+    </script>
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="masthead">
+      <a class="wordmark" href={href("/")}>
+        <span class="wordmark-main">Ingredient embeddings</span>
+        <span class="wordmark-sub">an evaluation</span>
+      </a>
+      <nav aria-label="Sections">
+        <ol>
+          {NAV.map((item) => {
+            const active = here === item.href.replace(/\/+$/, "") ||
+                           (item.href === "/" && here === "/");
+            return (
+              <li>
+                <a href={href(item.href)} aria-current={active ? "page" : undefined}>
+                  <span class="n">{item.n}</span>{item.label}
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+      <button id="theme" class="theme" type="button" aria-pressed="false">
+        <span class="theme-label">Dark</span>
+      </button>
+    </header>
+
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        var btn = document.getElementById("theme");
+        var label = btn.querySelector(".theme-label");
+        function paint() {
+          var dark = root.dataset.theme === "dark";
+          /* The button names the state it will move you to, which is what a
+             reader is actually choosing. aria-pressed carries the state it
+             is currently in, which is what a screen reader needs. */
+          label.textContent = dark ? "Light" : "Dark";
+          btn.setAttribute("aria-pressed", String(dark));
+          btn.setAttribute("aria-label", dark ? "Switch to light" : "Switch to dark");
+        }
+        paint();
+        btn.addEventListener("click", function () {
+          var dark = root.dataset.theme === "dark";
+          if (dark) delete root.dataset.theme;
+          else root.dataset.theme = "dark";
+          try { localStorage.setItem("theme", dark ? "light" : "dark"); } catch (e) {}
+          paint();
+        });
+      })();
+    </script>
+
+    <main id="main" class:list={[wide && "is-wide"]}>
+      <div class="head">
+        {chapter && <p class="label chapter">{chapter}</p>}
+        <h1>{title}</h1>
+        {standfirst && <p class="standfirst">{standfirst}</p>}
+      </div>
+      <slot />
+    </main>
+
+    <footer>
+      <div class="foot-inner">
+        <p>
+          Every number on this site is read from a stored run at export time.
+          None is written into a template. Built from commit{" "}
+          <code>{provenance.commit}</code>, corpus generation{" "}
+          <code>{String((provenance.generation as any)?.generation ?? "v2")}</code>.
+        </p>
+        <p class="muted">
+          16 models, 4,653,430 recipes, 1,790 ingredients, one held-out split.
+        </p>
+      </div>
+    </footer>
+
+    <style>
+      .skip {
+        position: absolute;
+        left: -9999px;
+        top: var(--s-2);
+        background: var(--paper);
+        padding: var(--s-2) var(--s-4);
+        border: 1px solid var(--accent);
+        z-index: 10;
+      }
+      .skip:focus { left: var(--s-4); }
+
+      .masthead {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: var(--s-3) var(--s-6);
+        max-width: var(--wide);
+        margin-inline: auto;
+        padding: var(--s-5) var(--s-5) var(--s-4);
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .wordmark { text-decoration: none; display: flex; align-items: baseline;
+                  gap: var(--s-2); }
+      .wordmark-main {
+        font-family: var(--sans);
+        font-size: var(--t-sm);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+      .wordmark-sub {
+        font-size: var(--t-sm);
+        font-style: italic;
+        color: var(--ink-faint);
+      }
+
+      nav { margin-left: auto; }
+
+      /* Same voice as the section links: small sans, a rule rather than a
+       * pill. It is a control, but it is not the point of the page. */
+      .theme {
+        font-family: var(--sans);
+        font-size: var(--t-xs);
+        color: var(--ink-soft);
+        background: none;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        padding: 0 0 2px;
+        cursor: pointer;
+      }
+      .theme:hover { color: var(--ink); border-bottom-color: var(--rule); }
+      .theme:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+      /* No JavaScript, no working control — so it is not offered. */
+      html:not(.js) .theme { display: none; }
+
+      nav ol {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--s-1) var(--s-4);
+        margin: 0;
+        padding: 0;
+      }
+      nav a {
+        font-family: var(--sans);
+        font-size: var(--t-xs);
+        text-decoration: none;
+        color: var(--ink-soft);
+        padding-bottom: 2px;
+        border-bottom: 2px solid transparent;
+      }
+      nav a:hover { color: var(--ink); border-bottom-color: var(--rule); }
+      /* The current section is marked by the accent rule under it, not by a
+       * filled pill. A pill is a button; this is a table of contents. */
+      nav a[aria-current="page"] {
+        color: var(--ink);
+        border-bottom-color: var(--accent);
+      }
+      nav .n {
+        font-family: var(--mono);
+        font-size: 0.85em;
+        color: var(--ink-faint);
+        margin-right: 0.4em;
+      }
+
+      main {
+        max-width: var(--wide);
+        margin-inline: auto;
+        padding: var(--s-8) var(--s-5) var(--s-9);
+      }
+
+      .head { margin-bottom: var(--s-7); }
+      .chapter { margin: 0 0 var(--s-3); color: var(--accent); }
+      .standfirst {
+        font-size: var(--t-md);
+        color: var(--ink-soft);
+        margin-top: var(--s-4);
+        max-width: var(--measure);
+        text-wrap: pretty;
+      }
+
+      footer {
+        border-top: 1px solid var(--rule);
+        background: var(--paper-sunk);
+      }
+      .foot-inner {
+        max-width: var(--wide);
+        margin-inline: auto;
+        padding: var(--s-6) var(--s-5);
+        font-size: var(--t-sm);
+        color: var(--ink-soft);
+      }
+      .foot-inner p { max-width: var(--measure); }
+      .foot-inner code {
+        background: var(--paper);
+        border: 1px solid var(--paper-edge);
+        padding: 0 0.3em;
+      }
+
+      @media (max-width: 46rem) {
+        main { padding-top: var(--s-6); }
+        h1 { font-size: var(--t-xl); }
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,310 @@
+---
+import Base from "../layouts/Base.astro";
+import Num from "../components/Num.astro";
+import { generation, vocab, n, corpusStats, corpusSources, sourceShare,
+         leaderboard, POPULARITY, href, stability } from "../lib/data";
+import { frame, scaleLinear, scaleBand, ticks, fPct1 } from "../lib/chart";
+
+const top20 = vocab.by_frequency.slice(0, 20);
+const share = (c: number) => c / generation.slots;
+const top20Share = top20.reduce((s, v) => s + share(v.count), 0);
+
+/* Top-20 bars. The previous version sized bars as a percentage of salt, which
+   made salt a full-width bar and left no way to read an actual value off the
+   chart. A real x axis in percentage points fixes that. */
+const barF = frame(660, 20 * 21 + 34, { top: 6, right: 46, bottom: 28, left: 112 });
+const barX = scaleLinear()
+  .domain([0, share(top20[0].count)])
+  .nice()
+  .range([barF.x0, barF.x1]);
+const barY = scaleBand<string>()
+  .domain(top20.map((v) => v.name))
+  .range([barF.y0, barF.y1])
+  .padding(0.28);
+const barTicks = ticks(barX, 5, fPct1);
+const tail = vocab.by_frequency.filter((v) => share(v.count) < 0.0001).length;
+
+// Twenty-nine rows is a data dump; the shape of the imbalance is carried by
+// the handful of sources that are actually large. The rest are summed rather
+// than dropped, so the column still totals to the corpus.
+const w = corpusStats?.waterfall
+  ?? { scanned: 0, kept: 0, dropped_duplicate: 0,
+       dropped_matched_nothing: 0, slots: 0 };
+const shown = corpusSources.filter((r) => sourceShare(r.kept) >= 0.01);
+const rest = corpusSources.filter((r) => sourceShare(r.kept) < 0.01);
+const restScanned = rest.reduce((s, r) => s + r.scanned, 0);
+const restKept = rest.reduce((s, r) => s + r.kept, 0);
+---
+
+<Base
+  title="What this does not show"
+  chapter="Eight — limits"
+  standfirst="The strongest version of this result is narrower than the headline. Here is where it stops."
+>
+  <div class="prose">
+    <h2>The vocabulary is a ceiling, not a description</h2>
+    <p>
+      {n(vocab.n)} ingredients is a normalised vocabulary, not the set of
+      things people cook with. Every brand, every cut, every regional variant
+      collapses into a canonical term or is dropped. A model that cannot
+      distinguish two things the vocabulary already merged is not being
+      measured on that distinction.
+    </p>
+    <p>
+      The distribution is also extremely skewed. The top twenty ingredients
+      account for <Num value={top20Share} pct dp={1} tone="accent" /> of all{" "}
+      {n(generation.slots)} ingredient slots, and {n(tail)} of{" "}
+      {n(vocab.n)} ingredients appear in under one slot in ten thousand.
+      That skew is why the popularity baseline is strong, and it means the
+      result is partly a statement about <i>this</i> distribution rather than
+      about embeddings in general.
+    </p>
+  </div>
+
+  <figure class="topfig wide-figure">
+    <figcaption class="label">Share of all ingredient slots, top 20</figcaption>
+    <svg class="topbars" viewBox={barF.viewBox} role="img"
+         aria-label={`Bar chart. The twenty most common ingredients, led by ${top20[0].name.replace(/_/g, " ")} at ${(share(top20[0].count) * 100).toFixed(2)} percent of all ingredient slots.`}>
+      {barTicks.map((t) => (
+        <g>
+          <line class="grid" x1={t.pos} x2={t.pos} y1={barF.y0} y2={barF.y1} />
+          <text class="tick" x={t.pos} y={barF.y1 + 16} text-anchor="middle">{t.label}</text>
+        </g>
+      ))}
+      <line class="axis" x1={barF.x0} x2={barF.x0} y1={barF.y0} y2={barF.y1} />
+      {top20.map((v) => (
+        <g>
+          <text class="nm" x={barF.x0 - 8} y={(barY(v.name) ?? 0) + barY.bandwidth() / 2}
+                text-anchor="end" dominant-baseline="central">{v.name.replace(/_/g, " ")}</text>
+          <rect class="bar" x={barF.x0} y={barY(v.name)}
+                width={barX(share(v.count)) - barF.x0} height={barY.bandwidth()} />
+          <text class="val" x={barX(share(v.count)) + 6}
+                y={(barY(v.name) ?? 0) + barY.bandwidth() / 2}
+                dominant-baseline="central">{(share(v.count) * 100).toFixed(2)}</text>
+        </g>
+      ))}
+    </svg>
+  </figure>
+
+  <div class="prose">
+    <h2>The corpus is Western and English-dominated</h2>
+    <p>
+      The corpus is assembled from 29 sources, and it is not balanced across
+      them — one large English-language recipe collection dominates. Cuisines
+      whose ingredient co-occurrence structure differs from that majority are
+      under-represented, and a model's failure on them would not show up in
+      any number on this site.
+    </p>
+    {corpusStats ? (
+      <>
+        <p>
+          The concentration is not a detail. The two largest sources are{" "}
+          <Num value={sourceShare(corpusSources[0].kept)
+                 + sourceShare(corpusSources[1].kept)} pct dp={1} /> of every
+          recipe the models ever saw, and the largest alone is{" "}
+          <Num value={sourceShare(corpusSources[0].kept)} pct dp={1} />.
+          Twenty-seven sources share the remainder.
+        </p>
+
+        <figure class="wide-figure">
+          <table class="survival">
+            <caption>
+              Every recipe the readers produced, and what became of it.
+              Counted in the pass that builds the corpus, so the table cannot
+              disagree with the artefact. Sources below 1% are grouped.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">source</th>
+                <th scope="col" class="num">scanned</th>
+                <th scope="col" class="num">kept</th>
+                <th scope="col" class="num">survival</th>
+                <th scope="col" class="num">share of corpus</th>
+              </tr>
+            </thead>
+            <tbody>
+              {shown.map((r) => (
+                <tr>
+                  <td>{r.source}</td>
+                  <td class="num">{n(r.scanned)}</td>
+                  <td class="num">{n(r.kept)}</td>
+                  <td class="num"><Num value={r.kept / r.scanned} pct dp={1} /></td>
+                  <td class="num">
+                    <span class="bar" style={`--w:${sourceShare(r.kept) * 100}%`}
+                          aria-hidden="true"></span>
+                    <Num value={sourceShare(r.kept)} pct dp={1} />
+                  </td>
+                </tr>
+              ))}
+              {rest.length > 0 && (
+                <tr class="grouped">
+                  <td>{rest.length} smaller sources</td>
+                  <td class="num">{n(restScanned)}</td>
+                  <td class="num">{n(restKept)}</td>
+                  <td class="num"><Num value={restKept / restScanned} pct dp={1} /></td>
+                  <td class="num"><Num value={sourceShare(restKept)} pct dp={1} /></td>
+                </tr>
+              )}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>all {corpusStats.n_sources} sources</td>
+                <td class="num">{n(w.scanned)}</td>
+                <td class="num">{n(w.kept)}</td>
+                <td class="num"><Num value={w.kept / w.scanned} pct dp={1} /></td>
+                <td class="num">100%</td>
+              </tr>
+            </tfoot>
+          </table>
+        </figure>
+
+        <p>
+          {n(w.scanned - w.kept)} recipes
+          (<Num value={(w.scanned - w.kept) / w.scanned} pct dp={2} />) were
+          dropped on the way in: {n(w.dropped_duplicate)} were exact
+          duplicates of a recipe already read, and
+          {" "}{n(w.dropped_matched_nothing)} matched no vocabulary ingredient
+          at all. Deduplication is by
+          ingredient set, so a recipe reprinted across two sites is counted
+          once — which is also why the surviving share of a source says as
+          much about its overlap with the others as about its quality.
+        </p>
+      </>
+    ) : (
+      <p class="muted">
+        The per-source survival table is generated by{" "}
+        <code>scripts/rebuild_corpus.py --stats-only</code> and is not yet
+        included in this build.
+      </p>
+    )}
+    <p>
+      Eight of the twenty-nine sources have no text reader, so their rows in
+      the text index are aligned but blank. That affects the text-conditioned
+      models specifically, and those models are not the ones the headline
+      depends on.
+    </p>
+
+    <h2>Nothing here measures whether the food is good</h2>
+    <p>
+      This is the most important limit and the easiest to forget. The task is{" "}
+      <b>reconstructing an ingredient that a human already chose</b>. A model
+      that scores well has learned what people actually cook, not what tastes
+      good, and certainly not what would taste good in a combination nobody
+      has tried.
+    </p>
+    <p>
+      There is no human judgment anywhere in this evaluation. A suggestion
+      that is novel and excellent is scored identically to one that is novel
+      and inedible: both are wrong, because neither is the ingredient that was
+      hidden. Any use of these models for <i>discovery</i> rather than
+      completion is unmeasured by everything on this site.
+    </p>
+
+    <h2>One split, one task, one draw</h2>
+    <ul class="lims">
+      <li>
+        <b>One task.</b> Recall@10 on single-ingredient completion. Models
+        might order differently on ingredient substitution, quantity
+        prediction, or full-recipe generation — none of which is tested here.
+      </li>
+      <li>
+        <b>One split.</b> <code>recipe-holdout</code>, 30% of recipes. It is
+        the honest split for this comparison, but it is one split.
+      </li>
+      <li>
+        {stability ? (
+          <>
+            <b>{stability.seeds.length} seeds, one split.</b> Every model was
+            retrained at {stability.seeds.length} seeds, and no model changed
+            which side of the baseline it fell on. The ordering is less solid
+            than the verdict: {stability.n_models_changing_rank} of{" "}
+            {stability.n_models_complete} models swap adjacent positions
+            between seeds, so neighbouring ranks should not be read as
+            separating two models. Every score quoted elsewhere on this site
+            is seed 0.{" "}
+            <a href={href("robustness/")}>The sweep is here</a>.
+          </>
+        ) : (
+          <>
+            <b>One seed.</b> Every published number is seed 0, so the ordering
+            should be treated as provisional.
+          </>
+        )}
+      </li>
+      <li>
+        <b>No hyperparameter search.</b> Each model was run at reasonable
+        defaults. A tuned version of a below-baseline model might clear the
+        line, and the claim is about the methods as commonly applied, not
+        about their best achievable performance.
+      </li>
+    </ul>
+
+    <h2>What survives all of that</h2>
+    <p>
+      Narrowed as far as it will go, the result still stands:{" "}
+      <b>on this corpus, on this task, at reasonable defaults,{" "}
+      {leaderboard.n_below_popularity} of {leaderboard.n_models} standard
+      embedding methods score below{" "}
+      <Num value={POPULARITY} tone="accent" />, which is what you get by
+      counting.</b> That is a small claim. It is also one that almost nobody
+      checks before shipping.
+    </p>
+    <p class="next"><a href={href("/methods/")}>Continue: methods and reproduction →</a></p>
+  </div>
+</Base>
+
+<style>
+  code { background: var(--paper-sunk); padding: 0 0.25em; }
+  .topfig { margin-block: var(--s-6) var(--s-7); }
+  figcaption { color: var(--ink-faint); margin-bottom: var(--s-4); }
+  .topbars { width: 100%; height: auto; overflow: visible; }
+  .topbars .grid { stroke: var(--rule); stroke-width: 1; }
+  .topbars .axis { stroke: var(--ink); stroke-width: 1; }
+  .topbars .bar { fill: var(--accent); }
+  .topbars .nm { font-family: var(--sans); font-size: 12px; fill: var(--ink-soft); }
+  .topbars .val { font-family: var(--mono); font-size: 11px;
+                  font-variant-numeric: tabular-nums; fill: var(--ink-faint); }
+  .topbars .tick { font-family: var(--mono); font-size: 11px; fill: var(--ink-faint); }
+
+  .lims { padding-left: 1.1rem; }
+  .lims li { margin-bottom: var(--s-3); }
+  .next { margin-top: var(--s-6); font-size: var(--t-md); }
+
+  /* Same table language as the leaderboard: dense, ruled, tabular figures,
+   * decimal-aligned. A second visual idiom here would read as a different
+   * document. */
+  .wide-figure { margin-block: var(--s-6); overflow-x: auto; }
+  .survival { width: 100%; border-collapse: collapse;
+              font-family: var(--sans); font-size: var(--t-sm); }
+  .survival caption { caption-side: top; text-align: left;
+                      padding-bottom: var(--s-3); color: var(--ink-faint);
+                      max-width: var(--measure); }
+  .survival thead th { text-align: left; font-weight: 600;
+                       font-size: var(--t-xs); letter-spacing: 0.07em;
+                       text-transform: uppercase; color: var(--ink-faint);
+                       padding: 0 var(--s-3) var(--s-2) 0;
+                       border-bottom: 1.5px solid var(--ink-soft);
+                       white-space: nowrap; }
+  .survival thead th.num { text-align: right; }
+  .survival tbody td { padding: 0.42rem var(--s-3) 0.42rem 0;
+                       border-bottom: 1px solid var(--paper-edge);
+                       vertical-align: baseline; }
+  .survival td.num { text-align: right; white-space: nowrap;
+                     font-family: var(--mono);
+                     font-variant-numeric: tabular-nums lining-nums;
+                     font-feature-settings: "tnum" 1, "lnum" 1;
+                     letter-spacing: -0.012em; }
+  .survival tbody tr:hover { background: var(--paper-sunk); }
+  .survival .grouped td { color: var(--ink-faint); font-style: italic; }
+  .survival tfoot td { padding: var(--s-2) var(--s-3) 0 0;
+                       border-top: 1.5px solid var(--ink-soft);
+                       font-weight: 600; }
+  .survival tfoot td.num { text-align: right; }
+
+  /* The bar sits behind its own number rather than in a separate column, so
+   * the eye gets the magnitude and the value in one place. */
+  .survival .bar { display: inline-block; height: 0.5rem; width: var(--w);
+                   background: var(--accent); opacity: 0.35;
+                   margin-right: var(--s-2); vertical-align: middle;
+                   max-width: 6rem; }
+</style>

@@ -1,0 +1,158 @@
+{
+ "caveat": "The two generations are scored against different held-out sets, so rankings are comparable but individual deltas confound corpus effect with test-set effect.",
+ "before": {
+  "sweep": "baselines",
+  "generation": "unstamped"
+ },
+ "after": {
+  "sweep": "all-v2",
+  "generation": "v2"
+ },
+ "metrics": [
+  "M6_lift_over_popularity",
+  "M6_recall_at_10",
+  "M6_mrr",
+  "M4_link_auc",
+  "M2_triplet_accuracy_strict"
+ ],
+ "models": [
+  {
+   "model": "ease",
+   "M6_lift_over_popularity": {
+    "before": -0.20675000000000002,
+    "after": -0.22275
+   },
+   "M6_recall_at_10": {
+    "before": 0.16555,
+    "after": 0.14225
+   },
+   "M6_mrr": {
+    "before": 0.07840532845489377,
+    "after": 0.06926321889214357
+   },
+   "M4_link_auc": {
+    "before": 0.5644184938036225,
+    "after": 0.5598361410291817
+   },
+   "M2_triplet_accuracy_strict": {
+    "before": 0.7764488039235312,
+    "after": 0.7775497948153338
+   }
+  },
+  {
+   "model": "glove",
+   "M6_lift_over_popularity": {
+    "before": -0.12285000000000001,
+    "after": -0.1439
+   },
+   "M6_recall_at_10": {
+    "before": 0.24945,
+    "after": 0.2211
+   },
+   "M6_mrr": {
+    "before": 0.09153756547528204,
+    "after": 0.0841512119492288
+   },
+   "M4_link_auc": {
+    "before": 0.6527168732125834,
+    "after": 0.661051274970082
+   },
+   "M2_triplet_accuracy_strict": {
+    "before": 0.8866730057051346,
+    "after": 0.8914272845561005
+   }
+  },
+  {
+   "model": "item2vec",
+   "M6_lift_over_popularity": {
+    "before": -0.3657,
+    "after": -0.35275
+   },
+   "M6_recall_at_10": {
+    "before": 0.0066,
+    "after": 0.01225
+   },
+   "M6_mrr": {
+    "before": 0.006081504688937046,
+    "after": 0.010275271904285148
+   },
+   "M4_link_auc": {
+    "before": 0.7179218303145853,
+    "after": 0.723833195249931
+   },
+   "M2_triplet_accuracy_strict": {
+    "before": 0.7015564007606846,
+    "after": 0.840381343208888
+   }
+  },
+  {
+   "model": "sgc",
+   "M6_lift_over_popularity": {
+    "before": -0.35785,
+    "after": -0.28725
+   },
+   "M6_recall_at_10": {
+    "before": 0.01445,
+    "after": 0.07775
+   },
+   "M6_mrr": {
+    "before": 0.008792895267609768,
+    "after": 0.03761874761667758
+   },
+   "M4_link_auc": {
+    "before": 0.6667778836987607,
+    "after": 0.6806130903065452
+   },
+   "M2_triplet_accuracy_strict": {
+    "before": 0.7973926533880492,
+    "after": 0.8401311180062055
+   }
+  },
+  {
+   "model": "sgns-cooc",
+   "M6_lift_over_popularity": {
+    "before": 0.03444999999999998,
+    "after": 0.023450000000000026
+   },
+   "M6_recall_at_10": {
+    "before": 0.40675,
+    "after": 0.38845
+   },
+   "M6_mrr": {
+    "before": 0.1993337722453458,
+    "after": 0.19533347187060446
+   },
+   "M4_link_auc": {
+    "before": 0.7170162059103908,
+    "after": 0.7356163122526006
+   },
+   "M2_triplet_accuracy_strict": {
+    "before": 0.9223050745671104,
+    "after": 0.9187018316484836
+   }
+  },
+  {
+   "model": "svd-ppmi",
+   "M6_lift_over_popularity": {
+    "before": 0.07069999999999999,
+    "after": 0.08550000000000002
+   },
+   "M6_recall_at_10": {
+    "before": 0.443,
+    "after": 0.4505
+   },
+   "M6_mrr": {
+    "before": 0.226460272184074,
+    "after": 0.23211607114385746
+   },
+   "M4_link_auc": {
+    "before": 0.6151334604385129,
+    "after": 0.6226640891098223
+   },
+   "M2_triplet_accuracy_strict": {
+    "before": 0.87251025923331,
+    "after": 0.867430687618857
+   }
+  }
+ ]
+}
