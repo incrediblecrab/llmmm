@@ -16,20 +16,82 @@ interface Props {
 const { title, standfirst, chapter, wide = false } = Astro.props;
 
 /* The order is the argument, not an alphabetised index. A reader who follows
- * it top to bottom gets the case made in the order it has to be made in. */
-const NAV = [
-  { href: "/",            n: "1", label: "The claim" },
-  { href: "/models/",     n: "2", label: "The models" },
-  { href: "/native/",     n: "3", label: "The lossy part" },
-  { href: "/metrics/",    n: "4", label: "Disagreement" },
-  { href: "/trust/",      n: "5", label: "Controls" },
-  { href: "/robustness/", n: "6", label: "Breaking it" },
-  { href: "/bugs/",       n: "7", label: "What broke" },
-  { href: "/limits/",     n: "8", label: "Limits" },
-  { href: "/methods/",    n: "9", label: "Methods" },
+ * it top to bottom gets the case made in the order it has to be made in.
+ *
+ * The grouping is the shape of the argument stated out loud: what is being
+ * claimed, why it should be believed, where it stops, and how to check it.
+ * Nine flat links make a reader hold the structure in their head; four
+ * groups hand it to them. */
+const GROUPS = [
+  {
+    title: "The argument",
+    items: [
+      { href: "/",            n: "1", label: "The claim" },
+      { href: "/models/",     n: "2", label: "The models" },
+      { href: "/native/",     n: "3", label: "The lossy part" },
+      { href: "/metrics/",    n: "4", label: "Disagreement" },
+    ],
+  },
+  {
+    title: "Why believe it",
+    items: [
+      { href: "/trust/",      n: "5", label: "Controls" },
+      { href: "/robustness/", n: "6", label: "Breaking it" },
+    ],
+  },
+  {
+    title: "Where it stops",
+    items: [
+      { href: "/bugs/",       n: "7", label: "What broke" },
+      { href: "/limits/",     n: "8", label: "Limits" },
+    ],
+  },
+  {
+    title: "Reference",
+    items: [
+      { href: "/methods/",    n: "9", label: "Methods" },
+    ],
+  },
 ];
 
 const here = Astro.url.pathname.replace(/\/+$/, "") || "/";
+
+/* The table of contents is built here, at build time, by rendering the page
+ * into a string and reading its own headings back out of it. Astro gives
+ * Markdown a `headings` export for free but gives an `.astro` page nothing,
+ * and the two obvious alternatives are both worse: a client-side script that
+ * walks the DOM would put JavaScript on all nine pages to produce a list
+ * that never changes after the build, and a hand-written `sections` prop on
+ * every page would be a second copy of the headings, free to drift from the
+ * first the moment anyone edits one and forgets the other.
+ *
+ * Reading the rendered output means the contents cannot disagree with the
+ * page: there is only one list of headings and this is it. */
+const body = Astro.slots.has("default") ? await Astro.slots.render("default") : "";
+
+const slug = (s: string) =>
+  s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+const headings: { id: string; text: string }[] = [];
+
+/* An author who has already given a heading an id keeps it, because it may
+ * already be linked from somewhere this file cannot see. */
+const rendered = body.replace(
+  /<h2([^>]*)>([\s\S]*?)<\/h2>/g,
+  (_m, attrs: string, inner: string) => {
+    const text = inner.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+    if (!text) return _m;
+    const existing = attrs.match(/\sid="([^"]*)"/);
+    const id = existing ? existing[1] : slug(text);
+    headings.push({ id, text });
+    return existing
+      ? `<h2${attrs}>${inner}</h2>`
+      : `<h2${attrs} id="${id}">${inner}</h2>`;
+  },
+);
+
+/* One entry is not a table of contents, it is a restatement of the title. */
+const showToc = headings.length > 1;
 ---
 
 <!doctype html>
@@ -60,26 +122,11 @@ const here = Astro.url.pathname.replace(/\/+$/, "") || "/";
   <body>
     <a class="skip" href="#main">Skip to content</a>
 
-    <header class="masthead">
+    <header class="topbar">
       <a class="wordmark" href={href("/")}>
         <span class="wordmark-main">Ingredient embeddings</span>
         <span class="wordmark-sub">an evaluation</span>
       </a>
-      <nav aria-label="Sections">
-        <ol>
-          {NAV.map((item) => {
-            const active = here === item.href.replace(/\/+$/, "") ||
-                           (item.href === "/" && here === "/");
-            return (
-              <li>
-                <a href={href(item.href)} aria-current={active ? "page" : undefined}>
-                  <span class="n">{item.n}</span>{item.label}
-                </a>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
       <button id="theme" class="theme" type="button" aria-pressed="false">
         <span class="theme-label">Dark</span>
       </button>
@@ -110,14 +157,52 @@ const here = Astro.url.pathname.replace(/\/+$/, "") || "/";
       })();
     </script>
 
-    <main id="main" class:list={[wide && "is-wide"]}>
-      <div class="head">
-        {chapter && <p class="label chapter">{chapter}</p>}
-        <h1>{title}</h1>
-        {standfirst && <p class="standfirst">{standfirst}</p>}
-      </div>
-      <slot />
-    </main>
+    <div class="shell">
+      <aside class="rail">
+        <nav aria-label="Sections">
+          {GROUPS.map((group) => (
+            <div class="grp">
+              <p class="grp-t">{group.title}</p>
+              <ul>
+                {group.items.map((item) => {
+                  const active = here === item.href.replace(/\/+$/, "") ||
+                                 (item.href === "/" && here === "/");
+                  return (
+                    <li>
+                      <a href={href(item.href)} aria-current={active ? "page" : undefined}>
+                        <span class="n">{item.n}</span>{item.label}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      </aside>
+
+      <main id="main" class:list={[wide && "is-wide"]}>
+        <div class="head">
+          {chapter && <p class="label chapter">{chapter}</p>}
+          <h1>{title}</h1>
+          {standfirst && <p class="standfirst">{standfirst}</p>}
+        </div>
+        <Fragment set:html={rendered} />
+      </main>
+
+      <aside class="toc">
+        {showToc && (
+          <nav aria-labelledby="toc-t">
+            <p class="toc-t" id="toc-t">On this page</p>
+            <ul>
+              {headings.map((h) => (
+                <li><a href={`#${h.id}`}>{h.text}</a></li>
+              ))}
+            </ul>
+          </nav>
+        )}
+      </aside>
+    </div>
 
     <footer>
       <div class="foot-inner">
@@ -145,15 +230,16 @@ const here = Astro.url.pathname.replace(/\/+$/, "") || "/";
       }
       .skip:focus { left: var(--s-4); }
 
-      .masthead {
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
         display: flex;
-        flex-wrap: wrap;
         align-items: baseline;
         gap: var(--s-3) var(--s-6);
-        max-width: var(--wide);
-        margin-inline: auto;
-        padding: var(--s-5) var(--s-5) var(--s-4);
+        padding: var(--s-4) var(--s-5);
         border-bottom: 1px solid var(--rule);
+        background: var(--paper);
       }
 
       .wordmark { text-decoration: none; display: flex; align-items: baseline;
@@ -170,7 +256,7 @@ const here = Astro.url.pathname.replace(/\/+$/, "") || "/";
         color: var(--ink-faint);
       }
 
-      nav { margin-left: auto; }
+      .theme { margin-left: auto; }
 
       /* Same voice as the section links: small sans, a rule rather than a
        * pill. It is a control, but it is not the point of the page. */
@@ -189,40 +275,127 @@ const here = Astro.url.pathname.replace(/\/+$/, "") || "/";
       /* No JavaScript, no working control — so it is not offered. */
       html:not(.js) .theme { display: none; }
 
-      nav ol {
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--s-1) var(--s-4);
-        margin: 0;
-        padding: 0;
+      /* Three columns: where you are in the argument, the argument, and
+       * where you are on the page. Both rails are navigation and neither
+       * scrolls with the prose, so a reader never has to travel to find out
+       * what else there is. */
+      .shell {
+        display: grid;
+        grid-template-columns: 15rem minmax(0, 1fr) 13rem;
+        gap: 0 var(--s-6);
+        align-items: start;
+        max-width: 96rem;
+        margin-inline: auto;
       }
-      nav a {
+
+      .rail, .toc {
+        align-self: stretch;
         font-family: var(--sans);
+      }
+      /* The aside is stretched so its rule runs the full height of the page,
+       * and the navigation inside it is what sticks. Sticking the aside
+       * itself would size it to its contents and the rule would stop a few
+       * hundred pixels down, which reads as an unfinished border rather
+       * than a column edge. */
+      .rail > nav, .toc > nav {
+        position: sticky;
+        top: 3.5rem;
+        max-height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+        padding: var(--s-6) 0 var(--s-7);
+      }
+      .rail { padding-left: var(--s-5); border-right: 1px solid var(--rule); }
+      .toc  { padding-right: var(--s-5); }
+
+      .rail ul, .toc ul { list-style: none; margin: 0; padding: 0; }
+      .grp + .grp { margin-top: var(--s-5); }
+      .grp-t, .toc-t {
+        font-size: var(--t-xs);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin: 0 0 var(--s-2);
+      }
+
+      .rail a, .toc a {
+        display: block;
         font-size: var(--t-xs);
         text-decoration: none;
         color: var(--ink-soft);
-        padding-bottom: 2px;
-        border-bottom: 2px solid transparent;
+        padding: 3px 0 3px var(--s-3);
+        border-left: 2px solid transparent;
+        margin-left: -2px;
       }
-      nav a:hover { color: var(--ink); border-bottom-color: var(--rule); }
-      /* The current section is marked by the accent rule under it, not by a
+      .rail a:hover, .toc a:hover { color: var(--ink); border-left-color: var(--rule); }
+      /* The current section is marked by the accent rule beside it, not by a
        * filled pill. A pill is a button; this is a table of contents. */
-      nav a[aria-current="page"] {
+      .rail a[aria-current="page"] {
         color: var(--ink);
-        border-bottom-color: var(--accent);
+        font-weight: 700;
+        border-left-color: var(--accent);
       }
-      nav .n {
+      .rail .n {
         font-family: var(--mono);
         font-size: 0.85em;
         color: var(--ink-faint);
-        margin-right: 0.4em;
+        margin-right: 0.5em;
+      }
+      .toc a { padding-left: var(--s-2); text-wrap: pretty; }
+
+      /* `margin-inline: auto` was right when `main` was a block in normal
+       * flow, and became a bug the moment it was made a grid item: auto
+       * inline margins opt an item out of stretching and into shrink-to-fit.
+       * Combined with `container-type: inline-size`, which by design sizes
+       * the box without consulting its contents, the shrink-to-fit width
+       * resolved to zero and the column collapsed to its own padding. The
+       * track already places the column, so it stretches to fill it and
+       * `justify-self` does the centring that the margins used to. */
+      main {
+        width: 100%;
+        max-width: var(--wide);
+        justify-self: center;
+        padding: var(--s-7) var(--s-5) var(--s-9);
+        /* Lets a figure inside a prose block measure itself against the
+         * reading column with `cqw` instead of guessing from the viewport. */
+        container-type: inline-size;
       }
 
-      main {
-        max-width: var(--wide);
-        margin-inline: auto;
-        padding: var(--s-8) var(--s-5) var(--s-9);
+      /* Following a contents link scrolls the heading to the top of the
+       * viewport, which is underneath the sticky bar. This puts it back. */
+      main :global(h2[id]) { scroll-margin-top: 4.5rem; }
+
+      /* Below the wider breakpoint the page contents rail is the first thing
+       * to go: it is a convenience, while the section rail is the only way
+       * to reach the other eight pages. */
+      @media (max-width: 86rem) {
+        .shell { grid-template-columns: 15rem minmax(0, 1fr); }
+        .toc { display: none; }
+      }
+
+      /* One column. The section rail stops being a rail and becomes a short
+       * horizontal index above the page, which is the same list in the same
+       * order without a second copy of it in the markup. */
+      @media (max-width: 60rem) {
+        .shell { grid-template-columns: minmax(0, 1fr); }
+        .rail {
+          border-right: 0;
+          border-bottom: 1px solid var(--rule);
+          padding: 0 var(--s-5);
+        }
+        .rail > nav {
+          position: static;
+          max-height: none;
+          overflow: visible;
+          padding: var(--s-4) 0;
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--s-2) var(--s-5);
+        }
+        .grp + .grp { margin-top: 0; }
+        .rail ul { display: flex; flex-wrap: wrap; gap: 0 var(--s-4); }
+        .rail a { padding-left: 0; border-left: 0; border-bottom: 2px solid transparent; }
+        .rail a[aria-current="page"] { border-left: 0; border-bottom-color: var(--accent); }
       }
 
       .head { margin-bottom: var(--s-7); }

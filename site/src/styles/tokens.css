@@ -250,13 +250,17 @@ main > figure > svg {
  * Because the reading column is centred, such a figure can still reach its
  * full width by starting at the column's centre line and pulling itself
  * back by half its own width. It ends up centred on the same axis as every
- * other figure, without the markup having to be reorganised around it. */
+ * other figure, without the markup having to be reorganised around it.
+ *
+ * The width is measured in container query units against `main`, not in
+ * `vw`. Under the three-column shell the viewport also holds a sidebar and
+ * a table of contents, so `100vw` overshoots the reading column by the
+ * width of both rails and the figure runs underneath them. `100cqw` is the
+ * content column itself, whatever the breakpoint has decided that is, so
+ * this stays correct without repeating the grid's arithmetic. */
 .prose > .wide-figure,
 .prose > .wide {
-  width: min(
-    calc(var(--wide) - 2 * var(--s-5)),
-    calc(100vw - 2 * var(--s-5))
-  );
+  width: min(var(--wide), 100cqw);
   max-width: none;
   margin-left: 50%;
   translate: -50%;
