@@ -13,14 +13,14 @@
 import { ranked, POPULARITY, isBelow } from "../lib/data";
 import { frame, scaleLinear, ticks, f2 } from "../lib/chart";
 
-const R = 7;          // dot radius
+const R = 8;          // dot radius
 const ROW = 2 * R + 3; // vertical step when dodging
 
 const pts = [...ranked]
   .map((m) => ({ model: m.model, v: m.best_recall_at_10, below: isBelow(m) }))
   .sort((a, b) => a.v - b.v);
 
-const F = frame(660, 150, { top: 10, right: 14, bottom: 30, left: 14 });
+const F = frame(680, 250, { top: 64, right: 16, bottom: 48, left: 16 });
 const x = scaleLinear()
   .domain([0, Math.max(...pts.map((p) => p.v), POPULARITY)])
   .nice()
@@ -45,24 +45,31 @@ const axTicks = ticks(x, 6, f2);
 const basePx = x(POPULARITY);
 const nBelow = pts.filter((p) => p.below).length;
 const best = placed[placed.length - 1];
+const worst = placed[0];
 ---
 
 <figure class="strip">
   <svg viewBox={F.viewBox} role="img"
        aria-label={`Dot plot. Sixteen models placed by recall at 10. ${nBelow} fall below the popularity baseline of ${POPULARITY.toFixed(4)}.`}>
-    <!-- baseline first, so dots sit on top of it -->
-    <line class="baseline" x1={basePx} x2={basePx} y1={F.y0} y2={F.y1 - 2} />
-    <text class="baselabel" x={basePx - 8} y={F.y0 + 10} text-anchor="end"
-      >counting: {POPULARITY.toFixed(3)}</text>
-    <text class="side worse" x={basePx - 8} y={F.y0 + 26} text-anchor="end"
-      >{nBelow} models worse ←</text>
-    <text class="side better" x={basePx + 8} y={F.y0 + 26}
-      >→ {pts.length - nBelow} better</text>
+    <!-- The losing half of the chart is an area, not a caption. Reading the
+         result should not require counting dots. -->
+    <rect class="band" x={F.x0} y={F.y0} width={basePx - F.x0} height={F.y1 - F.y0} />
+
+    <line class="baseline" x1={basePx} x2={basePx} y1={F.y0 - 34} y2={F.y1} />
+    <text class="basenum" x={basePx - 10} y={F.y0 - 38} text-anchor="end"
+      >counting ingredients: {POPULARITY.toFixed(3)}</text>
+
+    <text class="side worse" x={basePx - 10} y={F.y0 - 14} text-anchor="end"
+      >← {nBelow} of 16 models are worse than this</text>
+    <text class="side better" x={basePx + 10} y={F.y0 - 14}
+      >{pts.length - nBelow} are better →</text>
 
     <line class="axis" x1={F.x0} x2={F.x1} y1={F.y1} y2={F.y1} />
     {axTicks.map((t) => (
-      <text class="tick" x={t.pos} y={F.y1 + 15} text-anchor="middle">{t.label}</text>
+      <text class="tick" x={t.pos} y={F.y1 + 17} text-anchor="middle">{t.label}</text>
     ))}
+    <text class="axtitle" x={F.x1} y={F.y1 + 36} text-anchor="end"
+      >recall@10 — better →</text>
 
     {placed.map((p) => (
       <circle class:list={["dot", p.below ? "below" : "above"]}
@@ -70,8 +77,20 @@ const best = placed[placed.length - 1];
         <title>{p.model} — {p.v.toFixed(4)}</title>
       </circle>
     ))}
-    <text class="best" x={best.px + R} y={y(best.row) - R - 7}
-          text-anchor="end">{best.model}</text>
+
+    <!-- The two ends are the whole range of the result, so they are named
+         on the chart rather than left to a legend. Both sit on one line
+         above the swarm: anchoring a label to its own dot puts it underneath
+         whichever neighbours have been dodged upward on top of it. -->
+    <line class="leader" x1={worst.px} x2={worst.px} y1={F.y0 + 10}
+          y2={y(worst.row) - R - 3} />
+    <text class="callout worse" x={worst.px - 3} y={F.y0 + 2}
+      >{worst.model} · {worst.v.toFixed(3)}</text>
+
+    <line class="leader" x1={best.px} x2={best.px} y1={F.y0 + 10}
+          y2={y(best.row) - R - 3} />
+    <text class="callout better" x={best.px + 3} y={F.y0 + 2}
+          text-anchor="end">{best.model} · {best.v.toFixed(3)}</text>
   </svg>
   <figcaption class="label">
     Recall@10 at finishing a held-out recipe. One dot per model; dots are
@@ -80,23 +99,31 @@ const best = placed[placed.length - 1];
 </figure>
 
 <style>
-  .strip { margin-block: var(--s-5) var(--s-6); }
+  .strip { margin-block: var(--s-6) var(--s-6); }
   .strip svg { width: 100%; height: auto; overflow: visible; display: block; }
-  figcaption { margin-top: var(--s-3); color: var(--ink-faint); }
+  figcaption { margin-top: var(--s-4); color: var(--ink-faint); }
+
+  /* Light enough that the dots and the axis keep their contrast against it;
+     its job is to weight one half of the chart, not to colour it. */
+  .band { fill: color-mix(in srgb, var(--below) 7%, transparent); }
 
   .axis { stroke: var(--rule); stroke-width: 1; }
-  .tick { font-family: var(--mono); font-size: 11px; fill: var(--ink-faint); }
+  .tick { font-family: var(--mono); font-size: 12px; fill: var(--ink-soft); }
+  .axtitle { font-family: var(--sans); font-size: 11px; fill: var(--ink-soft);
+             letter-spacing: 0.06em; text-transform: uppercase; }
 
-  .baseline { stroke: var(--ink); stroke-width: 1.5; }
-  .baselabel { font-family: var(--mono); font-size: 11.5px; fill: var(--ink);
-               font-weight: 600; }
-  .side { font-family: var(--sans); font-size: 11px; letter-spacing: 0.04em;
-          text-transform: uppercase; }
+  .baseline { stroke: var(--ink); stroke-width: 2; }
+  .basenum { font-family: var(--mono); font-size: 13px; fill: var(--ink);
+             font-weight: 700; }
+  .side { font-family: var(--sans); font-size: 12px; letter-spacing: 0.03em;
+          font-weight: 700; }
   .worse { fill: var(--below); }
   .better { fill: var(--above); }
 
   .dot { stroke: var(--paper); stroke-width: 1.5; }
   .dot.below { fill: var(--below); }
   .dot.above { fill: var(--above); }
-  .best { font-family: var(--mono); font-size: 12px; fill: var(--ink); }
+
+  .leader { stroke: var(--ink-faint); stroke-width: 1; }
+  .callout { font-family: var(--mono); font-size: 12px; }
 </style>

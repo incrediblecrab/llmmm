@@ -237,7 +237,9 @@ const showToc = headings.length > 1;
         display: flex;
         align-items: baseline;
         gap: var(--s-3) var(--s-6);
-        padding: var(--s-4) var(--s-5);
+        /* The rule under the bar runs the full width of the window, but its
+         * contents line up with the columns below it. */
+        padding: var(--s-4) max(var(--s-5), calc((100% - var(--shell)) / 2));
         border-bottom: 1px solid var(--rule);
         background: var(--paper);
       }
@@ -284,7 +286,7 @@ const showToc = headings.length > 1;
         grid-template-columns: 15rem minmax(0, 1fr) 13rem;
         gap: 0 var(--s-6);
         align-items: start;
-        max-width: 96rem;
+        max-width: var(--shell);
         margin-inline: auto;
       }
 
@@ -414,7 +416,7 @@ const showToc = headings.length > 1;
         background: var(--paper-sunk);
       }
       .foot-inner {
-        max-width: var(--wide);
+        max-width: var(--shell);
         margin-inline: auto;
         padding: var(--s-6) var(--s-5);
         font-size: var(--t-sm);

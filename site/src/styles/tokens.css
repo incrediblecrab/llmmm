@@ -82,6 +82,7 @@
 
   --measure: 34rem;   /* ~68 characters — the column prose is set to */
   --wide:    64rem;   /* tables and figures, which need the room */
+  --shell:   78rem;   /* rails and reading column together, centred */
 
   --s-1: 0.25rem;  --s-2: 0.5rem;   --s-3: 0.75rem;  --s-4: 1rem;
   --s-5: 1.5rem;   --s-6: 2rem;     --s-7: 3rem;     --s-8: 4.5rem;
@@ -217,6 +218,7 @@ main > * {
 main > figure,
 main > .wide,
 main > .wide-figure,
+main > .demo,
 main > table {
   max-width: var(--wide);
 }
