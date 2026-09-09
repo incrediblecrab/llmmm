@@ -565,11 +565,25 @@ class _BoundedTarReader:
         return self.stream.tell()
 
 
+class _BoundedTarInfo(tarfile.TarInfo):
+    @classmethod
+    def frombuf(cls, buf: bytes, encoding: str, errors: str) -> tarfile.TarInfo:
+        member = super().frombuf(buf, encoding, errors)
+        extensions = (tarfile.XHDTYPE, tarfile.XGLTYPE,
+                      tarfile.GNUTYPE_LONGNAME, tarfile.GNUTYPE_LONGLINK)
+        # Newer tarfile versions read extensions in chunks, so a per-read cap
+        # alone cannot enforce the declared metadata-size limit.
+        if member.type in extensions and member.size > CHUNK_SIZE:
+            raise RecoveryError("archive requires an oversized metadata read")
+        return member
+
+
 def _stage_archive(source: BinaryIO, stage: Path, files: tuple[LockedFile, ...]) -> None:
     expected = {file.path: file for file in files}
     seen = set()
     with gzip.GzipFile(fileobj=source, mode="rb") as compressed:
-        with tarfile.open(fileobj=_BoundedTarReader(compressed), mode="r:") as archive:
+        with tarfile.open(fileobj=_BoundedTarReader(compressed), mode="r:",
+                          tarinfo=_BoundedTarInfo) as archive:
             for member in archive:
                 path = _relative(member.name, "archive member")
                 if path in seen:

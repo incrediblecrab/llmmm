@@ -498,10 +498,14 @@ def test_trailing_tar_payload_is_not_ignored(packed, tmp_path):
     assert_rejected_without_live_changes(source, bundle, tmp_path, "trailing archive data")
 
 
-def test_oversized_tar_extension_is_rejected_without_reading_its_claimed_payload(packed, tmp_path):
+@pytest.mark.parametrize("kind", [
+    tarfile.XHDTYPE, tarfile.XGLTYPE, tarfile.GNUTYPE_LONGNAME, tarfile.GNUTYPE_LONGLINK,
+])
+def test_oversized_tar_extension_is_rejected_without_reading_its_claimed_payload(
+        packed, tmp_path, kind):
     source, bundle, _ = packed
     member = tarfile.TarInfo("oversized-pax")
-    member.type = tarfile.XHDTYPE
+    member.type = kind
     member.size = recovery.CHUNK_SIZE + tarfile.BLOCKSIZE
     header = member.tobuf(format=tarfile.USTAR_FORMAT)
     bundle.write_bytes(gzip.compress(header + b"\0" * tarfile.BLOCKSIZE * 2))

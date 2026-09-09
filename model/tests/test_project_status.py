@@ -4,6 +4,7 @@ from __future__ import annotations
 import importlib.util
 import json
 from pathlib import Path
+import subprocess
 import sys
 
 import pytest
@@ -87,6 +88,11 @@ def test_wrong_attribution_fails_even_when_the_number_exists_elsewhere(checkout)
     assert "| 0.6000 |" in text
     path.write_text(text.replace("| 0.6000 |", "| 0.4000 |", 1))
     assert status.main(["--root", str(checkout), "--check"]) == 1
+    command = subprocess.run(
+        [sys.executable, str(MODULE_PATH), "--root", str(checkout), "--check"],
+        capture_output=True, text=True)
+    assert command.returncode == 1
+    assert "stale or edited" in command.stderr
 
 
 def test_lost_native_metrics_cannot_be_published(checkout, capsys):
