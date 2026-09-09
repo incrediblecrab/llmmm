@@ -1,4 +1,4 @@
-# ingredients
+# llmmm
 
 Everything behind *Epicure* and what came after it: the paper, the recipe corpora it was built from, the prior study that audited it, and a workspace for retraining ingredient embeddings under an evaluation protocol that does not flatter them.
 

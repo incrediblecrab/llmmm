@@ -1294,7 +1294,7 @@ Python(48574) MallocStackLogging: can't turn off malloc stack logging because it
        vs popularity baseline   0.3650   lift -0.3538
 
 [56/80] masked-set-recipe-holdout-s0
-/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+/Users/maxmarquardt/Documents/developer/repositories/llmmm/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
   600,000 recipes, vocab 1790, 1,515,006 parameters
   epoch 1/3  loss 4.3114  steps 1,132  124s
@@ -1315,7 +1315,7 @@ Python(51756) MallocStackLogging: can't turn off malloc stack logging because it
        native scorer            0.6178   mrr 0.3621   lift +0.2528
 
 [57/80] masked-set-recipe-holdout-s1
-/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+/Users/maxmarquardt/Documents/developer/repositories/llmmm/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
   600,000 recipes, vocab 1790, 1,515,006 parameters
   epoch 1/3  loss 4.3167  steps 1,132  119s
@@ -1336,7 +1336,7 @@ Python(54003) MallocStackLogging: can't turn off malloc stack logging because it
        native scorer            0.6118   mrr 0.3589   lift +0.2468
 
 [58/80] masked-set-recipe-holdout-s2
-/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+/Users/maxmarquardt/Documents/developer/repositories/llmmm/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
   600,000 recipes, vocab 1790, 1,515,006 parameters
   epoch 1/3  loss 4.3124  steps 1,131  111s
@@ -1357,7 +1357,7 @@ Python(56125) MallocStackLogging: can't turn off malloc stack logging because it
        native scorer            0.6177   mrr 0.3615   lift +0.2527
 
 [59/80] masked-set-recipe-holdout-s3
-/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+/Users/maxmarquardt/Documents/developer/repositories/llmmm/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
   600,000 recipes, vocab 1790, 1,515,006 parameters
   epoch 1/3  loss 4.3184  steps 1,132  109s
@@ -1378,7 +1378,7 @@ Python(56928) MallocStackLogging: can't turn off malloc stack logging because it
        native scorer            0.6144   mrr 0.3628   lift +0.2494
 
 [60/80] masked-set-recipe-holdout-s4
-/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+/Users/maxmarquardt/Documents/developer/repositories/llmmm/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
   600,000 recipes, vocab 1790, 1,515,006 parameters
   epoch 1/3  loss 4.3064  steps 1,132  113s

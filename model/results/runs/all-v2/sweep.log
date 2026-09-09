@@ -80,7 +80,7 @@ All sixteen registered models run here. text-embed and text-aligned call a hoste
        vs popularity baseline   0.3650   lift -0.3528
 
 [3/7] masked-set-recipe-holdout-s0
-/Users/maxmarquardt/Documents/developer/repositories/ingredients/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+/Users/maxmarquardt/Documents/developer/repositories/llmmm/model/models/set_transformer/train.py:45: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   self.enc = nn.TransformerEncoder(layer, int(p["n_layers"]))
   600,000 recipes, vocab 1790, 1,515,006 parameters
   epoch 1/3  loss 4.3114  steps 1,132  113s
