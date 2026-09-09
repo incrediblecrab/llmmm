@@ -3,7 +3,7 @@
     im list                             registered models, datasets, splits
     im gate                             Phase 0 negative control — run first
     im train ease --set reg=500         train, score and record one model
-    im eval <run-id|path>               re-score an existing embedding
+    im eval <run-id|path>               re-score a saved model or .npy
     im report                           leaderboard across every scored run
     im explain tomato basil             the reasoning layer
     im sweep experiments/baseline.yaml  run a declared experiment
@@ -26,7 +26,7 @@ from pathlib import Path
 import numpy as np
 
 from .artifacts import (Manifest, iter_runs, load_embedding, load_metrics,
-                        save_metrics, save_run)
+                        load_native_scorer, save_metrics, save_run)
 from .config import PATHS
 from .data.registry import check_available, describe
 from .data.splits import (DEFAULT_SPLIT, SPLITS, check_leakage, get_split,
@@ -98,7 +98,7 @@ def cmd_train(a) -> int:
     missing = check_available(spec.requires)
     if missing:
         raise SystemExit(f"{spec.name} needs missing datasets: {', '.join(missing)}\n"
-                         f"  python scripts/import_data.py --from <llmmm-checkout>")
+                         "  make restore BUNDLE=/private/path/archive.tar.gz (from model/)")
     if not a.allow_leakage:
         check_leakage(split, spec.requires, strict=True)
     else:
@@ -137,18 +137,24 @@ def cmd_train(a) -> int:
 
 def cmd_eval(a) -> int:
     p = Path(a.target)
+    scorer = None
     if p.suffix == ".npy":
         W, name, run_dir = np.load(p), p.stem, None
     else:
         run_dir = _resolve_run(a.target)
         man = Manifest.load(run_dir)
         W, name = load_embedding(run_dir), man.run_id
+        if W.shape != man.shape:
+            raise ValueError(
+                f"embedding in {run_dir} has shape {W.shape}, "
+                f"manifest records {man.shape}")
+        scorer = load_native_scorer(run_dir, W.shape[0])
         if a.split is None:
             a.split = man.params.get("split", DEFAULT_SPLIT)
     split_name = a.split or DEFAULT_SPLIT
     metrics = evaluate(W, build_context(split_name), whiten=a.whiten,
                        completion_corpus=held_out_recipes(split_name, a.n_completion * 4),
-                       n_completion=a.n_completion)
+                       n_completion=a.n_completion, scorer=scorer)
     print(render_one(name + (" [whitened]" if a.whiten else ""), metrics))
     if run_dir is not None and not a.whiten:
         save_metrics(run_dir, metrics)
@@ -168,7 +174,7 @@ def cmd_report(a) -> int:
 
 
 def cmd_runs(a) -> int:
-    for d in iter_runs():
+    for d in iter_runs(require_embedding=False):
         man = Manifest.load(d)
         m = load_metrics(d)
         auc = f"{m['M4_link_auc']:.4f}" if m and m.get("M4_link_auc") else "unscored"

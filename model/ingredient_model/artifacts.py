@@ -1,24 +1,26 @@
 """Run artefacts: what a training run leaves behind, and how it is read back.
 
 One directory per run, holding the embedding, a manifest and (once scored) its
-metrics. The manifest records the graph split, seed, resolved parameters and
-library versions, because a number without the conditions that produced it
-cannot be compared against anything.
+metrics. The manifest records the canonical corpus digest, graph split, seed,
+resolved parameters and library versions, because a number without the
+conditions that produced it cannot be compared against anything.
 """
 from __future__ import annotations
 
 import json
 import platform
+import re
 import subprocess
 import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 import numpy as np
+from numpy.typing import NDArray
 
 from .config import PATHS
-from .spec import ModelSpec, TrainResult, write_json
+from .spec import CompletionScorer, ModelSpec, TrainResult, write_json
 
 EMBEDDING = "embedding.npy"
 MANIFEST = "manifest.json"
@@ -59,14 +61,18 @@ def _environment() -> dict[str, str]:
             stderr=subprocess.DEVNULL, text=True).strip()
     except Exception:
         pass
-    # Which corpus produced this run. Two leaderboards built on different
-    # corpus generations are not comparable, and without this stamp they are
-    # indistinguishable once the terminal scrollback is gone.
-    try:
-        from .config import corpus_generation
-        env["corpus_generation"] = str(corpus_generation().get("generation"))
-    except Exception:
-        pass
+    # A generation label can survive a rebuild. Record the promoted digest too;
+    # training preflight verifies the bytes, so saving need not hash them again.
+    from .config import corpus_generation
+
+    corpus = corpus_generation()
+    env["corpus_generation"] = str(corpus.get("generation"))
+    if "sha256" in corpus:
+        digest = corpus["sha256"]
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise ValueError(
+                f"{PATHS.generation_file}: invalid canonical corpus SHA-256")
+        env["corpus_sha256"] = digest
     return env
 
 
@@ -124,6 +130,76 @@ def load_embedding(run_dir: Path) -> np.ndarray:
     return np.load(run_dir / EMBEDDING)
 
 
+def _load_native_array(path: Path) -> NDArray[np.floating]:
+    try:
+        array = np.load(path, allow_pickle=False)
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f"native scorer requires {path}") from e
+    except (OSError, ValueError, EOFError) as e:
+        raise ValueError(f"cannot load native scorer asset {path}: {e}") from e
+    if isinstance(array, np.lib.npyio.NpzFile):
+        array.close()
+        raise ValueError(f"native scorer asset {path} must be a single array")
+    if not np.issubdtype(array.dtype, np.floating) or not np.isfinite(array).all():
+        raise ValueError(
+            f"native scorer asset {path} must contain finite floating-point values")
+    return array
+
+
+def load_native_scorer(run_dir: Path, n_vocab: int) -> CompletionScorer | None:
+    """Restore the full predictor recorded by a run, not its embedding proxy.
+
+    Model identity comes from the manifest, not the presence of optional files:
+    a missing or corrupt native asset must fail rather than silently change the
+    evaluated model. ``n_vocab`` is the caller's vocabulary size and must agree
+    with the run. Only masked-set restoration imports torch; EASE and
+    embedding-only runs do not require it.
+    """
+    man = Manifest.load(run_dir)
+    if len(man.shape) != 2 or min(man.shape) <= 0:
+        raise ValueError(
+            f"invalid embedding shape {man.shape} in {run_dir / MANIFEST}")
+    if man.shape[0] != n_vocab:
+        raise ValueError(
+            f"run {man.run_id!r} has {man.shape[0]} vocabulary rows, expected {n_vocab}")
+
+    if man.model == "ease":
+        path = run_dir / "item_scores.npy"
+        B = _load_native_array(path)
+        if B.shape != (n_vocab, n_vocab):
+            raise ValueError(
+                f"native scorer asset {path} has shape {B.shape}, "
+                f"expected {(n_vocab, n_vocab)}")
+
+        def scorer(context_ids: NDArray[np.int64]) -> NDArray[np.floating]:
+            return B[context_ids].sum(axis=1)
+
+        return scorer
+
+    if man.model == "masked-set":
+        token_path = run_dir / "state__tok__weight.npy"
+        tokens = _load_native_array(token_path)
+        expected = (n_vocab + 1, man.shape[1])
+        if tokens.shape != expected:
+            raise ValueError(
+                f"native scorer asset {token_path} has shape {tokens.shape}, "
+                f"expected {expected}")
+        for path in sorted(run_dir.glob("state__*.npy")):
+            if path != token_path:
+                _load_native_array(path)
+
+        from models.set_transformer.train import restore
+
+        try:
+            return restore(run_dir, n_vocab)
+        except RuntimeError as e:
+            raise ValueError(
+                f"cannot restore native scorer for {man.run_id!r} "
+                f"in {run_dir}: {e}") from e
+
+    return None
+
+
 def save_metrics(run_dir: Path, metrics: dict) -> None:
     write_json(run_dir / METRICS, metrics)
 
@@ -133,17 +209,18 @@ def load_metrics(run_dir: Path) -> dict | None:
     return json.loads(p.read_text()) if p.exists() else None
 
 
-def iter_runs(root: Path | None = None):
-    """Every completed run, newest last. A directory without a manifest is a
-    partial or crashed run and is skipped rather than half-reported.
+def iter_runs(root: Path | None = None, *,
+              require_embedding: bool = True) -> Iterator[Path]:
+    """Manifest-backed runs in stable path order, including nested sweeps.
 
-    The walk is recursive because sweeps group their runs under a named
-    subdirectory. A flat scan silently omitted every swept run, so a sweep could
-    report six successes and leave the leaderboard unchanged."""
+    Weight consumers require an embedding by default. Reports and listings may
+    opt into metadata-only runs, as on a git-only checkout. Directories without
+    a manifest are partial or crashed runs and are always skipped.
+    """
     base = root or PATHS.runs
     if not base.exists():
         return
     for manifest in sorted(base.rglob(MANIFEST)):
         d = manifest.parent
-        if (d / EMBEDDING).exists():
+        if not require_embedding or (d / EMBEDDING).exists():
             yield d

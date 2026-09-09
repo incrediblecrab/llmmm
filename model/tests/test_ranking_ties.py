@@ -15,6 +15,7 @@ nothing at all.
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from ingredient_model.eval.completion import _rank_of_target, recipe_completion
 from ingredient_model.data.splits import held_out_recipes
@@ -63,6 +64,7 @@ def test_excluded_context_does_not_join_the_tied_block():
     assert np.allclose(got, 1.0), got
 
 
+@pytest.mark.data
 def test_collapsed_embedding_scores_at_or_below_chance():
     """The end-to-end guarantee: a rank-1 space earns nothing.
 
@@ -78,6 +80,7 @@ def test_collapsed_embedding_scores_at_or_below_chance():
     assert m6 <= chance, f"collapsed space scored {m6:.4f} > chance {chance:.4f}"
 
 
+@pytest.mark.data
 def test_random_embedding_scores_near_chance():
     """A metric that gives credit to noise cannot support any claim."""
     corpus = _corpus()

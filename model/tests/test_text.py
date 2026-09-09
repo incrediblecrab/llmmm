@@ -15,10 +15,12 @@ from ingredient_model.config import PATHS
 from ingredient_model.data import text as text_mod
 from ingredient_model.data.recipes import load_recipes
 
-pytestmark = pytest.mark.skipif(
-    not (PATHS.recipes / text_mod.TEXT_FILE).exists(),
-    reason="text index not built (make text)",
-)
+pytestmark = [
+    pytest.mark.data,
+    pytest.mark.skipif(
+        not (PATHS.recipes / text_mod.TEXT_FILE).exists(),
+        reason="text index not built (make text)"),
+]
 
 
 @pytest.fixture(scope="module")

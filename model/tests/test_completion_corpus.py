@@ -14,9 +14,12 @@ from ingredient_model.data.recipes import load_recipes
 from ingredient_model.data.splits import get_split, held_out_recipes
 
 SPLIT = "recipe-holdout"
-pytestmark = pytest.mark.skipif(
-    not (PATHS.recipes / get_split(SPLIT).corpus).exists(),
-    reason="recipe-holdout not built; run scripts/build_splits.py")
+pytestmark = [
+    pytest.mark.data,
+    pytest.mark.skipif(
+        not (PATHS.recipes / get_split(SPLIT).corpus).exists(),
+        reason="recipe-holdout not restored; run make restore"),
+]
 
 
 def _fingerprints(corpus, limit=None):

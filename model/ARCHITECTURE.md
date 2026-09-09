@@ -1,5 +1,9 @@
 # Architecture
 
+This document retains historical design rationale and experiment examples.
+The [repository README](../README.md) and `workspace.json` define the current
+results and operational workflow.
+
 ## The problem this shape solves
 
 The prior study produced 26 experiments across a `tools/` directory of 60 flat

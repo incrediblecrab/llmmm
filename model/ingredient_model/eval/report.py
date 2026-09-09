@@ -64,8 +64,9 @@ COLUMNS = [
 
 
 def collect(root: Path | None = None) -> list[dict]:
+    """Recorded metrics, including runs whose weights are not present locally."""
     rows = []
-    for d in iter_runs(root):
+    for d in iter_runs(root, require_embedding=False):
         metrics = load_metrics(d)
         if metrics is None:
             continue

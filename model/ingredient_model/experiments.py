@@ -260,6 +260,13 @@ def run_experiment(path: Path, dry_run: bool = False, *, resume: bool = True,
     timeout_s = timeout_s if timeout_s is not None else spec_doc.get("timeout_s")
 
     gen = corpus_generation().get("generation", "unknown")
+    if "corpus_generation" in spec_doc:
+        from .workspace import verify_training_corpus
+        expected = spec_doc["corpus_generation"]
+        if not isinstance(expected, str) or not expected:
+            raise ValueError("corpus_generation must name the required data generation")
+        marker = verify_training_corpus(PATHS.data, expected)
+        print(f"verified corpus {expected}: {marker['sha256']}")
     print(f"experiment {name}  —  {len(trials)} trials  —  corpus {gen}")
     if desc := spec_doc.get("description"):
         print(f"  {desc}")
@@ -331,7 +338,7 @@ def run_experiment(path: Path, dry_run: bool = False, *, resume: bool = True,
                 result = mspec.train(ctx)
                 d = save_run(t.run_id, mspec, result, graph=split.graph,
                              seed=t.seed,
-                             params={**t.params, "split": split.name},
+                             params={**ctx.params, "split": split.name},
                              duration_s=time.time() - t0, out_dir=out_dir)
                 metrics = evaluate(result.embedding, build_context(split.name),
                                    completion_corpus=completion_corpus,

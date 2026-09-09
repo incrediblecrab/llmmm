@@ -10,6 +10,7 @@ Run: `python scripts/sanity_check.py`   (exit code 1 if any check fails)
 """
 from __future__ import annotations
 
+import argparse
 import sys
 import time
 
@@ -389,15 +390,25 @@ def check_normalisation_faithfulness() -> None:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--derived-only", action="store_true",
+        help="check prepared training artifacts without replaying raw source files")
+    args = parser.parse_args()
     t0 = time.time()
     print("=" * 68)
     print("SANITY CHECKS — attempting to falsify our own results")
     print("=" * 68)
-    for fn in (check_vocabulary_alignment, check_corpus_integrity,
-               check_split_disjointness, check_popularity_baseline,
-               check_random_controls, check_ease_native_scorer,
-               check_leakage_claim, check_metric_monotonicity,
-               check_normalisation_faithfulness):
+    checks = [check_vocabulary_alignment, check_corpus_integrity,
+              check_split_disjointness, check_popularity_baseline,
+              check_random_controls, check_ease_native_scorer,
+              check_leakage_claim, check_metric_monotonicity]
+    if args.derived_only:
+        print("Raw-source replay NOT RUN (--derived-only). "
+              "Run make sanity with raw-data/ to perform that separate audit.")
+    else:
+        checks.append(check_normalisation_faithfulness)
+    for fn in checks:
         try:
             fn()
         except Exception as e:

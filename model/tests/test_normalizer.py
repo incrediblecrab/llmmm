@@ -19,6 +19,8 @@ import pytest
 
 from ingredient_model.data.normalizer import ZH_QTY, get_normalizer
 
+pytestmark = pytest.mark.data
+
 
 @pytest.fixture(scope="module")
 def upstream():

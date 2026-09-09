@@ -3,14 +3,22 @@
 # is regenerable from those, and most of it is large enough that committing it
 # would make the repository unusable.
 #
-# The rule, stated once: if a script can produce it, it does not belong in git.
+# Keep authored inputs, provenance and measurements in git. Keep large source
+# datasets, model weights and private recovery bundles outside git.
 
 # ---------------------------------------------------------------------------
 # Source corpora — 7.4 GB, 29 folders, redistributed from upstream datasets.
 # raw-data/README.md and MANIFEST.md record provenance so the tree can be
 # reassembled; the bytes themselves are not ours to version.
 # ---------------------------------------------------------------------------
-raw-data/
+/raw-data/*
+!/raw-data/README.md
+!/raw-data/MANIFEST.md
+!/raw-data/_expansion_README.md
+
+# Local recovery archives can contain restricted datasets. Never publish them
+# to this public repository or include credentials in their input manifest.
+/.artifacts/
 
 # ---------------------------------------------------------------------------
 # The prior study's derived artefacts (199 MB). Its own scripts regenerate

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "benchmark_sweep": "all-v2",
+  "training_sweep": "train-v2-20260909",
+  "training_experiment": "experiments/train-v2-20260909.yaml",
+  "default_embedding_run": "all-v2/svd-ppmi-recipe-holdout-s0",
+  "snapshot": {
+    "manifest": "model/artifacts.lock.json",
+    "data_files": [
+      "model/data/GENERATION.json",
+      "model/data/aliases/en.json",
+      "model/data/aliases/ru.json",
+      "model/data/aliases/zh.json",
+      "model/data/catalog/ingredients.csv",
+      "model/data/catalog/ingredients.parquet",
+      "model/data/catalog/substitutions.parquet",
+      "model/data/graphs/flavor_graph.npz",
+      "model/data/graphs/ii_graph.npz",
+      "model/data/graphs/ii_graph_full_train.npz",
+      "model/data/graphs/ii_graph_heldout.npz",
+      "model/data/graphs/ii_graph_recipe_train.npz",
+      "model/data/graphs/ii_graph_rh_heldout.npz",
+      "model/data/graphs/ii_graph_rh_train.npz",
+      "model/data/graphs/ii_graph_train.npz",
+      "model/data/recipes/recipe_cooc.npz",
+      "model/data/recipes/recipe_ids.npz",
+      "model/data/recipes/recipe_ids_rh_train.npz",
+      "model/data/recipes/recipe_ids_v1.npz",
+      "prior-study/data/raw/epicure-cooc/vocab.json"
+    ],
+    "run_groups": [
+      "all-v2",
+      "train-v2-20260909"
+    ],
+    "extra_files": [
+      "model/results/m6_ranks.npz"
+    ]
+  }
+}

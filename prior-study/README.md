@@ -1,5 +1,9 @@
 # LLMMM
 
+**Historical study and app proposal.** The active workspace and current results
+are in the [repository README](../README.md) and [`model/`](../model/).
+This tree does not contain a finished iOS app.
+
 An iOS app built on the **Epicure** ingredient embeddings — navigating flavour space as
 measured geometry rather than LLM guesswork.
 

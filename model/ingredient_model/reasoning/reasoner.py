@@ -6,7 +6,7 @@ from pathlib import Path
 
 import numpy as np
 
-from ..artifacts import Manifest, iter_runs, load_embedding
+from ..artifacts import Manifest, load_embedding, resolve_run
 from ..data.graphs import load_chem_graph, load_ii_graph
 from ..data.splits import DEFAULT_SPLIT, get_split
 from ..eval.metrics import unit
@@ -103,18 +103,19 @@ class Reasoner:
     # ---------------------------------------------------------------- loading
     @classmethod
     def load(cls, run_dir: Path | None = None, *, split: str | None = None,
-             weights: dict | None = None) -> "Reasoner":
-        """Load a run, or fall back to corpus statistics alone.
+             weights: dict | None = None,
+             statistics_only: bool = False) -> "Reasoner":
+        """Load an explicit run or the embedding run named in workspace.json.
 
-        ``run_dir=None`` is a supported mode, not a degraded one: co-occurrence
-        is the strongest single signal, so a Reasoner with no model still
-        answers well and serves as the control that any model must beat.
+        ``statistics_only=True`` is the explicit corpus-only control. Missing
+        model weights are an error, not an invitation to select another run.
         """
         W, run_id = None, "<statistics only>"
-        if run_dir is None:
-            runs = list(iter_runs())
-            if runs:
-                run_dir = runs[0]
+        if statistics_only and run_dir is not None:
+            raise ValueError("statistics_only cannot be combined with a model run")
+        if run_dir is None and not statistics_only:
+            from ..workspace import load_workspace
+            run_dir = resolve_run(load_workspace().default_embedding_run)
         if run_dir is not None:
             man = Manifest.load(run_dir)
             W, run_id = load_embedding(run_dir), man.run_id

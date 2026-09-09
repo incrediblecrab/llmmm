@@ -1,0 +1,16 @@
+name: train-v2-20260909
+description: >
+  Fresh local training of the strongest conditional model, masked-set, with
+  EASE as the inexpensive control. Seed 42 is separate from the published
+  seed-0 benchmark and the earlier 0-4 stability sweep. The evaluation split
+  and completion draw stay fixed so the resulting scores remain comparable.
+  These runs do not replace all-v2 or tune against its test results.
+
+corpus_generation: v2
+splits: [recipe-holdout]
+seeds: [42]
+timeout_s: 10800
+
+models:
+  - ease
+  - masked-set

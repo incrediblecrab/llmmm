@@ -57,7 +57,7 @@ def load_substitutions(itos: tuple[str, ...]) -> Substitutions:
     if not path.exists():
         raise FileNotFoundError(
             f"{path} not found. Populate the workspace first:\n"
-            f"    python scripts/import_data.py --from <llmmm-checkout>")
+            f"    make restore BUNDLE=/private/path/archive.tar.gz  (from model/)")
     stoi = {s: i for i, s in enumerate(itos)}
     df = pd.read_parquet(path)
     df = df[df.ingredient_vocab.isin(stoi) & df.alternative_vocab.isin(stoi)]

@@ -31,10 +31,12 @@ SWEEP = ROOT / "results" / "runs" / "seeds-v2"
 OUT = ROOT / "results" / "ranking_stability.json"
 
 METRIC = "M6_recall_at_10"
+NATIVE_METRIC = "M6_native_recall_at_10"
 BASELINE = "M6_popularity_recall_at_10"
 
 
-def load(sweep: Path) -> tuple[dict[str, dict[int, float]], dict[int, float]]:
+def load(sweep: Path, metric: str = METRIC
+         ) -> tuple[dict[str, dict[int, float]], dict[int, float]]:
     """Scores by model and seed, and the popularity baseline by seed.
 
     Identity comes from each run's manifest rather than from splitting its
@@ -55,11 +57,14 @@ def load(sweep: Path) -> tuple[dict[str, dict[int, float]], dict[int, float]]:
         if not man.exists():
             continue
         d = json.loads(p.read_text())
-        if METRIC not in d:
+        if metric not in d:
             continue
         m = json.loads(man.read_text())
         seed = int(m["seed"])
-        scores.setdefault(str(m["model"]), {})[seed] = float(d[METRIC])
+        model_scores = scores.setdefault(str(m["model"]), {})
+        if seed in model_scores:
+            raise ValueError(f"duplicate {m['model']} seed {seed} in {sweep}")
+        model_scores[seed] = float(d[metric])
         if d.get(BASELINE) is not None:
             base.setdefault(seed, []).append(float(d[BASELINE]))
 
@@ -104,11 +109,9 @@ def native_scored(canonical: Path, baseline: float) -> list[dict]:
     each model's best available scorer, and is smaller than the count taken
     over embeddings alone.
 
-    The sweep only re-runs the embedding path, so it cannot speak to the
-    seed-stability of those two scores. Recording them here keeps that limit
-    attached to the artefact rather than to a sentence someone has to
-    remember to write — the count on this page and the count on the
-    leaderboard differ for a reason, and the reason should be machine-readable.
+    This identifies which canonical models require native seed results.
+    Whether those results exist is measured from the sweep, not inferred from
+    the embedding-only ranking metric selected above.
     """
     out: list[dict] = []
     for p in sorted(canonical.glob("*/metrics.json")):
@@ -127,6 +130,43 @@ def native_scored(canonical: Path, baseline: float) -> list[dict]:
             "native_below_baseline": float(nat) < baseline,
         })
     return out
+
+
+def native_seed_summary(sweep: Path, canonical: list[dict],
+                        scores: dict[str, dict[int, float]],
+                        baseline: dict[int, float], models: list[str],
+                        seeds: list[int]) -> dict:
+    native, native_baseline = load(sweep, NATIVE_METRIC)
+    for seed, value in native_baseline.items():
+        if seed not in baseline or value != baseline[seed]:
+            raise ValueError(f"native and embedding baselines disagree at seed {seed}")
+    required = sorted({row["model"] for row in canonical} & set(models))
+    rows = []
+    for model in required:
+        values = native.get(model, {})
+        missing = [seed for seed in seeds if seed not in values]
+        measured = [values[seed] for seed in seeds if seed in values]
+        rows.append({
+            "model": model,
+            "by_seed": {str(seed): values[seed] for seed in seeds if seed in values},
+            "missing_seeds": missing,
+            "complete": not missing,
+            "min": min(measured) if measured else None,
+            "max": max(measured) if measured else None,
+        })
+    served_below = {}
+    for seed in seeds:
+        if any(seed not in native.get(model, {}) for model in required):
+            served_below[str(seed)] = None
+        else:
+            served_below[str(seed)] = sum(
+                (native[model][seed] if model in required else scores[model][seed])
+                < baseline[seed] for model in models)
+    return {
+        "models": rows,
+        "served_n_below_popularity_by_seed": served_below,
+        "complete": all(row["complete"] for row in rows),
+    }
 
 
 def reproduction(sweep: Path, canonical: Path) -> dict:
@@ -260,15 +300,19 @@ def main() -> int:
 
     # The count above is over embeddings. The published headline is not.
     natives = native_scored(a.canonical, float(np.mean(list(baseline.values()))))
-    lifted = [d for d in natives
-              if d["embedding_below_baseline"] and not d["native_below_baseline"]]
-    if lifted:
-        headline = min(below.values()) - len(lifted)
-        print(f"\nheadline counts {headline} of {len(complete)} below the "
-              f"baseline, not {min(below.values())}, because "
-              + ", ".join(f"{d['model']} clears it natively ({d['native']:.4f} "
-                          f"vs {d['embedding']:.4f} embedded)" for d in lifted))
-        print("those native scorers were not re-run across seeds")
+    native_summary = native_seed_summary(
+        a.sweep, natives, scores, baseline, complete, seeds)
+    print("\nserved-scorer count below popularity by seed: "
+          + ", ".join(f"s{seed} {value if value is not None else 'incomplete'}"
+                      for seed, value in
+                      native_summary["served_n_below_popularity_by_seed"].items()))
+    for row in native_summary["models"]:
+        if row["complete"]:
+            print(f"  {row['model']} native: {row['min']:.4f} to "
+                  f"{row['max']:.4f} across {len(seeds)} seeds")
+        else:
+            print(f"  {row['model']} native results missing at seeds "
+                  f"{row['missing_seeds']}")
     if varies:
         worst = max(varies, key=lambda r: r["max"] - r["min"])
         gaps = np.diff(np.sort(M.mean(axis=1)))
@@ -316,11 +360,15 @@ def main() -> int:
             "note": "Counted over exported embeddings. The leaderboard "
                     "headline scores each model at its best available "
                     "scorer, so models with a native rule are counted there "
-                    "at that rule and the two totals differ by exactly those "
-                    "models. The sweep does not re-run native scorers, so it "
-                    "carries no seed evidence about them.",
-            "native_not_reseeded": natives,
+                    "at that rule. Native seed coverage and served-scorer "
+                    "counts are measured separately from the actual run "
+                    "metrics; absent native scores produce incomplete counts.",
+            "native_not_reseeded": [
+                row for row in natives
+                if not any(measured["model"] == row["model"] and measured["by_seed"]
+                           for measured in native_summary["models"])],
         },
+        "native_seed_stability": native_summary,
         "n_models_changing_rank": moved,
         "n_models_crossing_baseline": crossing,
         "seed_invariant": determ,

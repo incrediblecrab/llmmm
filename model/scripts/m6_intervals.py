@@ -44,10 +44,10 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Callable
 
 import numpy as np
 
+from ingredient_model.artifacts import load_native_scorer
 from ingredient_model.config import PATHS
 from ingredient_model.data.graphs import GRAPH_FULL, load_ii_graph
 from ingredient_model.data.splits import held_out_recipes
@@ -60,8 +60,6 @@ OUT_JSON = PATHS.results / "m6_replication.json"
 CANONICAL_JSON = PATHS.results / "m6_intervals.json"
 
 POINT_TOL = 5e-4
-
-Scores = Callable[[np.ndarray], np.ndarray]
 
 
 def load_runs(root: Path) -> dict[str, dict]:
@@ -80,25 +78,6 @@ def load_runs(root: Path) -> dict[str, dict]:
                 "metrics": json.loads(path.read_text()),
             }
     return out
-
-
-def native_scorer(run_dir: Path, n_vocab: int) -> Scores | None:
-    """Restore the conditional scorer when the saved run has one.
-
-    The native path is intentionally discovered from stored artefacts rather
-    than from model names. EASE persists the item-item scoring matrix directly;
-    the masked-set model persists a transformer state that its own restore
-    helper turns back into the scorer used during evaluation.
-    """
-    item_scores = run_dir / "item_scores.npy"
-    if item_scores.exists():
-        table = np.load(item_scores)
-        return lambda ctx: table[ctx].sum(1)
-    if (run_dir / "state__tok__weight.npy").exists():
-        from models.set_transformer.train import restore
-
-        return restore(run_dir, n_vocab)
-    return None
 
 
 def ci95(x: np.ndarray) -> list[float]:
@@ -189,7 +168,11 @@ def main() -> None:
     pop_summary = None
     for model, run in sorted(runs.items()):
         W = np.load(run["dir"] / "embedding.npy")
-        scorer = native_scorer(run["dir"], corpus.n_vocab)
+        if W.shape[0] != corpus.n_vocab:
+            raise ValueError(
+                f"embedding in {run['dir']} has {W.shape[0]} rows, "
+                f"vocabulary is {corpus.n_vocab}")
+        scorer = load_native_scorer(run["dir"], corpus.n_vocab)
         got = completion_ranks(W, corpus, n_test=N_COMPLETION,
                                unigram=unigram, scorer=scorer)
         if "popularity" not in got:

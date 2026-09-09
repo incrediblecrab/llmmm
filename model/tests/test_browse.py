@@ -14,6 +14,8 @@ import pytest
 from ingredient_model.data.browse import breakdown, coverage, sample, view
 from ingredient_model.data.recipes import load_recipes
 
+pytestmark = pytest.mark.data
+
 
 def test_every_recipe_is_reachable_and_decodes():
     c = coverage()

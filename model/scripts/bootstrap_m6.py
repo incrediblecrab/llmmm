@@ -34,10 +34,10 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 
 import numpy as np
 
+from ingredient_model.artifacts import load_native_scorer
 from ingredient_model.config import PATHS
 from ingredient_model.data import load_recipes
 from ingredient_model.data.recipes import RECIPE_IDS
@@ -64,29 +64,6 @@ def _runs() -> dict[str, dict]:
     return out
 
 
-def _native_scorer(model: str, run_dir: Path, n_vocab: int):
-    """The scorer a model would actually serve, rebuilt from its run.
-
-    Two of the sixteen factorise something richer than the vector table they
-    export, and the gap between the two is one of the study's findings, so the
-    bootstrap has to reach the served scorer rather than settle for the
-    embedding. They store it differently — EASE as an item-item matrix, the
-    set transformer as network weights — and the difference is discovered from
-    what is on disk rather than hardcoded by name.
-
-    Anything else has no native scorer, and its embedding ranking *is* what it
-    would serve.
-    """
-    item_scores = run_dir / "item_scores.npy"
-    if item_scores.exists():
-        B = np.load(item_scores)
-        return lambda c: B[c].sum(1)
-    if (run_dir / "state__tok__weight.npy").exists():
-        from models.set_transformer.train import restore
-        return restore(run_dir, n_vocab)
-    return None
-
-
 def compute_ranks(runs: dict[str, dict]) -> dict[str, np.ndarray]:
     """Per-instance ranks for every model, plus the shared baseline.
 
@@ -100,7 +77,11 @@ def compute_ranks(runs: dict[str, dict]) -> dict[str, np.ndarray]:
     store: dict[str, np.ndarray] = {}
     for model, r in sorted(runs.items()):
         W = np.load(r["dir"] / "embedding.npy")
-        scorer = _native_scorer(model, r["dir"], corpus.n_vocab)
+        if W.shape[0] != corpus.n_vocab:
+            raise ValueError(
+                f"embedding in {r['dir']} has {W.shape[0]} rows, "
+                f"vocabulary is {corpus.n_vocab}")
+        scorer = load_native_scorer(r["dir"], corpus.n_vocab)
 
         got = completion_ranks(W, corpus, unigram=unigram, scorer=scorer)
         store[model] = got["embedding"].astype(np.float32)

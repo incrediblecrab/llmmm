@@ -1,5 +1,9 @@
 # ingredient-model
 
+**Current setup and results:** see the [repository README](../README.md).
+The sections below retain historical investigations, including earlier corpus
+generations; their example scores are not the current leaderboard.
+
 A workspace for learning what ingredients mean to each other, from 4.6M recipes.
 
 Each model type lives in its own folder under `models/`. Drop a new folder in
@@ -7,9 +11,9 @@ and `im list` finds it — there is no central registry to edit, and therefore
 none to forget to edit.
 
 ```bash
-python -m venv .venv && ./.venv/bin/pip install -e '.[dev]'
-./.venv/bin/python scripts/import_data.py     # ~50MB of prepared artefacts
-./.venv/bin/python scripts/build_splits.py    # the honest evaluation split
+make setup-train
+make restore BUNDLE=/private/path/workspace-v2-20260909.tar.gz
+make verify
 
 im gate                                        # must pass before any result counts
 im list                                        # models, datasets, splits

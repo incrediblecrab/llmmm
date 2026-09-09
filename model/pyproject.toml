@@ -12,6 +12,7 @@ dependencies = [
     "scipy>=1.11",
     "pandas>=2.0",
     "pyarrow>=14.0",
+    "PyYAML>=6.0",
 ]
 
 [project.optional-dependencies]
@@ -25,6 +26,11 @@ dev = ["pytest>=8.0"]
 
 [project.scripts]
 im = "ingredient_model.cli:main"
+
+[tool.pytest.ini_options]
+markers = [
+    "data: requires restored private corpus artifacts or the optional text index",
+]
 
 [tool.setuptools]
 packages = [

@@ -265,6 +265,7 @@ def main() -> int:
         return 0
 
     unresolved: list[tuple[Path, int, str, str]] = []
+    present: set[str] = set()
     checked = 0
     for doc in DOCS:
         if not doc.exists():
@@ -281,6 +282,7 @@ def main() -> int:
                 continue
             for m in NUMBER.finditer(line):
                 token = m.group(0)
+                present.add(f"{doc.relative_to(ROOT)}::{token}")
                 checked += 1
                 if token in ALLOW or matches(token, vals):
                     continue
@@ -313,12 +315,17 @@ def main() -> int:
 
     new = [u for u in unresolved
            if f"{u[0].relative_to(ROOT)}::{u[2]}" not in accepted]
-    fixed = sorted(accepted - keys)
+    fixed = sorted((accepted & present) - keys)
+    retired = sorted(accepted - present)
 
     print(f"checked {checked:,} numbers in {len(DOCS)} documents "
           f"against {len(vals):,} artefact values")
     if accepted:
         print(f"{len(accepted)} known-unverifiable, {len(new)} new")
+
+    if retired:
+        print(f"{len(retired)} historical baseline entries no longer appear "
+              "in the current documents; removal is not verification")
 
     if fixed:
         word = "entry" if len(fixed) == 1 else "entries"

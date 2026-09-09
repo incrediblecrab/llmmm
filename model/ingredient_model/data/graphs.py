@@ -177,5 +177,5 @@ def _resolve(path: Path) -> Path:
     if not path.exists():
         raise FileNotFoundError(
             f"{path} not found. Populate the workspace first:\n"
-            f"    python scripts/import_data.py --from <llmmm-checkout>")
+            f"    make restore BUNDLE=/private/path/archive.tar.gz  (from model/)")
     return path

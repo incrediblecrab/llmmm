@@ -133,7 +133,7 @@ def load_recipes(name: str = RECIPE_IDS) -> RecipeCorpus:
     if not path.exists():
         raise FileNotFoundError(
             f"{path} not found. Populate the workspace first:\n"
-            f"    python scripts/import_data.py --from <llmmm-checkout>")
+            f"    make restore BUNDLE=/private/path/archive.tar.gz  (from model/)")
     z = np.load(path, allow_pickle=True)
     return RecipeCorpus(
         flat=z["flat"], offsets=z["offsets"].astype(np.int64),

@@ -26,12 +26,17 @@ __pycache__/
 # results.
 !/data/GENERATION.json
 
+# These reviewed aliases are inputs to the corrected normaliser, not a
+# reproducible download. A fresh checkout must retain them.
+!/data/aliases/
+!/data/aliases/*.json
+
 # results/runs/ is deliberately NOT excluded. The weight matrices are dropped by
 # the root .gitignore's *.npy rule, which leaves manifest.json and metrics.json
 # tracked — so the leaderboard is versioned and any published number can be
 # traced to the commit that produced it. Excluding the directory wholesale would
 # throw the findings away along with the blobs.
-results/*.json
+# Result summaries are measurements and stay tracked alongside individual runs.
 
 # Holds the subscription id. Not a secret, but not something to commit either,
 # and it differs per developer.
