@@ -11,12 +11,13 @@ Run: `python scripts/sanity_check.py`   (exit code 1 if any check fails)
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 import sys
 import time
 
 import numpy as np
 
-from ingredient_model.artifacts import load_embedding
+from ingredient_model.artifacts import Manifest, iter_runs, load_embedding
 from ingredient_model.config import PATHS, SEED
 from ingredient_model.data.graphs import load_chem_graph, load_ii_graph
 from ingredient_model.data.labels import load_substitutions
@@ -25,6 +26,7 @@ from ingredient_model.data.splits import get_split, held_out_recipes
 from ingredient_model.eval.completion import recipe_completion
 from ingredient_model.eval.harness import build_context
 from ingredient_model.eval.metrics import unit
+from ingredient_model.workspace import load_workspace
 
 RESULTS: list[tuple[str, bool, str]] = []
 
@@ -39,6 +41,20 @@ def check(name: str, ok: bool, detail: str = "") -> None:
 
 def section(title: str) -> None:
     print(f"\n{title}\n{'-' * len(title)}")
+
+
+def benchmark_run(model: str) -> Path:
+    root = PATHS.runs / load_workspace().benchmark_sweep
+    matches = []
+    for directory in iter_runs(root, require_embedding=False):
+        manifest = Manifest.load(directory)
+        if manifest.model == model and manifest.params.get("split") == "recipe-holdout":
+            matches.append(directory)
+    if len(matches) != 1:
+        raise ValueError(
+            f"expected one {model} recipe-holdout run in configured benchmark "
+            f"{root}, found {len(matches)}")
+    return matches[0]
 
 
 # --------------------------------------------------------------------------
@@ -221,13 +237,9 @@ def check_random_controls() -> None:
 
 
 def check_ease_native_scorer() -> None:
-    """The largest claim in the workspace: EASE's native scorer is 3.6x its
-    embedding. Verify it is not an artefact of leakage or of ranking ties."""
+    """Verify the native-scoring advantage against the configured benchmark."""
     section("6. EASE native scorer")
-    run = PATHS.run_dir("ease-rh")
-    if not run.exists():
-        check("ease-rh run present", False, "train it first")
-        return
+    run = benchmark_run("ease")
     B = np.load(run / "item_scores.npy")
     W = load_embedding(run)
     test = held_out_recipes("recipe-holdout", limit=20_000)
@@ -298,10 +310,7 @@ def check_metric_monotonicity() -> None:
     the frequencies, not the model.
     """
     section("8. Shuffle control")
-    run = PATHS.run_dir("ease-rh")
-    if not run.exists():
-        check("ease-rh present", False)
-        return
+    run = benchmark_run("ease")
     W = load_embedding(run)
     test = held_out_recipes("recipe-holdout", limit=20_000)
     ctx = build_context("recipe-holdout")
