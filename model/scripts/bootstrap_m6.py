@@ -151,7 +151,7 @@ def bootstrap(store: dict[str, np.ndarray], n_boot: int, seed: int) -> dict:
         base[b] = h_pop[idx].mean()
 
     # The published claim, resampled. Counted on the served scorer, which is
-    # what the site's leaderboard ranks on.
+    # what the published leaderboard ranks on.
     n_below = (srv < base[:, None]).sum(1)
 
     def ci(a, axis=0):

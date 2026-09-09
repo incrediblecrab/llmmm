@@ -1,7 +1,7 @@
 """Independent replication of the recipe-completion intervals.
 
-`bootstrap_m6.py` is the canonical producer of `results/m6_intervals.json`,
-and the site reads that file. This script is a *second, independently written*
+`bootstrap_m6.py` is the canonical producer of `results/m6_intervals.json`.
+This script is a *second, independently written*
 implementation of the same estimand, kept deliberately rather than deleted:
 the whole argument leans on "nine of sixteen models fall below popularity", so
 one implementation re-deriving it is worth more than a comment asserting it.

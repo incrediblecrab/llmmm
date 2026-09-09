@@ -10,7 +10,7 @@ way to find out which one this is was always to train it again.
 evaluation instances with the models held fixed, so it reports how much of the
 headline is an accident of *which recipes were tested*. This script resamples
 the training instead. If a model's score moves more between seeds than it does
-between bootstrap replicates, then the interval already on the site is the
+between bootstrap replicates, then the interval reported by the bootstrap is the
 smaller of the two sources of error and is quietly the wrong one to quote.
 
 Reads `results/runs/seeds-v2/`. Runs while the sweep is still going: a partial
@@ -97,7 +97,7 @@ def seed0_scores(runs: Path) -> dict[str, float]:
 def native_scored(canonical: Path, baseline: float) -> list[dict]:
     """Models whose published score comes from their own scorer, not a vector.
 
-    Two models on this site are published at a native score: `ease` and
+    Two models on the leaderboard are published at a native score: `ease` and
     `masked-set` both rank items through their own rule and clear the
     popularity baseline that way, while their exported embeddings fall well
     below it. The headline count of models below the baseline therefore uses
@@ -253,7 +253,7 @@ def main() -> int:
     # A changed rank and a changed conclusion are not the same event. Two
     # models trading places matters only if the swap carries one of them
     # across the popularity line, so that is counted separately: this is the
-    # number that decides whether the site's claim survives reseeding.
+    # number that decides whether the published claim survives reseeding.
     crossing = sum(1 for r in rows if r["min"] < baseline[seeds[0]] < r["max"])
     print(f"{crossing} of {len(complete)} cross the popularity baseline at "
           f"any seed")

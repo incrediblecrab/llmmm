@@ -4,6 +4,9 @@ Everything behind *Epicure* and what came after it: the paper, the recipe corpor
 
 Private repository, for local and educational use.
 
+The repository is the home for the project: code, recorded results and documentation.
+There is no separate website.
+
 **10 GB on disk.** `raw-data/` is 7.4 GB, `model/` is 2.6 GB, `prior-study/` is 221 MB. Most of it is regenerable rather than authored.
 
 ```
