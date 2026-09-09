@@ -1,0 +1,4 @@
+{"at": "2026-09-09T11:54:42-0400", "event": "sweep_start", "experiment": "train-v2-20260909", "corpus_generation": "v2", "trials": 2, "skipped": 0}
+{"at": "2026-09-09T11:54:46-0400", "event": "trial_ok", "run_id": "ease-recipe-holdout-s42", "model": "ease", "split": "recipe-holdout", "seconds": 3.0}
+{"at": "2026-09-09T12:00:20-0400", "event": "trial_ok", "run_id": "masked-set-recipe-holdout-s42", "model": "masked-set", "split": "recipe-holdout", "seconds": 334.1}
+{"at": "2026-09-09T12:00:20-0400", "event": "sweep_end", "ok": 2, "failed": 0, "skipped": 0}

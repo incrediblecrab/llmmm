@@ -43,9 +43,14 @@ All score columns are recall@10. Native is the full predictor where available; a
 | sgns-chem | 0.0149 | 0.0201 | - |
 | item2vec | 0.0123 | 0.1483 | - |
 
-**Current training: `train-v2-20260909` (0/2 runs scored).**
+**Current training: `train-v2-20260909` (2/2 runs scored).**
 
-No scored runs yet for this declared experiment; run `make -C model train`.
+| Model | Seed | Native recall@10 | Lift over popularity | Training time |
+|---|---:|---:|---:|---:|
+| ease | 42 | 0.5872 | +0.2222 | 1.3s |
+| masked-set | 42 | 0.6150 | +0.2500 | 332.7s |
+
+`masked-set` settings: **3 epochs**, sampling cap **600,000 recipes**, maximum training recipe length **32**.
 
 Sources: [corpus marker](model/data/GENERATION.json), [corpus accounting](model/results/corpus_stats.json), [benchmark runs](model/results/runs/all-v2/), [current experiment](model/experiments/train-v2-20260909.yaml).
 <!-- CURRENT-RESULTS:END -->

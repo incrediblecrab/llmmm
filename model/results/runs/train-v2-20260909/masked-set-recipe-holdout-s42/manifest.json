@@ -1,0 +1,59 @@
+{
+  "run_id": "masked-set-recipe-holdout-s42",
+  "model": "masked-set",
+  "family": "set_transformer",
+  "graph": "ii_graph_rh_train.npz",
+  "seed": 42,
+  "params": {
+    "d_model": 256,
+    "n_heads": 4,
+    "n_layers": 2,
+    "ff_mult": 2,
+    "dropout": 0.1,
+    "epochs": 3,
+    "lr": 0.001,
+    "batch_size": 512,
+    "max_recipes": 600000,
+    "max_len": 32,
+    "tie_output": true,
+    "warmup": 500,
+    "split": "recipe-holdout"
+  },
+  "created": "2026-09-09T12:00:18-0400",
+  "duration_s": 332.73495602607727,
+  "shape": [
+    1790,
+    256
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0",
+    "git": "0d35436",
+    "corpus_generation": "v2",
+    "corpus_sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9"
+  },
+  "metadata": {
+    "loss_history": [
+      4.312324604452658,
+      3.789752150931051,
+      3.6857338463912277
+    ],
+    "n_recipes": 600000,
+    "perplexity": 39.87437338071157,
+    "d_model": 256,
+    "n_heads": 4,
+    "n_layers": 2,
+    "ff_mult": 2,
+    "dropout": 0.1,
+    "epochs": 3,
+    "lr": 0.001,
+    "batch_size": 512,
+    "max_recipes": 600000,
+    "max_len": 32,
+    "tie_output": true,
+    "warmup": 500
+  }
+}
