@@ -92,7 +92,7 @@ make status
 ```
 
 `make setup-train` installs the package, tests, and local PyTorch support.
-`make check-code` needs no private data and is also run in GitHub Actions.
+`make check-code` runs locally and needs no private data.
 `make train` reads the experiment named by `workspace.json`, verifies its corpus
 generation and checksum, and resumes only that experiment's unfinished runs.
 EASE is the inexpensive control; masked-set is the conditional model being trained.
