@@ -105,6 +105,12 @@ private data bundle or an equivalent locally rebuilt corpus.** There is no publi
 dataset download hidden in `make restore`: supply an authorized local bundle.
 Restoration verifies archive and file checksums and refuses conflicting files.
 
+Snapshot packing and restoration currently require macOS or Linux (POSIX
+directory operations and hard links). The recovery command itself needs only
+Python's standard library: from `model/`, it can also be run as
+`python3 -m ingredient_model.recovery restore --bundle /private/path/archive.tar.gz`
+before installing the scientific dependencies.
+
 The core bundle deliberately excludes raw recipe downloads, the optional full-text
 index, credentials, caches and virtual environments. `make check-core` checks
 prepared training artifacts without claiming a raw-source audit.

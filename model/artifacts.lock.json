@@ -1,0 +1,874 @@
+{
+  "archive": {
+    "filename": "workspace-v2-20260909.tar.gz",
+    "format": "tar.gz",
+    "sha256": "b6a4d9cf42147b32f3aa6ef11416e67279669744bc24df94189c9ea90ba444c5",
+    "size": 196482353
+  },
+  "files": [
+    {
+      "group": null,
+      "path": "model/data/GENERATION.json",
+      "sha256": "851ad03658bc04db44c7e9fcf84f8b15b6e5d93f2d58e661278114970a2c27df",
+      "size": 543
+    },
+    {
+      "group": null,
+      "path": "model/data/aliases/en.json",
+      "sha256": "217229deecd8c3d4197aabcb15e45ce19aa2b21e0f234f3f242fc89fb46d3e9e",
+      "size": 3569
+    },
+    {
+      "group": null,
+      "path": "model/data/aliases/ru.json",
+      "sha256": "1ec19af86ebbba2da6e26e49b87aa3dca215722fe0ded0b2b848e3a357c61e5e",
+      "size": 12044
+    },
+    {
+      "group": null,
+      "path": "model/data/aliases/zh.json",
+      "sha256": "d98343b33f35fabb16c618a3a6caf3a291f93bd7a303f603a1f318c3437963d3",
+      "size": 17869
+    },
+    {
+      "group": null,
+      "path": "model/data/catalog/ingredients.csv",
+      "sha256": "82d9839e0b2eb7203d478c5354865b6836e8314b92bdce379e4bc59db309cf0d",
+      "size": 110183
+    },
+    {
+      "group": null,
+      "path": "model/data/catalog/ingredients.parquet",
+      "sha256": "20272357e337e3c37c0bb65969499ff7108a80db142674376bb3559ddc9ea987",
+      "size": 75257
+    },
+    {
+      "group": null,
+      "path": "model/data/catalog/substitutions.parquet",
+      "sha256": "ec340a365348cb98e18650c0dd8c42b35719f8cf1b19a8f8506e4ec4a30a57c4",
+      "size": 1930083
+    },
+    {
+      "group": null,
+      "path": "model/data/graphs/flavor_graph.npz",
+      "sha256": "31c2165e90c7f1a46a01d9cae3e6952cb2e874da493f0da98b12848ad65dcd90",
+      "size": 83408
+    },
+    {
+      "group": null,
+      "path": "model/data/graphs/ii_graph.npz",
+      "sha256": "8bad765cc36bb4a522fbd42c7717e684c054fa9a21bc1819ecd529dea037b3be",
+      "size": 1336549
+    },
+    {
+      "group": null,
+      "path": "model/data/graphs/ii_graph_full_train.npz",
+      "sha256": "2886cda1cc1c55683ae981dfca889c6221f381c66a4912a7c0fbffcbd3167274",
+      "size": 1550695
+    },
+    {
+      "group": null,
+      "path": "model/data/graphs/ii_graph_heldout.npz",
+      "sha256": "a73a8df6b9c35555054423d3a2a4ff19cf10f238087a1a415e9ea55467f5a863",
+      "size": 50356
+    },
+    {
+      "group": null,
+      "path": "model/data/graphs/ii_graph_recipe_train.npz",
+      "sha256": "49145e81e654db15755697d81528c90e4954dc571287fa87061984f561b58402",
+      "size": 1220449
+    },
+    {
+      "group": null,
+      "path": "model/data/graphs/ii_graph_rh_heldout.npz",
+      "sha256": "01629f930c0f8c877a505f94e5659420047588f11b985db40f9c6001dc76ed2a",
+      "size": 54205
+    },
+    {
+      "group": null,
+      "path": "model/data/graphs/ii_graph_rh_train.npz",
+      "sha256": "6392eb03c2ce47298767c53afffaaf8bfbd8ce10befa8a886a58daced54d8307",
+      "size": 1209653
+    },
+    {
+      "group": null,
+      "path": "model/data/graphs/ii_graph_train.npz",
+      "sha256": "5dbd3231b68da022898dffb8391d2d8772fbff60bf7293f0e7545d2a681e831e",
+      "size": 1123963
+    },
+    {
+      "group": null,
+      "path": "model/data/recipes/recipe_cooc.npz",
+      "sha256": "b42d162dc205f2dc0a304bf4ffa6272990e6fa3b857064f1213fa5652fab7977",
+      "size": 3550405
+    },
+    {
+      "group": null,
+      "path": "model/data/recipes/recipe_ids.npz",
+      "sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+      "size": 42080799
+    },
+    {
+      "group": null,
+      "path": "model/data/recipes/recipe_ids_rh_train.npz",
+      "sha256": "b53993d081a9eeaa2e9ebf08dd7bbf0f1047d661be3e55e0e968a3cf7f687de8",
+      "size": 29492571
+    },
+    {
+      "group": null,
+      "path": "model/data/recipes/recipe_ids_v1.npz",
+      "sha256": "9f7e3c2c4515eaa1fcfc0ba8250c90071c88b98edbcd92ec9886afef59d18bb6",
+      "size": 40703782
+    },
+    {
+      "group": null,
+      "path": "model/results/m6_ranks.npz",
+      "sha256": "7ef7b74413313536985d3df088bcaadd24a62d324fb26013d60b8ee27c6f060d",
+      "size": 613178
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/chem-svd-recipe-holdout-s0/embedding.npy",
+      "sha256": "0774b921a7874b6237752175a7ce5dd579e4d74394ac73041e77834a18e44fcd",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/chem-svd-recipe-holdout-s0/manifest.json",
+      "sha256": "fefc22fea5eb4c5313ca4e920c60546ff4b5dd3d1a67d72cb00e7c57350a9927",
+      "size": 570
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/chem-svd-recipe-holdout-s0/metrics.json",
+      "sha256": "71471b6d285d77dfbd4ebed24913dad3995ada973be15bd8021ac7d16c5b3e89",
+      "size": 1161
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/concat-svdppmi-sgnscooc-recipe-holdout-s0/embedding.npy",
+      "sha256": "cb3a9a76bf99d2347aabcb3eeccb3da419863ca6a8dfc528f7612edab0bf127b",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/concat-svdppmi-sgnscooc-recipe-holdout-s0/manifest.json",
+      "sha256": "774d25b4dca82bc16454413ddaed197eec152792fe51ea258370c59672f374ab",
+      "size": 896
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/concat-svdppmi-sgnscooc-recipe-holdout-s0/metrics.json",
+      "sha256": "628f3e9e9df96b577542a9b5c10eeaf88cc056032a9833c94e3fbc4089b1938f",
+      "size": 1174
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/ease-recipe-holdout-s0/embedding.npy",
+      "sha256": "fd1c7d27243a8ca1058f8495416b2fe87314568a6bc6bbe244ff5fa839aff270",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/ease-recipe-holdout-s0/item_scores.npy",
+      "sha256": "6f4862faece3ec69146947909bc596edf2efb524d01f7fefeb508272e5cdd5b8",
+      "size": 12816528
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/ease-recipe-holdout-s0/manifest.json",
+      "sha256": "1d622289e17c9d402de7b53a3bb3cfa9183e25ab26f7970c67fdd78002d988cb",
+      "size": 673
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/ease-recipe-holdout-s0/metrics.json",
+      "sha256": "5605943bda36c619bb270a78e0d3cb631a8130bba7b67c1fadb8cb52ea72501c",
+      "size": 1385
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/glove-recipe-holdout-s0/embedding.npy",
+      "sha256": "0a8e3bddc4d98af03f669b56a50edc1d4cac908117fda441ee0c58cfa2d4ac4d",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/glove-recipe-holdout-s0/manifest.json",
+      "sha256": "f78918243bea2eb24ae96c4bf83824ef78bc2b24b3b6ac450940d1f1b8918f63",
+      "size": 5731
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/glove-recipe-holdout-s0/metrics.json",
+      "sha256": "9ed387f5aa92729478e5cc4b8d5b1aa0d85a7705bb89fc4b575332e8c9cfeaee",
+      "size": 1177
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/ials-recipe-holdout-s0/embedding.npy",
+      "sha256": "4a652ca75dfe0cff712c0c272bfbb0dcae5df2a5a6f891b279924107feefaef4",
+      "size": 916608
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/ials-recipe-holdout-s0/manifest.json",
+      "sha256": "6ae604061b291d5a59a04109d4d628759ef75700ee72ecb4026bba4ddcd47d3f",
+      "size": 690
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/ials-recipe-holdout-s0/metrics.json",
+      "sha256": "0dfeaf3ff4ba47046fadca6434491cadc06b27679d259f73a6ffa18791456b05",
+      "size": 1159
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/item2vec-recipe-holdout-s0/embedding.npy",
+      "sha256": "2d7cb656ec5693c9b17a29637f6a067c41f59676fb109afa54bcde90fc1c692a",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/item2vec-recipe-holdout-s0/manifest.json",
+      "sha256": "5b306a670d31e419fe1fde3b26cf1a32107bfeca5d572b823199ed1eb165d752",
+      "size": 901
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/item2vec-recipe-holdout-s0/metrics.json",
+      "sha256": "9b3b5086ebcb1cca55360115b9e80620898b9891cc1269376c716bd61dc4d961",
+      "size": 1150
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/lightgcn-recipe-holdout-s0/base_table.npy",
+      "sha256": "1c5555155dc41c771e9f7e0da95f9c0736b123662d4ad555c2a11b78a357a736",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/lightgcn-recipe-holdout-s0/embedding.npy",
+      "sha256": "3cd2b2601baa9f4385722bf25d699553ab6081229f7868468a2d07fe6867b6a6",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/lightgcn-recipe-holdout-s0/manifest.json",
+      "sha256": "7e618cb195e6f90b061285517d065f8e8e5ed0d2992f8e4b381c67f87db4b188",
+      "size": 2327
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/lightgcn-recipe-holdout-s0/metrics.json",
+      "sha256": "aa36c95eaeb2476b24997d33f9c43dc4ab1268fca437435af1f5325fd166f9cd",
+      "size": 1178
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/embedding.npy",
+      "sha256": "03f4ead2034d3c7f9eda3716eb8a49c4af716d58c47ad7ffdec5f49fc1264740",
+      "size": 1833088
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/manifest.json",
+      "sha256": "392c9fd5957ebcc3caa745157a1a738bdee0e1c868df77bfb3b954582d0d90ed",
+      "size": 963
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/metrics.json",
+      "sha256": "d33feee4ad774b3cd67806fcc6081b4261df44b45fa88db7b9a0c1e6f152e106",
+      "size": 1348
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__bias.npy",
+      "sha256": "1cb2a72f8522263524859ffd4f5ab547d4cfc9d5d6629dce1f898b8527b2381e",
+      "size": 7288
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__linear1__bias.npy",
+      "sha256": "4f3c75f7c7536ea5749a0dd40485cfe35ade3e620b2fba3a5bfe8643857d0b84",
+      "size": 2176
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__linear1__weight.npy",
+      "sha256": "2749bd613845972b2a233b444f827893bca8e60f6c236397c6800e711a6c15f5",
+      "size": 524416
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__linear2__bias.npy",
+      "sha256": "822ced722df7c3d06d6f6e312ad5b5e278fecc35d81fbd654f43a227b109b38e",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__linear2__weight.npy",
+      "sha256": "cc939f57e51746757836c96f3eb723ff86b379839794b27d4a91c6b6d78b0a65",
+      "size": 524416
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__norm1__bias.npy",
+      "sha256": "44933bb6d5046619fc5fdadf41368ea82463e970542c4c0762499b97c69bb369",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__norm1__weight.npy",
+      "sha256": "d2f670a7c87a924dbc598cc963d5455a6c92d34b516817db26c67b757fe0e02b",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__norm2__bias.npy",
+      "sha256": "6c7a32079a32d90d5924688a4f055a24398d954dd19fd5b70593c0c7feaee286",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__norm2__weight.npy",
+      "sha256": "afd0b51b6cc22e11fc51e1cdc9f177e46e8fef35e4013a7794c4e376cd144f6f",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__self_attn__in_proj_bias.npy",
+      "sha256": "5888f4d1664ede2215214714068819ce7de931f98a9ed4b533fdca5f310e917f",
+      "size": 3200
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__self_attn__in_proj_weight.npy",
+      "sha256": "0acd019043d0aa53e8d37db3b12d8fc1d1897981c5694e0ab5e9f056a42f8f63",
+      "size": 786560
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__self_attn__out_proj__bias.npy",
+      "sha256": "7d2ee96eaa9250f93eeae36e8c968b3d0c94dd5bc5cef272b1b112e99064f1bd",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__0__self_attn__out_proj__weight.npy",
+      "sha256": "abedcea0cfd8d3cddabd0c3974266cc258b44889afca89ecd410d1ee406fa2d3",
+      "size": 262272
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__linear1__bias.npy",
+      "sha256": "7b942f867bc049053198b3fec0efbed14c19cbe98f0708e65865c417c87f362e",
+      "size": 2176
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__linear1__weight.npy",
+      "sha256": "700b00579edb2850b2c1fccbeebdd96b17ca8d63b9ea89b7360a9e6158c2dd28",
+      "size": 524416
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__linear2__bias.npy",
+      "sha256": "566ac9b3a45a5ea454cd625d2d2c8f7e662ce00aa31a29963f600d6357a39625",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__linear2__weight.npy",
+      "sha256": "9f2ab7feaff51780eb9f497f47da4164ddc925ddace8e7519854fdb87f4d28cb",
+      "size": 524416
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__norm1__bias.npy",
+      "sha256": "160eb50a03c5c8cf25e24f32c4ac3dcb1f950755248b7d14252a2addf71cf878",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__norm1__weight.npy",
+      "sha256": "6c950371cd9014f873fb0c21e1638f4bf457a5ee5c489397ac47ef9a1ab0203b",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__norm2__bias.npy",
+      "sha256": "47b37e6c14f98d99d47457399a103600fa9c08c3d685cceec711824f6eaa3d6d",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__norm2__weight.npy",
+      "sha256": "cde7876806927e6ed7f481e2ef468c9e82f121c1433a949c84be92f4b24140a2",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__self_attn__in_proj_bias.npy",
+      "sha256": "aeab21e29ff315c24b7f14c382372ce537c1880e5f828f2bc6ce79626203e52d",
+      "size": 3200
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__self_attn__in_proj_weight.npy",
+      "sha256": "07bd4ca0fb1061f3fd9c1ea04acdd1a8ac17a95e7c5954f0c01c449b6bd93e42",
+      "size": 786560
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__self_attn__out_proj__bias.npy",
+      "sha256": "f5c4888ea392fdc1119814718c6c7c05019654bfca5dc3a9c78e3c7e4f022f5c",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__enc__layers__1__self_attn__out_proj__weight.npy",
+      "sha256": "2fc9f36bc0e0abf3e9ff318573fd35190e47ce81b70b4901d06a9f69add64e7b",
+      "size": 262272
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__norm__bias.npy",
+      "sha256": "d6606acb96a6fbdcd04eef280102b0b95bc99b7c624412b5f6bdfb7fc2b7003b",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__norm__weight.npy",
+      "sha256": "e4a4a33055a45633dfc0bf5072c42745a3b8bc61f9d100e48ec9d1a1760b863a",
+      "size": 1152
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/masked-set-recipe-holdout-s0/state__tok__weight.npy",
+      "sha256": "4c68f851c796a7acd037dfc714324710c9560281f5f81cd507188bcbc1ffdf69",
+      "size": 1834112
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/residual-svdppmi-sgnscooc-recipe-holdout-s0/embedding.npy",
+      "sha256": "ca2dd6a8cba99c8cde69dd05263202f9cf639bd4c0c06828dc7b2799bd4ea262",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/residual-svdppmi-sgnscooc-recipe-holdout-s0/manifest.json",
+      "sha256": "398d921a1220602b2580f2d0afd7628537f73c826ba35d59048f3f0f267dd505",
+      "size": 914
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/residual-svdppmi-sgnscooc-recipe-holdout-s0/metrics.json",
+      "sha256": "cd971172c2bd4762a80ff81389b8b685cbcacf8898717319d88d8ac97bed31ad",
+      "size": 1178
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/residual-svdppmi-sgnscooc-recipe-holdout-s0/projection.npy",
+      "sha256": "edbe64da647cd1ebf7fbb15f78d091293f651ec3f101c40542a5aae6a0773ae3",
+      "size": 361328
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgc-recipe-holdout-s0/embedding.npy",
+      "sha256": "56c21d2de5b6a386f5ca9dac9e6725ec248a4fb639a02cce27382f41eba17951",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgc-recipe-holdout-s0/manifest.json",
+      "sha256": "b86c3eeb6e9e6749799bab84ab1ac937815a06d3a8b87d177106597de348ebe6",
+      "size": 622
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgc-recipe-holdout-s0/metrics.json",
+      "sha256": "66cc3fa11200fecfb6812288a8d53926f3e29853150648cc4817fbbe9b3f9264",
+      "size": 1159
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-chem-recipe-holdout-s0/context_table.npy",
+      "sha256": "7e6efefd2cb6354c8ddffc10136b0779b6dd1fb28131f9417143cf965aa105a6",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-chem-recipe-holdout-s0/embedding.npy",
+      "sha256": "2799ac1cb46cfe525f2bbb063f6038f511fa02731ddd2a53c66c44647a329f35",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-chem-recipe-holdout-s0/manifest.json",
+      "sha256": "c4ff87db77133b0c7e4c1f8f71c31d54cc76f6c6d68f15a1d50b046e1bbbd1d1",
+      "size": 1291
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-chem-recipe-holdout-s0/metrics.json",
+      "sha256": "5058060ecee5c9bee951f6f539b28d914bed2eb25188d47b09ea0790b5caf877",
+      "size": 1161
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-cooc-recipe-holdout-s0/context_table.npy",
+      "sha256": "9a42ee81ddfe37ec400d3d984fb833443642dadc46900b3b3527350170f47242",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-cooc-recipe-holdout-s0/embedding.npy",
+      "sha256": "9453b9a888e73e79a3437a8eb270514d192f22748dd72ca3689212b74f84c1bd",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-cooc-recipe-holdout-s0/manifest.json",
+      "sha256": "73ead5c314d3f4f0fbe64ca28feb03bc2dbd504bf33e915eefdce67edcdacc7b",
+      "size": 1282
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-cooc-recipe-holdout-s0/metrics.json",
+      "sha256": "81a897e8755eeb8835dbf8fc98ef7207a82ba2040e6ffee51a87ae3c155d3ca4",
+      "size": 1197
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-core-recipe-holdout-s0/context_table.npy",
+      "sha256": "86de130245a7f10d2aa595f459d757bf6b60cbb32a994a2b37be25e78c430aaf",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-core-recipe-holdout-s0/embedding.npy",
+      "sha256": "ece8358d8dce5dbb04d116df599242a3bd5f702562d4e8b88c58283fee1124e5",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-core-recipe-holdout-s0/manifest.json",
+      "sha256": "e81cbf9812bfefc140f0604bbcb60242657c471dab76244673f328005b727a6d",
+      "size": 1309
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/sgns-core-recipe-holdout-s0/metrics.json",
+      "sha256": "aefb2bad5ab6fd665f66981b0a8a4c53424c58331f71420f962543d21c2303f6",
+      "size": 1190
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/svd-ppmi-recipe-holdout-s0/embedding.npy",
+      "sha256": "47710d2266f2d1332eb1c7095e153cf0c936d9653be0b4ebb8b6174b8d19699b",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/svd-ppmi-recipe-holdout-s0/manifest.json",
+      "sha256": "73c49c7b121de77ba1f976a84ed94a763101ee556c237e41ed8a9e62fc3aceac",
+      "size": 570
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/svd-ppmi-recipe-holdout-s0/metrics.json",
+      "sha256": "ee429af165f0c04e8cec04bf6890106d9f982826621da982cdef5ec7ffe2496a",
+      "size": 1192
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/text-aligned-svdppmi-recipe-holdout-s0/embedding.npy",
+      "sha256": "ce8061524b0412ff27c33ff987fbcaa1f6e0a2b88392c83ad16755e325f0e737",
+      "size": 2148128
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/text-aligned-svdppmi-recipe-holdout-s0/manifest.json",
+      "sha256": "bcc9f8d263ae35ea0804fe13e8c814850363cc43d3b9e2fec2b720c9956ea28f",
+      "size": 853
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/text-aligned-svdppmi-recipe-holdout-s0/metrics.json",
+      "sha256": "63ed0e572bac93c4589f1fcde78cc17f3ee216e0b777f9710299f4fe1756392c",
+      "size": 1176
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/text-aligned-svdppmi-recipe-holdout-s0/projection.npy",
+      "sha256": "d37bd336295fdd1e8dc93eeba46aa3987ec4f4750a16b587d8a4ff07f605f8d3",
+      "size": 1844528
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/text-embed-recipe-holdout-s0/embedding.npy",
+      "sha256": "b6a54fb6fb66bacf35bfb87ad4173cd74fd298f3576eb00c7a6889d662e66f4f",
+      "size": 10997888
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/text-embed-recipe-holdout-s0/manifest.json",
+      "sha256": "9f49368c3ca9263b29a6e48416ca89f4aa15c1a267ddf7960897355e0113dd93",
+      "size": 697
+    },
+    {
+      "group": "all-v2",
+      "path": "model/results/runs/all-v2/text-embed-recipe-holdout-s0/metrics.json",
+      "sha256": "1bcfa18f27ee3909e817f0cae0608906ef61ce1220062a74d5ecad1bbf87ff6b",
+      "size": 1157
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/ease-recipe-holdout-s42/embedding.npy",
+      "sha256": "fd1c7d27243a8ca1058f8495416b2fe87314568a6bc6bbe244ff5fa839aff270",
+      "size": 2148128
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/ease-recipe-holdout-s42/item_scores.npy",
+      "sha256": "6f4862faece3ec69146947909bc596edf2efb524d01f7fefeb508272e5cdd5b8",
+      "size": 12816528
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/ease-recipe-holdout-s42/manifest.json",
+      "sha256": "668f25d1caa92aced6eb8fb4b3966291e74eace4eda304914fe9db2cdbdf4ef7",
+      "size": 824
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/ease-recipe-holdout-s42/metrics.json",
+      "sha256": "5605943bda36c619bb270a78e0d3cb631a8130bba7b67c1fadb8cb52ea72501c",
+      "size": 1385
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/embedding.npy",
+      "sha256": "3534ceaeaebd464442b307cfb132290ef0d2477991035eb0adce0026941365c1",
+      "size": 1833088
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/manifest.json",
+      "sha256": "321dccd16642a73c1b21774b2c8b1f96788f9af03a8c89eac65b34e574fce4ef",
+      "size": 1295
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/metrics.json",
+      "sha256": "6b9cb019f163d0c3dabbc6d254f9de8bed9145b20528e849374e74771bf1e07c",
+      "size": 1350
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__bias.npy",
+      "sha256": "580b8d95710b8eb378e84be51551d4e92469a97e95de3362ee8cbf7837f68b0a",
+      "size": 7288
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__linear1__bias.npy",
+      "sha256": "d4591ca70acfc73dfa403695ecb7a11abfaf8c50014b5e7517336c1983677383",
+      "size": 2176
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__linear1__weight.npy",
+      "sha256": "aed57640425d7f05d56d63ba1f8990e93225b13c02937c1da2f4b44014419de0",
+      "size": 524416
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__linear2__bias.npy",
+      "sha256": "496a37d368a72f191af4df9c8ae61370c2b3d540a8b69c1386349c60167ae16e",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__linear2__weight.npy",
+      "sha256": "d3725938826610566e566b3fa7ecd41a19fbeb13b5686f0f21d6876e4f57de76",
+      "size": 524416
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__norm1__bias.npy",
+      "sha256": "d70fe9bc12d5a35e4b757a6c87eab81fb0956a57222c6ec60702ce2002b70982",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__norm1__weight.npy",
+      "sha256": "f913e29628780c29081dd747b3a7182172b94a7c70c58edb19506c4f95f46e8d",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__norm2__bias.npy",
+      "sha256": "15b186dac1e8c7ad3d46ac7c0cd38062a3392bee6307860baade253b7d9e0745",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__norm2__weight.npy",
+      "sha256": "c9abd59ffc1a283d30c73c1daabe9a3fa7bb9fc34af84099c2b3c08bef4884a9",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__self_attn__in_proj_bias.npy",
+      "sha256": "f101817b6611af6fffeb379fe599788148be9da6787b05ab449b77117558f7ca",
+      "size": 3200
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__self_attn__in_proj_weight.npy",
+      "sha256": "2d22d9e82666dc260257789c01ccdff01b2b5f717c30c6d5aa9be721eecbe1ef",
+      "size": 786560
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__self_attn__out_proj__bias.npy",
+      "sha256": "6d027a27f86ea2317c2274fc16d8b2db3ad33d872875b800c5a2cd9387c29e38",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__0__self_attn__out_proj__weight.npy",
+      "sha256": "0e49425e3c6f545cef5062ea911096a1bf6286896b1999460817637db883fd27",
+      "size": 262272
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__linear1__bias.npy",
+      "sha256": "d0452ab7352c992ef61a1fe2aac7514e3ab6a8fa7712b15d5d9f74ec9dafeba6",
+      "size": 2176
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__linear1__weight.npy",
+      "sha256": "20a3f2117b9ff244dbfe71205d77d14780bf5c551c5eeea6d057d9bd0d4999ff",
+      "size": 524416
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__linear2__bias.npy",
+      "sha256": "b956045d521839e2ef8104c50e861ef327b826dbcb1343c80cb3d4bc5388108a",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__linear2__weight.npy",
+      "sha256": "72d9e452976974f97be2950a19b8901454247b53f90cfe5776fe90ee25015392",
+      "size": 524416
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__norm1__bias.npy",
+      "sha256": "5d8d249e872ed1f4b8dd60d733209187c9182401069cf9a78ae0c5c42a7e29b8",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__norm1__weight.npy",
+      "sha256": "eb8c06261ebea30315171bfbc697734956f2802d662f47a03fcfc0ef9a3c5528",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__norm2__bias.npy",
+      "sha256": "3f9bcc47cec7a6e67db29d64ed2fff98f2f9c9a24a1ddf87049aabe852a876dc",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__norm2__weight.npy",
+      "sha256": "b1e01eafafcdaca18946628349113f0d03a69b21fa262ee6d9ca826a30c98a6d",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__self_attn__in_proj_bias.npy",
+      "sha256": "d70cc5e9dc68a8c56ae1c0aa74598f0363f9c91ce058666f2e81ab67f7ac637c",
+      "size": 3200
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__self_attn__in_proj_weight.npy",
+      "sha256": "20f5494284a04b5f094f036ed37db718774fee894abbca32cb0a42e38fab6a30",
+      "size": 786560
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__self_attn__out_proj__bias.npy",
+      "sha256": "28b314c8fa2aa97425f8c473074d3b725b44d5d29ac596faacb2cc5aa4c96da0",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__enc__layers__1__self_attn__out_proj__weight.npy",
+      "sha256": "66cccc89cf14ef67b1a008d0a322a66c558df77551f8bbe26a66602d45756d60",
+      "size": 262272
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__norm__bias.npy",
+      "sha256": "3bd6d6b9c6ed06676627634ab9e0884f3bfc3fc45548c6b8a4cf64726e9bbe53",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__norm__weight.npy",
+      "sha256": "552a7bb718a01ecc6937d542429951f5b968a3b75d3ce61bd18c8fd2037e0dbe",
+      "size": 1152
+    },
+    {
+      "group": "train-v2-20260909",
+      "path": "model/results/runs/train-v2-20260909/masked-set-recipe-holdout-s42/state__tok__weight.npy",
+      "sha256": "e52dd4793b412475581faa8229cf28f0bcb35460ddc73cfab82b2fccb2bc7dd4",
+      "size": 1834112
+    },
+    {
+      "group": null,
+      "path": "prior-study/data/raw/epicure-cooc/vocab.json",
+      "sha256": "5a10278cd71eeb66051d23ef8621b917a60ecd493d4580f60d324623191f8005",
+      "size": 35104
+    }
+  ],
+  "run_groups": {
+    "all-v2": [
+      "chem-svd-recipe-holdout-s0",
+      "concat-svdppmi-sgnscooc-recipe-holdout-s0",
+      "ease-recipe-holdout-s0",
+      "glove-recipe-holdout-s0",
+      "ials-recipe-holdout-s0",
+      "item2vec-recipe-holdout-s0",
+      "lightgcn-recipe-holdout-s0",
+      "masked-set-recipe-holdout-s0",
+      "residual-svdppmi-sgnscooc-recipe-holdout-s0",
+      "sgc-recipe-holdout-s0",
+      "sgns-chem-recipe-holdout-s0",
+      "sgns-cooc-recipe-holdout-s0",
+      "sgns-core-recipe-holdout-s0",
+      "svd-ppmi-recipe-holdout-s0",
+      "text-aligned-svdppmi-recipe-holdout-s0",
+      "text-embed-recipe-holdout-s0"
+    ],
+    "train-v2-20260909": [
+      "ease-recipe-holdout-s42",
+      "masked-set-recipe-holdout-s42"
+    ]
+  },
+  "version": 1,
+  "workspace": {
+    "path": "model/workspace.json",
+    "sha256": "d8c74322671d606c15c75d80302a4af3d991e017f7ae9a127f6d6ef1c556afcb",
+    "size": 1348
+  }
+}
