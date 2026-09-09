@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -85,3 +86,37 @@ def test_incomplete_or_inconsistent_training_cannot_pass_verification(production
     (run / "manifest.json").write_text(json.dumps(manifest))
     with pytest.raises((ValueError, FileNotFoundError)):
         verify_full_training(run, data, expected_recipes=3)
+
+
+def test_production_export_has_coverage_and_reload_evidence_not_a_borrowed_score(
+        production, tmp_path, monkeypatch):
+    pytest.importorskip("huggingface_hub")
+    pytest.importorskip("safetensors")
+    from ingredient_model.config import REPO
+    monkeypatch.syspath_prepend(str(REPO / "scripts"))
+    import export_native_model as exporter
+
+    run, data = production
+    monkeypatch.setattr(exporter, "PATHS", SimpleNamespace(data=data))
+    monkeypatch.setattr(exporter, "load_recipes", lambda: SimpleNamespace(itos=["a", "b", "c", "d"]))
+    generation = json.loads((data / "GENERATION.json").read_text())
+    manifest = json.loads((run / "manifest.json").read_text())
+    args = SimpleNamespace(
+        out=tmp_path / "export", report=tmp_path / "release.json", candidate="fixture",
+        repo_id="incrediblecrab/llmmm-recipes", tag="v0.3.0-all-recipes")
+    assert exporter.export_production(args, generation, run, manifest) == 0
+    report = json.loads(args.report.read_text())
+    assert report["training"]["example_presentations"] == 6
+    assert report["evaluation_status"] == "not_run"
+    assert report["reload_parity"]["all_state_tensors_identical"] is True
+    assert report["reload_parity"]["max_absolute_logit_error"] == 0
+    assert "recall_at_10" not in report
+    assert not (args.out / "evaluation.json").exists()
+    card = (args.out / "README.md").read_text()
+    assert "all 3 canonical recipe records" in card
+    assert "no held-out quality score" in card
+    from publish_native_model import read_package
+    assert read_package(args.out)["training"]["recipes_per_epoch"] == 3
+    (args.out / "evaluation.json").write_text('{"recall_at_10": 1.0}')
+    with pytest.raises(ValueError, match="six allowed"):
+        read_package(args.out)

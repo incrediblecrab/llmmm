@@ -4,7 +4,7 @@ BUNDLE ?= ../.artifacts/workspace-v2-20260909.tar.gz
 HF_EXPORT ?= ../.artifacts/hf/llmmm-ingredients-full-v0.2
 PRODUCTION_EXPORT ?= ../.artifacts/hf/llmmm-recipes-v0.3
 
-.PHONY: help setup setup-train setup-hf data import-legacy test test-code gate list baselines report clean check check-core check-code sanity sanity-derived recipes text coverage aliases rebuild docs snapshot restore verify train train-full-native train-all-recipes verify-all-recipes export-native status hf-compare generation-audit
+.PHONY: help setup setup-train setup-hf data import-legacy test test-code gate list baselines report clean check check-core check-code sanity sanity-derived recipes text coverage aliases rebuild docs snapshot restore verify train train-full-native train-all-recipes verify-all-recipes export-all-recipes export-native status hf-compare generation-audit
 
 help:
 	@echo "setup      create .venv and install the package"
@@ -26,6 +26,7 @@ help:
 	@echo "train-full-native run the uncapped native data-scaling experiment"
 	@echo "train-all-recipes train llmmm-recipes on all 4,653,430 rows without held-out scoring"
 	@echo "verify-all-recipes verify completed all-record training and restore its predictor"
+	@echo "export-all-recipes package all-record weights without borrowing old evaluation scores"
 	@echo "export-native export/reload/evaluate the full candidate (HF_EXPORT=unused/path)"
 	@echo "status     print current project status from its exact source artifacts"
 	@echo "recipes    prove every recipe is readable, and show the source mix"
@@ -63,6 +64,9 @@ train-all-recipes:
 
 verify-all-recipes:
 	$(PY) scripts/verify_full_training.py --out results/all_record_training_validation.json
+
+export-all-recipes:
+	OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 $(PY) scripts/export_native_model.py --production --out "$(PRODUCTION_EXPORT)"
 
 export-native:
 	$(PY) scripts/export_native_model.py --out "$(HF_EXPORT)"

@@ -1,0 +1,73 @@
+{
+  "status": "verified_all_record_training",
+  "run_id": "llmmm-recipes-full-s42",
+  "corpus_generation": "v2",
+  "corpus_sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+  "recipes_per_epoch": 4653430,
+  "ingredient_slots_per_epoch": 36707624,
+  "epochs": 3,
+  "example_presentations": 13960290,
+  "ingredient_slot_presentations": 110122872,
+  "optimizer_steps": 27267,
+  "minimum_recipe_length": 1,
+  "maximum_recipe_length": 98,
+  "epoch_coverage": [
+    {
+      "epoch": 1,
+      "unique_recipes": 4653430,
+      "examples_seen": 4653430,
+      "ingredient_slots_seen": 36707624,
+      "every_eligible_recipe_once": true
+    },
+    {
+      "epoch": 2,
+      "unique_recipes": 4653430,
+      "examples_seen": 4653430,
+      "ingredient_slots_seen": 36707624,
+      "every_eligible_recipe_once": true
+    },
+    {
+      "epoch": 3,
+      "unique_recipes": 4653430,
+      "examples_seen": 4653430,
+      "ingredient_slots_seen": 36707624,
+      "every_eligible_recipe_once": true
+    }
+  ],
+  "complete_predictor_restored": true,
+  "evaluation_status": "not_run",
+  "training_code_sha256": "6e2d466d0cc17460e834a3b52ca27e89ffe37741ceb78969c75e62eaddc17cd4",
+  "artifact_sha256": {
+    "manifest.json": "dc4acfede9d363ba34eef77ac610ce5c19e03f8b5a774dbbddf6c6a2714d3399",
+    "metrics.json": "c09da36422d16db460d8e9d488896ea92e52e12a2a8905239e449d7c788455a0",
+    "embedding.npy": "27ebe421011d58780fd3c58e1daf4b1674e47b513728246501461cc21fdf04e8",
+    "state__bias.npy": "c166994f97403c270fab418a636390a95a5a76afe2fb40e37d48dfb60a5534d1",
+    "state__enc__layers__0__linear1__bias.npy": "50ca6bb7825026e154859eb15661ef0cd3ad4e8d74351487cc783bad7ef04557",
+    "state__enc__layers__0__linear1__weight.npy": "7d43756285e3022276cc65c3ac941867ac8a204d0012a4774ce8acae7c1a12e0",
+    "state__enc__layers__0__linear2__bias.npy": "d3e845f8e9df5d0a1c8ebbc6482c5c19b47760cd3358f33a6368c23f50c0dac7",
+    "state__enc__layers__0__linear2__weight.npy": "0ee5df3bd0e54b4f1abfc07e3d239f4a73bb3335b01c8a8f88f3a805af52d8a6",
+    "state__enc__layers__0__norm1__bias.npy": "16b43c27a0582a539f6ceed623458e3fef4114143d28cc7cb3efadd235142d21",
+    "state__enc__layers__0__norm1__weight.npy": "7a54596221e5ee17a478000e11e734a2150dfe4232d4a224da8df2291a364fd8",
+    "state__enc__layers__0__norm2__bias.npy": "607a11a6e6b14580ab76821c66f52877f433f4910a3800149bb6597c5fc39868",
+    "state__enc__layers__0__norm2__weight.npy": "09afb7008b120e7388078d605221bd0efd6aa956b17ecb9042ed074f8bca53b1",
+    "state__enc__layers__0__self_attn__in_proj_bias.npy": "1af05231205e2a5cf47ebf753bf7599827e9b81305ed0210fe480aff9dafaff2",
+    "state__enc__layers__0__self_attn__in_proj_weight.npy": "f5ae56489815473a37a99be66f093089c7a468e915b7da6ff8ba01846ced5a39",
+    "state__enc__layers__0__self_attn__out_proj__bias.npy": "51379a508ca434b8ef0c17bbbc699a2583cee40f649830eb9603b04d1d07e400",
+    "state__enc__layers__0__self_attn__out_proj__weight.npy": "2760f4f59e24ff4c2882535d44b6290ee63bb47bed996197fa4c5fa499ec6bff",
+    "state__enc__layers__1__linear1__bias.npy": "d7715ff670d7136f7e529e46847a65efc60657265454064eb629036533a70734",
+    "state__enc__layers__1__linear1__weight.npy": "8d59136e73316a4b669acccb3c1e7b4262a67740b41e158fe81de4b49db677b1",
+    "state__enc__layers__1__linear2__bias.npy": "0189c0703de65823ab2c2e45d6f297315dd7ad98403c3b6a3f9f292c278ec936",
+    "state__enc__layers__1__linear2__weight.npy": "397cc971c2849c3a0e160af7502801d777ec96c3d2e4b74fefb4e9edfcabde66",
+    "state__enc__layers__1__norm1__bias.npy": "57bdb8f13195269d924025fe197b4e2c8088f37bf2064ddab7240137030f8c18",
+    "state__enc__layers__1__norm1__weight.npy": "128fb214a8c098d6d8d616cc367beb795405e6e046ba48233c86708313107db1",
+    "state__enc__layers__1__norm2__bias.npy": "d4bb4bf3a00131c065857694ecdcfa4fa12a3bb0d830a94b03af79be652d2d33",
+    "state__enc__layers__1__norm2__weight.npy": "2c4224a28e613a23ab0291f7cec6b12653e83b5942b33062ca105ce8ead96651",
+    "state__enc__layers__1__self_attn__in_proj_bias.npy": "392c429aca8c05907a115bc9504288249d256e3eb6472b8b2cae559c7bf9944c",
+    "state__enc__layers__1__self_attn__in_proj_weight.npy": "c2cc4e9b3d2880f74609e8e066098fd039eb20e68c47b079b1e691cef3b71002",
+    "state__enc__layers__1__self_attn__out_proj__bias.npy": "96224837fc98ee7b9187bc4622f0d864650a357d14ee33c09e7cdb06002b99f6",
+    "state__enc__layers__1__self_attn__out_proj__weight.npy": "0b0e0e0bde595c2f87fbb345878820e21469047d5eaeaa8a8c5c703ad405dfdc",
+    "state__norm__bias.npy": "b9eb1af9fd022d32c00d3944d3ef561f044bca7452b5b4d1c85a86cb53a40b83",
+    "state__norm__weight.npy": "6d7ee03d1adba142a8d167885befd0fc5e90f8dfca162318b07c5c0ae82afb6f",
+    "state__tok__weight.npy": "342ded7ff8c2d5cc7adede091ecf6d9cc72ab5495631c8a0c22df28e7d349631"
+  }
+}

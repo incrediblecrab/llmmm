@@ -129,7 +129,7 @@ def render_status(root: Path) -> str:
 
     lines += [
         "",
-        f"**Current training: `{config.training_sweep}` "
+        f"**Evaluated training cohort: `{config.training_sweep}` "
         f"({len(training)}/{len(expected_training)} runs scored).**",
         "",
     ]

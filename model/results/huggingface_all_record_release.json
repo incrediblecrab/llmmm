@@ -1,0 +1,54 @@
+{
+  "repo_id": "incrediblecrab/llmmm-recipes",
+  "url": "https://huggingface.co/incrediblecrab/llmmm-recipes",
+  "revision": "a2f67609a1cedb9578daab40b3e1f8192731e6de",
+  "tag": "v0.3.0-all-recipes",
+  "private": true,
+  "status": "verified_private_all_record_model",
+  "source_code_revision": "a92b96bd2cdd77521abe6de66d50c806e908455f",
+  "recipes_per_epoch": 4653430,
+  "epochs": 3,
+  "example_presentations": 13960290,
+  "evaluation_status": "not_run",
+  "files": {
+    "README.md": {
+      "bytes": 3059,
+      "sha256": "6e7e10c55484d215dca4dddd5a6de0e8c2d38e24976ad24f17f582b68b6e53c7"
+    },
+    "config.json": {
+      "bytes": 32799,
+      "sha256": "1bf792345b8face5975534312b676fcea1b53e5fa9c0e844948c4db743aa72ce"
+    },
+    "model.safetensors": {
+      "bytes": 6062848,
+      "sha256": "1afa035ad661e197acac39df7b249516dba5bffd65cb7ad1007c4f0daa6e7eed"
+    },
+    "release_policy.json": {
+      "bytes": 600,
+      "sha256": "3eda1147edecf30432a1eb0467d4caf99de093943c9dac3adef25c0b8b4c5a20"
+    },
+    "training_manifest.json": {
+      "bytes": 2313,
+      "sha256": "dc4acfede9d363ba34eef77ac610ce5c19e03f8b5a774dbbddf6c6a2714d3399"
+    },
+    "training_verification.json": {
+      "bytes": 5722,
+      "sha256": "b135d15dcc783a5a5004442576a26bc93e02483785d8a4080491c74a0f547293"
+    }
+  },
+  "preserved_tags": {
+    "v0.2.0-preview": "e236fad997a37b6a89cf5cdce8d58fa4e70d2d66"
+  },
+  "preserved_tag_refs": {
+    "v0.2.0-preview": "80448d074299eb587d6c434099d51eb3897de44b"
+  },
+  "verified_at": "2026-09-09T22:44:43.696945+00:00",
+  "verification": {
+    "file_hashes_match": true,
+    "version_tag_matches_commit": true,
+    "remote_model_reloads": true,
+    "inference_without_private_corpus": true,
+    "recommendation_contexts_matched": 3,
+    "stale_evaluation_file_absent": true
+  }
+}

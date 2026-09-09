@@ -11,7 +11,7 @@ redistributed here.** Some upstream data has noncommercial or unresolved terms;
 see the [licensing audit](prior-study/docs/LICENSE_AUDIT.md). A local recovery
 bundle is not permission to publish its contents or use them commercially.
 
-## Current results
+## Evaluated results
 
 The section below is generated from named artifacts, not copied from terminal
 output. Run `make -C model status` to inspect it and
@@ -44,7 +44,7 @@ All score columns are recall@10. Native is the full predictor where available; a
 | sgns-chem | 0.0149 | 0.0201 | - |
 | item2vec | 0.0123 | 0.1483 | - |
 
-**Current training: `train-v2-20260909` (2/2 runs scored).**
+**Evaluated training cohort: `train-v2-20260909` (2/2 runs scored).**
 
 | Model | Seed | Native recall@10 | Lift over popularity | Training time |
 |---|---:|---:|---:|---:|
@@ -65,24 +65,37 @@ The [full-partition run](model/experiments/train-v2-full-20260909.yaml) removed
 the recipe-sampling cap while keeping the architecture, seed and epoch count
 fixed. Its [evaluation](model/results/native_full_release.json) records the
 paired comparison and export verification. The manifest counts recipes that
-passed the length filter and examples processed during training.
+passed the length filter: **3,145,078 records**. Its weights remain available as
+[v0.2.0-preview](https://huggingface.co/incrediblecrab/llmmm-recipes/tree/v0.2.0-preview),
+with the original [upload record](model/results/huggingface_release.json).
 
-The predictor is available as a
-[private Hugging Face preview](https://huggingface.co/incrediblecrab/llmmm-recipes),
-tagged `v0.2.0-preview`. The [upload record](model/results/huggingface_release.json)
-contains the commit and file hashes. Public-release permissions remain unresolved.
+## llmmm-recipes: all-record checkpoint
 
-An [all-record production fit](model/experiments/production-v2-all-20260909.yaml)
-is separate from that evaluated preview. `make -C model train-all-recipes` uses
-all **4,653,430** canonical recipe records, with no sampling or length filter.
-Each epoch checks that every row and every ingredient slot was processed.
+**Training completed on all 4,653,430 canonical recipe records.** The
+[all-record declaration](model/experiments/production-v2-all-20260909.yaml)
+used no sampling cap or length exclusion. Each of three epochs processed every
+record exactly once: **13,960,290 recipe presentations** and **110,122,872
+ingredient-slot presentations** in total. Records with one to 98 ingredients
+were included intact. These are record counts, not a claim of unique recipe
+content.
+
+The [completion verification](model/results/all_record_training_validation.json)
+checks the saved per-epoch counters against the checksum-verified corpus and
+restores the complete predictor. The [export evidence](model/results/all_record_release.json)
+records identical state tensors and exact logits on 192 synthetic reload
+comparisons. This verifies the package, not its prediction quality.
+
+The model is on Hugging Face as
+[llmmm-recipes, v0.3.0-all-recipes](https://huggingface.co/incrediblecrab/llmmm-recipes/tree/v0.3.0-all-recipes).
+It remains **private**. The [publication receipt](model/results/huggingface_all_record_release.json)
+records all remote file hashes, preserved preview history and successful
+inference without the private corpus. No source recipe text was uploaded.
+
 The old holdout is part of this training data, so the production checkpoint has
 no held-out score from this corpus and does not enter the scored leaderboard.
-After training finishes, `make -C model verify-all-recipes` checks the saved
-per-epoch counts against the checksum-verified corpus and restores the complete
-predictor. An incomplete run fails this check; having the data is not enough.
+The earlier preview's scores do not apply to these weights.
 
-## Toward a Hugging Face release
+## Generation and evaluation work
 
 The target includes ingredient reasoning and recipe generation. **The current
 checkpoint only predicts ingredients; it is not yet a recipe-writing model.**
@@ -129,14 +142,22 @@ cd model
 make setup-hf
 make hf-compare
 make generation-audit  # requires the optional full-text index
-make train-full-native
-make export-native HF_EXPORT=/private/unused/output-directory
+make train-all-recipes
+make verify-all-recipes
+make export-all-recipes PRODUCTION_EXPORT=/private/unused/output-directory
 ```
 
 Baseline downloads contain public model assets only; inference stays local.
 `hf-compare` does not download T5 or call a hosted model. The audit reports
 problems but is not an automatic training-readiness gate. None of these
 commands publishes a model or runs GitHub Actions.
+
+For a later private release, export with a new `--tag` using
+`scripts/export_native_model.py --production`, then explicitly run
+`python scripts/publish_native_model.py --folder /private/export-directory --out results/new-release.json`.
+The publisher admits only the six model-package files, removes stale evaluation
+metadata, verifies remote bytes and corpus-free inference, and preserves older
+tags. Existing version tags and publication receipts are not overwritten.
 
 A separate `.venv-generation` environment contains MLX support so experiments
 with the [pinned Qwen base](model/generation_base.lock.json) do not alter the
@@ -147,14 +168,15 @@ fine-tune; no generator-training result or T5 generation win is asserted here.
 
 | Question | Authority |
 |---|---|
-| Which benchmark, training experiment and default embedding? | [`model/workspace.json`](model/workspace.json) |
+| Which benchmark, evaluated training cohort and default embedding? | [`model/workspace.json`](model/workspace.json) |
+| Which all-record production training and coverage? | [Declaration](model/experiments/production-v2-all-20260909.yaml) and [completion verification](model/results/all_record_training_validation.json) |
 | Which corpus and normalizer? | [`model/data/GENERATION.json`](model/data/GENERATION.json), verified against the corpus SHA-256 before current training |
 | What actually ran and how did it score? | Each run's `manifest.json` and `metrics.json` under [`model/results/runs/`](model/results/runs/) |
 | Which private artifact bytes restore this workspace? | `model/artifacts.lock.json`, generated by `make snapshot` |
 | Which normalization fixes were used? | The tracked code and [`model/data/aliases/`](model/data/aliases/) |
 | Where did source corpora come from? | [`raw-data/README.md`](raw-data/README.md) and [`raw-data/MANIFEST.md`](raw-data/MANIFEST.md) |
 | Which external model revisions and exact assets were compared? | [`model/hf_baselines.lock.json`](model/hf_baselines.lock.json) and the diagnostic's code/weight fingerprints |
-| Which model version is on Hugging Face? | [`model/results/huggingface_release.json`](model/results/huggingface_release.json) |
+| Which model version is on Hugging Face? | [`model/results/huggingface_all_record_release.json`](model/results/huggingface_all_record_release.json) |
 
 The published benchmark is not overwritten by new training. Older investigations
 remain in [the model notes](model/README.md), [architecture notes](model/ARCHITECTURE.md)

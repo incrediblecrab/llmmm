@@ -1,0 +1,95 @@
+{
+  "run_id": "llmmm-recipes-full-s42",
+  "model": "masked-set",
+  "family": "set_transformer",
+  "graph": "ii_graph.npz",
+  "seed": 42,
+  "params": {
+    "d_model": 256,
+    "n_heads": 4,
+    "n_layers": 2,
+    "ff_mult": 2,
+    "dropout": 0.1,
+    "epochs": 3,
+    "lr": 0.001,
+    "batch_size": 512,
+    "max_recipes": 0,
+    "min_len": 1,
+    "max_len": null,
+    "expected_recipes": 4653430,
+    "tie_output": true,
+    "warmup": 500,
+    "split": "full",
+    "no_eval": true
+  },
+  "created": "2026-09-09T18:33:41-0400",
+  "duration_s": 2523.5250210762024,
+  "shape": [
+    1790,
+    256
+  ],
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "torch": "2.13.0",
+    "git": "a92b96b",
+    "corpus_generation": "v2",
+    "corpus_sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9"
+  },
+  "metadata": {
+    "loss_history": [
+      3.758451016432697,
+      3.5220324553230413,
+      3.46402895829638
+    ],
+    "n_recipes": 4653430,
+    "n_eligible_recipes": 4653430,
+    "n_examples_seen": 13960290,
+    "n_ingredient_slots_seen": 110122872,
+    "observed_min_len": 1,
+    "observed_max_len": 98,
+    "n_optimizer_steps": 27267,
+    "torch_num_threads": 4,
+    "epoch_coverage": [
+      {
+        "epoch": 1,
+        "unique_recipes": 4653430,
+        "examples_seen": 4653430,
+        "ingredient_slots_seen": 36707624,
+        "every_eligible_recipe_once": true
+      },
+      {
+        "epoch": 2,
+        "unique_recipes": 4653430,
+        "examples_seen": 4653430,
+        "ingredient_slots_seen": 36707624,
+        "every_eligible_recipe_once": true
+      },
+      {
+        "epoch": 3,
+        "unique_recipes": 4653430,
+        "examples_seen": 4653430,
+        "ingredient_slots_seen": 36707624,
+        "every_eligible_recipe_once": true
+      }
+    ],
+    "training_code_sha256": "6e2d466d0cc17460e834a3b52ca27e89ffe37741ceb78969c75e62eaddc17cd4",
+    "perplexity": 31.94542436793173,
+    "d_model": 256,
+    "n_heads": 4,
+    "n_layers": 2,
+    "ff_mult": 2,
+    "dropout": 0.1,
+    "epochs": 3,
+    "lr": 0.001,
+    "batch_size": 512,
+    "max_recipes": 0,
+    "min_len": 1,
+    "max_len": null,
+    "expected_recipes": 4653430,
+    "tie_output": true,
+    "warmup": 500
+  }
+}
