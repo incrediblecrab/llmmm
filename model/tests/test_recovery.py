@@ -500,6 +500,7 @@ def test_trailing_tar_payload_is_not_ignored(packed, tmp_path):
 
 @pytest.mark.parametrize("kind", [
     tarfile.XHDTYPE, tarfile.XGLTYPE, tarfile.GNUTYPE_LONGNAME, tarfile.GNUTYPE_LONGLINK,
+    tarfile.SOLARIS_XHDTYPE,
 ])
 def test_oversized_tar_extension_is_rejected_without_reading_its_claimed_payload(
         packed, tmp_path, kind):

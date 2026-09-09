@@ -566,16 +566,15 @@ class _BoundedTarReader:
 
 
 class _BoundedTarInfo(tarfile.TarInfo):
-    @classmethod
-    def frombuf(cls, buf: bytes, encoding: str, errors: str) -> tarfile.TarInfo:
-        member = super().frombuf(buf, encoding, errors)
+    def _proc_member(self, archive: tarfile.TarFile) -> tarfile.TarInfo | None:
         extensions = (tarfile.XHDTYPE, tarfile.XGLTYPE,
-                      tarfile.GNUTYPE_LONGNAME, tarfile.GNUTYPE_LONGLINK)
-        # Newer tarfile versions read extensions in chunks, so a per-read cap
-        # alone cannot enforce the declared metadata-size limit.
-        if member.type in extensions and member.size > CHUNK_SIZE:
+                      tarfile.GNUTYPE_LONGNAME, tarfile.GNUTYPE_LONGLINK,
+                      tarfile.SOLARIS_XHDTYPE)
+        # Both public and private header parsers dispatch here before reading
+        # extension payloads; overriding frombuf alone misses newer parsers.
+        if self.type in extensions and self.size > CHUNK_SIZE:
             raise RecoveryError("archive requires an oversized metadata read")
-        return member
+        return super()._proc_member(archive)
 
 
 def _stage_archive(source: BinaryIO, stage: Path, files: tuple[LockedFile, ...]) -> None:
