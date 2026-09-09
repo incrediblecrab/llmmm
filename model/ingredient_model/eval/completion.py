@@ -8,9 +8,9 @@ candidates from the ones that remain, and record where the hidden one lands.
 
 Two properties make this the most trustworthy number in the workspace:
 
-* **It is leak-free for every family.** The test recipes were never in any
-  training input, so graph models and recipe models are on identical footing —
-  unlike M4, which is only sound for one of them.
+* **It withholds recipe rows from local training.** Graph and recipe models
+  use the same local partition. This does not exclude duplicate recipes in
+  other rows or establish that an external pretrained model never saw them.
 * **It has a real baseline.** Recommending onion, salt and butter to everyone
   scores respectably here. A model that has learned nothing but frequency looks
   competent until it is put beside that baseline, which is why the popularity
@@ -98,7 +98,8 @@ def _rank_of_target(scores: np.ndarray, target: np.ndarray,
 
 def completion_ranks(W: np.ndarray, corpus, *, n_test: int = 20_000,
                      seed: int = SEED, unigram: np.ndarray | None = None,
-                     scorer=None) -> dict[str, np.ndarray]:
+                     scorer=None, include_instances: bool = False
+                     ) -> dict[str, np.ndarray]:
     """Per-instance ranks of the hidden ingredient, for each ranker.
 
     Split out from :func:`recipe_completion` so that the rank vectors are
@@ -111,6 +112,10 @@ def completion_ranks(W: np.ndarray, corpus, *, n_test: int = 20_000,
     evaluated with the same arguments see the same instances with the same
     ingredient hidden, in the same order. That is what makes a paired
     comparison across models legitimate.
+
+    ``include_instances`` additionally returns recipe rows (relative to
+    ``corpus``), targets and recipe sizes in the rank arrays' bucketed order.
+    Recording these identities does not consume randomness or change the draw.
     """
     rng = np.random.default_rng(seed)
     lens = corpus.sizes
@@ -123,6 +128,7 @@ def completion_ranks(W: np.ndarray, corpus, *, n_test: int = 20_000,
     U = unit(W)
     n_vocab = W.shape[0]
     ranks, pop_ranks, native_ranks = [], [], []
+    instance_rows, instance_targets, instance_sizes = [], [], []
     logf = None if unigram is None else np.log1p(unigram)
 
     # Bucket by length so context pooling is one matrix op per bucket.
@@ -134,6 +140,10 @@ def completion_ranks(W: np.ndarray, corpus, *, n_test: int = 20_000,
         mask = np.ones_like(ids, bool)
         mask[np.arange(len(rows)), hide] = False
         ctx = ids[mask].reshape(len(rows), k - 1)
+        if include_instances:
+            instance_rows.append(rows)
+            instance_targets.append(target)
+            instance_sizes.append(np.full(len(rows), k, dtype=np.int64))
 
         pooled = U[ctx].sum(1)
         forbid = np.zeros((len(rows), n_vocab), bool)
@@ -151,6 +161,10 @@ def completion_ranks(W: np.ndarray, corpus, *, n_test: int = 20_000,
         out["popularity"] = np.concatenate(pop_ranks)
     if native_ranks:
         out["native"] = np.concatenate(native_ranks)
+    if include_instances:
+        out["recipe_row"] = np.concatenate(instance_rows)
+        out["target"] = np.concatenate(instance_targets)
+        out["recipe_size"] = np.concatenate(instance_sizes)
     return out
 
 

@@ -15,8 +15,11 @@ reads:
 
 ``edge-holdout``    10% of graph edges removed. Valid for graph models only.
 ``recipe-holdout``  30% of *recipes* removed and the graph rebuilt from the
-                    remainder. Valid for every model, and therefore the only
-                    protocol under which the two families may be compared.
+                    remainder. Controls the declared inputs of both local
+                    model families, unlike an edge-only holdout.
+
+These partitions separate row identities, not duplicate recipe families. They
+do not control an externally pretrained model's data.
 
 :func:`check_leakage` enforces this. It refuses rather than warns, because an
 optimistic number that is merely flagged still ends up quoted.
@@ -112,7 +115,7 @@ def get_split(name: str) -> Split:
 
 
 def held_out_recipes(split_name: str, limit: int | None = 80_000):
-    """The recipes no model saw, for M6. ``None`` when the split has none.
+    """Rows withheld from local training, for M6; ``None`` if unavailable.
 
     Only the recipe-level protocol holds recipes back, so M6 is reported there
     and omitted elsewhere rather than quietly computed against training data.

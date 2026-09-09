@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "purpose": "Pinned external baselines, not permission to redistribute their training data or our weights.",
+  "models": {
+    "Kaikaku/epicure-cooc": {
+      "revision": "03edd311adde6e39a2eb6f9f3fa78f7396be6b53",
+      "role": "ingredient_embeddings",
+      "declared_license": "cc-by-4.0",
+      "files": {
+        "config.json": {"bytes": 1053, "git_blob_sha1": "f776978ad256689e9060a3c7ef516803a282702c"},
+        "itos.json": {"bytes": 38684, "git_blob_sha1": "2d517ace2f8fdbd7a651e9fa53785bbf64ad4a45"},
+        "embeddings.safetensors": {"bytes": 2148088, "sha256": "5ce3bdd03deb8cc8e30bd2a574e04a997b9990422d9203dac4f148949b701a87"}
+      }
+    },
+    "Kaikaku/epicure-core": {
+      "revision": "d31ebb5af8e92bbaf5cb67381d5006d4ea8368b7",
+      "role": "ingredient_embeddings",
+      "declared_license": "cc-by-4.0",
+      "files": {
+        "config.json": {"bytes": 1103, "git_blob_sha1": "642b66a93e1d09769b7e6e8cca2ce59d65708908"},
+        "itos.json": {"bytes": 38684, "git_blob_sha1": "2d517ace2f8fdbd7a651e9fa53785bbf64ad4a45"},
+        "embeddings.safetensors": {"bytes": 2148088, "sha256": "58c965532709e415cc00098ea24ad153ca5e02f2ffc88d6b7287c36308e34120"}
+      }
+    },
+    "alexdseo/RecipeBERT": {
+      "revision": "99b14f8e823f84245a508ccb88ec3a87b73314d5",
+      "role": "food_text_encoder",
+      "declared_license": "apache-2.0",
+      "files": {
+        "config.json": {"bytes": 664, "git_blob_sha1": "70569a55fa4220c671b44e9c5e86ea3caf92d655"},
+        "special_tokens_map.json": {"bytes": 125, "git_blob_sha1": "a8b3208c2884c4efb86e49300fdd3dc877220cdf"},
+        "tokenizer.json": {"bytes": 711396, "git_blob_sha1": "688882a79f44442ddc1f60d70334a7ff5df0fb47"},
+        "tokenizer_config.json": {"bytes": 1190, "git_blob_sha1": "2a269eff0f34e46722c55f811fca4b295887d635"},
+        "vocab.txt": {"bytes": 231508, "git_blob_sha1": "fb140275c155a9c7c5a3b3e0e77a9e839594a938"},
+        "model.safetensors": {"bytes": 438080896, "sha256": "b1b589d617fe6ce6a7f467ae16dcd57c441925922297ef91d6839c40a930ab4d"}
+      }
+    },
+    "flax-community/t5-recipe-generation": {
+      "revision": "12ba57f5c4924642afdf556a761124638e06af51",
+      "role": "recipe_generator",
+      "declared_license": null,
+      "files": {
+        "config.json": {"bytes": 1565, "git_blob_sha1": "76065f0b792953a743116abdb430977314d20835"},
+        "special_tokens_map.json": {"bytes": 1786, "git_blob_sha1": "881bdbffc06e471924ecea57f962bc5f8e2a9f21"},
+        "tokenizer.json": {"bytes": 1387840, "git_blob_sha1": "24bd274efbf1ebd0f74410dd59f79488267cbfcf"},
+        "tokenizer_config.json": {"bytes": 1923, "git_blob_sha1": "2de6c1b26a1bce0469edb96d44e44dc4016c9882"},
+        "model.safetensors": {"bytes": 891644712, "sha256": "318d732cb8fff645a83b5483eb0f0bff87ab5831816fdfeffc24cadd6e4d2a9f"}
+      }
+    }
+  }
+}

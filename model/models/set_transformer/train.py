@@ -155,6 +155,9 @@ def train_masked_set(ctx: TrainContext) -> TrainResult:
         corpus = corpus.select(
             np.sort(rng0.choice(corpus.n_recipes, max_r, replace=False)))
 
+    eligible = int(((corpus.sizes >= 3) & (corpus.sizes <= int(p["max_len"]))).sum())
+    if not eligible:
+        raise ValueError("no recipes satisfy the masked-set training length bounds")
     torch.manual_seed(ctx.seed)
     rng = np.random.default_rng(ctx.seed)
     vocab, device = corpus.n_vocab, ctx.device
@@ -163,10 +166,10 @@ def train_masked_set(ctx: TrainContext) -> TrainResult:
                             weight_decay=0.01)
     lossf = nn.CrossEntropyLoss()
     mask_id, warmup = vocab, int(p["warmup"])
-    print(f"  {corpus.n_recipes:,} recipes, vocab {vocab}, "
+    print(f"  {corpus.n_recipes:,} sampled recipes, {eligible:,} eligible, vocab {vocab}, "
           f"{sum(x.numel() for x in model.parameters()):,} parameters", flush=True)
 
-    history, step, t0 = [], 0, time.time()
+    history, step, examples_seen, t0 = [], 0, 0, time.time()
     for ep in range(int(p["epochs"])):
         tot, nb = 0.0, 0
         for ids_np, keep_np in corpus.batches(
@@ -196,6 +199,7 @@ def train_masked_set(ctx: TrainContext) -> TrainResult:
                 for gparam in opt.param_groups:
                     gparam["lr"] = float(p["lr"]) * step / warmup
             opt.step()
+            examples_seen += m
             tot += float(loss.detach())
             nb += 1
         history.append(tot / max(nb, 1))
@@ -211,6 +215,8 @@ def train_masked_set(ctx: TrainContext) -> TrainResult:
         embedding=W,
         scorer=scorer,
         metadata={"loss_history": history, "n_recipes": corpus.n_recipes,
+                  "n_eligible_recipes": eligible, "n_examples_seen": examples_seen,
+                  "n_optimizer_steps": step, "torch_num_threads": torch.get_num_threads(),
                   "perplexity": float(np.exp(history[-1])), **p},
         extra_arrays={f"state__{k.replace('.', '__')}": v
                       for k, v in state.items()})

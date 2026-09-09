@@ -33,8 +33,12 @@ from __future__ import annotations
 import ast
 import csv
 import glob
+import hashlib
 import json
+import os
+import re
 import sys
+import tempfile
 import warnings
 from dataclasses import dataclass
 from pathlib import Path
@@ -43,14 +47,16 @@ import numpy as np
 
 from ..config import PATHS
 
-TEXT_FILE = "recipe_text.parquet"
+TEXT_FILE = "recipe_text_v2.parquet"
+TEXT_SCHEMA_VERSION = 2
 LLMMM = PATHS.prior_study
 
 # Per-source text columns. Only the ingredient column is load-bearing for
 # alignment — these are additive, so an omission costs coverage, not correctness.
 EXPANSION_TEXT: dict[str, dict[str, str | None]] = {
     "foodcom-522k": {"title": "Name", "steps": "RecipeInstructions",
-                     "raw": "RecipeIngredientQuantities"},
+                     "raw": "RecipeIngredientParts",
+                     "ingredient_quantities": "RecipeIngredientQuantities"},
     "foodcom-raw-231k": {"title": "name", "steps": "steps"},
     "povarenok-detail": {"title": "title", "url": "page_url"},
     "turkish-102k": {"title": "Yemek İsmi", "url": "URL", "steps": "Yapılış"},
@@ -86,6 +92,9 @@ class RecipeText:
     url: str
     raw_ingredients: str
     steps: str
+    ingredient_quantities: str = "[]"
+    quantity_status: str = ""
+    text_status: str = ""
 
     @property
     def has_text(self) -> bool:
@@ -97,7 +106,79 @@ class RecipeText:
 # --------------------------------------------------------------------------
 
 def _blank() -> dict:
-    return {"title": "", "url": "", "raw": "", "steps": ""}
+    return {"title": "", "url": "", "raw": "", "steps": "",
+            "ingredient_quantities": "[]", "quantity_status": "", "text_status": ""}
+
+
+def _r_sequence(value) -> list[str | None]:
+    """Decode serialized R vectors without dropping NA positions or executing code."""
+    if value is None or (isinstance(value, float) and np.isnan(value)):
+        return []
+    text = str(value).strip()
+    if not text or text in ("NA", "NULL", "NaN"):
+        return []
+    if text.startswith("c("):
+        if not text.endswith(")"):
+            raise ValueError("unterminated R vector")
+        expression = "[" + text[2:-1] + "]"
+    elif len(text) >= 2 and text[0] in ('"', "'") and text[-1] == text[0]:
+        escapes = {"n": "\n", "r": "\r", "t": "\t", '"': '"', "'": "'", "\\": "\\"}
+        return [re.sub(r"""\\([nrt"'\\])""",
+                       lambda match: escapes[match.group(1)], text[1:-1])]
+    elif text.startswith("["):
+        expression = text
+    else:
+        return [text]
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", SyntaxWarning)
+        try:
+            node = ast.parse(expression, mode="eval").body
+        except (SyntaxError, SyntaxWarning) as error:
+            raise ValueError("malformed R sequence") from error
+    elements = node.elts if isinstance(node, (ast.List, ast.Tuple)) else [node]
+    values = []
+    for element in elements:
+        if isinstance(element, ast.Name) and element.id in {
+                "NA", "NULL", "NaN", "NA_character_", "NA_real_", "NA_integer_"}:
+            values.append(None)
+        elif isinstance(element, ast.Constant) and (
+                element.value is None or type(element.value) in (str, int, float)):
+            if isinstance(element.value, str):
+                literal = ast.get_source_segment(expression, element)
+                if literal is None or not re.fullmatch(
+                        r"""(?:"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')""",
+                        literal, flags=re.DOTALL):
+                    raise ValueError("ingredient strings require explicit separators")
+            values.append(None if element.value is None else str(element.value))
+        else:
+            raise ValueError("unsupported expression in an R sequence")
+    return values
+
+
+def _foodcom_fields(names_value, quantities_value, steps_value) -> dict:
+    names = _r_sequence(names_value)
+    quantities = _r_sequence(quantities_value)
+    ingredient_names = []
+    for name in names:
+        if name is None or not name.strip():
+            raise ValueError("Food.com contains an empty ingredient name")
+        ingredient_names.append(name)
+    status = "values_without_units" if quantities else "not_supplied"
+    if quantities and len(quantities) != len(names):
+        status = "count_mismatch"
+    text_status = ""
+    try:
+        steps = "\x1f".join(value for value in _r_sequence(steps_value) if value)
+    except ValueError:
+        steps = _join(steps_value)
+        text_status = "unparsed_steps"
+    return {
+        "raw": "\x1f".join(ingredient_names),
+        "ingredient_quantities": json.dumps(quantities, ensure_ascii=False),
+        "quantity_status": status,
+        "steps": steps,
+        "text_status": text_status,
+    }
 
 
 def _join(v) -> str:
@@ -250,11 +331,19 @@ def _meta_expansion(raw, key, kind, rel, col, split):
                 continue
             out = _blank()
             for k, s in series.items():
+                if k == "ingredient_quantities":
+                    continue
                 out["raw" if k == "raw" else k] = (
                     _join(s.iloc[i]) if k in ("steps", "raw")
-                    else str(s.iloc[i] or ""))
+                    else _join(s.iloc[i]))
             if not out["raw"]:
                 out["raw"] = _join(v)
+            if key == "foodcom-522k":
+                quantities = series.get("ingredient_quantities")
+                steps = series.get("steps")
+                out.update(_foodcom_fields(
+                    v, None if quantities is None else quantities.iloc[i],
+                    None if steps is None else steps.iloc[i]))
             if from_value == "first_line" and not out["title"]:
                 out["title"] = str(v).split("\n", 1)[0].strip()
             yield out
@@ -316,7 +405,15 @@ def build_index(out: Path | None = None, *, limit: int | None = None,
     import pyarrow.parquet as pq
 
     from .recipes import load_recipes
+    from ..config import corpus_generation
 
+    out = out or (PATHS.recipes / TEXT_FILE)
+    if out.exists():
+        raise FileExistsError(f"{out}: choose a new output path; existing indexes are not overwritten")
+    if chunk <= 0 or (limit is not None and limit <= 0):
+        raise ValueError("chunk and limit must be positive")
+    if limit is not None and out.resolve() == (PATHS.recipes / TEXT_FILE).resolve():
+        raise ValueError("a partial index requires an explicit noncanonical --out path")
     raw, nm = _load_llmmm()
     corpus = load_recipes()
     nz = _corpus_normalizer(nm)
@@ -324,29 +421,39 @@ def build_index(out: Path | None = None, *, limit: int | None = None,
         raise RuntimeError("normaliser and corpus disagree on the vocabulary; "
                            "the text index would be built against the wrong ids")
 
-    out = out or (PATHS.recipes / TEXT_FILE)
     schema = pa.schema([("idx", pa.int32()), ("source", pa.string()),
                         ("title", pa.string()), ("url", pa.string()),
-                        ("raw_ingredients", pa.string()), ("steps", pa.string())])
-    writer = pq.ParquetWriter(out, schema, compression="zstd")
+                        ("raw_ingredients", pa.string()), ("steps", pa.string()),
+                        ("ingredient_quantities", pa.string()), ("quantity_status", pa.string()),
+                        ("text_status", pa.string())],
+                       metadata={
+                           "text_schema_version": str(TEXT_SCHEMA_VERSION),
+                           "corpus_sha256": corpus_generation()["sha256"],
+                           "reader_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                           "partial": str(limit is not None).lower(),
+                       })
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(dir=out.parent, suffix=".parquet", delete=False) as temp:
+        staged = Path(temp.name)
+    writer = pq.ParquetWriter(staged, schema, compression="zstd")
 
     streams: dict[str, object] = {}
     missing: set[str] = set()
-    buf: list[list] = [[] for _ in range(6)]
+    buf: list[list] = [[] for _ in range(9)]
     fp: set[int] = set()
     idx = 0
     seen = 0
     n_title = 0
     n_url = 0
     n_steps = 0
+    n_unparsed_steps = 0
     per_source: dict[str, list[int]] = {}
 
     def flush():
         if not buf[0]:
             return
         writer.write_table(pa.Table.from_arrays(
-            [pa.array(buf[0], pa.int32()), pa.array(buf[1]), pa.array(buf[2]),
-             pa.array(buf[3]), pa.array(buf[4]), pa.array(buf[5])],
+            [pa.array(values, type=field.type) for values, field in zip(buf, schema)],
             schema=schema))
         for b in buf:
             b.clear()
@@ -390,12 +497,16 @@ def build_index(out: Path | None = None, *, limit: int | None = None,
             buf[3].append(meta["url"])
             buf[4].append(meta["raw"])
             buf[5].append(meta["steps"] if with_steps else "")
+            buf[6].append(meta.get("ingredient_quantities", "[]"))
+            buf[7].append(meta.get("quantity_status", ""))
+            buf[8].append(meta.get("text_status", ""))
             st = per_source.setdefault(key, [0, 0])
             st[0] += 1
             st[1] += bool(meta["title"])
             n_title += bool(meta["title"])
             n_url += bool(meta["url"])
-            n_steps += bool(meta["steps"])
+            n_steps += bool(meta["steps"]) and with_steps
+            n_unparsed_steps += meta.get("text_status") == "unparsed_steps"
             idx += 1
             if len(buf[0]) >= chunk:
                 flush()
@@ -403,18 +514,23 @@ def build_index(out: Path | None = None, *, limit: int | None = None,
                       flush=True)
             if limit and idx >= limit:
                 break
-    finally:
         flush()
+        if not limit and idx != corpus.n_recipes:
+            raise RuntimeError(f"wrote {idx:,} rows but the corpus holds "
+                               f"{corpus.n_recipes:,}")
         writer.close()
-
-    if not limit and idx != corpus.n_recipes:
-        raise RuntimeError(f"wrote {idx:,} rows but the corpus holds "
-                           f"{corpus.n_recipes:,}")
+        os.link(staged, out)
+    finally:
+        writer.close()
+        staged.unlink()
     print(f"\nverified {idx:,} rows against the corpus — every one reproduces\n"
           f"  titles {n_title:,} ({n_title / max(idx, 1):.1%})  "
           f"urls {n_url:,}  steps {n_steps:,}")
     if missing:
         print(f"  no text reader for: {', '.join(sorted(missing))}")
+    if n_unparsed_steps:
+        print(f"  WARNING: {n_unparsed_steps:,} instruction fields retain malformed "
+              "source serialization; flagged as unparsed_steps, not generation-ready")
     return out
 
 
@@ -447,7 +563,10 @@ def text_of(index: int) -> RecipeText:
     return RecipeText(index=int(r["idx"]), source=str(r["source"]),
                       title=str(r["title"]), url=str(r["url"]),
                       raw_ingredients=str(r["raw_ingredients"]),
-                      steps=str(r["steps"]))
+                      steps=str(r["steps"]),
+                      ingredient_quantities=str(r.get("ingredient_quantities", "[]")),
+                      quantity_status=str(r.get("quantity_status", "")),
+                      text_status=str(r.get("text_status", "")))
 
 
 def has_text() -> bool:

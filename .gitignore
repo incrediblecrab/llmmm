@@ -19,6 +19,7 @@
 # Local recovery archives can contain restricted datasets. Never publish them
 # to this public repository or include credentials in their input manifest.
 /.artifacts/
+/model/data/hf_cache/
 
 # ---------------------------------------------------------------------------
 # The prior study's derived artefacts (199 MB). Its own scripts regenerate
@@ -49,6 +50,7 @@ __pycache__/
 build/
 dist/
 .venv/
+.venv-generation/
 venv/
 .pytest_cache/
 .mypy_cache/

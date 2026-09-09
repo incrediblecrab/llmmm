@@ -1,7 +1,8 @@
 """Build the recipe text index.
 
 Replays the original readers, verifies every row against the stored corpus, and
-writes `data/recipes/recipe_text.parquet`.
+writes the versioned `data/recipes/recipe_text_v2.parquet` without overwriting
+an existing index. Unavailable quantity units are not inferred.
 
 Run `scripts/check_text_alignment.py` first — it catches a drifting metadata
 stream in seconds, where this takes tens of minutes to reach the same conclusion.

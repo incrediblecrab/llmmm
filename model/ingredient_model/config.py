@@ -67,6 +67,11 @@ class Paths:
         return self.data / "catalog"
 
     @property
+    def hf_cache(self) -> Path:
+        """Ignored local copies of explicitly pinned upstream model assets."""
+        return self.data / "hf_cache"
+
+    @property
     def runs(self) -> Path:
         return self.results / "runs"
 

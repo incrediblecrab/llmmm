@@ -1,0 +1,43 @@
+{
+  "status": "verified_local_export_not_published",
+  "publication_clearance": "pending_data_rights_review",
+  "candidate": "train-v2-full-20260909/masked-set-full-recipe-holdout-s42",
+  "reference": "train-v2-20260909/masked-set-recipe-holdout-s42",
+  "corpus_sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+  "n_completion": 20000,
+  "sampling_seed": 20260805,
+  "recall_at_10": 0.65475,
+  "recall_at_10_ci95": [
+    0.6483,
+    0.6612
+  ],
+  "mrr": 0.39310536443393623,
+  "previous_recall_at_10": 0.615,
+  "paired_improvement": 0.03975,
+  "paired_improvement_ci95": [
+    0.03485,
+    0.0446
+  ],
+  "training": {
+    "n_recipes": 3257401,
+    "n_eligible_recipes": 3145078,
+    "n_examples_seen": 9435234,
+    "n_optimizer_steps": 18429,
+    "epochs": 3,
+    "max_recipes": 0,
+    "max_len": 32
+  },
+  "n_parameters": 1515006,
+  "model_file": {
+    "bytes": 6062848,
+    "sha256": "2364f769702169ab44f008f4d05dc104b035b9cdf0e74331bf7a5c0f8d90454b"
+  },
+  "config_sha256": "1bf792345b8face5975534312b676fcea1b53e5fa9c0e844948c4db743aa72ce",
+  "limitations": [
+    "This is ingredient completion, not recipe generation or a foundation language model.",
+    "The held-out row split is not duplicate-family-disjoint or externally decontaminated.",
+    "Intervals are paired over instances, not training seeds or duplicate clusters.",
+    "Public redistribution permissions remain unresolved; no permissive weights license is asserted.",
+    "Scores are not calibrated probabilities or guarantees about taste, allergies or food safety."
+  ]
+}

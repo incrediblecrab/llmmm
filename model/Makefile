@@ -1,12 +1,14 @@
 PY := ./.venv/bin/python
 PIP := ./.venv/bin/pip
 BUNDLE ?= ../.artifacts/workspace-v2-20260909.tar.gz
+HF_EXPORT ?= ../.artifacts/hf/llmmm-ingredients-full-v0.2
 
-.PHONY: help setup setup-train data import-legacy test test-code gate list baselines report clean check check-core check-code sanity sanity-derived recipes text coverage aliases rebuild docs snapshot restore verify train status
+.PHONY: help setup setup-train setup-hf data import-legacy test test-code gate list baselines report clean check check-core check-code sanity sanity-derived recipes text coverage aliases rebuild docs snapshot restore verify train train-full-native export-native status hf-compare generation-audit
 
 help:
 	@echo "setup      create .venv and install the package"
 	@echo "setup-train install the package, tests and local PyTorch training support"
+	@echo "setup-hf   additionally install local Hugging Face baseline support"
 	@echo "restore    restore a private snapshot (BUNDLE=/path/to/archive.tar.gz)"
 	@echo "verify     verify local artifacts against artifacts.lock.json"
 	@echo "snapshot   create a private local snapshot and its tracked checksum lock"
@@ -20,9 +22,13 @@ help:
 	@echo "check-core check a restored training workspace without raw-source replay"
 	@echo "check-code check code and recorded results without private datasets"
 	@echo "train      train the current experiment declared in workspace.json"
+	@echo "train-full-native run the uncapped native data-scaling experiment"
+	@echo "export-native export/reload/evaluate the full candidate (HF_EXPORT=unused/path)"
 	@echo "status     print current project status from its exact source artifacts"
 	@echo "recipes    prove every recipe is readable, and show the source mix"
 	@echo "text       rejoin titles, quantities and instructions to the corpus"
+	@echo "generation-audit measure text coverage and flag known extraction issues"
+	@echo "hf-compare fetch pinned public baselines and compare locally (diagnostic only)"
 	@echo "coverage   measure what normalisation discards, and why"
 	@echo "aliases    propose new ingredient aliases via Azure, bind them, measure the gain"
 	@echo "rebuild    rebuild the corpus with the corrected normaliser (recipe_ids_v2)"
@@ -36,6 +42,21 @@ setup:
 
 setup-train: setup
 	$(PIP) install -q -e '.[torch]'
+
+setup-hf: setup-train
+	$(PIP) install -q -e '.[hf]'
+
+hf-compare:
+	$(PY) scripts/compare_hf_baselines.py --download
+
+generation-audit:
+	$(PY) scripts/audit_generation_data.py --out results/generation_data_audit_text_v2.json
+
+train-full-native:
+	OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 $(PY) -m ingredient_model.cli sweep experiments/train-v2-full-20260909.yaml
+
+export-native:
+	$(PY) scripts/export_native_model.py --out "$(HF_EXPORT)"
 
 snapshot:
 	$(PY) -m ingredient_model.recovery pack --output "$(BUNDLE)"

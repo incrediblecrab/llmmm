@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "models": {
+    "mlx-community/Qwen3-1.7B-4bit": {
+      "revision": "3b1b1768f8f8cf8351c712464f906e86c2b8269e",
+      "role": "generative_base",
+      "upstream_model": "Qwen/Qwen3-1.7B",
+      "declared_license": "apache-2.0",
+      "upstream_revision_used_by_conversion": null,
+      "files": {
+        "README.md": {"bytes": 873, "git_blob_sha1": "c091c6a52b254dd7954cf9bde247650b1f0b895b"},
+        "added_tokens.json": {"bytes": 707, "git_blob_sha1": "b54f9135e44c1e81047e8d05cb027af8bc039eed"},
+        "config.json": {"bytes": 937, "git_blob_sha1": "0a78ffc3980b062021a450199988d0ed8537239d"},
+        "merges.txt": {"bytes": 1671853, "git_blob_sha1": "31349551d90c7606f325fe0f11bbb8bd5fa0d7c7"},
+        "model.safetensors": {"bytes": 968080210, "sha256": "0e86d9677e519323849eac1bc272caae88567a481ff188c431f70be543d9995f"},
+        "model.safetensors.index.json": {"bytes": 49731, "git_blob_sha1": "8607d041b6549c15a4db85e7b4c5cf30d3ab890a"},
+        "special_tokens_map.json": {"bytes": 613, "git_blob_sha1": "ac23c0aaa2434523c494330aeb79c58395378103"},
+        "tokenizer.json": {"bytes": 11422654, "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"},
+        "tokenizer_config.json": {"bytes": 9706, "git_blob_sha1": "7345216a0785dc7086e8c245b2a9d3896ce2b756"},
+        "vocab.json": {"bytes": 2776833, "git_blob_sha1": "4783fe10ac3adce15ac8f358ef5462739852c569"}
+      }
+    }
+  }
+}

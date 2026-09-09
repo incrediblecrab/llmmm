@@ -1,0 +1,17 @@
+name: train-v2-full-20260909
+description: >
+  Data-scaling experiment for the native masked-set predictor. Keep the
+  architecture, seed, epochs and optimization settings fixed, but remove the
+  600,000-recipe sampling cap. The existing recipe-holdout remains a diagnostic,
+  not a duplicate-disjoint or externally decontaminated release benchmark.
+
+corpus_generation: v2
+splits: [recipe-holdout]
+seeds: [42]
+timeout_s: 10800
+
+models:
+  - name: masked-set
+    id: masked-set-full
+    params:
+      max_recipes: 0

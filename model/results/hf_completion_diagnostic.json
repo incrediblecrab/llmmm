@@ -1,0 +1,3700 @@
+{
+  "status": "diagnostic_only",
+  "corpus_generation": "v2",
+  "corpus_sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+  "protocol": {
+    "split": "recipe-holdout",
+    "sample_frame": 80000,
+    "n_completion": 20000,
+    "sampling_seed": 20260805,
+    "n_candidates": 1790,
+    "context_exclusion": true,
+    "ties": "midrank",
+    "embedding_operator": "Sum unit context vectors; rank by dot product with unit candidate vectors.",
+    "preprocessing": [
+      "raw",
+      "centered_before_unit_normalization"
+    ],
+    "recipebert": "CPU float32; readable canonical ingredient names; mean final-layer tokens including special tokens, excluding padding; no recipe-level fine-tuning.",
+    "popularity": "Historical full-corpus unigram, not a train-only baseline.",
+    "frequency_groups": "Top 20 ingredients by train-graph unigram versus all others; stable ID tie break.",
+    "macro_metric": "Equal weight for each target ingredient observed in this draw; unobserved targets omitted.",
+    "n_bootstrap": 2000,
+    "bootstrap_seed": 20260909,
+    "uncertainty": "Paired instance bootstrap; not duplicate-cluster, training-seed, model-selection or multiplicity-adjusted uncertainty."
+  },
+  "limitations": [
+    "Known or possible overlap with external pretraining; this is not a decontaminated unseen-data benchmark.",
+    "Random recipe-row holdout does not exclude duplicate recipe families across partitions.",
+    "RecipeBERT is adapted as a name-representation baseline, not evaluated on its original MLM objective or a contextual recipe encoder.",
+    "Both raw and centered vectors are reported; neither is silently selected after seeing results.",
+    "No comparison to T5 generation quality is made: the current llmmm checkpoint is not a recipe generator.",
+    "No taste, cooking safety, quantities, dietary guarantees or broad model-superiority claim follows from these scores.",
+    "Historical in-memory vector MRR may differ slightly from float32 reloads; all deltas are recorded. Native metrics and all headline recall values must reproduce."
+  ],
+  "generation_baseline": {
+    "model": "flax-community/t5-recipe-generation",
+    "revision": "12ba57f5c4924642afdf556a761124638e06af51",
+    "status": "not_run_no_llmmm_generator"
+  },
+  "environment": {
+    "python": "3.13.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.1",
+    "torch": "2.13.0",
+    "transformers": "5.17.0",
+    "safetensors": "0.8.0",
+    "torch_num_threads": 4,
+    "OMP_NUM_THREADS": "4",
+    "VECLIB_MAXIMUM_THREADS": null
+  },
+  "source_files": {
+    "scripts/compare_hf_baselines.py": {
+      "bytes": 15898,
+      "sha256": "dd63eed8904a61111955f1043519c4fdf4b04e86cefca6b28bdd62d20c9074dd"
+    },
+    "hf_baselines.lock.json": {
+      "bytes": 2836,
+      "sha256": "024e93eced96693b5787e6ce0e1e67327250cacb85bd7a687d12477df34ef837"
+    },
+    "workspace.json": {
+      "bytes": 1348,
+      "sha256": "d8c74322671d606c15c75d80302a4af3d991e017f7ae9a127f6d6ef1c556afcb"
+    },
+    "ingredient_model/hf_baselines.py": {
+      "bytes": 8607,
+      "sha256": "9575b29567da257fb78215913ad67270dce76a698be6536732e16b09d7eb34b8"
+    },
+    "ingredient_model/config.py": {
+      "bytes": 4503,
+      "sha256": "132ec055e87c8dfa2a1b3fc3858a8fc373c59d25a4052df61112e28faf97991f"
+    },
+    "ingredient_model/artifacts.py": {
+      "bytes": 8423,
+      "sha256": "e72ffd24e3fd552dde945522681e406690a12b3ab476b71832605e85675ad59b"
+    },
+    "ingredient_model/data/graphs.py": {
+      "bytes": 6414,
+      "sha256": "c74fd261cce00e0128ee707da6737c947e382e99e6a1406fe1a82523f6f208ca"
+    },
+    "ingredient_model/data/recipes.py": {
+      "bytes": 5620,
+      "sha256": "5e3bb40d79db01c3d5552505c44d1eaf9dffe96d17002e4ed5dad6891b144b47"
+    },
+    "ingredient_model/data/splits.py": {
+      "bytes": 6073,
+      "sha256": "b0643ce376f9bd41e787fc9623c2a08586d7fcac0c98618b1f1a767182d26041"
+    },
+    "ingredient_model/eval/completion.py": {
+      "bytes": 10303,
+      "sha256": "beed94384655b9f224843ec883f3d0705cf0f90d05605c1a1079e9be3e9e64f8"
+    },
+    "ingredient_model/eval/metrics.py": {
+      "bytes": 5801,
+      "sha256": "2faf69f4f242261f0aae46fdb45e2177ffca9f2397c471e80c693dbe23a2180b"
+    },
+    "models/set_transformer/train.py": {
+      "bytes": 9496,
+      "sha256": "40b9a44e1b5ed28167c052c6c2de9bb60c30d6c56d4dfb7acfbeabc6b803b53a"
+    },
+    "models/text_embedding/train.py": {
+      "bytes": 7165,
+      "sha256": "3cd0b158104a357b395cd285009ffe297fd37e905ca01e892dba7bd38d1f1766"
+    },
+    "scripts/m6_intervals.py": {
+      "bytes": 13029,
+      "sha256": "2637bd44afbeae6b89fb1dde02ae69ab9551e540bfb6edd391128ac05e24f2eb"
+    }
+  },
+  "derived_inputs": {
+    "ii_graph.npz": {
+      "bytes": 1336549,
+      "sha256": "8bad765cc36bb4a522fbd42c7717e684c054fa9a21bc1819ecd529dea037b3be"
+    },
+    "ii_graph_rh_train.npz": {
+      "bytes": 1209653,
+      "sha256": "6392eb03c2ce47298767c53afffaaf8bfbd8ce10befa8a886a58daced54d8307"
+    },
+    "recipe_ids_rh_train.npz": {
+      "bytes": 29492571,
+      "sha256": "b53993d081a9eeaa2e9ebf08dd7bbf0f1047d661be3e55e0e968a3cf7f687de8"
+    }
+  },
+  "provenance": {
+    "llmmm/ease": {
+      "run": "train-v2-20260909/ease-recipe-holdout-s42",
+      "manifest": {
+        "bytes": 824,
+        "sha256": "668f25d1caa92aced6eb8fb4b3966291e74eace4eda304914fe9db2cdbdf4ef7"
+      },
+      "weights": {
+        "embedding.npy": {
+          "bytes": 2148128,
+          "sha256": "fd1c7d27243a8ca1058f8495416b2fe87314568a6bc6bbe244ff5fa839aff270"
+        },
+        "item_scores.npy": {
+          "bytes": 12816528,
+          "sha256": "6f4862faece3ec69146947909bc596edf2efb524d01f7fefeb508272e5cdd5b8"
+        }
+      },
+      "reloaded_minus_recorded_metrics": {
+        "M6_recall_at_10": 0.0,
+        "M6_mrr": 4.432546127364212e-08,
+        "M6_native_recall_at_10": 0.0,
+        "M6_native_mrr": 0.0,
+        "M6_popularity_recall_at_10": 0.0,
+        "M6_popularity_mrr": 0.0
+      },
+      "reproduced_with_float64_scoring": {
+        "M6_mrr": 0.06926321889214357
+      }
+    },
+    "llmmm/masked-set": {
+      "run": "train-v2-20260909/masked-set-recipe-holdout-s42",
+      "manifest": {
+        "bytes": 1295,
+        "sha256": "321dccd16642a73c1b21774b2c8b1f96788f9af03a8c89eac65b34e574fce4ef"
+      },
+      "weights": {
+        "embedding.npy": {
+          "bytes": 1833088,
+          "sha256": "3534ceaeaebd464442b307cfb132290ef0d2477991035eb0adce0026941365c1"
+        },
+        "state__bias.npy": {
+          "bytes": 7288,
+          "sha256": "580b8d95710b8eb378e84be51551d4e92469a97e95de3362ee8cbf7837f68b0a"
+        },
+        "state__enc__layers__0__linear1__bias.npy": {
+          "bytes": 2176,
+          "sha256": "d4591ca70acfc73dfa403695ecb7a11abfaf8c50014b5e7517336c1983677383"
+        },
+        "state__enc__layers__0__linear1__weight.npy": {
+          "bytes": 524416,
+          "sha256": "aed57640425d7f05d56d63ba1f8990e93225b13c02937c1da2f4b44014419de0"
+        },
+        "state__enc__layers__0__linear2__bias.npy": {
+          "bytes": 1152,
+          "sha256": "496a37d368a72f191af4df9c8ae61370c2b3d540a8b69c1386349c60167ae16e"
+        },
+        "state__enc__layers__0__linear2__weight.npy": {
+          "bytes": 524416,
+          "sha256": "d3725938826610566e566b3fa7ecd41a19fbeb13b5686f0f21d6876e4f57de76"
+        },
+        "state__enc__layers__0__norm1__bias.npy": {
+          "bytes": 1152,
+          "sha256": "d70fe9bc12d5a35e4b757a6c87eab81fb0956a57222c6ec60702ce2002b70982"
+        },
+        "state__enc__layers__0__norm1__weight.npy": {
+          "bytes": 1152,
+          "sha256": "f913e29628780c29081dd747b3a7182172b94a7c70c58edb19506c4f95f46e8d"
+        },
+        "state__enc__layers__0__norm2__bias.npy": {
+          "bytes": 1152,
+          "sha256": "15b186dac1e8c7ad3d46ac7c0cd38062a3392bee6307860baade253b7d9e0745"
+        },
+        "state__enc__layers__0__norm2__weight.npy": {
+          "bytes": 1152,
+          "sha256": "c9abd59ffc1a283d30c73c1daabe9a3fa7bb9fc34af84099c2b3c08bef4884a9"
+        },
+        "state__enc__layers__0__self_attn__in_proj_bias.npy": {
+          "bytes": 3200,
+          "sha256": "f101817b6611af6fffeb379fe599788148be9da6787b05ab449b77117558f7ca"
+        },
+        "state__enc__layers__0__self_attn__in_proj_weight.npy": {
+          "bytes": 786560,
+          "sha256": "2d22d9e82666dc260257789c01ccdff01b2b5f717c30c6d5aa9be721eecbe1ef"
+        },
+        "state__enc__layers__0__self_attn__out_proj__bias.npy": {
+          "bytes": 1152,
+          "sha256": "6d027a27f86ea2317c2274fc16d8b2db3ad33d872875b800c5a2cd9387c29e38"
+        },
+        "state__enc__layers__0__self_attn__out_proj__weight.npy": {
+          "bytes": 262272,
+          "sha256": "0e49425e3c6f545cef5062ea911096a1bf6286896b1999460817637db883fd27"
+        },
+        "state__enc__layers__1__linear1__bias.npy": {
+          "bytes": 2176,
+          "sha256": "d0452ab7352c992ef61a1fe2aac7514e3ab6a8fa7712b15d5d9f74ec9dafeba6"
+        },
+        "state__enc__layers__1__linear1__weight.npy": {
+          "bytes": 524416,
+          "sha256": "20a3f2117b9ff244dbfe71205d77d14780bf5c551c5eeea6d057d9bd0d4999ff"
+        },
+        "state__enc__layers__1__linear2__bias.npy": {
+          "bytes": 1152,
+          "sha256": "b956045d521839e2ef8104c50e861ef327b826dbcb1343c80cb3d4bc5388108a"
+        },
+        "state__enc__layers__1__linear2__weight.npy": {
+          "bytes": 524416,
+          "sha256": "72d9e452976974f97be2950a19b8901454247b53f90cfe5776fe90ee25015392"
+        },
+        "state__enc__layers__1__norm1__bias.npy": {
+          "bytes": 1152,
+          "sha256": "5d8d249e872ed1f4b8dd60d733209187c9182401069cf9a78ae0c5c42a7e29b8"
+        },
+        "state__enc__layers__1__norm1__weight.npy": {
+          "bytes": 1152,
+          "sha256": "eb8c06261ebea30315171bfbc697734956f2802d662f47a03fcfc0ef9a3c5528"
+        },
+        "state__enc__layers__1__norm2__bias.npy": {
+          "bytes": 1152,
+          "sha256": "3f9bcc47cec7a6e67db29d64ed2fff98f2f9c9a24a1ddf87049aabe852a876dc"
+        },
+        "state__enc__layers__1__norm2__weight.npy": {
+          "bytes": 1152,
+          "sha256": "b1e01eafafcdaca18946628349113f0d03a69b21fa262ee6d9ca826a30c98a6d"
+        },
+        "state__enc__layers__1__self_attn__in_proj_bias.npy": {
+          "bytes": 3200,
+          "sha256": "d70cc5e9dc68a8c56ae1c0aa74598f0363f9c91ce058666f2e81ab67f7ac637c"
+        },
+        "state__enc__layers__1__self_attn__in_proj_weight.npy": {
+          "bytes": 786560,
+          "sha256": "20f5494284a04b5f094f036ed37db718774fee894abbca32cb0a42e38fab6a30"
+        },
+        "state__enc__layers__1__self_attn__out_proj__bias.npy": {
+          "bytes": 1152,
+          "sha256": "28b314c8fa2aa97425f8c473074d3b725b44d5d29ac596faacb2cc5aa4c96da0"
+        },
+        "state__enc__layers__1__self_attn__out_proj__weight.npy": {
+          "bytes": 262272,
+          "sha256": "66cccc89cf14ef67b1a008d0a322a66c558df77551f8bbe26a66602d45756d60"
+        },
+        "state__norm__bias.npy": {
+          "bytes": 1152,
+          "sha256": "3bd6d6b9c6ed06676627634ab9e0884f3bfc3fc45548c6b8a4cf64726e9bbe53"
+        },
+        "state__norm__weight.npy": {
+          "bytes": 1152,
+          "sha256": "552a7bb718a01ecc6937d542429951f5b968a3b75d3ce61bd18c8fd2037e0dbe"
+        },
+        "state__tok__weight.npy": {
+          "bytes": 1834112,
+          "sha256": "e52dd4793b412475581faa8229cf28f0bcb35460ddc73cfab82b2fccb2bc7dd4"
+        }
+      },
+      "reloaded_minus_recorded_metrics": {
+        "M6_recall_at_10": 0.0,
+        "M6_mrr": 0.0,
+        "M6_native_recall_at_10": 0.0,
+        "M6_native_mrr": 0.0,
+        "M6_popularity_recall_at_10": 0.0,
+        "M6_popularity_mrr": 0.0
+      },
+      "reproduced_with_float64_scoring": {}
+    },
+    "Kaikaku/epicure-cooc": {
+      "revision": "03edd311adde6e39a2eb6f9f3fa78f7396be6b53",
+      "model_card": "https://huggingface.co/Kaikaku/epicure-cooc/blob/03edd311adde6e39a2eb6f9f3fa78f7396be6b53/README.md",
+      "files": {
+        "config.json": {
+          "bytes": 1053,
+          "git_blob_sha1": "f776978ad256689e9060a3c7ef516803a282702c"
+        },
+        "itos.json": {
+          "bytes": 38684,
+          "git_blob_sha1": "2d517ace2f8fdbd7a651e9fa53785bbf64ad4a45"
+        },
+        "embeddings.safetensors": {
+          "bytes": 2148088,
+          "sha256": "5ce3bdd03deb8cc8e30bd2a574e04a997b9990422d9203dac4f148949b701a87"
+        }
+      },
+      "embedding_shape": [
+        1790,
+        300
+      ],
+      "evaluated_embedding_sha256": "356e2684af646a7040aacebb01341a96f9cfc75ab8dcec680ab531cce4e787b1"
+    },
+    "Kaikaku/epicure-core": {
+      "revision": "d31ebb5af8e92bbaf5cb67381d5006d4ea8368b7",
+      "model_card": "https://huggingface.co/Kaikaku/epicure-core/blob/d31ebb5af8e92bbaf5cb67381d5006d4ea8368b7/README.md",
+      "files": {
+        "config.json": {
+          "bytes": 1103,
+          "git_blob_sha1": "642b66a93e1d09769b7e6e8cca2ce59d65708908"
+        },
+        "itos.json": {
+          "bytes": 38684,
+          "git_blob_sha1": "2d517ace2f8fdbd7a651e9fa53785bbf64ad4a45"
+        },
+        "embeddings.safetensors": {
+          "bytes": 2148088,
+          "sha256": "58c965532709e415cc00098ea24ad153ca5e02f2ffc88d6b7287c36308e34120"
+        }
+      },
+      "embedding_shape": [
+        1790,
+        300
+      ],
+      "evaluated_embedding_sha256": "bd15c3faddc81509c13eefac6ae386aec5ba667046801e784657e185d31b8916"
+    },
+    "alexdseo/RecipeBERT": {
+      "revision": "99b14f8e823f84245a508ccb88ec3a87b73314d5",
+      "model_card": "https://huggingface.co/alexdseo/RecipeBERT/blob/99b14f8e823f84245a508ccb88ec3a87b73314d5/README.md",
+      "files": {
+        "config.json": {
+          "bytes": 664,
+          "git_blob_sha1": "70569a55fa4220c671b44e9c5e86ea3caf92d655"
+        },
+        "special_tokens_map.json": {
+          "bytes": 125,
+          "git_blob_sha1": "a8b3208c2884c4efb86e49300fdd3dc877220cdf"
+        },
+        "tokenizer.json": {
+          "bytes": 711396,
+          "git_blob_sha1": "688882a79f44442ddc1f60d70334a7ff5df0fb47"
+        },
+        "tokenizer_config.json": {
+          "bytes": 1190,
+          "git_blob_sha1": "2a269eff0f34e46722c55f811fca4b295887d635"
+        },
+        "vocab.txt": {
+          "bytes": 231508,
+          "git_blob_sha1": "fb140275c155a9c7c5a3b3e0e77a9e839594a938"
+        },
+        "model.safetensors": {
+          "bytes": 438080896,
+          "sha256": "b1b589d617fe6ce6a7f467ae16dcd57c441925922297ef91d6839c40a930ab4d"
+        }
+      },
+      "embedding_shape": [
+        1790,
+        768
+      ],
+      "evaluated_embedding_sha256": "e914e9d71cdc1c6e92bb0b5ae3958dff9b7f5192433430c5af83c750900d5a04"
+    }
+  },
+  "rank_artifact": {
+    "filename": "hf_completion_diagnostic.npz",
+    "bytes": 547553,
+    "sha256": "56991a94a73340aeb1f1c0943b4a77f797cda76de3418201641c06dfd2037ea7"
+  },
+  "timing_seconds": {
+    "scoring_by_model": {
+      "llmmm/ease": 0.5052576250163838,
+      "llmmm/masked-set": 1.278101333999075,
+      "Kaikaku/epicure-cooc": 0.2505415829946287,
+      "Kaikaku/epicure-core": 0.26746779098175466,
+      "alexdseo/RecipeBERT": 0.35896099999081343
+    },
+    "recipebert_encoding": 6.5303176249726675
+  },
+  "models": [
+    {
+      "model": "Kaikaku/epicure-cooc/centered",
+      "n": 20000,
+      "recall_at_10": 0.3195,
+      "recall_at_10_bootstrap_mean": 0.319549075,
+      "recall_at_10_ci95": [
+        0.31314875,
+        0.32615249999999996
+      ],
+      "mrr": 0.14936939044204875,
+      "mrr_bootstrap_mean": 0.14943125200720772,
+      "mrr_ci95": [
+        0.14594401373965663,
+        0.15296644056258066
+      ],
+      "lift_over_popularity": -0.0455,
+      "lift_over_popularity_bootstrap_mean": -0.045569475,
+      "lift_over_popularity_ci95": [
+        -0.053901250000000005,
+        -0.0373
+      ],
+      "masked_set_native_minus_this": 0.2955,
+      "masked_set_native_minus_this_ci95": [
+        0.28775,
+        0.30305125
+      ],
+      "macro_recall_at_10_observed_targets": 0.10368394397255358,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.23376146788990826,
+          "mrr": 0.10726144386762684
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.4221978021978022,
+          "mrr": 0.19980638139382884
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.319852091518373,
+          "mrr": 0.15199729748846236
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.3053601340033501,
+          "mrr": 0.13589019314675307
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.34627329192546585,
+          "mrr": 0.16134524361445848
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.4,
+          "mrr": 0.19208068793717695
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.291044776119403,
+          "mrr": 0.10532628482047628
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.39316239316239315,
+          "mrr": 0.1954554832721132
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.2535211267605634,
+          "mrr": 0.1325387073680609
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.43333333333333335,
+          "mrr": 0.2218616284910034
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.3684210526315789,
+          "mrr": 0.1666569877283284
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.3146853146853147,
+          "mrr": 0.15287107980290143
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.34285714285714286,
+          "mrr": 0.17013125244985805
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.507502552187841
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.3111002921129503,
+          "mrr": 0.14719101144498553
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.35398230088495575,
+          "mrr": 0.17295033808234675
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.5,
+          "mrr": 0.28774017353972076
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.125,
+          "mrr": 0.1530645820967984
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.42857142857142855,
+          "mrr": 0.21684422471462111
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.43333333333333335,
+          "mrr": 0.1742557407415033
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.23076923076923078,
+          "mrr": 0.15834974653143746
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.24193548387096775,
+          "mrr": 0.08512926262407852
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.23076923076923078,
+          "mrr": 0.15799307323254386
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.46875,
+          "mrr": 0.24555957584083454
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.34545454545454546,
+          "mrr": 0.16942834631297174
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.004950766757947347
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.0008680555555555555
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.08944862504645112
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.25,
+          "mrr": 0.11441991237588726
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.4157303370786517,
+          "mrr": 0.20826097700741814
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.3684210526315789,
+          "mrr": 0.1666569877283284
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.5,
+          "mrr": 0.28774017353972076
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.31815203145478377,
+          "mrr": 0.15130912462956583
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.4,
+          "mrr": 0.19208068793717695
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.46875,
+          "mrr": 0.24555957584083454
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.507502552187841
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.42857142857142855,
+          "mrr": 0.21684422471462111
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.43333333333333335,
+          "mrr": 0.2218616284910034
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.23076923076923078,
+          "mrr": 0.15834974653143746
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.34615384615384615,
+          "mrr": 0.1625244761036315
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.4,
+          "mrr": 0.07173251114827202
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.4110320284697509,
+          "mrr": 0.20559506461056642
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.291044776119403,
+          "mrr": 0.10532628482047628
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.3051556745898895,
+          "mrr": 0.1358025202800716
+        }
+      }
+    },
+    {
+      "model": "Kaikaku/epicure-cooc/raw",
+      "n": 20000,
+      "recall_at_10": 0.33335,
+      "recall_at_10_bootstrap_mean": 0.333468875,
+      "recall_at_10_ci95": [
+        0.32669875,
+        0.34000125000000003
+      ],
+      "mrr": 0.1575277413462781,
+      "mrr_bootstrap_mean": 0.15757256723161828,
+      "mrr_ci95": [
+        0.15396628715437402,
+        0.16125128277174472
+      ],
+      "lift_over_popularity": -0.03165,
+      "lift_over_popularity_bootstrap_mean": -0.031649675,
+      "lift_over_popularity_ci95": [
+        -0.0395,
+        -0.023548750000000007
+      ],
+      "masked_set_native_minus_this": 0.28165,
+      "masked_set_native_minus_this_ci95": [
+        0.27394875,
+        0.28910125000000003
+      ],
+      "macro_recall_at_10_observed_targets": 0.08873800995791062,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.21211009174311926,
+          "mrr": 0.09614975631083841
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.4785714285714286,
+          "mrr": 0.23104642671839817
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.33117633464293966,
+          "mrr": 0.15825694014699757
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.32110552763819095,
+          "mrr": 0.14562231992512356
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.36490683229813664,
+          "mrr": 0.16803066549990786
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.42162162162162165,
+          "mrr": 0.21173569956814986
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.31343283582089554,
+          "mrr": 0.13741470743012035
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.39316239316239315,
+          "mrr": 0.20723034383409808
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.323943661971831,
+          "mrr": 0.15310868113462425
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.43333333333333335,
+          "mrr": 0.2687828377490515
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.3684210526315789,
+          "mrr": 0.18025681010575303
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.34965034965034963,
+          "mrr": 0.16656230675054395
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.34285714285714286,
+          "mrr": 0.17413955406891427
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.5077351963512677
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.3305744888023369,
+          "mrr": 0.15264764705443418
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.3666245259165613,
+          "mrr": 0.18856914307435035
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.6363636363636364,
+          "mrr": 0.33821747144346676
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.375,
+          "mrr": 0.16233136968252912
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.35714285714285715,
+          "mrr": 0.21337928407709902
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.36666666666666664,
+          "mrr": 0.16113367290439143
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.23076923076923078,
+          "mrr": 0.15577370794648052
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.27419354838709675,
+          "mrr": 0.10895017524170492
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.23076923076923078,
+          "mrr": 0.21157949499883047
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.53125,
+          "mrr": 0.23389447496370833
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.32727272727272727,
+          "mrr": 0.17273629362130238
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.007614849572209867
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.0010504201680672268
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.16729070660522272
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.2692307692307692,
+          "mrr": 0.13197653070942067
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.40898876404494383,
+          "mrr": 0.2044763248141941
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.3684210526315789,
+          "mrr": 0.18025681010575303
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.6363636363636364,
+          "mrr": 0.33821747144346676
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.3317496723460026,
+          "mrr": 0.1585800866063522
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.42162162162162165,
+          "mrr": 0.21173569956814986
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.53125,
+          "mrr": 0.23389447496370833
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.5077351963512677
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.35714285714285715,
+          "mrr": 0.21337928407709902
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.43333333333333335,
+          "mrr": 0.2687828377490515
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.23076923076923078,
+          "mrr": 0.15577370794648052
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.3594164456233422,
+          "mrr": 0.16871716297119882
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.4,
+          "mrr": 0.1340426493177916
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.40569395017793597,
+          "mrr": 0.20504967041086447
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.31343283582089554,
+          "mrr": 0.13741470743012035
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.3208905256109809,
+          "mrr": 0.14552991452147246
+        }
+      }
+    },
+    {
+      "model": "Kaikaku/epicure-core/centered",
+      "n": 20000,
+      "recall_at_10": 0.23365,
+      "recall_at_10_bootstrap_mean": 0.23368795,
+      "recall_at_10_ci95": [
+        0.2277,
+        0.23940124999999998
+      ],
+      "mrr": 0.11975764864342213,
+      "mrr_bootstrap_mean": 0.11980420028660871,
+      "mrr_ci95": [
+        0.11633857600465242,
+        0.12321359212245925
+      ],
+      "lift_over_popularity": -0.13135,
+      "lift_over_popularity_bootstrap_mean": -0.1314306,
+      "lift_over_popularity_ci95": [
+        -0.14,
+        -0.12235
+      ],
+      "masked_set_native_minus_this": 0.38135,
+      "masked_set_native_minus_this_ci95": [
+        0.37389875,
+        0.38905125
+      ],
+      "macro_recall_at_10_observed_targets": 0.1420872305283608,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.22908256880733946,
+          "mrr": 0.11457046937294141
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.23912087912087912,
+          "mrr": 0.12597086337399793
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.23711578460827362,
+          "mrr": 0.11746933341285373
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.2304857621440536,
+          "mrr": 0.12108261508021724
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.2236024844720497,
+          "mrr": 0.11645747483495317
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.21081081081081082,
+          "mrr": 0.10307065312030038
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.14925373134328357,
+          "mrr": 0.07078212750193158
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.29914529914529914,
+          "mrr": 0.17012287584268893
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.18309859154929578,
+          "mrr": 0.07858423476274239
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.1,
+          "mrr": 0.0740471653238582
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.3157894736842105,
+          "mrr": 0.2021832830402477
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.2097902097902098,
+          "mrr": 0.13270610231902655
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.18571428571428572,
+          "mrr": 0.08257145213440889
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.058509621434309995
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.22979552093476144,
+          "mrr": 0.11704135103691152
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.2402022756005057,
+          "mrr": 0.12626387148669166
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.4090909090909091,
+          "mrr": 0.2698818734244201
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.25,
+          "mrr": 0.09129027973368181
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.32142857142857145,
+          "mrr": 0.18589094968695252
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.3333333333333333,
+          "mrr": 0.1424303196043932
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.07692307692307693,
+          "mrr": 0.03981565759797208
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.11290322580645161,
+          "mrr": 0.09298745791548384
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.07692307692307693,
+          "mrr": 0.03472330633640631
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.4375,
+          "mrr": 0.23210965899676833
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.24545454545454545,
+          "mrr": 0.14551272079710958
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.005129822814154612
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.0008
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.03178360990860991
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.17307692307692307,
+          "mrr": 0.08721782306909678
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.31910112359550563,
+          "mrr": 0.17853413199657497
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.3157894736842105,
+          "mrr": 0.2021832830402477
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.4090909090909091,
+          "mrr": 0.2698818734244201
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.23296199213630406,
+          "mrr": 0.11677797687389438
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.21081081081081082,
+          "mrr": 0.10307065312030038
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.4375,
+          "mrr": 0.23210965899676833
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.058509621434309995
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.32142857142857145,
+          "mrr": 0.18589094968695252
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.1,
+          "mrr": 0.0740471653238582
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.07692307692307693,
+          "mrr": 0.03981565759797208
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.22679045092838196,
+          "mrr": 0.12069630382147466
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.0,
+          "mrr": 0.025586887926887923
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.31494661921708184,
+          "mrr": 0.17678303418517877
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.14925373134328357,
+          "mrr": 0.07078212750193158
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.23033143622363575,
+          "mrr": 0.12100497678609866
+        }
+      }
+    },
+    {
+      "model": "Kaikaku/epicure-core/raw",
+      "n": 20000,
+      "recall_at_10": 0.2174,
+      "recall_at_10_bootstrap_mean": 0.2173852,
+      "recall_at_10_ci95": [
+        0.21179874999999998,
+        0.22315124999999997
+      ],
+      "mrr": 0.11737591129093243,
+      "mrr_bootstrap_mean": 0.11738735848131762,
+      "mrr_ci95": [
+        0.11395730811121817,
+        0.1208687768879273
+      ],
+      "lift_over_popularity": -0.1476,
+      "lift_over_popularity_bootstrap_mean": -0.14773334999999999,
+      "lift_over_popularity_ci95": [
+        -0.1562525,
+        -0.13929375000000005
+      ],
+      "masked_set_native_minus_this": 0.3976,
+      "masked_set_native_minus_this_ci95": [
+        0.39015,
+        0.4053
+      ],
+      "macro_recall_at_10_observed_targets": 0.11418670100587724,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.19541284403669726,
+          "mrr": 0.09995411112109394
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.24373626373626373,
+          "mrr": 0.13824378182403563
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.21284954934134503,
+          "mrr": 0.11080517381265073
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.22797319932998325,
+          "mrr": 0.1274243184682337
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.2080745341614907,
+          "mrr": 0.11234577549132942
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.2,
+          "mrr": 0.09427257173736395
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.12686567164179105,
+          "mrr": 0.06364776339004055
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.27350427350427353,
+          "mrr": 0.16214241195176904
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.1267605633802817,
+          "mrr": 0.05712877948179614
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.13333333333333333,
+          "mrr": 0.07809165911873248
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.21052631578947367,
+          "mrr": 0.15663214757550895
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.23076923076923078,
+          "mrr": 0.1395947872186632
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.18571428571428572,
+          "mrr": 0.06091219216236037
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.08434278253256652
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.20399221032132425,
+          "mrr": 0.11274401624863013
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.213653603034134,
+          "mrr": 0.11393042697790974
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.4090909090909091,
+          "mrr": 0.27718951557593435
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.25,
+          "mrr": 0.07668778492048726
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.32142857142857145,
+          "mrr": 0.20118303817904604
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.3333333333333333,
+          "mrr": 0.16033446380417393
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.15384615384615385,
+          "mrr": 0.047465801662605896
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.11290322580645161,
+          "mrr": 0.07562330015456527
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.23076923076923078,
+          "mrr": 0.04695073468081629
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.46875,
+          "mrr": 0.26635770304869166
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.2727272727272727,
+          "mrr": 0.14071717841482348
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.00455334404817297
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.0010449320794148381
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.0760119971696818
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.16025641025641027,
+          "mrr": 0.09399567927220295
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.2898876404494382,
+          "mrr": 0.1705555240576
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.21052631578947367,
+          "mrr": 0.15663214757550895
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.4090909090909091,
+          "mrr": 0.27718951557593435
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.20945281782437747,
+          "mrr": 0.11049593667616185
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.2,
+          "mrr": 0.09427257173736395
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.46875,
+          "mrr": 0.26635770304869166
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.08434278253256652
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.32142857142857145,
+          "mrr": 0.20118303817904604
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.13333333333333333,
+          "mrr": 0.07809165911873248
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.15384615384615385,
+          "mrr": 0.047465801662605896
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.21750663129973474,
+          "mrr": 0.11648483957831131
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.4,
+          "mrr": 0.061018584151628405
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.28647686832740216,
+          "mrr": 0.16880403986474907
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.12686567164179105,
+          "mrr": 0.06364776339004055
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.2278205557415467,
+          "mrr": 0.1273420479798373
+        }
+      }
+    },
+    {
+      "model": "alexdseo/RecipeBERT/centered",
+      "n": 20000,
+      "recall_at_10": 0.17105,
+      "recall_at_10_bootstrap_mean": 0.17107999999999998,
+      "recall_at_10_ci95": [
+        0.16595,
+        0.17625124999999997
+      ],
+      "mrr": 0.08394353412211662,
+      "mrr_bootstrap_mean": 0.08395341191970229,
+      "mrr_ci95": [
+        0.08108970097630551,
+        0.08676715966467703
+      ],
+      "lift_over_popularity": -0.19395,
+      "lift_over_popularity_bootstrap_mean": -0.19403855,
+      "lift_over_popularity_ci95": [
+        -0.20165,
+        -0.1863
+      ],
+      "masked_set_native_minus_this": 0.44395,
+      "masked_set_native_minus_this_ci95": [
+        0.43654875,
+        0.45125125
+      ],
+      "macro_recall_at_10_observed_targets": 0.04790209816577415,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.10128440366972477,
+          "mrr": 0.04753303469542621
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.25461538461538463,
+          "mrr": 0.12755611035848208
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.19771204067483245,
+          "mrr": 0.09555338097254089
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.12462311557788945,
+          "mrr": 0.059627222435724235
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.16770186335403728,
+          "mrr": 0.09006670917492873
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.2594594594594595,
+          "mrr": 0.12532029117830812
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.15671641791044777,
+          "mrr": 0.06320135223543086
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.2222222222222222,
+          "mrr": 0.12076657626722502
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.22535211267605634,
+          "mrr": 0.1483731344167502
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.05,
+          "mrr": 0.03978048049650897
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.2631578947368421,
+          "mrr": 0.1034100232902283
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.14685314685314685,
+          "mrr": 0.0741103249418357
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.2,
+          "mrr": 0.10001332375065987
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.03332024104561279
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.17818889970788704,
+          "mrr": 0.08525933049926278
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.16687737041719342,
+          "mrr": 0.09394921906686246
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.13636363636363635,
+          "mrr": 0.1122467927546341
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.125,
+          "mrr": 0.05496574167596256
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.07142857142857142,
+          "mrr": 0.03667349648069928
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.13333333333333333,
+          "mrr": 0.10565352638538018
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.23076923076923078,
+          "mrr": 0.19135348012470177
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.16129032258064516,
+          "mrr": 0.08823099020736772
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.15384615384615385,
+          "mrr": 0.06757004389725714
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.28125,
+          "mrr": 0.15522248538354935
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.14545454545454545,
+          "mrr": 0.0919446389135669
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.12878038237692968
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.07142857142857142
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.012529291586668637
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.16025641025641027,
+          "mrr": 0.08806174809948239
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.23370786516853934,
+          "mrr": 0.11461081476246367
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.2631578947368421,
+          "mrr": 0.1034100232902283
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.13636363636363635,
+          "mrr": 0.1122467927546341
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.1906127129750983,
+          "mrr": 0.09353882592005977
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.2594594594594595,
+          "mrr": 0.12532029117830812
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.28125,
+          "mrr": 0.15522248538354935
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.03332024104561279
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.07142857142857142,
+          "mrr": 0.03667349648069928
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.05,
+          "mrr": 0.03978048049650897
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.23076923076923078,
+          "mrr": 0.19135348012470177
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.16445623342175067,
+          "mrr": 0.09034067770443828
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.0,
+          "mrr": 0.024309147555049194
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.2313167259786477,
+          "mrr": 0.11589235229993176
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.15671641791044777,
+          "mrr": 0.06320135223543086
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.12470706394375627,
+          "mrr": 0.05967352518760987
+        }
+      }
+    },
+    {
+      "model": "alexdseo/RecipeBERT/raw",
+      "n": 20000,
+      "recall_at_10": 0.1226,
+      "recall_at_10_bootstrap_mean": 0.122651375,
+      "recall_at_10_ci95": [
+        0.1181,
+        0.12705124999999998
+      ],
+      "mrr": 0.058949321333754655,
+      "mrr_bootstrap_mean": 0.05895611605100358,
+      "mrr_ci95": [
+        0.05666907990539623,
+        0.06125761883276377
+      ],
+      "lift_over_popularity": -0.2424,
+      "lift_over_popularity_bootstrap_mean": -0.242467175,
+      "lift_over_popularity_ci95": [
+        -0.2501,
+        -0.23485
+      ],
+      "masked_set_native_minus_this": 0.4924,
+      "masked_set_native_minus_this_ci95": [
+        0.4849,
+        0.5
+      ],
+      "macro_recall_at_10_observed_targets": 0.038485010142101664,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.08009174311926605,
+          "mrr": 0.036684473955392344
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.17351648351648352,
+          "mrr": 0.08561820445728752
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.1399352900392882,
+          "mrr": 0.0646091323164263
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.09279731993299832,
+          "mrr": 0.049271678921566316
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.13664596273291926,
+          "mrr": 0.05737983270408259
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.1891891891891892,
+          "mrr": 0.08291207033897559
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.11940298507462686,
+          "mrr": 0.058902750543376785
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.1794871794871795,
+          "mrr": 0.07520165081939749
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.15492957746478872,
+          "mrr": 0.049427684973740726
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.05,
+          "mrr": 0.02398649422603897
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.15789473684210525,
+          "mrr": 0.07791570423552145
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.07692307692307693,
+          "mrr": 0.02904369468902764
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.14285714285714285,
+          "mrr": 0.06366556534958373
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.011827516975731013
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.12074001947419669,
+          "mrr": 0.05712317298033846
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.12262958280657396,
+          "mrr": 0.06056529078796349
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.09090909090909091,
+          "mrr": 0.047442014255663384
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.0,
+          "mrr": 0.015688157942049884
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.10714285714285714,
+          "mrr": 0.03190918148566569
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.13333333333333333,
+          "mrr": 0.04387007899198515
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.15384615384615385,
+          "mrr": 0.17651687621317919
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.12903225806451613,
+          "mrr": 0.06869342073495889
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.0,
+          "mrr": 0.006454553216667346
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.21875,
+          "mrr": 0.11556316624878776
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.11818181818181818,
+          "mrr": 0.06190129515599292
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.0070461293467990556
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.09090909090909091
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.005273854529937019
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.11217948717948718,
+          "mrr": 0.05696558637325179
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.15730337078651685,
+          "mrr": 0.08530987872029125
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.15789473684210525,
+          "mrr": 0.07791570423552145
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.09090909090909091,
+          "mrr": 0.047442014255663384
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.13392857142857142,
+          "mrr": 0.06225774482212645
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.1891891891891892,
+          "mrr": 0.08291207033897559
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.21875,
+          "mrr": 0.11556316624878776
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.011827516975731013
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.10714285714285714,
+          "mrr": 0.03190918148566569
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.05,
+          "mrr": 0.02398649422603897
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.15384615384615385,
+          "mrr": 0.17651687621317919
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.13395225464190982,
+          "mrr": 0.05803946250475917
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.0,
+          "mrr": 0.022400901805767797
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.1619217081850534,
+          "mrr": 0.08320549675515856
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.11940298507462686,
+          "mrr": 0.058902750543376785
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.09273518580515568,
+          "mrr": 0.04924340603936025
+        }
+      }
+    },
+    {
+      "model": "llmmm/ease/centered",
+      "n": 20000,
+      "recall_at_10": 0.1645,
+      "recall_at_10_bootstrap_mean": 0.164501925,
+      "recall_at_10_ci95": [
+        0.15945,
+        0.1697
+      ],
+      "mrr": 0.0790658485535804,
+      "mrr_bootstrap_mean": 0.07905741410673406,
+      "mrr_ci95": [
+        0.07655943236785347,
+        0.08169688797232112
+      ],
+      "lift_over_popularity": -0.2005,
+      "lift_over_popularity_bootstrap_mean": -0.200616625,
+      "lift_over_popularity_ci95": [
+        -0.20980249999999998,
+        -0.19144875000000003
+      ],
+      "masked_set_native_minus_this": 0.4505,
+      "masked_set_native_minus_this_ci95": [
+        0.44285,
+        0.45840125
+      ],
+      "macro_recall_at_10_observed_targets": 0.31263938665599417,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.21467889908256882,
+          "mrr": 0.10550674167626001
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.1043956043956044,
+          "mrr": 0.04739488865938172
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.16108158077189738,
+          "mrr": 0.07580032653329682
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.1830820770519263,
+          "mrr": 0.09105765603387499
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.09937888198757763,
+          "mrr": 0.042617345366593826
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.07027027027027027,
+          "mrr": 0.031626390346809814
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.13432835820895522,
+          "mrr": 0.05657981969126874
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.1452991452991453,
+          "mrr": 0.0633266020206219
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.18309859154929578,
+          "mrr": 0.09405655835734743
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.2,
+          "mrr": 0.0739167062622299
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.21052631578947367,
+          "mrr": 0.09021640873898605
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.17482517482517482,
+          "mrr": 0.08725054846307058
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.1,
+          "mrr": 0.06569732643962664
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.02256013354191492
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.14800389483933787,
+          "mrr": 0.07359967966683552
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.1820480404551201,
+          "mrr": 0.09171985875054789
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.09090909090909091,
+          "mrr": 0.05547078737674667
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.375,
+          "mrr": 0.08856195736540555
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.10714285714285714,
+          "mrr": 0.04673190679784008
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.26666666666666666,
+          "mrr": 0.19442057383990727
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.0,
+          "mrr": 0.013653821527194005
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.12903225806451613,
+          "mrr": 0.039943171625447534
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.15384615384615385,
+          "mrr": 0.13667917906721122
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.1875,
+          "mrr": 0.050565437326138586
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.18181818181818182,
+          "mrr": 0.06523472128047687
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.005885155556828373
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.002070393374741201
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.04724222273599689
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.16346153846153846,
+          "mrr": 0.06861339853485629
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.1752808988764045,
+          "mrr": 0.08046196201640571
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.21052631578947367,
+          "mrr": 0.09021640873898605
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.09090909090909091,
+          "mrr": 0.05547078737674667
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.16046854521625165,
+          "mrr": 0.07664282701806406
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.07027027027027027,
+          "mrr": 0.031626390346809814
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.1875,
+          "mrr": 0.050565437326138586
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.02256013354191492
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.10714285714285714,
+          "mrr": 0.04673190679784008
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.2,
+          "mrr": 0.0739167062622299
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.0,
+          "mrr": 0.013653821527194005
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.11140583554376658,
+          "mrr": 0.04591696254235926
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.2,
+          "mrr": 0.038207856863745754
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.16903914590747332,
+          "mrr": 0.07689463618098452
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.13432835820895522,
+          "mrr": 0.05657981969126874
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.1829594911282223,
+          "mrr": 0.09100062724212604
+        }
+      }
+    },
+    {
+      "model": "llmmm/ease/native",
+      "n": 20000,
+      "recall_at_10": 0.5872,
+      "recall_at_10_bootstrap_mean": 0.587284925,
+      "recall_at_10_ci95": [
+        0.58035,
+        0.5941512499999999
+      ],
+      "mrr": 0.33890682048497567,
+      "mrr_bootstrap_mean": 0.3389771279446376,
+      "mrr_ci95": [
+        0.3338593401552237,
+        0.3442867279032635
+      ],
+      "lift_over_popularity": 0.2222,
+      "lift_over_popularity_bootstrap_mean": 0.22216637500000003,
+      "lift_over_popularity_ci95": [
+        0.2154,
+        0.22885
+      ],
+      "masked_set_native_minus_this": 0.0278,
+      "masked_set_native_minus_this_ci95": [
+        0.02299875,
+        0.03285
+      ],
+      "macro_recall_at_10_observed_targets": 0.12867434965717905,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.3423853211009174,
+          "mrr": 0.1379773725409888
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.8804395604395604,
+          "mrr": 0.5795805548354654
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.5826207534088282,
+          "mrr": 0.3343301973619982
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.6016750418760469,
+          "mrr": 0.34360739219920505
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.5543478260869565,
+          "mrr": 0.351892897080907
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.572972972972973,
+          "mrr": 0.3600553960943453
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.5298507462686567,
+          "mrr": 0.27754617978272145
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.6837606837606838,
+          "mrr": 0.36514038242998786
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.4507042253521127,
+          "mrr": 0.2566686520421898
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.5833333333333334,
+          "mrr": 0.3318391276652648
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.5263157894736842,
+          "mrr": 0.268885273741891
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.5944055944055944,
+          "mrr": 0.3585565045984514
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.5428571428571428,
+          "mrr": 0.2816368982743733
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.38601926581619367
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.5691333982473223,
+          "mrr": 0.3213622434132649
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.5828065739570164,
+          "mrr": 0.36162499790714175
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.8181818181818182,
+          "mrr": 0.5437579477095359
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.5,
+          "mrr": 0.3528475544922913
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.6785714285714286,
+          "mrr": 0.3827859094272486
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.5333333333333333,
+          "mrr": 0.34020443206717405
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.5384615384615384,
+          "mrr": 0.17597972554518637
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.6290322580645161,
+          "mrr": 0.3996744840483212
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.46153846153846156,
+          "mrr": 0.3635123530013349
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.71875,
+          "mrr": 0.536209094804612
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.5272727272727272,
+          "mrr": 0.30340939565385916
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.060738600995953934
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.041666666666666664
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.75,
+          "mrr": 0.38175675675675674
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.47435897435897434,
+          "mrr": 0.30452824148060725
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.7235955056179775,
+          "mrr": 0.4125967801267346
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.5263157894736842,
+          "mrr": 0.268885273741891
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.8181818181818182,
+          "mrr": 0.5437579477095359
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.5766710353866317,
+          "mrr": 0.3330746879061127
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.572972972972973,
+          "mrr": 0.3600553960943453
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.71875,
+          "mrr": 0.536209094804612
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.38601926581619367
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.6785714285714286,
+          "mrr": 0.3827859094272486
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.5833333333333334,
+          "mrr": 0.3318391276652648
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.5384615384615384,
+          "mrr": 0.17597972554518637
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.5503978779840849,
+          "mrr": 0.3448197072175445
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.6,
+          "mrr": 0.31373873873873875
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.7153024911032029,
+          "mrr": 0.40271706743897784
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.5298507462686567,
+          "mrr": 0.27754617978272145
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.6014395714763977,
+          "mrr": 0.34341799227205194
+        }
+      }
+    },
+    {
+      "model": "llmmm/ease/raw",
+      "n": 20000,
+      "recall_at_10": 0.14225,
+      "recall_at_10_bootstrap_mean": 0.142227575,
+      "recall_at_10_ci95": [
+        0.13719874999999998,
+        0.14715
+      ],
+      "mrr": 0.06926326321760484,
+      "mrr_bootstrap_mean": 0.06924648585080646,
+      "mrr_ci95": [
+        0.06691318523307338,
+        0.07176152663300697
+      ],
+      "lift_over_popularity": -0.22275,
+      "lift_over_popularity_bootstrap_mean": -0.222890975,
+      "lift_over_popularity_ci95": [
+        -0.2320025,
+        -0.21359875000000003
+      ],
+      "masked_set_native_minus_this": 0.47275,
+      "masked_set_native_minus_this_ci95": [
+        0.4651975,
+        0.4807
+      ],
+      "macro_recall_at_10_observed_targets": 0.29627310825032566,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.1914678899082569,
+          "mrr": 0.09423996342373182
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.0832967032967033,
+          "mrr": 0.039346116816859344
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.13716200600878206,
+          "mrr": 0.06670419821492536
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.16700167504187605,
+          "mrr": 0.08180884482954522
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.07608695652173914,
+          "mrr": 0.03358925877655042
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.04864864864864865,
+          "mrr": 0.02190308682091287
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.11940298507462686,
+          "mrr": 0.04812224976081707
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.13675213675213677,
+          "mrr": 0.051576616568537535
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.15492957746478872,
+          "mrr": 0.08188038426288816
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.18333333333333332,
+          "mrr": 0.06523307570787532
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.21052631578947367,
+          "mrr": 0.0630420523988503
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.13286713286713286,
+          "mrr": 0.07790863374248123
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.08571428571428572,
+          "mrr": 0.05771746431636059
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.015179144393412376
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.12609542356377798,
+          "mrr": 0.06213296410743222
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.1504424778761062,
+          "mrr": 0.07828479893228207
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.09090909090909091,
+          "mrr": 0.03496883242559915
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.375,
+          "mrr": 0.0753543373217013
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.03571428571428571,
+          "mrr": 0.032842138599842266
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.26666666666666666,
+          "mrr": 0.18689570926434643
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.0,
+          "mrr": 0.008848833486404528
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.0967741935483871,
+          "mrr": 0.03216432438140506
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.15384615384615385,
+          "mrr": 0.09343073788952107
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.09375,
+          "mrr": 0.029066776538223017
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.12727272727272726,
+          "mrr": 0.05706214059740938
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.00483547555686011
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.0013568521031207597
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.043145248967166774
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.13782051282051283,
+          "mrr": 0.05770724476084938
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.13258426966292136,
+          "mrr": 0.0654001037053536
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.21052631578947367,
+          "mrr": 0.0630420523988503
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.09090909090909091,
+          "mrr": 0.03496883242559915
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.13622214941022281,
+          "mrr": 0.06677755029817742
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.04864864864864865,
+          "mrr": 0.02190308682091287
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.09375,
+          "mrr": 0.029066776538223017
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.015179144393412376
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.03571428571428571,
+          "mrr": 0.032842138599842266
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.18333333333333332,
+          "mrr": 0.06523307570787532
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.0,
+          "mrr": 0.008848833486404528
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.08355437665782493,
+          "mrr": 0.03701368450638396
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.2,
+          "mrr": 0.03478756959435757
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.13345195729537365,
+          "mrr": 0.06252226029786696
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.11940298507462686,
+          "mrr": 0.04812224976081707
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.16688985604285236,
+          "mrr": 0.08175730591473257
+        }
+      }
+    },
+    {
+      "model": "llmmm/masked-set/centered",
+      "n": 20000,
+      "recall_at_10": 0.21565,
+      "recall_at_10_bootstrap_mean": 0.21567807499999997,
+      "recall_at_10_ci95": [
+        0.2099,
+        0.22135
+      ],
+      "mrr": 0.09262103468354942,
+      "mrr_bootstrap_mean": 0.09263087184324366,
+      "mrr_ci95": [
+        0.09027568433488904,
+        0.0950235593985802
+      ],
+      "lift_over_popularity": -0.14935,
+      "lift_over_popularity_bootstrap_mean": -0.14944047500000002,
+      "lift_over_popularity_ci95": [
+        -0.15670125000000001,
+        -0.14244875
+      ],
+      "masked_set_native_minus_this": 0.39935,
+      "masked_set_native_minus_this_ci95": [
+        0.39099875,
+        0.4075
+      ],
+      "macro_recall_at_10_observed_targets": 0.03000403591207499,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.07853211009174312,
+          "mrr": 0.039173238272988284
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.3798901098901099,
+          "mrr": 0.15664092269180396
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.20556967876126647,
+          "mrr": 0.08466163192716736
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.2236180904522613,
+          "mrr": 0.09881820894012733
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.22826086956521738,
+          "mrr": 0.09737589183078045
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.22702702702702704,
+          "mrr": 0.08143117345304844
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.2537313432835821,
+          "mrr": 0.08028427224441326
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.4188034188034188,
+          "mrr": 0.1884119447586312
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.11267605633802817,
+          "mrr": 0.05859962644273646
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.15,
+          "mrr": 0.07611116250670043
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.15789473684210525,
+          "mrr": 0.05215210623748754
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.2517482517482518,
+          "mrr": 0.10105474411138976
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.18571428571428572,
+          "mrr": 0.0893318412354882
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.02999148596052266
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.20253164556962025,
+          "mrr": 0.08278102395470953
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.19469026548672566,
+          "mrr": 0.08523949534200465
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.22727272727272727,
+          "mrr": 0.07025546694681227
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.25,
+          "mrr": 0.06228288493913494
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.32142857142857145,
+          "mrr": 0.10379436316857296
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.13333333333333333,
+          "mrr": 0.04530274833513396
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.38461538461538464,
+          "mrr": 0.20810232280050148
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.20967741935483872,
+          "mrr": 0.07661989592116712
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.07692307692307693,
+          "mrr": 0.06501824852794058
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.125,
+          "mrr": 0.054186165371297904
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.17272727272727273,
+          "mrr": 0.08683143719603169
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.26385869565217396
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.09090909090909091
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.0359994644195316
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.1955128205128205,
+          "mrr": 0.07590471957243132
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.36629213483146067,
+          "mrr": 0.2255506361472647
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.15789473684210525,
+          "mrr": 0.05215210623748754
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.22727272727272727,
+          "mrr": 0.07025546694681227
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.203718872870249,
+          "mrr": 0.0840529444874012
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.22702702702702704,
+          "mrr": 0.08143117345304844
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.125,
+          "mrr": 0.054186165371297904
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.02999148596052266
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.32142857142857145,
+          "mrr": 0.10379436316857296
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.15,
+          "mrr": 0.07611116250670043
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.38461538461538464,
+          "mrr": 0.20810232280050148
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.22015915119363394,
+          "mrr": 0.09583757616788607
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.0,
+          "mrr": 0.046981389717443464
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.37722419928825623,
+          "mrr": 0.21781891569802964
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.2537313432835821,
+          "mrr": 0.08028427224441326
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.22380314697020423,
+          "mrr": 0.09892871478995127
+        }
+      }
+    },
+    {
+      "model": "llmmm/masked-set/native",
+      "n": 20000,
+      "recall_at_10": 0.615,
+      "recall_at_10_bootstrap_mean": 0.615088425,
+      "recall_at_10_ci95": [
+        0.6084,
+        0.62190125
+      ],
+      "mrr": 0.3645508900144799,
+      "mrr_bootstrap_mean": 0.3646655768753617,
+      "mrr_ci95": [
+        0.3593071809461356,
+        0.37011585923520335
+      ],
+      "lift_over_popularity": 0.25,
+      "lift_over_popularity_bootstrap_mean": 0.249969875,
+      "lift_over_popularity_ci95": [
+        0.24285,
+        0.25685125000000003
+      ],
+      "masked_set_native_minus_this": 0.0,
+      "masked_set_native_minus_this_ci95": [
+        0.0,
+        0.0
+      ],
+      "macro_recall_at_10_observed_targets": 0.16921642147731059,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.3944954128440367,
+          "mrr": 0.17284841641748652
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.8791208791208791,
+          "mrr": 0.5941725342130763
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.6165934827825283,
+          "mrr": 0.3593367332166865
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.6385259631490787,
+          "mrr": 0.38169554187327925
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.5512422360248447,
+          "mrr": 0.3638075576006867
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.5891891891891892,
+          "mrr": 0.36370766618672185
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.6044776119402985,
+          "mrr": 0.3201381936192511
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.6495726495726496,
+          "mrr": 0.3648038205740682
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.4788732394366197,
+          "mrr": 0.26053647802601715
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.55,
+          "mrr": 0.33471640754340687
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.42105263157894735,
+          "mrr": 0.252985740075342
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.5734265734265734,
+          "mrr": 0.36520831592907466
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.6142857142857143,
+          "mrr": 0.3459265098817097
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.5076996500159083
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.5754625121713729,
+          "mrr": 0.3316003056882815
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.6055625790139064,
+          "mrr": 0.37955090491684146
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.7272727272727273,
+          "mrr": 0.48954442325113257
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.625,
+          "mrr": 0.4251629144887572
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.6785714285714286,
+          "mrr": 0.3338104949151642
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.43333333333333335,
+          "mrr": 0.27971299613004713
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.6153846153846154,
+          "mrr": 0.23542846042846044
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.6451612903225806,
+          "mrr": 0.39149525252121187
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.5384615384615384,
+          "mrr": 0.3760231595036135
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.75,
+          "mrr": 0.5107192651514447
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.5363636363636364,
+          "mrr": 0.2944665213018792
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.07776148582600195
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.07692307692307693
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.75,
+          "mrr": 0.14088095238095238
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.4775641025641026,
+          "mrr": 0.3030656728818062
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.7280898876404495,
+          "mrr": 0.4581426460215443
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.42105263157894735,
+          "mrr": 0.252985740075342
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.7272727272727273,
+          "mrr": 0.48954442325113257
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.60370249017038,
+          "mrr": 0.3539875333886287
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.5891891891891892,
+          "mrr": 0.36370766618672185
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.75,
+          "mrr": 0.5107192651514447
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.5076996500159083
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.6785714285714286,
+          "mrr": 0.3338104949151642
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.55,
+          "mrr": 0.33471640754340687
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.6153846153846154,
+          "mrr": 0.23542846042846044
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.5490716180371353,
+          "mrr": 0.35369149129714716
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.6,
+          "mrr": 0.12808937728937728
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.7117437722419929,
+          "mrr": 0.43871089766326193
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.6044776119402985,
+          "mrr": 0.3201381936192511
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.6382658185470371,
+          "mrr": 0.3814920373161669
+        }
+      }
+    },
+    {
+      "model": "llmmm/masked-set/raw",
+      "n": 20000,
+      "recall_at_10": 0.1291,
+      "recall_at_10_bootstrap_mean": 0.129093075,
+      "recall_at_10_ci95": [
+        0.1244,
+        0.1337
+      ],
+      "mrr": 0.05813058241233384,
+      "mrr_bootstrap_mean": 0.058131381845933076,
+      "mrr_ci95": [
+        0.05629189768969368,
+        0.06003375729314333
+      ],
+      "lift_over_popularity": -0.2359,
+      "lift_over_popularity_bootstrap_mean": -0.23602547499999998,
+      "lift_over_popularity_ci95": [
+        -0.24405,
+        -0.22784875000000002
+      ],
+      "masked_set_native_minus_this": 0.4859,
+      "masked_set_native_minus_this_ci95": [
+        0.47784875,
+        0.49405125
+      ],
+      "macro_recall_at_10_observed_targets": 0.0839643613458602,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.11908256880733945,
+          "mrr": 0.05369679856332551
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.1410989010989011,
+          "mrr": 0.06344137845125593
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.1147446267621909,
+          "mrr": 0.05275613164632222
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.13701842546063653,
+          "mrr": 0.060100991654692425
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.13509316770186336,
+          "mrr": 0.05225626985093831
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.16216216216216217,
+          "mrr": 0.05701662673429119
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.09701492537313433,
+          "mrr": 0.06086512076407389
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.3162393162393162,
+          "mrr": 0.1284576634964304
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.056338028169014086,
+          "mrr": 0.022066849294241648
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.11666666666666667,
+          "mrr": 0.04625342203935032
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.2631578947368421,
+          "mrr": 0.06117420305814103
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.1258741258741259,
+          "mrr": 0.06484825085978155
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.12857142857142856,
+          "mrr": 0.057888232101163964
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.045418958926128516
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.12414800389483933,
+          "mrr": 0.05628522357238681
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.1264222503160556,
+          "mrr": 0.0564466731250291
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.18181818181818182,
+          "mrr": 0.0678027227753367
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.25,
+          "mrr": 0.061452393153585846
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.2857142857142857,
+          "mrr": 0.07761507650899054
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.2,
+          "mrr": 0.0785787179817321
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.3076923076923077,
+          "mrr": 0.15522727794832333
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.11290322580645161,
+          "mrr": 0.0533487406435917
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.07692307692307693,
+          "mrr": 0.029992116144541853
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.125,
+          "mrr": 0.03811881811398077
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.11818181818181818,
+          "mrr": 0.0664621771053727
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.21093862200201066
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 0.0,
+          "mrr": 0.0196078431372549
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.0,
+          "mrr": 0.017796669499802804
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.08974358974358974,
+          "mrr": 0.04529301337993992
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.28314606741573034,
+          "mrr": 0.14555966190534425
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.2631578947368421,
+          "mrr": 0.06117420305814103
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.18181818181818182,
+          "mrr": 0.0678027227753367
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.11656290956749672,
+          "mrr": 0.0534388002650539
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.16216216216216217,
+          "mrr": 0.05701662673429119
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.125,
+          "mrr": 0.03811881811398077
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.25,
+          "mrr": 0.045418958926128516
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.2857142857142857,
+          "mrr": 0.07761507650899054
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.11666666666666667,
+          "mrr": 0.04625342203935032
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.3076923076923077,
+          "mrr": 0.15522727794832333
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.13262599469496023,
+          "mrr": 0.05432874968911839
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.0,
+          "mrr": 0.018158904227293222
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.2900355871886121,
+          "mrr": 0.14199928145366647
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.09701492537313433,
+          "mrr": 0.06086512076407389
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.13726146635420153,
+          "mrr": 0.06020198772456007
+        }
+      }
+    },
+    {
+      "model": "popularity",
+      "n": 20000,
+      "recall_at_10": 0.365,
+      "recall_at_10_bootstrap_mean": 0.36511855000000004,
+      "recall_at_10_ci95": [
+        0.35839875,
+        0.37195
+      ],
+      "mrr": 0.1810248369349184,
+      "mrr_bootstrap_mean": 0.18105727118183404,
+      "mrr_ci95": [
+        0.17684040038931048,
+        0.18511114600307402
+      ],
+      "lift_over_popularity": 0.0,
+      "lift_over_popularity_bootstrap_mean": 0.0,
+      "lift_over_popularity_ci95": [
+        0.0,
+        0.0
+      ],
+      "masked_set_native_minus_this": 0.25,
+      "masked_set_native_minus_this_ci95": [
+        0.24285,
+        0.25685125000000003
+      ],
+      "macro_recall_at_10_observed_targets": 0.018037150083031816,
+      "n_observed_targets": 694,
+      "by_train_frequency": {
+        "outside_top_20": {
+          "n": 10900,
+          "recall_at_10": 0.0,
+          "mrr": 0.018583633648443537
+        },
+        "top_20": {
+          "n": 9100,
+          "recall_at_10": 0.8021978021978022,
+          "mrr": 0.3755972672450915
+        }
+      },
+      "by_source": {
+        "01-recipenlg": {
+          "n": 8654,
+          "recall_at_10": 0.3570603189276635,
+          "mrr": 0.1747272751786575
+        },
+        "02-xiachufang": {
+          "n": 5970,
+          "recall_at_10": 0.3609715242881072,
+          "mrr": 0.1895471821064823
+        },
+        "03-povarenok": {
+          "n": 644,
+          "recall_at_10": 0.43788819875776397,
+          "mrr": 0.22690447207650402
+        },
+        "04-spanish": {
+          "n": 185,
+          "recall_at_10": 0.4540540540540541,
+          "mrr": 0.20643216185216848
+        },
+        "05-vietnamese": {
+          "n": 134,
+          "recall_at_10": 0.417910447761194,
+          "mrr": 0.181974727833799
+        },
+        "06-turkish": {
+          "n": 117,
+          "recall_at_10": 0.452991452991453,
+          "mrr": 0.18175147545304343
+        },
+        "07-indian": {
+          "n": 71,
+          "recall_at_10": 0.352112676056338,
+          "mrr": 0.18392381094927662
+        },
+        "08-indonesian": {
+          "n": 60,
+          "recall_at_10": 0.35,
+          "mrr": 0.17986286755817185
+        },
+        "09-chefkoch": {
+          "n": 19,
+          "recall_at_10": 0.3684210526315789,
+          "mrr": 0.1670410192844004
+        },
+        "allrecipes-33k": {
+          "n": 143,
+          "recall_at_10": 0.3986013986013986,
+          "mrr": 0.18315044092176033
+        },
+        "bhuvii-17k": {
+          "n": 70,
+          "recall_at_10": 0.37142857142857144,
+          "mrr": 0.1790230086818244
+        },
+        "filipino-2k": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.14789311135150085
+        },
+        "foodcom-522k": {
+          "n": 2054,
+          "recall_at_10": 0.3403115871470302,
+          "mrr": 0.1639454012198285
+        },
+        "foodcom-raw-231k": {
+          "n": 791,
+          "recall_at_10": 0.36536030341340076,
+          "mrr": 0.16320089450968087
+        },
+        "greek-5k": {
+          "n": 22,
+          "recall_at_10": 0.5454545454545454,
+          "mrr": 0.24761687551106634
+        },
+        "halal-2k": {
+          "n": 8,
+          "recall_at_10": 0.375,
+          "mrr": 0.22683206348254015
+        },
+        "hebrew-9.7k": {
+          "n": 28,
+          "recall_at_10": 0.39285714285714285,
+          "mrr": 0.26782019837611964
+        },
+        "indian-7k": {
+          "n": 30,
+          "recall_at_10": 0.3,
+          "mrr": 0.15743526883100978
+        },
+        "japanese-3k": {
+          "n": 13,
+          "recall_at_10": 0.6153846153846154,
+          "mrr": 0.2702083508170742
+        },
+        "kaggle-food-13k": {
+          "n": 62,
+          "recall_at_10": 0.3064516129032258,
+          "mrr": 0.21815084591422096
+        },
+        "moroccan-4.6k": {
+          "n": 13,
+          "recall_at_10": 0.38461538461538464,
+          "mrr": 0.15192788878795377
+        },
+        "persian-6k": {
+          "n": 32,
+          "recall_at_10": 0.5,
+          "mrr": 0.30695529896564044
+        },
+        "povarenok-detail": {
+          "n": 110,
+          "recall_at_10": 0.34545454545454546,
+          "mrr": 0.1668527231197336
+        },
+        "taiwan-1.8k": {
+          "n": 4,
+          "recall_at_10": 0.75,
+          "mrr": 0.18980096401562369
+        },
+        "thai-1k": {
+          "n": 1,
+          "recall_at_10": 1.0,
+          "mrr": 0.3333333333333333
+        },
+        "thai-1k-seasoning": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.3142108847950182
+        },
+        "thefoodprocessor-74k": {
+          "n": 312,
+          "recall_at_10": 0.28846153846153844,
+          "mrr": 0.16150680318008212
+        },
+        "turkish-102k": {
+          "n": 445,
+          "recall_at_10": 0.5325842696629214,
+          "mrr": 0.2140615929506584
+        }
+      },
+      "by_language": {
+        "de": {
+          "n": 19,
+          "recall_at_10": 0.3684210526315789,
+          "mrr": 0.1670410192844004
+        },
+        "el": {
+          "n": 22,
+          "recall_at_10": 0.5454545454545454,
+          "mrr": 0.24761687551106634
+        },
+        "en": {
+          "n": 12208,
+          "recall_at_10": 0.3532110091743119,
+          "mrr": 0.17219319851422238
+        },
+        "es": {
+          "n": 185,
+          "recall_at_10": 0.4540540540540541,
+          "mrr": 0.20643216185216848
+        },
+        "fa": {
+          "n": 32,
+          "recall_at_10": 0.5,
+          "mrr": 0.30695529896564044
+        },
+        "fil": {
+          "n": 4,
+          "recall_at_10": 0.5,
+          "mrr": 0.14789311135150085
+        },
+        "he": {
+          "n": 28,
+          "recall_at_10": 0.39285714285714285,
+          "mrr": 0.26782019837611964
+        },
+        "id": {
+          "n": 60,
+          "recall_at_10": 0.35,
+          "mrr": 0.17986286755817185
+        },
+        "ja": {
+          "n": 13,
+          "recall_at_10": 0.6153846153846154,
+          "mrr": 0.2702083508170742
+        },
+        "ru": {
+          "n": 754,
+          "recall_at_10": 0.4244031830238727,
+          "mrr": 0.2181436068440839
+        },
+        "th": {
+          "n": 5,
+          "recall_at_10": 0.6,
+          "mrr": 0.3180353745026812
+        },
+        "tr": {
+          "n": 562,
+          "recall_at_10": 0.5160142348754448,
+          "mrr": 0.20733510941467806
+        },
+        "vi": {
+          "n": 134,
+          "recall_at_10": 0.417910447761194,
+          "mrr": 0.181974727833799
+        },
+        "zh": {
+          "n": 5974,
+          "recall_at_10": 0.36123200535654504,
+          "mrr": 0.18954735203076026
+        }
+      }
+    }
+  ]
+}
