@@ -78,6 +78,9 @@ all **4,653,430** canonical recipe records, with no sampling or length filter.
 Each epoch checks that every row and every ingredient slot was processed.
 The old holdout is part of this training data, so the production checkpoint has
 no held-out score from this corpus and does not enter the scored leaderboard.
+After training finishes, `make -C model verify-all-recipes` checks the saved
+per-epoch counts against the checksum-verified corpus and restores the complete
+predictor. An incomplete run fails this check; having the data is not enough.
 
 ## Toward a Hugging Face release
 

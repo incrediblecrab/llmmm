@@ -1,0 +1,87 @@
+from __future__ import annotations
+
+import hashlib
+import json
+
+import numpy as np
+import pytest
+
+from ingredient_model import artifacts
+from ingredient_model.data.recipes import RecipeCorpus
+from ingredient_model.production import verify_full_training
+from ingredient_model.spec import TrainContext
+
+
+@pytest.fixture
+def production(tmp_path, monkeypatch):
+    pytest.importorskip("torch")
+    from models.set_transformer import train
+
+    data = tmp_path / "data"
+    (data / "recipes").mkdir(parents=True)
+    corpus = RecipeCorpus(
+        flat=np.array([0, 0, 1, 0, 1, 2]), offsets=np.array([0, 1, 3, 6]),
+        lang=np.array(["en"] * 3), source=np.array(["fixture"] * 3),
+        itos=["a", "b", "c", "d"])
+    corpus_path = data / "recipes" / "recipe_ids.npz"
+    np.savez(corpus_path, flat=corpus.flat, offsets=corpus.offsets)
+    digest = hashlib.sha256(corpus_path.read_bytes()).hexdigest()
+    (data / "GENERATION.json").write_text(json.dumps({
+        "generation": "v2", "corpus": "recipe_ids.npz",
+        "sha256": digest, "recipes": 3, "slots": 6, "vocab": 4,
+    }))
+    monkeypatch.setattr(train, "load_recipes", lambda _: corpus)
+    monkeypatch.setattr(artifacts, "_environment", lambda: {
+        "corpus_generation": "v2", "corpus_sha256": digest,
+    })
+    params = {**train.DEFAULTS, "d_model": 8, "n_heads": 2, "n_layers": 1,
+              "epochs": 2, "batch_size": 2, "min_len": 1, "max_len": None,
+              "max_recipes": 0, "expected_recipes": 3, "dropout": 0.0, "warmup": 0}
+    run = tmp_path / "run"
+    result = train.train_masked_set(TrainContext(
+        graph="ii_graph.npz", seed=1, out_dir=run, params=params, split="full"))
+    from ingredient_model.registry import get
+    artifacts.save_run(
+        "fixture", get("masked-set"), result, graph="ii_graph.npz",
+        seed=1, params={**params, "split": "full", "no_eval": True},
+        duration_s=0, out_dir=run)
+    artifacts.save_metrics(run, artifacts.unevaluated_metrics("full"))
+    return run, data
+
+
+def test_completed_coverage_requires_counts_code_and_real_restorable_weights(production):
+    run, data = production
+    result = verify_full_training(run, data, expected_recipes=3)
+    assert result["recipes_per_epoch"] == 3
+    assert result["example_presentations"] == 6
+    assert result["ingredient_slot_presentations"] == 12
+    assert result["complete_predictor_restored"] is True
+    assert result["evaluation_status"] == "not_run"
+    assert len(result["artifact_sha256"]["state__tok__weight.npy"]) == 64
+    assert not any("recall" in key for key in result)
+
+
+@pytest.mark.parametrize("defect", [
+    "examples", "unique_rows", "ingredient_slots", "missing_epoch",
+    "missing_weights", "false_score", "different_corpus",
+])
+def test_incomplete_or_inconsistent_training_cannot_pass_verification(production, defect):
+    run, data = production
+    manifest = json.loads((run / "manifest.json").read_text())
+    if defect == "examples":
+        manifest["metadata"]["n_examples_seen"] -= 1
+    elif defect == "unique_rows":
+        manifest["metadata"]["epoch_coverage"][0]["unique_recipes"] -= 1
+    elif defect == "ingredient_slots":
+        manifest["metadata"]["n_ingredient_slots_seen"] -= 1
+    elif defect == "missing_epoch":
+        manifest["metadata"]["epoch_coverage"].pop()
+    elif defect == "missing_weights":
+        (run / "state__bias.npy").unlink()
+    elif defect == "false_score":
+        artifacts.save_metrics(run, {"split": "full", "M6_native_recall_at_10": 1.0})
+    elif defect == "different_corpus":
+        manifest["environment"]["corpus_sha256"] = "0" * 64
+    (run / "manifest.json").write_text(json.dumps(manifest))
+    with pytest.raises((ValueError, FileNotFoundError)):
+        verify_full_training(run, data, expected_recipes=3)
