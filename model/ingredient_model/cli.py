@@ -25,11 +25,11 @@ from pathlib import Path
 
 import numpy as np
 
-from .artifacts import (Manifest, iter_runs, load_embedding, load_metrics,
-                        load_native_scorer, save_metrics, save_run)
+from .artifacts import (MANIFEST, Manifest, iter_runs, load_embedding, load_metrics,
+                        load_native_scorer, save_metrics, save_run, unevaluated_metrics)
 from .config import PATHS
 from .data.registry import check_available, describe
-from .data.splits import (DEFAULT_SPLIT, SPLITS, check_leakage, get_split,
+from .data.splits import (DEFAULT_SPLIT, SPLITS, check_training_protocol, get_split,
                           held_out_recipes)
 from .eval import build_context, control_gate, evaluate, render_one
 from .eval.report import collect, report
@@ -54,7 +54,8 @@ def _parse_set(items: list[str] | None) -> dict:
             try:
                 out[k] = float(v)
             except ValueError:
-                out[k] = {"true": True, "false": False}.get(v.lower(), v)
+                out[k] = {"true": True, "false": False,
+                          "none": None, "null": None}.get(v.lower(), v)
     return out
 
 
@@ -99,12 +100,10 @@ def cmd_train(a) -> int:
     if missing:
         raise SystemExit(f"{spec.name} needs missing datasets: {', '.join(missing)}\n"
                          "  make restore BUNDLE=/private/path/archive.tar.gz (from model/)")
-    if not a.allow_leakage:
-        check_leakage(split, spec.requires, strict=True)
-    else:
-        warn = check_leakage(split, spec.requires, strict=False)
-        if warn:
-            print(f"  !! LEAKAGE ACCEPTED: {warn}")
+    warn = check_training_protocol(
+        split, spec.requires, no_eval=a.no_eval, strict=not a.allow_leakage)
+    if warn:
+        print(f"  !! LEAKAGE ACCEPTED: {warn}")
 
     params = spec.resolved_params(_parse_set(a.set))
     run_id = a.run_id or f"{spec.name}-{split.name}-s{a.seed}"
@@ -120,7 +119,8 @@ def cmd_train(a) -> int:
     result = spec.train(ctx)
     duration = time.time() - t0
     d = save_run(run_id, spec, result, graph=split.graph, seed=a.seed,
-                 params={**params, "split": split.name},
+                 params={**params, "split": split.name,
+                         **({"no_eval": True} if a.no_eval else {})},
                  duration_s=duration, out_dir=out_dir)
     print(f"  trained in {duration:.0f}s -> {d}")
 
@@ -132,17 +132,28 @@ def cmd_train(a) -> int:
         save_metrics(d, metrics)
         print()
         print(render_one(run_id, metrics))
+    else:
+        metrics = unevaluated_metrics(split.name)
+        save_metrics(d, metrics)
+        print(render_one(run_id, metrics))
     return 0
 
 
 def cmd_eval(a) -> int:
     p = Path(a.target)
     scorer = None
+    provenance = p.parent if p.suffix == ".npy" else _resolve_run(a.target)
+    man = (Manifest.load(provenance)
+           if p.suffix != ".npy" or (provenance / MANIFEST).exists() else None)
+    if man is not None and man.params.get("split") == "full":
+        raise ValueError(
+            "this checkpoint trained on the full corpus; existing corpus splits "
+            "cannot provide a held-out score")
     if p.suffix == ".npy":
         W, name, run_dir = np.load(p), p.stem, None
     else:
-        run_dir = _resolve_run(a.target)
-        man = Manifest.load(run_dir)
+        run_dir = provenance
+        assert man is not None
         W, name = load_embedding(run_dir), man.run_id
         if W.shape != man.shape:
             raise ValueError(
@@ -152,6 +163,8 @@ def cmd_eval(a) -> int:
         if a.split is None:
             a.split = man.params.get("split", DEFAULT_SPLIT)
     split_name = a.split or DEFAULT_SPLIT
+    if split_name == "full":
+        raise ValueError("the full split has no held-out evaluation")
     metrics = evaluate(W, build_context(split_name), whiten=a.whiten,
                        completion_corpus=held_out_recipes(split_name, a.n_completion * 4),
                        n_completion=a.n_completion, scorer=scorer)

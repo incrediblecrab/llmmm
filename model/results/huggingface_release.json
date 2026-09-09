@@ -1,6 +1,6 @@
 {
-  "repo_id": "incrediblecrab/llmmm-ingredients",
-  "url": "https://huggingface.co/incrediblecrab/llmmm-ingredients",
+  "repo_id": "incrediblecrab/llmmm-recipes",
+  "url": "https://huggingface.co/incrediblecrab/llmmm-recipes",
   "revision": "e236fad997a37b6a89cf5cdce8d58fa4e70d2d66",
   "tag": "v0.2.0-preview",
   "private": true,
@@ -40,5 +40,8 @@
     "remote_model_reloads": true,
     "recommendation_contexts_matched": 3,
     "inference_without_private_corpus": true
-  }
+  },
+  "previous_repo_id": "incrediblecrab/llmmm-ingredients",
+  "renamed_model_card_revision": "d79708489299a7b12e632f604ba219bdf9175e20",
+  "rename_preserved_revision": "e236fad997a37b6a89cf5cdce8d58fa4e70d2d66"
 }

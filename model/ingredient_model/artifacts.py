@@ -27,6 +27,11 @@ MANIFEST = "manifest.json"
 METRICS = "metrics.json"
 
 
+def unevaluated_metrics(split: str) -> dict:
+    """Completion marker for a trained checkpoint without evaluation scores."""
+    return {"split": split, "evaluation_status": "not_run"}
+
+
 @dataclass
 class Manifest:
     run_id: str

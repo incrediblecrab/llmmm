@@ -1,0 +1,20 @@
+name: production-v2-all-20260909
+description: >
+  Train a production ingredient predictor on all 4,653,430 canonical recipe
+  records. Include singletons, pairs and long recipes. Verify each row is used
+  exactly once per epoch. This checkpoint has no held-out score from this corpus.
+
+corpus_generation: v2
+splits: [full]
+seeds: [42]
+no_eval: true
+timeout_s: 10800
+
+models:
+  - name: masked-set
+    id: llmmm-recipes
+    params:
+      max_recipes: 0
+      min_len: 1
+      max_len: null
+      expected_recipes: 4653430

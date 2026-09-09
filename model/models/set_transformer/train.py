@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import time
+import hashlib
+from pathlib import Path
 
 import numpy as np
 
@@ -12,7 +14,8 @@ from ingredient_model.spec import TrainContext, TrainResult
 
 DEFAULTS = dict(d_model=256, n_heads=4, n_layers=2, ff_mult=2, dropout=0.1,
                 epochs=3, lr=1e-3, batch_size=512, max_recipes=600_000,
-                max_len=32, tie_output=True, warmup=500)
+                min_len=3, max_len=32, expected_recipes=None,
+                tie_output=True, warmup=500)
 
 
 def _build(vocab: int, p: dict, device: str):
@@ -148,6 +151,7 @@ def train_masked_set(ctx: TrainContext) -> TrainResult:
     from torch import nn
 
     p = {**DEFAULTS, **dict(ctx.params)}
+    code_sha256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     corpus = load_recipes(ctx.corpus or RECIPE_IDS)
     max_r = int(p["max_recipes"])
     if max_r and corpus.n_recipes > max_r:
@@ -155,9 +159,26 @@ def train_masked_set(ctx: TrainContext) -> TrainResult:
         corpus = corpus.select(
             np.sort(rng0.choice(corpus.n_recipes, max_r, replace=False)))
 
-    eligible = int(((corpus.sizes >= 3) & (corpus.sizes <= int(p["max_len"]))).sum())
+    min_len = int(p["min_len"])
+    max_len = None if p["max_len"] is None else int(p["max_len"])
+    if min_len < 1 or int(p["epochs"]) < 1:
+        raise ValueError("min_len and epochs must be positive")
+    recipe_sizes = corpus.sizes
+    expected_rows = recipe_sizes >= min_len
+    if max_len is not None:
+        expected_rows &= recipe_sizes <= max_len
+    eligible = int(expected_rows.sum())
     if not eligible:
         raise ValueError("no recipes satisfy the masked-set training length bounds")
+    if p["expected_recipes"] is not None:
+        expected = p["expected_recipes"]
+        if type(expected) is not int or expected < 1:
+            raise ValueError("expected_recipes must be a positive integer")
+        if corpus.n_recipes != expected or eligible != expected:
+            raise ValueError(
+                f"expected all {expected:,} recipes, found {corpus.n_recipes:,} "
+                f"sampled and {eligible:,} eligible")
+    expected_slots = int(recipe_sizes[expected_rows].sum())
     torch.manual_seed(ctx.seed)
     rng = np.random.default_rng(ctx.seed)
     vocab, device = corpus.n_vocab, ctx.device
@@ -169,12 +190,13 @@ def train_masked_set(ctx: TrainContext) -> TrainResult:
     print(f"  {corpus.n_recipes:,} sampled recipes, {eligible:,} eligible, vocab {vocab}, "
           f"{sum(x.numel() for x in model.parameters()):,} parameters", flush=True)
 
-    history, step, examples_seen, t0 = [], 0, 0, time.time()
+    history, coverage, step, examples_seen, slots_seen, t0 = [], [], 0, 0, 0, time.time()
     for ep in range(int(p["epochs"])):
-        tot, nb = 0.0, 0
-        for ids_np, keep_np in corpus.batches(
-                int(p["batch_size"]), min_size=3, seed=ctx.seed + ep,
-                max_len=int(p["max_len"])):
+        tot, nb, epoch_examples, epoch_slots = 0.0, 0, 0, 0
+        visits = np.zeros(corpus.n_recipes, dtype=np.uint32)
+        for ids_np, keep_np, rows in corpus.indexed_batches(
+                int(p["batch_size"]), min_size=min_len, seed=ctx.seed + ep,
+                max_len=max_len):
             m = len(ids_np)
             lengths = keep_np.sum(1)
             hide = (rng.random(m) * lengths).astype(np.int64)
@@ -199,9 +221,25 @@ def train_masked_set(ctx: TrainContext) -> TrainResult:
                 for gparam in opt.param_groups:
                     gparam["lr"] = float(p["lr"]) * step / warmup
             opt.step()
+            np.add.at(visits, rows, 1)
             examples_seen += m
+            epoch_examples += m
+            slots_seen += int(lengths.sum())
+            epoch_slots += int(lengths.sum())
             tot += float(loss.detach())
             nb += 1
+            if nb % 1000 == 0:
+                print(f"  epoch {ep + 1}/{p['epochs']}  "
+                      f"{epoch_examples:,}/{eligible:,} recipes  "
+                      f"loss {tot / nb:.4f}", flush=True)
+        if not np.array_equal(visits, expected_rows.astype(np.uint32)):
+            raise RuntimeError("training batches did not visit each eligible recipe exactly once")
+        if epoch_slots != expected_slots:
+            raise RuntimeError("training batches omitted or duplicated ingredient slots")
+        coverage.append({"epoch": ep + 1, "unique_recipes": int(np.count_nonzero(visits)),
+                         "examples_seen": epoch_examples,
+                         "ingredient_slots_seen": epoch_slots,
+                         "every_eligible_recipe_once": True})
         history.append(tot / max(nb, 1))
         print(f"  epoch {ep + 1}/{p['epochs']}  loss {history[-1]:.4f}  "
               f"steps {nb:,}  {time.time() - t0:.0f}s", flush=True)
@@ -216,7 +254,11 @@ def train_masked_set(ctx: TrainContext) -> TrainResult:
         scorer=scorer,
         metadata={"loss_history": history, "n_recipes": corpus.n_recipes,
                   "n_eligible_recipes": eligible, "n_examples_seen": examples_seen,
+                  "n_ingredient_slots_seen": slots_seen,
+                  "observed_min_len": int(recipe_sizes[expected_rows].min()),
+                  "observed_max_len": int(recipe_sizes[expected_rows].max()),
                   "n_optimizer_steps": step, "torch_num_threads": torch.get_num_threads(),
+                  "epoch_coverage": coverage, "training_code_sha256": code_sha256,
                   "perplexity": float(np.exp(history[-1])), **p},
         extra_arrays={f"state__{k.replace('.', '__')}": v
                       for k, v in state.items()})

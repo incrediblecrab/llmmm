@@ -103,10 +103,19 @@ class RecipeCorpus:
                 seed: int = SEED, max_len: int | None = None):
         """Yield padded ``(ids, mask)`` batches of recipes.
 
-        Recipes are bucketed by length before batching so a batch is mostly one
-        length and padding stays near zero. With sizes ranging 1..60, naive
-        batching pads to the longest member and wastes most of the compute.
+        Sorting by length limits padding. ``max_len=None`` keeps long recipes.
         """
+        for ids, mask, _rows in self.indexed_batches(
+                batch_size, min_size=min_size, shuffle=shuffle, seed=seed,
+                max_len=max_len):
+            yield ids, mask
+
+    def indexed_batches(self, batch_size: int, *, min_size: int = 2,
+                        shuffle: bool = True, seed: int = SEED,
+                        max_len: int | None = None):
+        """Yield padded ingredients, masks and original row indices."""
+        if batch_size <= 0 or min_size < 1:
+            raise ValueError("batch_size and min_size must be positive")
         lens = self.sizes
         keep = np.nonzero(lens >= min_size)[0]
         if max_len is not None:
@@ -124,7 +133,7 @@ class RecipeCorpus:
                 r_ids = self.recipe(int(r))
                 ids[j, :len(r_ids)] = r_ids
                 mask[j, :len(r_ids)] = True
-            yield ids, mask
+            yield ids, mask, block
 
 
 @functools.lru_cache(maxsize=1)

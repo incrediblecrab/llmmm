@@ -13,6 +13,8 @@ CHANCE = {"M2": 0.50, "M4": 0.50}
 def render_one(name: str, r: dict) -> str:
     split = r.get("split")
     header = f"  {name}" + (f"   [split: {split}]" if split else "")
+    if r.get("evaluation_status") == "not_run":
+        return header + "\n    Training complete. Evaluation was not run."
     lines = [header,
              f"    M1 participation ratio   "
              f"{r['M1_participation_ratio']:8.1f}  / {r['d']}"]
@@ -64,11 +66,13 @@ COLUMNS = [
 
 
 def collect(root: Path | None = None) -> list[dict]:
-    """Recorded metrics, including runs whose weights are not present locally."""
+    """Recorded evaluations, including runs whose weights are not present locally."""
     rows = []
     for d in iter_runs(root, require_embedding=False):
         metrics = load_metrics(d)
         if metrics is None:
+            continue
+        if metrics.get("evaluation_status") == "not_run":
             continue
         man = Manifest.load(d)
         row = {"run_id": man.run_id, "model": man.model,

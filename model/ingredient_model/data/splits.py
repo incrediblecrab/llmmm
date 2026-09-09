@@ -114,6 +114,16 @@ def get_split(name: str) -> Split:
     return SPLITS[name]
 
 
+def check_training_protocol(split: Split, requires: tuple[str, ...], *,
+                            no_eval: bool = False, strict: bool = True) -> str | None:
+    """Allow full-corpus production training only when evaluation is disabled."""
+    if split.name == "full":
+        if not no_eval:
+            raise LeakageError("the full split has no held-out evaluation; disable evaluation")
+        return None
+    return check_leakage(split, requires, strict=strict)
+
+
 def held_out_recipes(split_name: str, limit: int | None = 80_000):
     """Rows withheld from local training, for M6; ``None`` if unavailable.
 

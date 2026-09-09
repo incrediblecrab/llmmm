@@ -21,9 +21,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from .artifacts import METRICS, save_metrics, save_run
+from .artifacts import (METRICS, Manifest, load_embedding, load_metrics,
+                        load_native_scorer, save_metrics, save_run, unevaluated_metrics)
 from .config import PATHS, corpus_generation
-from .data.splits import (DEFAULT_SPLIT, LeakageError, check_leakage,
+from .data.splits import (DEFAULT_SPLIT, LeakageError, check_training_protocol,
                           get_split, held_out_recipes)
 from .eval.harness import build_context, evaluate
 from .eval.report import leaderboard, render_one
@@ -140,7 +141,7 @@ def _bind(params: dict, split: str, seed: int) -> dict:
     return out
 
 
-def check(trials: list[Trial]) -> list[str]:
+def check(trials: list[Trial], *, no_eval: bool = False) -> list[str]:
     """Every reason the sweep would be refused, found before anything runs."""
     problems = []
     for t in trials:
@@ -150,7 +151,7 @@ def check(trials: list[Trial]) -> list[str]:
             problems.append(f"{t.run_id}: unknown model {t.model!r}")
             continue
         try:
-            check_leakage(get_split(t.split), spec.requires)
+            check_training_protocol(get_split(t.split), spec.requires, no_eval=no_eval)
         except (LeakageError, KeyError) as e:
             problems.append(f"{t.run_id}: {e}")
     return problems
@@ -247,11 +248,29 @@ def _journal(path: Path, event: dict) -> None:
                              **event}) + "\n")
 
 
+def _validate_training_completion(path: Path, trial: Trial) -> None:
+    if load_metrics(path) != unevaluated_metrics(trial.split):
+        raise ValueError(f"{path}: invalid training-only completion record")
+    manifest = Manifest.load(path)
+    params = {**get(trial.model).resolved_params(trial.params),
+              "split": trial.split, "no_eval": True}
+    if (manifest.model != trial.model or manifest.seed != trial.seed
+            or manifest.params != params):
+        raise ValueError(f"{path}: completed training does not match the declaration")
+    matrix = load_embedding(path)
+    if matrix.shape != manifest.shape:
+        raise ValueError(f"{path}: completed embedding does not match its manifest")
+    load_native_scorer(path, matrix.shape[0])
+
+
 def run_experiment(path: Path, dry_run: bool = False, *, resume: bool = True,
                    timeout_s: int | None = None,
                    only: tuple[str, ...] = ()) -> int:
     discover()
     spec_doc = _load(Path(path))
+    no_eval = spec_doc.get("no_eval", False)
+    if type(no_eval) is not bool:
+        raise ValueError("no_eval must be a boolean")
     name = spec_doc.get("name", Path(path).stem)
     trials = expand(spec_doc)
     if only:
@@ -272,7 +291,7 @@ def run_experiment(path: Path, dry_run: bool = False, *, resume: bool = True,
         print(f"  {desc}")
     print()
 
-    problems = check(trials)
+    problems = check(trials, no_eval=no_eval)
     if problems:
         print("refusing to run — the plan is invalid:")
         for p in problems:
@@ -290,6 +309,8 @@ def run_experiment(path: Path, dry_run: bool = False, *, resume: bool = True,
         pending = []
         for t in trials:
             if (out_root / t.run_id / METRICS).exists():
+                if no_eval:
+                    _validate_training_completion(out_root / t.run_id, t)
                 skipped.append(t.run_id)
             else:
                 pending.append(t)
@@ -307,7 +328,8 @@ def run_experiment(path: Path, dry_run: bool = False, *, resume: bool = True,
         return 0
     if not trials:
         print("\nnothing to do.")
-        print(leaderboard(root=out_root))
+        if not no_eval:
+            print(leaderboard(root=out_root))
         return 0
 
     print()
@@ -324,9 +346,9 @@ def run_experiment(path: Path, dry_run: bool = False, *, resume: bool = True,
     for i, t in enumerate(trials, 1):
         mspec = get(t.model)
         split = get_split(t.split)
-        if t.split not in completion_cache:
+        if not no_eval and t.split not in completion_cache:
             completion_cache[t.split] = held_out_recipes(t.split)
-        completion_corpus = completion_cache[t.split]
+        completion_corpus = None if no_eval else completion_cache[t.split]
         print(f"[{i}/{len(trials)}] {t.run_id}", flush=True)
         t0 = time.time()
         try:
@@ -338,11 +360,13 @@ def run_experiment(path: Path, dry_run: bool = False, *, resume: bool = True,
                 result = mspec.train(ctx)
                 d = save_run(t.run_id, mspec, result, graph=split.graph,
                              seed=t.seed,
-                             params={**ctx.params, "split": split.name},
+                             params={**ctx.params, "split": split.name,
+                                     **({"no_eval": True} if no_eval else {})},
                              duration_s=time.time() - t0, out_dir=out_dir)
-                metrics = evaluate(result.embedding, build_context(split.name),
-                                   completion_corpus=completion_corpus,
-                                   scorer=result.scorer)
+                metrics = (unevaluated_metrics(split.name) if no_eval else
+                           evaluate(result.embedding, build_context(split.name),
+                                    completion_corpus=completion_corpus,
+                                    scorer=result.scorer))
             save_metrics(d, metrics)
             print(render_one(t.run_id, metrics))
             done.append(t.run_id)
@@ -367,7 +391,7 @@ def run_experiment(path: Path, dry_run: bool = False, *, resume: bool = True,
         print(f"  {rid}: {err}")
     _journal(jpath, {"event": "sweep_end", "ok": len(done),
                      "failed": len(failed), "skipped": len(skipped)})
-    if done or skipped:
+    if (done or skipped) and not no_eval:
         print()
         print(leaderboard(root=out_root))
     return 1 if failed else 0

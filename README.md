@@ -68,9 +68,16 @@ paired comparison and export verification. The manifest counts recipes that
 passed the length filter and examples processed during training.
 
 The predictor is available as a
-[private Hugging Face preview](https://huggingface.co/incrediblecrab/llmmm-ingredients),
+[private Hugging Face preview](https://huggingface.co/incrediblecrab/llmmm-recipes),
 tagged `v0.2.0-preview`. The [upload record](model/results/huggingface_release.json)
 contains the commit and file hashes. Public-release permissions remain unresolved.
+
+An [all-record production fit](model/experiments/production-v2-all-20260909.yaml)
+is separate from that evaluated preview. `make -C model train-all-recipes` uses
+all **4,653,430** canonical recipe records, with no sampling or length filter.
+Each epoch checks that every row and every ingredient slot was processed.
+The old holdout is part of this training data, so the production checkpoint has
+no held-out score from this corpus and does not enter the scored leaderboard.
 
 ## Toward a Hugging Face release
 
@@ -111,7 +118,8 @@ Before release, freeze a duplicate-aware, source-aware test set before further
 model selection. Compare generation with T5 under equal output/token budgets,
 separately reporting ingredient faithfulness, quantity/instruction consistency,
 and blinded quality review. Completion recall alone cannot establish these.
-Resolve upstream terms before selecting a release license or uploading weights.
+Resolve applicable upstream terms before selecting a release license or
+distributing weights publicly.
 
 ```bash
 cd model

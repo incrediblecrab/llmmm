@@ -133,7 +133,7 @@ tags:
 - pytorch_model_hub_mixin
 ---
 
-# llmmm Ingredients
+# llmmm-recipes
 
 A {report['n_parameters']:,}-parameter set transformer that predicts missing
 ingredients. It was trained from random initialization. The package contains
