@@ -61,15 +61,16 @@ guesses. They do not establish taste, safe substitutions, useful quantities,
 or correct cooking instructions. Training-seed comparisons also do not measure
 generalization to a new cuisine or a different recipe source.
 
-**A larger-data native candidate has now been trained and exported locally.**
-Its [paired comparison and reload verification](model/results/native_full_release.json)
-are separate from the historical cohorts above. The
-[data-scaling experiment](model/experiments/train-v2-full-20260909.yaml) removes
-the sampling cap without changing the architecture, seed or epoch count.
-Its manifest records actual length-eligible recipes and examples seen, not just
-the available corpus size. The complete predictor has a
-[Hugging Face-compatible interface](model/ingredient_model/hub.py); publication
-and usage-rights clearance are not implied by a successful local export.
+The [full-partition run](model/experiments/train-v2-full-20260909.yaml) removed
+the recipe-sampling cap while keeping the architecture, seed and epoch count
+fixed. Its [evaluation](model/results/native_full_release.json) records the
+paired comparison and export verification. The manifest counts recipes that
+passed the length filter and examples processed during training.
+
+The predictor is available as a
+[private Hugging Face preview](https://huggingface.co/incrediblecrab/llmmm-ingredients),
+tagged `v0.2.0-preview`. The [upload record](model/results/huggingface_release.json)
+contains the commit and file hashes. Public-release permissions remain unresolved.
 
 ## Toward a Hugging Face release
 
@@ -142,6 +143,7 @@ fine-tune; no generator-training result or T5 generation win is asserted here.
 | Which normalization fixes were used? | The tracked code and [`model/data/aliases/`](model/data/aliases/) |
 | Where did source corpora come from? | [`raw-data/README.md`](raw-data/README.md) and [`raw-data/MANIFEST.md`](raw-data/MANIFEST.md) |
 | Which external model revisions and exact assets were compared? | [`model/hf_baselines.lock.json`](model/hf_baselines.lock.json) and the diagnostic's code/weight fingerprints |
+| Which model version is on Hugging Face? | [`model/results/huggingface_release.json`](model/results/huggingface_release.json) |
 
 The published benchmark is not overwritten by new training. Older investigations
 remain in [the model notes](model/README.md), [architecture notes](model/ARCHITECTURE.md)

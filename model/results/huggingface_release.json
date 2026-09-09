@@ -1,0 +1,44 @@
+{
+  "repo_id": "incrediblecrab/llmmm-ingredients",
+  "url": "https://huggingface.co/incrediblecrab/llmmm-ingredients",
+  "revision": "e236fad997a37b6a89cf5cdce8d58fa4e70d2d66",
+  "tag": "v0.2.0-preview",
+  "private": true,
+  "status": "verified_private_preview",
+  "public_release_cleared": false,
+  "source_code_revision": "f390c9c6c74171537bd3ca2e5f72c76dc37391de",
+  "files": {
+    "README.md": {
+      "bytes": 2499,
+      "sha256": "363e6581b686819b9950d37f368fcad29f62490c716caf856439cc510679b1e3"
+    },
+    "config.json": {
+      "bytes": 32799,
+      "sha256": "1bf792345b8face5975534312b676fcea1b53e5fa9c0e844948c4db743aa72ce"
+    },
+    "model.safetensors": {
+      "bytes": 6062848,
+      "sha256": "2364f769702169ab44f008f4d05dc104b035b9cdf0e74331bf7a5c0f8d90454b"
+    },
+    "evaluation.json": {
+      "bytes": 1571,
+      "sha256": "22827fa9d4c4dbd85f399b9372a3348c14a21b05cc04d301de2458ce4647f83a"
+    },
+    "training_manifest.json": {
+      "bytes": 1420,
+      "sha256": "477163ade4ba8951c6984f0179ae6e9b0da4a3cbdd6caeed0d9ac25b708c0694"
+    },
+    "release_policy.json": {
+      "bytes": 528,
+      "sha256": "d961a5db8c8f78b80c1a485eb90911a0abb6a55d1573fb18b43f05b294b2f0cc"
+    }
+  },
+  "verified_at": "2026-09-09T20:06:53.131251+00:00",
+  "verification": {
+    "file_hashes_match": true,
+    "version_tag_matches_commit": true,
+    "remote_model_reloads": true,
+    "recommendation_contexts_matched": 3,
+    "inference_without_private_corpus": true
+  }
+}

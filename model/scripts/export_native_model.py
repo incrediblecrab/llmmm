@@ -133,35 +133,37 @@ tags:
 - pytorch_model_hub_mixin
 ---
 
-# llmmm Ingredients - full-data candidate
+# llmmm Ingredients
 
-A {report['n_parameters']:,}-parameter ingredient-set transformer trained from
-random initialization. This package contains the complete conditional predictor,
-not merely its much weaker token embeddings. It does not write recipes.
+A {report['n_parameters']:,}-parameter set transformer that predicts missing
+ingredients. It was trained from random initialization. The package contains
+the complete predictor. It does not generate recipes.
 
-**Status: local research candidate. Public redistribution rights are still
-under review; this card does not grant a weights license.**
+This is a local research candidate. Public-release permissions remain unresolved,
+and this card grants no weights license.
 
 ## Measured result
 
-On the same {report['n_completion']:,} held-out-row completion instances,
-native recall@10 is **{recall:.3%}**, versus **{report['previous_recall_at_10']:.3%}**
-for the earlier sampling-capped model. The paired improvement is
-**{100 * report['paired_improvement']:.3f} percentage points**
-(95% instance-bootstrap interval:
-{100 * report['paired_improvement_ci95'][0]:.3f} to
-{100 * report['paired_improvement_ci95'][1]:.3f} percentage points).
+The hidden ingredient appeared among the top ten predictions in {recall:.1%}
+of {report['n_completion']:,} test cases, compared with
+{report['previous_recall_at_10']:.1%} for the earlier capped run.
+The paired gain was {100 * report['paired_improvement']:.1f} percentage points,
+with a 95% bootstrap interval of
+{100 * report['paired_improvement_ci95'][0]:.1f} to
+{100 * report['paired_improvement_ci95'][1]:.1f} percentage points.
 
-The training partition contains {report['training']['n_recipes']:,} recipes;
-{report['training']['n_eligible_recipes']:,} pass the training length filter.
-The trainer recorded {report['training']['n_examples_seen']:,} examples across
-{report['training']['epochs']} epochs. Larger source-corpus totals are not the
-number of examples this model saw.
+| Training measure | Count |
+|---|---:|
+| Recipes in the training partition | {report['training']['n_recipes']:,} |
+| Recipes used after the length filter | {report['training']['n_eligible_recipes']:,} |
+| Epochs | {report['training']['epochs']} |
+| Examples processed across all epochs | {report['training']['n_examples_seen']:,} |
 
-These are diagnostics, not decontaminated generalization or recipe-generation
-claims. Recipe-family overlap and external pretraining overlap are not excluded.
-The prior and current runs, exact corpus identity, package hash and uncertainty
-are recorded in `evaluation.json`.
+The split holds out recipe rows but does not exclude duplicate recipe families
+or account for external pretraining overlap. The bootstrap resamples test cases;
+it does not measure variation across training runs. Exact scores, run identities,
+and package hashes are in [evaluation.json](evaluation.json). Training settings
+are in [training_manifest.json](training_manifest.json).
 
 ## Local usage
 
@@ -181,18 +183,18 @@ model = IngredientPredictor.from_pretrained(
 print(model.recommend(["tomato", "basil"], top_k=10))
 ```
 
-Use canonical ingredient names from `model.vocabulary`; spaces are accepted in
-place of underscores. Unknown names are rejected rather than silently omitted.
-Recommendations exclude ingredients already supplied. Scores are unnormalized
-logits, not calibrated probabilities. `forward()` exposes the underlying logits.
+Use ingredient names from `model.vocabulary`. Spaces can replace underscores.
+Unknown names raise an error. Recommendations exclude ingredients already
+supplied. Scores are unnormalized logits, not calibrated probabilities.
+`forward()` returns the logits.
 
 ## Data and limitations
 
-The corpus combines source groups with noncommercial or unresolved terms.
-No source recipes, titles or cooking instructions are included in this package.
-The model is not a substitute for culinary, allergy or food-safety review.
-See the source repository's data provenance and licensing investigation before
-any redistribution or commercial use.
+The training corpus includes sources with noncommercial or unresolved terms.
+This package contains no source recipes, titles or cooking instructions.
+Predictions have not been validated for taste, allergies or food safety.
+Review the source repository's data provenance and release permissions before
+redistribution or commercial use.
 """)
     print(f"Verified full predictor: {recall:.3%}; paired improvement "
           f"{100 * report['paired_improvement']:.3f} percentage points")
