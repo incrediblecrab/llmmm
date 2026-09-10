@@ -96,3 +96,74 @@ remain visible and are not silently turned into guesses.
 The sample is not a held-out benchmark. Numerical parity establishes that the
 browser executes the same ranking calculation, not that users prefer its meals.
 The full-catalog recovery measurements must not be applied to this demo.
+
+## Full ingredient-only index
+
+The second mode scans every canonical ingredient record, including singletons,
+duplicates and records without readable instructions. It does not copy recipe
+titles, quantities, raw ingredient sentences, instructions, images or descriptive
+prose. Known overall time and servings must carry their source-reported status;
+unknown values remain unknown.
+
+The complete local export has 4,653,430 records and 36,707,624 ingredient slots.
+Seven compressed arrays total 37,769,040 bytes (36.0 MiB). The browser reconstructs
+offsets, verifies sorted unique sets and full-corpus document frequencies, then
+searches in a worker. The user must request the initial download. Loaded arrays
+and offsets occupy about 181 MiB; browser overhead is additional. The measured
+Node process footprint is not a phone memory or latency guarantee.
+
+Only 2,292,411 records have a recorded original URL. Links are retrieved from
+285 small, checksum-bound shards as results need them, with bounded concurrency.
+The default link-only filter avoids presenting an ingredient set as if it were
+a complete cooking recipe. Disabling it includes records without links; the UI
+says when a link is missing. No URLs, source times or serving counts are invented.
+
+Every record is checked against the hard constraints. The best 2,000 feasible
+records under the deterministic baseline form a shortlist for the real published
+supervised model. Both ranking choices use that same shortlist, and the UI
+discloses truncation. This is a different retrieval pipeline from the private
+SQLite/FTS finder: neither its recovery benchmark nor the public sample's
+statistics measure this mode.
+
+With the authorized canonical corpus and private catalog restored, run from the
+repository root:
+
+```bash
+make -C model ingredient-index
+make -C model verify-ingredient-index
+make -C model ingredient-demo
+python3 -m http.server 7860 --bind 127.0.0.1 \
+  --directory .artifacts/ingredient-demo-preview
+```
+
+The Make variables `INGREDIENT_INDEX`, `INGREDIENT_REPORT` and `INGREDIENT_DEMO`
+select new output paths relative to `model/`. Existing outputs are never
+overwritten. The two build commands require Git-ignored output directories.
+Their Python scripts also accept `--ipv4` for Hub downloads where applicable.
+
+`verify-ingredient-index` independently compares the full exported arrays against
+the canonical corpus, validates every URL shard and compares ten queries under
+both policies with the existing Python feature/ranking kernels. Its
+[recorded result](../results/ingredient_catalog_verification.json) is aggregate
+evidence only. The preview additionally binds the index to the released model's
+vocabulary, corpus and catalog identities.
+
+With the preview served on port 7860:
+
+```bash
+LLMMM_DEMO_URL=http://127.0.0.1:7860 \
+LLMMM_DEMO_BUILD="$PWD/.artifacts/ingredient-demo-preview" \
+LLMMM_DEMO_REPORT="$PWD/.artifacts/ingredient-browser-checks.json" \
+  npm --prefix model/demo run test:ingredients
+```
+
+The browser checks cover deliberate download, full-population coverage, actual
+source links, hard constraints, shortlist disclosure and corrupted-index
+rejection in desktop/mobile layouts. The original public-sample suite is
+separate and still uses `test:e2e`.
+
+**Publication status:** this is a working local preview, not an uploaded
+full-corpus dataset. A bare ingredient list and copied cooking prose are not the
+same thing; separate source agreements and database rights can still matter for
+bulk redistribution. The sample-only publisher above must not be used to bypass
+that decision or relabel the full catalog under the sample's CC BY-SA license.

@@ -37,6 +37,33 @@ data provenance in this repository. The [release receipt](model/results/huggingf
 pins the public dataset, Space, model and source revisions, and records the
 documentation-only model-card update.
 
+### Full ingredient-only search: local preview
+
+A separate browser index now covers **all 4,653,430 canonical records**, not
+just the public sample. It contains normalized ingredient names, source-reported
+times and servings, source identifiers and original links. It contains no copied
+titles, quantities, instructions, descriptions or images.
+
+The [verification record](model/results/ingredient_catalog_verification.json)
+compares every record and all **36,707,624 ingredient slots** with the canonical
+corpus. Twenty Python/browser searches agree on feasibility, shortlist size and
+ordered results. This is implementation evidence, not a recipe-quality score.
+The initial compressed arrays total **36.0 MiB**; original-link files load only
+when needed. The same published weights do the ranking locally.
+
+**2,292,411 records have recorded source links; 2,361,019 do not.** The preview
+defaults to records with links, so a result can lead to quantities and directions
+on its original site. Uncheck that filter to search unlinked ingredient sets too.
+Every record is checked against constraints; at most 2,000 feasible records,
+selected by the baseline, receive learned scores. This is not a guaranteed
+global learned top-k or a collection of unique, complete cooking recipes.
+
+The full index remains local while bulk-publication scope is resolved. The
+public Space above still serves the twelve licensed sample recipes.
+[Local build instructions](model/demo/README.md#full-ingredient-only-index)
+reproduce the complete index without running a server-side model or uploading
+the private corpus.
+
 ## Evaluated results
 
 This section is generated from recorded artifacts. Run `make -C model status`

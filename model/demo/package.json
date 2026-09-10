@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "test": "node --test test/*.test.js",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:ingredients": "playwright test --config ingredient-playwright.config.js"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0"

@@ -19,12 +19,21 @@
     </header>
     <main>
       <section class="intro" aria-labelledby="page-title">
-        <p class="eyebrow">A small-catalog model demo</p>
+        <p class="eyebrow" id="scope-label">A recipe-search model demo</p>
         <h1 id="page-title">What can you make<br>with what you have?</h1>
-        <p class="lede">Choose your ingredients and limits. The trained ranker orders
+        <p class="lede" id="demo-description">Choose your ingredients and limits. The trained ranker orders
           matching recipes from an openly licensed sample&mdash;it does not write new ones.</p>
       </section>
       <div id="fatal-error" class="notice error" role="alert" hidden></div>
+      <section id="index-download" class="index-download" aria-labelledby="download-heading" hidden>
+        <h2 id="download-heading">Load the ingredient index</h2>
+        <p>One initial download of <strong id="download-size"></strong>.
+          Ranking runs locally; source-link files are downloaded as needed.
+          No paid inference service is used.</p>
+        <p id="index-coverage" class="hint"></p>
+        <button type="button" id="load-index" class="secondary-button">Load all ingredient records</button>
+        <p id="download-status" role="status" aria-live="polite"></p>
+      </section>
       <div class="workspace">
         <form id="recipe-query" class="query-panel" novalidate>
           <fieldset id="controls" disabled>
@@ -71,6 +80,13 @@
             </div>
             <p id="time-hint" class="hint">A time limit excludes recipes with no reported total.
               Source estimates are not independently timed.</p>
+            <div id="source-link-filter" hidden>
+              <label class="checkbox-label" for="require-source-link">
+                <input id="require-source-link" type="checkbox" checked>
+                Only records with original recipe links
+              </label>
+              <p class="hint">Uncheck to include ingredient sets whose source link was not recorded.</p>
+            </div>
             <details class="extra-filters">
               <summary>Required ingredients, exclusions &amp; servings</summary>
               <label for="must-use">Must include</label>
@@ -100,9 +116,10 @@
             <h2 id="results-heading">Recipe matches</h2>
             <p id="result-count" role="status" aria-live="polite">Loading the public sample&hellip;</p>
           </div>
-          <p class="hint">Matches use canonical ingredient names. Read the full ingredient list,
+          <p class="hint" id="result-scope-hint">Matches use canonical ingredient names. Read the full ingredient list,
             instructions and source notes before cooking.</p>
           <p id="sample-warning" class="hint" hidden></p>
+          <p id="shortlist-warning" class="hint" hidden></p>
           <div id="results">
             <div class="empty-state">Loading the catalog and ranking weights.
               No private recipe database is needed.</div>
@@ -118,7 +135,7 @@
         </div>
         <div>
           <h2>What it does not establish</h2>
-          <p>This is a separately sourced sample, not the full training catalog or a new
+          <p id="scope-limits">This is a separately sourced sample, not the full training catalog or a new
             quality benchmark. Ingredient frequencies come from this small catalog.
             Scores are not probabilities of a good meal.</p>
         </div>

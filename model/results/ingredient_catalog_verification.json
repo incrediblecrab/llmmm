@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "status": "verified_local_complete_ingredient_index",
+  "verified_at": "2026-09-10T18:04:38.081345+00:00",
+  "index_sha256": "d3a57bf5cfe4e8b4e679f913a2b1227055aa58cba387aff572af3ba50f37b36c",
+  "corpus_sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+  "catalog_sha256": "708662e373a8825805be5b94a58ad9f1be3a3f2263df9bfb6022691bd196ff7f",
+  "model_revision": "9b152b52ece1ebd88d802726346b1d3d949f422f",
+  "model_input_identity_verified": true,
+  "records_compared": 4653430,
+  "ingredient_slots_compared": 36707624,
+  "source_urls_checked": 2292411,
+  "url_records_checked": 4653430,
+  "source_urls_unavailable": 2361019,
+  "coverage": {
+    "records": 4653430,
+    "ingredient_slots": 36707624,
+    "min_ingredients": 1,
+    "max_ingredients": 98,
+    "singletons": 41172,
+    "source_total_times": 681275,
+    "source_servings": 353946,
+    "url_statuses": {
+      "source_url": 2292411,
+      "missing": 2361019
+    },
+    "rows_by_source": {
+      "01-recipenlg": 1994816,
+      "02-xiachufang": 1438566,
+      "03-povarenok": 142058,
+      "04-spanish": 46446,
+      "05-vietnamese": 31886,
+      "06-turkish": 25416,
+      "07-indian": 16151,
+      "08-indonesian": 14939,
+      "09-chefkoch": 4290,
+      "foodcom-522k": 463334,
+      "foodcom-raw-231k": 179227,
+      "povarenok-detail": 20757,
+      "turkish-102k": 100332,
+      "thefoodprocessor-74k": 72230,
+      "allrecipes-33k": 32700,
+      "bhuvii-17k": 17026,
+      "kaggle-food-13k": 13463,
+      "hebrew-9.7k": 8698,
+      "indian-7k": 6053,
+      "persian-6k": 5793,
+      "greek-5k": 4881,
+      "moroccan-4.6k": 2443,
+      "japanese-3k": 3692,
+      "filipino-2k": 1984,
+      "halal-2k": 2006,
+      "thai-1k": 1023,
+      "thai-1k-seasoning": 681,
+      "taiwan-1.8k": 1748,
+      "romanian-881": 791
+    }
+  },
+  "index_bytes": {
+    "initial_compressed_download": 37769040,
+    "initial_uncompressed_arrays": 171137278,
+    "derived_uint32_offsets": 18613724,
+    "url_shards_compressed": 25043526,
+    "largest_url_shard_compressed": 280938
+  },
+  "initial_download_bytes": 37769040,
+  "python_browser_searches_matched": 20,
+  "max_absolute_score_error": 7.62939453125e-06,
+  "score_tolerance": 0.0001,
+  "checks": [
+    {
+      "query": {
+        "available_ingredients": [
+          "chicken",
+          "rice",
+          "broccoli"
+        ],
+        "max_total_minutes": 30,
+        "max_missing": 2
+      },
+      "feasible_records": 1268,
+      "candidates_scored": 1268,
+      "node_search_ms": {
+        "learned": 36.39587499999999,
+        "heuristic": 27.35166700000002
+      }
+    },
+    {
+      "query": {
+        "available_ingredients": [
+          "tomato",
+          "basil",
+          "olive_oil",
+          "salt",
+          "garlic"
+        ],
+        "max_missing": 2
+      },
+      "feasible_records": 97687,
+      "candidates_scored": 2000,
+      "node_search_ms": {
+        "learned": 105.47079200000007,
+        "heuristic": 100.21229200000005
+      }
+    },
+    {
+      "query": {
+        "available_ingredients": [
+          "egg",
+          "milk",
+          "flour",
+          "butter",
+          "salt"
+        ],
+        "max_missing": 2,
+        "min_servings": 2
+      },
+      "feasible_records": 11083,
+      "candidates_scored": 2000,
+      "node_search_ms": {
+        "learned": 47.09175000000005,
+        "heuristic": 33.168499999999995
+      }
+    },
+    {
+      "query": {
+        "available_ingredients": [
+          "potato",
+          "onion",
+          "salt",
+          "oil"
+        ],
+        "must_use": [
+          "potato"
+        ],
+        "exclude": [
+          "milk"
+        ],
+        "max_total_minutes": 30,
+        "max_missing": 2
+      },
+      "feasible_records": 552,
+      "candidates_scored": 552,
+      "node_search_ms": {
+        "learned": 33.90533299999993,
+        "heuristic": 25.85529100000008
+      }
+    },
+    {
+      "query": {
+        "available_ingredients": [
+          "lentil",
+          "carrot",
+          "onion",
+          "water"
+        ],
+        "language": "en",
+        "max_missing": 3,
+        "max_total_minutes": 60
+      },
+      "feasible_records": 13265,
+      "candidates_scored": 2000,
+      "node_search_ms": {
+        "learned": 61.542625000000044,
+        "heuristic": 46.129999999999995
+      }
+    },
+    {
+      "query": {
+        "available_ingredients": [
+          "egg"
+        ],
+        "max_total_minutes": 0,
+        "max_missing": 0
+      },
+      "feasible_records": 0,
+      "candidates_scored": 0,
+      "node_search_ms": {
+        "learned": 30.628084000000058,
+        "heuristic": 30.58383399999991
+      }
+    },
+    {
+      "query": {
+        "available_ingredients": [
+          "rice"
+        ],
+        "max_missing": null,
+        "max_total_minutes": 30
+      },
+      "feasible_records": 6715,
+      "candidates_scored": 2000,
+      "node_search_ms": {
+        "learned": 57.218250000000126,
+        "heuristic": 45.374416999999994
+      }
+    },
+    {
+      "query": {
+        "available_ingredients": [
+          "water"
+        ],
+        "max_missing": 0
+      },
+      "feasible_records": 3220,
+      "candidates_scored": 2000,
+      "node_search_ms": {
+        "learned": 51.634083000000146,
+        "heuristic": 44.15383299999985
+      }
+    },
+    {
+      "query": {
+        "available_ingredients": [
+          "tomato",
+          "basil",
+          "olive_oil",
+          "salt",
+          "garlic"
+        ],
+        "max_missing": 2,
+        "require_source_url": true
+      },
+      "feasible_records": 37205,
+      "candidates_scored": 2000,
+      "node_search_ms": {
+        "learned": 78.74654200000009,
+        "heuristic": 66.80162500000006
+      }
+    },
+    {
+      "query": {
+        "available_ingredients": [
+          "chicken",
+          "rice",
+          "broccoli"
+        ],
+        "max_total_minutes": 30,
+        "max_missing": 2,
+        "require_source_url": true
+      },
+      "feasible_records": 15,
+      "candidates_scored": 15,
+      "node_search_ms": {
+        "learned": 27.356917000000067,
+        "heuristic": 28.132041999999956
+      }
+    }
+  ],
+  "node_cold_load_ms": 441.413459,
+  "node_process_memory_bytes": {
+    "rss": 413204480,
+    "heapTotal": 44875776,
+    "heapUsed": 19810464,
+    "external": 192673674,
+    "arrayBuffers": 190719815
+  },
+  "timing_scope": "Local Node process; excludes network, source-URL loading and UI. Not a service guarantee.",
+  "prose_fields_in_export": false,
+  "quality_benchmark": false,
+  "public_upload": false
+}

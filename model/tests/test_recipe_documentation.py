@@ -20,7 +20,7 @@ def test_recipe_evidence_is_part_of_the_documentation_registry(checker, monkeypa
     results.mkdir(parents=True)
     names = {"recipe_catalog_build.json", "recipe_ranker_training.json",
              "recipe_search_live.json", "recipe_search_export.json",
-             "huggingface_recipe_demo_release.json"}
+             "huggingface_recipe_demo_release.json", "ingredient_catalog_verification.json"}
     for name in names:
         (results / name).write_text(json.dumps({"verified_count": 1234}))
     monkeypatch.setattr(checker, "MODEL", results.parent)

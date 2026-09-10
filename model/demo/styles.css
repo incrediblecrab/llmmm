@@ -120,6 +120,12 @@ summary { color: var(--green); }
 .notice { padding: 13px 15px; border-radius: 6px; font-size: 13px; line-height: 1.6; }
 .error { border: 1px solid #d4a793; background: var(--rust-pale); color: #7c301c; }
 #fatal-error { margin-bottom: 24px; }
+.index-download { border: 1px solid var(--line); border-radius: 10px; background: var(--green-pale); padding: 22px 25px; margin-bottom: 27px; }
+.index-download > p { font-size: 13px; max-width: 760px; }
+.index-download #download-status { color: var(--green); margin-bottom: 0; }
+.original-recipe { margin-bottom: 0; font-size: 13px; }
+.checkbox-label { display: flex; align-items: center; gap: 9px; font-size: 12px; }
+.checkbox-label input { width: 17px; min-height: 17px; height: 17px; flex-shrink: 0; accent-color: var(--green); }
 #query-error { margin: 16px 0 0; }
 .secondary-button { border: 1px solid #acb8a4; border-radius: 6px; background: none; padding: 10px 18px; color: var(--green); font-size: 13px; }
 .about { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 44px; padding: 29px 0 27px; border-top: 1px solid var(--line); }

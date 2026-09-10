@@ -1,7 +1,13 @@
 import { defineConfig } from "@playwright/test";
+import { basename, dirname, extname, join } from "node:path";
+
+const report = process.env.LLMMM_DEMO_REPORT;
 
 export default defineConfig({
   testDir: "./e2e",
+  testMatch: "**/demo.spec.js",
+  outputDir: report
+    ? join(dirname(report), `${basename(report, extname(report))}-artifacts`) : "test-results",
   timeout: 30_000,
   workers: 1,
   retries: 0,

@@ -28,7 +28,10 @@ from .recipe_search import RecipeFinder, RecipeQuery
 MODEL_REPOSITORY = "incrediblecrab/llmmm-recipes"
 DATASET_REPOSITORY = "incrediblecrab/llmmm-recipe-sample"
 SPACE_REPOSITORY = "incrediblecrab/llmmm-recipes-demo"
-WEB_FILES = ("index.html", "styles.css", "app.js", "ranker.js", "search.js")
+WEB_FILES = (
+    "index.html", "styles.css", "app.js", "ranker.js", "search.js",
+    "ingredient-client.js", "ingredient-catalog.js", "ingredient-loader.js", "ingredient-worker.js",
+)
 DATASET_FILES = ("README.md", "recipes.jsonl", "sources.json")
 SPACE_FILES = (*WEB_FILES, "catalog.json", "policy.json", "manifest.json", "README.md")
 SOURCE_FILES = (

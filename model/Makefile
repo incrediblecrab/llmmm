@@ -13,6 +13,11 @@ RECIPE_EVALUATION ?= results/recipe_search_live.json
 RECIPE_TRAINING_REPORT ?= results/recipe_ranker_training.json
 RECIPE_EXPORT ?= ../.artifacts/hf/llmmm-recipes-v0.4.0-recipe-search
 DEMO_EXPORT ?= ../.artifacts/demo-preview
+INGREDIENT_INDEX ?= ../.artifacts/ingredient-catalog-preview
+INGREDIENT_DEMO ?= ../.artifacts/ingredient-demo-preview
+INGREDIENT_REPORT ?= ../.artifacts/ingredient-catalog-verification.json
+
+.PHONY: ingredient-index ingredient-demo verify-ingredient-index
 
 .PHONY: help setup setup-train setup-hf data import-legacy test test-code gate list baselines report clean check check-core check-code sanity sanity-derived recipes text coverage aliases rebuild docs snapshot restore verify train train-full-native train-all-recipes verify-all-recipes export-all-recipes export-native status hf-compare generation-audit recipe-catalog recipe-metadata train-recipe-policy verify-recipe-policy evaluate-recipe-search export-recipe-search demo-build demo-test
 
@@ -46,6 +51,9 @@ help:
 	@echo "export-recipe-search export verified policies and metadata, never source recipes"
 	@echo "demo-build build the browser demo from the public sample (DEMO_EXPORT=unused/path)"
 	@echo "demo-test  check public-sample guards and Python/browser ranking parity"
+	@echo "ingredient-index build a local ingredient-only index covering every canonical record"
+	@echo "ingredient-demo build a local browser preview of that complete index"
+	@echo "verify-ingredient-index compare all records and browser retrieval against Python"
 	@echo "status     print current project status from its exact source artifacts"
 	@echo "recipes    prove every recipe is readable, and show the source mix"
 	@echo "text       rejoin titles, quantities and instructions to the corpus"
@@ -124,8 +132,19 @@ demo-build:
 	$(PY) scripts/build_recipe_demo.py --out "$(DEMO_EXPORT)"
 
 demo-test:
-	$(PY) -m pytest -q tests/test_recipe_demo*.py
+	$(PY) -m pytest -q tests/test_recipe_demo*.py tests/test_ingredient_catalog.py tests/test_ingredient_demo.py
 	npm --prefix demo test
+
+ingredient-index:
+	$(PY) scripts/build_ingredient_catalog.py --catalog "$(RECIPE_CATALOG)" \
+		--corpus "$(RECIPE_CORPUS)" --out "$(INGREDIENT_INDEX)"
+
+ingredient-demo:
+	$(PY) scripts/build_ingredient_demo.py --index "$(INGREDIENT_INDEX)" --out "$(INGREDIENT_DEMO)"
+
+verify-ingredient-index:
+	OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 $(PY) scripts/verify_ingredient_catalog.py \
+		--index "$(INGREDIENT_INDEX)" --corpus "$(RECIPE_CORPUS)" --report "$(INGREDIENT_REPORT)"
 
 snapshot:
 	$(PY) -m ingredient_model.recovery pack --output "$(BUNDLE)"

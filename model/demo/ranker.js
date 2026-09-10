@@ -169,6 +169,21 @@ export function learnedScores(features, policy) {
 
 export function heuristicScores(features) {
   featureRows(features);
-  return features.map((row) => 3 * row[9] + 2 * row[6] + 0.25 * row[4]
-    + 0.25 * row[5] - 0.5 * row[10] + 0.1 * row[13] + 0.025 * row[18]);
+  return features.map((row) => combineBaseline(row[9], row[6], row[4], row[5],
+    row[10], row[13], row[18]));
+}
+
+function combineBaseline(idfJaccard, jaccard, recipeCoverage, pantryCoverage,
+  missingFraction, fullyAvailable, timeSlack) {
+  return 3 * idfJaccard + 2 * jaccard + 0.25 * recipeCoverage + 0.25 * pantryCoverage
+    - 0.5 * missingFraction + 0.1 * fullyAvailable + 0.025 * timeSlack;
+}
+
+export function heuristicStatisticScore(overlap, recipeSize, pantrySize,
+  idfOverlap, idfRecipe, idfPantry, timeSlack) {
+  const f32 = (value) => Math.fround(Math.max(0, Math.min(1, value)));
+  return combineBaseline(f32(idfOverlap / (idfRecipe + idfPantry - idfOverlap)),
+    f32(overlap / (recipeSize + pantrySize - overlap)), f32(overlap / recipeSize),
+    f32(overlap / pantrySize), f32((recipeSize - overlap) / recipeSize),
+    Number(overlap === recipeSize), f32(timeSlack));
 }

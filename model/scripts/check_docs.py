@@ -180,7 +180,7 @@ def artefact_json_files() -> list[tuple[Path, str]]:
     for name in ("corpus_stats.json", "m6_intervals.json", "ranking_stability.json",
                  "recipe_catalog_build.json", "recipe_ranker_training.json",
                  "recipe_search_live.json", "recipe_search_export.json",
-                 "huggingface_recipe_demo_release.json"):
+                 "huggingface_recipe_demo_release.json", "ingredient_catalog_verification.json"):
         p = MODEL / "results" / name
         if p.exists():
             out.append((p, name))
