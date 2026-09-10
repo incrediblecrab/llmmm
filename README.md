@@ -58,8 +58,12 @@ Every record is checked against constraints; at most 2,000 feasible records,
 selected by the baseline, receive learned scores. This is not a guaranteed
 global learned top-k or a collection of unique, complete cooking recipes.
 
-The full index remains local while bulk-publication scope is resolved. The
-public Space above still serves the twelve licensed sample recipes.
+The full index remains local pending confirmation that the existing publication
+permissions cover bulk ingredient-data distribution and any required conditions.
+The [scope review](model/results/ingredient_catalog_publication_scope.json)
+records the permission note and source terms; it does not establish a blanket
+ban on ingredient facts. The public Space above still serves the twelve
+licensed sample recipes.
 [Local build instructions](model/demo/README.md#full-ingredient-only-index)
 reproduce the complete index without running a server-side model or uploading
 the private corpus.

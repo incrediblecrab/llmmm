@@ -163,7 +163,13 @@ rejection in desktop/mobile layouts. The original public-sample suite is
 separate and still uses `test:e2e`.
 
 **Publication status:** this is a working local preview, not an uploaded
-full-corpus dataset. A bare ingredient list and copied cooking prose are not the
-same thing; separate source agreements and database rights can still matter for
-bulk redistribution. The sample-only publisher above must not be used to bypass
-that decision or relabel the full catalog under the sample's CC BY-SA license.
+full-corpus dataset. The repository already records that source publication
+permission was obtained. The [bounded scope review](../results/ingredient_catalog_publication_scope.json)
+did not establish whether it covers this full ingredient-only distribution or
+what conditions apply; it did not establish that the export is prohibited.
+A non-sensitive scope confirmation is needed, not public permission letters.
+
+A bare ingredient list and copied cooking prose are not the same thing.
+Separate source agreements and database rights can still matter for bulk
+redistribution. The sample-only publisher above must not bypass that decision
+or relabel the full catalog under the sample's CC BY-SA license.

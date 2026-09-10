@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "status": "awaiting_owner_scope_confirmation",
+  "review_date": "2026-09-10",
+  "technical_verification": "model/results/ingredient_catalog_verification.json",
+  "index_sha256": "d3a57bf5cfe4e8b4e679f913a2b1227055aa58cba387aff572af3ba50f37b36c",
+  "full_index_uploaded": false,
+  "public_demo_changed": false,
+  "existing_permission_evidence": {
+    "file": "prior-study/docs/LICENSE_AUDIT.md",
+    "lines": "3-5",
+    "introduced_in_commit": "31611be2fca032986a5a7cb1acf01a78a036c889",
+    "statement": "Since this audit was written, the repository owner has obtained permission from the data sources to publish.",
+    "scope_specified_in_reviewed_material": false,
+    "interpretation": "Affirmative permission evidence, not evidence of a missing or invalid grant. Its timing does not exclude the current corpus. It must not be reinterpreted as necessarily covering weights only."
+  },
+  "primary_source_findings": [
+    {
+      "source": "U.S. Copyright Office",
+      "url": "https://www.copyright.gov/help/faq/faq-protect.html",
+      "section": "How do I protect my recipe?",
+      "finding": "A mere listing of ingredients is not protected under copyright law. Substantial explanatory or instructional expression is a different case.",
+      "limit": "This does not resolve separate contractual obligations or database rights."
+    },
+    {
+      "source": "RecipeNLG",
+      "url": "https://recipenlg.cs.put.poznan.pl/dataset",
+      "terms_artifact": "https://recipenlg.cs.put.poznan.pl/main-es2015.c068072180c221a0de3b.js",
+      "section": "Dataset-download component",
+      "finding": "The original download terms limit use to noncommercial research and education, and condition access by associates and colleagues on their acceptance of the terms.",
+      "acquisition_mirror": {
+        "url": "https://huggingface.co/datasets/SandhyaKilari/RecipeNLG_dataset/raw/6636bd5f1b09dacc216329a0e6dd506d67fc2e1d/README.md",
+        "declared_license": "cc-by-4.0"
+      },
+      "limit": "The terms address the Dataset, not expressly this factual extract. The mirror's authority, contractual applicability through that acquisition route, and the scope of separate publication permission were not established."
+    },
+    {
+      "source": "XiaChuFang",
+      "url": "https://www.xiachufang.com/principle/",
+      "related_agreement": "https://www.xiachufang.com/regagreement/",
+      "section": "Intellectual-property rules, items 1-4",
+      "finding": "The policy contemplates noncommercial republication with original-author and site credit, original links, and no modification or adaptation, subject to an author's contrary notice.",
+      "acquisition_mirror": {
+        "url": "https://huggingface.co/datasets/xzm1999/XiaChuFang_Recipe_Corpus/raw/413b15ea4e70e0cc9effb4b7ad65aaee646a4964/README.md",
+        "declared_license": "mit"
+      },
+      "limit": "This is not a blanket republication ban. The mirror's authority and applicability to factual ingredient normalization were not established."
+    },
+    {
+      "source": "Food.com",
+      "url": "https://www.wbd.com/discovery-visitor-agreement/",
+      "linked_from": "https://corporate.discovery.com/visitor-agreement/",
+      "section": "Copyright and Trademarks; Linking",
+      "finding": "The agreement conditions distribution of copied site materials on prior written permission. It separately welcomes ordinary links under its stated conditions.",
+      "limit": "Applicability to mirror-derived factual ingredient sets, and whether the existing permissions satisfy any applicable condition, were not established. Missing mirror license declarations do not establish a ban on facts."
+    },
+    {
+      "source": "EU Database Directive",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:31996L0009",
+      "section": "Articles 7, 11 and 13",
+      "finding": "Qualifying substantial database extraction can raise rights distinct from copyright in individual facts.",
+      "limit": "Entitlement, substantial investment, jurisdiction and contractual applicability were not established for a particular claim against this export."
+    }
+  ],
+  "decision": {
+    "categorical_prohibition_established": false,
+    "public_bulk_scope_established": false,
+    "action": "Keep the complete export local pending a narrow scope confirmation; do not expand the audit or describe ingredient facts as copyrighted.",
+    "confirmation_needed": "Do the existing permissions cover public distribution of all canonical ingredient-set records from all source groups, including source identifiers, original URLs and source-reported time/servings? Specify required notices, attribution, noncommercial or recipient-acceptance conditions and any excluded sources or fields.",
+    "alternative_basis": "A documented applicable basis for publishing the factual extract without additional permission can also resolve scope.",
+    "private_permission_letters_required_in_repository": false,
+    "model_license_changed": false
+  }
+}
