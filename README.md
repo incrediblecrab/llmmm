@@ -12,11 +12,16 @@ downstream obligations.
 
 ## Public recipe demo
 
-The [browser demo](model/demo/README.md) runs the published supervised ranker on
-a [small, openly licensed catalog](model/demo_data/README.md). It needs no private
-recipe database, server-side inference or API key. Choose pantry ingredients,
+**[Try the demo](https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo)**
+| **[Download the public sample](https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-sample)**
+
+The demo runs the published supervised ranker in your browser on a
+[small, openly licensed catalog](model/demo_data/README.md). It needs no private
+recipe database, login or API key. Choose pantry ingredients,
 source-time and missing-item limits, required/excluded ingredients and reported
 servings; switch to the simple baseline to compare the ordering.
+Hosting uses a free Static Space, not paid inference hardware. Pantry inputs
+are not sent to a server or stored between visits.
 
 The sample contains **12 Wikibooks recipes under CC BY-SA 4.0**. Nine have a
 reported overall time and six have reported servings. Four contain ingredient
@@ -28,7 +33,9 @@ This is a separately sourced demonstration catalog, not the full training
 dataset or a held-out quality benchmark. Its ingredient frequencies describe
 only the sample, so the full-catalog recovery scores below do not apply to it.
 The [build and publication instructions](model/demo/README.md) keep the code and
-data provenance in this repository.
+data provenance in this repository. The [release receipt](model/results/huggingface_recipe_demo_release.json)
+pins the public dataset, Space, model and source revisions, and records the
+documentation-only model-card update.
 
 ## Evaluated results
 
@@ -313,7 +320,8 @@ generation evaluation have not run.
 | Which normalization fixes were used? | The tracked code and [`model/data/aliases/`](model/data/aliases/) |
 | Where did source corpora come from? | [`raw-data/README.md`](raw-data/README.md) and [`raw-data/MANIFEST.md`](raw-data/MANIFEST.md) |
 | Which external model revisions and exact assets were compared? | [`model/hf_baselines.lock.json`](model/hf_baselines.lock.json) and the diagnostic's code/weight fingerprints |
-| Which model version and model card are on Hugging Face? | [Current release receipt](model/results/huggingface_recipe_search_release.json); the card is rendered by [`export_recipe_search.py`](model/scripts/export_recipe_search.py) |
+| Which model version and model card are on Hugging Face? | [Model release receipt](model/results/huggingface_recipe_search_release.json) and [latest demo/card update](model/results/huggingface_recipe_demo_release.json); the card is rendered by [`export_recipe_search.py`](model/scripts/export_recipe_search.py) |
+| Which public demo and sample versions are deployed? | [Demo release receipt](model/results/huggingface_recipe_demo_release.json), including pinned revisions, asset hashes and anonymous browser results |
 | Which bytes, data identities and model-selection results were exported? | [Recipe-search export evidence](model/results/recipe_search_export.json) |
 | Which ingredient-only access and documentation updates preceded this release? | [Public-access receipt](model/results/huggingface_public_release.json) and [earlier card receipt](model/results/huggingface_model_card.json) |
 

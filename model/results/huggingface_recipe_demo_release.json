@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "status": "verified_public_browser_demo",
+  "verified_at": "2026-09-10T17:10:08.574340+00:00",
+  "source_code_revision": "3ca40bbc43c434a263dd683467074c969f624db8",
+  "source_files_sha256": {
+    "model/demo/index.html": "27e6d150f8194320e0c9aeaf79204f386fb70dfbb4501952c7d1fbfcc97c5903",
+    "model/demo/styles.css": "ba22a340e6f10b53de2e516268ebe22d11835d0572c452209a3a8c6dd1224cc1",
+    "model/demo/app.js": "c3dbe575dbd1bf9a5ed12766b02c0f4b3704f73dd9dab209e943534287f64dda",
+    "model/demo/ranker.js": "186011250d8cff3159fb6e14d605e6d4d8a4d2b0f81d74dde06bd9703d07e8d5",
+    "model/demo/search.js": "f98e7f137e1e591790d72538a3383bdce81be9c88fc4035475e98b291ab427dc",
+    "model/demo/test/python_bridge.js": "effd4da1494ee135e82a23c434c274f2e13243eadc32155876871e6dbf30439a",
+    "model/demo/e2e/demo.spec.js": "b4fecd0bfd1e748aa5ca44950acbca71903c6792d22d0ce617485667f4a67b51",
+    "model/demo/playwright.config.js": "dc14bfe86ead8799d6b65d76c9631d2d2e50b70e36d78ebb754e85e728064ea4",
+    "model/demo/package.json": "b1bc84b327768cbe818bc735ee12d0f045a06ff37b2f018246aafa6b43a026e3",
+    "model/demo/package-lock.json": "7fede88e58c4f6704a4a6a3d84ebb8021bfb8775a190f7049edea2969370e0d7",
+    "model/ingredient_model/recipe_demo.py": "ac4d8960b880654be14d25a87d2e1f5f52b4504a57e972a43cb1fe5ab864df08",
+    "model/ingredient_model/recipe_ranker.py": "314490211d610888460c5ce3e668f55467908b2d28442b41c0c81809585bbdff",
+    "model/ingredient_model/recipe_search.py": "d45a36c2197a472a280fd815d531217c45e4dafaa41f87ca5369dfc89e191a7d",
+    "model/ingredient_model/data/recipe_catalog.py": "6a4e443076d52b0881077b65559523595b307816c97fa7685e0af34d88e9f71d",
+    "model/ingredient_model/_hashing.py": "5ce5bfdea48fe2722695c4ebd0c970841ce8c6faae943833d1c178e69f005031",
+    "model/scripts/build_recipe_demo.py": "bb2037494a16961d46c8cb4fcf3183e3650f8034b021272a56a1e5ba138fdaab",
+    "model/scripts/publish_recipe_demo.py": "1acf9125773cdac977f223f6dc5cd1cd0702eb0827d3ae6a2ac87456609ea5eb",
+    "model/demo_data/README.md": "a0f01b585aa00a9859ef6283dfc3d8a847268450992af313cc32ffdb74012dbf",
+    "model/demo_data/recipes.jsonl": "844bb9b14dd0df6446a2201384f382f41400c29e0a6b33538adc522c36e9fe2b",
+    "model/demo_data/sources.json": "54e29c84c2f8cbf1dd73f39cee61fde47369aef9792a9ed0f9d7aca799447005",
+    "model/scripts/curate_recipe_demo.py": "b862bf207921d07052e2782b30760e8d509411984ab788bef2d2cd84dac9dc62",
+    "model/results/huggingface_recipe_search_release.json": "1989ba5e250388d91b73a1bda948e4321f3918c57bb2f1c789869291b9a02c67"
+  },
+  "dataset": {
+    "repository": "incrediblecrab/llmmm-recipe-sample",
+    "revision": "e66ba8738ea6dbd164a21ec41ed781a45a9c8f4d",
+    "tag": "v0.1.0",
+    "url": "https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-sample",
+    "files": {
+      "README.md": {
+        "bytes": 6695,
+        "sha256": "a0f01b585aa00a9859ef6283dfc3d8a847268450992af313cc32ffdb74012dbf"
+      },
+      "recipes.jsonl": {
+        "bytes": 28060,
+        "sha256": "844bb9b14dd0df6446a2201384f382f41400c29e0a6b33538adc522c36e9fe2b"
+      },
+      "sources.json": {
+        "bytes": 89076,
+        "sha256": "54e29c84c2f8cbf1dd73f39cee61fde47369aef9792a9ed0f9d7aca799447005"
+      }
+    }
+  },
+  "space": {
+    "repository": "incrediblecrab/llmmm-recipes-demo",
+    "revision": "4acf3cdf464086462a391a6de7c0400594d524bd",
+    "sdk": "static",
+    "url": "https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo",
+    "app_url": "https://incrediblecrab-llmmm-recipes-demo.static.hf.space",
+    "files": {
+      "index.html": {
+        "bytes": 8004,
+        "sha256": "27e6d150f8194320e0c9aeaf79204f386fb70dfbb4501952c7d1fbfcc97c5903"
+      },
+      "styles.css": {
+        "bytes": 9032,
+        "sha256": "ba22a340e6f10b53de2e516268ebe22d11835d0572c452209a3a8c6dd1224cc1"
+      },
+      "app.js": {
+        "bytes": 11839,
+        "sha256": "c3dbe575dbd1bf9a5ed12766b02c0f4b3704f73dd9dab209e943534287f64dda"
+      },
+      "ranker.js": {
+        "bytes": 7791,
+        "sha256": "186011250d8cff3159fb6e14d605e6d4d8a4d2b0f81d74dde06bd9703d07e8d5"
+      },
+      "search.js": {
+        "bytes": 8288,
+        "sha256": "f98e7f137e1e591790d72538a3383bdce81be9c88fc4035475e98b291ab427dc"
+      },
+      "catalog.json": {
+        "bytes": 91851,
+        "sha256": "33ed41f9f02419080f3cddd0b23110b9675e89acecaa0fdbf8f28ba32da1b883"
+      },
+      "policy.json": {
+        "bytes": 22658,
+        "sha256": "62a31bca38b34d061dc32a96b8600bb2fb53b498ba4c00a8168ceba50ad8031c"
+      },
+      "manifest.json": {
+        "bytes": 4960,
+        "sha256": "12bd2897366bc83d00b79b42cb7d98e0abaaf371439b0970f706b90525a7130e"
+      },
+      "README.md": {
+        "bytes": 2252,
+        "sha256": "9fc9839d07178f2233313fb0223c7f419567f72612a30d546ac77a8143d5e026"
+      }
+    },
+    "requested_paid_hardware": false
+  },
+  "catalog": {
+    "recipes": 12,
+    "source_total_times": 9,
+    "source_serving_counts": 6,
+    "recipes_with_unmapped_ingredients": 4,
+    "observed_ingredients": 58,
+    "vocabulary_size": 1790,
+    "statistics_scope": "public-sample",
+    "licenses": [
+      "cc-by-sa-4.0"
+    ]
+  },
+  "model": {
+    "model_repository": "incrediblecrab/llmmm-recipes",
+    "model_revision": "9b152b52ece1ebd88d802726346b1d3d949f422f",
+    "dataset_repository": "incrediblecrab/llmmm-recipe-sample",
+    "dataset_revision": "e66ba8738ea6dbd164a21ec41ed781a45a9c8f4d",
+    "source_revision": "3ca40bbc43c434a263dd683467074c969f624db8",
+    "sample_sha256": "844bb9b14dd0df6446a2201384f382f41400c29e0a6b33538adc522c36e9fe2b",
+    "source_manifest_sha256": "54e29c84c2f8cbf1dd73f39cee61fde47369aef9792a9ed0f9d7aca799447005"
+  },
+  "numeric_and_search_parity": {
+    "seed": 42,
+    "synthetic_feature_contexts": 128,
+    "feature_rows": 1024,
+    "max_absolute_feature_error": 0.0,
+    "feature_tolerance": 1e-07,
+    "max_absolute_score_error": 7.62939453125e-06,
+    "score_tolerance": 0.0001,
+    "max_absolute_baseline_error": 0.0,
+    "baseline_tolerance": 1e-06,
+    "python_finder_searches_matched": 150,
+    "exact_match_fields": [
+      "ordered_recipe_ids",
+      "feasible_count",
+      "matched_ingredients",
+      "missing_ingredients"
+    ],
+    "quality_benchmark": false,
+    "private_corpus_used": false
+  },
+  "local_browser": {
+    "url": "http://127.0.0.1:57242",
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "served_manifest_sha256": "12bd2897366bc83d00b79b42cb7d98e0abaaf371439b0970f706b90525a7130e",
+    "report_sha256": "451b3a26586750ed4bae8ce72e520d4cd3c80c0da96b6d7ad7a3b35c1976151a",
+    "host_html_bootstrap_removed_before_source_hash_check": false,
+    "viewports": [
+      "1360x1000",
+      "390x844"
+    ],
+    "cases": [
+      "anonymous_trained_inference",
+      "original_recipe_text",
+      "source_limitations_displayed",
+      "zero_time_limit",
+      "ingredient_time_serving_constraints",
+      "explicit_baseline_comparison",
+      "input_privacy_and_text_rendering",
+      "corrupt_policy_rejected",
+      "failed_download_rejected",
+      "responsive_layout"
+    ]
+  },
+  "anonymous_public_browser": {
+    "url": "https://incrediblecrab-llmmm-recipes-demo.static.hf.space",
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "served_manifest_sha256": "12bd2897366bc83d00b79b42cb7d98e0abaaf371439b0970f706b90525a7130e",
+    "report_sha256": "c8ea89ca947f9490584a8948c9e06cd6728aec63bfdb2814b4caf46188b820a8",
+    "host_html_bootstrap_removed_before_source_hash_check": true,
+    "viewports": [
+      "1360x1000",
+      "390x844"
+    ],
+    "cases": [
+      "anonymous_trained_inference",
+      "original_recipe_text",
+      "source_limitations_displayed",
+      "zero_time_limit",
+      "ingredient_time_serving_constraints",
+      "explicit_baseline_comparison",
+      "input_privacy_and_text_rendering",
+      "corrupt_policy_rejected",
+      "failed_download_rejected",
+      "responsive_layout"
+    ]
+  },
+  "model_card_update": {
+    "previous_revision": "9b152b52ece1ebd88d802726346b1d3d949f422f",
+    "revision": "d0ea8662afec5d2c129dd3608fcd44dbdf5ad8bb",
+    "changed_file": "README.md",
+    "readme_sha256": "b495e5a8d9571abd2a4b19af3e64ed74cf5bf19aab8cfbfc76c10aa41dd24c53",
+    "non_readme_artifact_sha256": {
+      "recipe_catalog.json": "968565d64242e394d2118d9dce1c0e7da853a0801468c25aed66a556ab16d751",
+      "recipe_evaluation.json": "2cb367689fa5df9f4408697b170ed01224738c80282ebde8f3e9fa73c37654f2",
+      "recipe_policies/reinforce/recipe_ranker.safetensors": "ee53b89166b4be30102dd65ed16a21cb9844d680ab1587257e3324a53f411a26",
+      "recipe_policies/reinforce/recipe_ranker_config.json": "43adb7fddbbd1df77b3837d80ec9c60c12b26d8cf0d5f2f4d71b035b9ca48dec",
+      "recipe_policies/supervised/recipe_ranker.safetensors": "b4557181a76760d6fe2543443cc01d5ade2d247d26d49aae4b84b23e9521301d",
+      "recipe_policies/supervised/recipe_ranker_config.json": "3398c7719d723c48a46b40c162e129e8e2bb1c22f64d37165025537036fd63f2",
+      "recipe_release_policy.json": "cd558006bcd2fc1e2487bc20ae2745c6ab6277f38dbc9794436bf052362bedeb",
+      "recipe_search_config.json": "6deaaa616d0f8d9ffb6fa5d0af45077dec750a8808e98924359ae885a3da3d44",
+      "recipe_training.json": "bca0d97060ef9f0c53f22697f5f96677bc0de6b4f18d2ea37cf835c62c102216",
+      "config.json": "1bf792345b8face5975534312b676fcea1b53e5fa9c0e844948c4db743aa72ce",
+      "model.safetensors": "1afa035ad661e197acac39df7b249516dba5bffd65cb7ad1007c4f0daa6e7eed",
+      "release_policy.json": "083ab1b1217b8c33d312135345f86246c5b33aa3e3c6f9d4b82212b73bc6d066",
+      "training_manifest.json": "dc4acfede9d363ba34eef77ac610ce5c19e03f8b5a774dbbddf6c6a2714d3399",
+      "training_verification.json": "ade537f81e38bb2323a25380eaf683c9c0d18f65d1c3271bdb33be11d2303693"
+    },
+    "preserved_tags": {
+      "v0.4.0-recipe-search": "9b152b52ece1ebd88d802726346b1d3d949f422f",
+      "v0.3.1-public": "b12bcd5a887b86b162e95703861b642e645f092f",
+      "v0.3.0-all-recipes": "a2f67609a1cedb9578daab40b3e1f8192731e6de",
+      "v0.2.0-preview": "80448d074299eb587d6c434099d51eb3897de44b"
+    }
+  },
+  "private_recipe_data_uploaded": false,
+  "new_quality_benchmark_claimed": false
+}
