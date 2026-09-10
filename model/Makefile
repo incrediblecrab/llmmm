@@ -12,8 +12,9 @@ RECIPE_RUN ?= training/recipe_ranker_full
 RECIPE_EVALUATION ?= results/recipe_search_live.json
 RECIPE_TRAINING_REPORT ?= results/recipe_ranker_training.json
 RECIPE_EXPORT ?= ../.artifacts/hf/llmmm-recipes-v0.4.0-recipe-search
+DEMO_EXPORT ?= ../.artifacts/demo-preview
 
-.PHONY: help setup setup-train setup-hf data import-legacy test test-code gate list baselines report clean check check-core check-code sanity sanity-derived recipes text coverage aliases rebuild docs snapshot restore verify train train-full-native train-all-recipes verify-all-recipes export-all-recipes export-native status hf-compare generation-audit recipe-catalog recipe-metadata train-recipe-policy verify-recipe-policy evaluate-recipe-search export-recipe-search
+.PHONY: help setup setup-train setup-hf data import-legacy test test-code gate list baselines report clean check check-core check-code sanity sanity-derived recipes text coverage aliases rebuild docs snapshot restore verify train train-full-native train-all-recipes verify-all-recipes export-all-recipes export-native status hf-compare generation-audit recipe-catalog recipe-metadata train-recipe-policy verify-recipe-policy evaluate-recipe-search export-recipe-search demo-build demo-test
 
 help:
 	@echo "setup      create .venv and install the package"
@@ -43,6 +44,8 @@ help:
 	@echo "verify-recipe-policy verify saved per-row coverage and write metadata-only evidence"
 	@echo "evaluate-recipe-search compare policies through live constrained retrieval"
 	@echo "export-recipe-search export verified policies and metadata, never source recipes"
+	@echo "demo-build build the browser demo from the public sample (DEMO_EXPORT=unused/path)"
+	@echo "demo-test  check public-sample guards and Python/browser ranking parity"
 	@echo "status     print current project status from its exact source artifacts"
 	@echo "recipes    prove every recipe is readable, and show the source mix"
 	@echo "text       rejoin titles, quantities and instructions to the corpus"
@@ -116,6 +119,13 @@ export-recipe-search:
 		--corpus "$(RECIPE_CORPUS)" --run "$(RECIPE_RUN)" \
 		--training-evidence "$(RECIPE_TRAINING_REPORT)" \
 		--evaluation "$(RECIPE_EVALUATION)" --out "$(RECIPE_EXPORT)"
+
+demo-build:
+	$(PY) scripts/build_recipe_demo.py --out "$(DEMO_EXPORT)"
+
+demo-test:
+	$(PY) -m pytest -q tests/test_recipe_demo*.py
+	npm --prefix demo test
 
 snapshot:
 	$(PY) -m ingredient_model.recovery pack --output "$(BUNDLE)"

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Try llmmm's trained recipe ranker on a small, openly licensed recipe catalog. Runs in your browser.">
+  <meta name="color-scheme" content="light">
+  <title>llmmm &middot; Recipe finder</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233b553d'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia' font-size='42' fill='%23faf8f2'%3Em%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#recipe-results">Skip to results</a>
+  <div class="page">
+    <header class="masthead">
+      <a class="wordmark" href="https://github.com/incrediblecrab/llmmm" target="_blank" rel="noopener noreferrer">llmmm</a>
+      <span class="edition" id="sample-size">Public recipe sample</span>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">A small-catalog model demo</p>
+        <h1 id="page-title">What can you make<br>with what you have?</h1>
+        <p class="lede">Choose your ingredients and limits. The trained ranker orders
+          matching recipes from an openly licensed sample&mdash;it does not write new ones.</p>
+      </section>
+      <div id="fatal-error" class="notice error" role="alert" hidden></div>
+      <div class="workspace">
+        <form id="recipe-query" class="query-panel" novalidate>
+          <fieldset id="controls" disabled>
+            <legend class="sr-only">Recipe search</legend>
+            <div class="panel-heading">
+              <h2>Your pantry</h2>
+              <button type="button" id="clear-pantry" class="text-button">Clear</button>
+            </div>
+            <ul id="pantry-list" class="chips" aria-label="Selected pantry ingredients"></ul>
+            <label for="pantry-entry">Add ingredients</label>
+            <div class="ingredient-entry">
+              <input id="pantry-entry" type="text" list="ingredient-names" autocomplete="off"
+                placeholder="Start with an ingredient" maxlength="4000"
+                aria-describedby="pantry-hint">
+              <button type="button" id="add-ingredient" class="add-button">Add</button>
+            </div>
+            <datalist id="ingredient-names"></datalist>
+            <p id="pantry-hint" class="hint">Use the suggested names, or paste a comma-separated list.
+              Salt, oil and other staples are not assumed.</p>
+            <div class="examples">
+              <span class="small-label">Try a pantry</span>
+              <div id="examples" class="example-buttons"></div>
+            </div>
+            <div class="basic-filters">
+              <div>
+                <label for="max-time">Total time limit</label>
+                <div class="number-field">
+                  <input id="max-time" type="number" min="0" step="any" placeholder="Any"
+                    aria-describedby="time-hint">
+                  <span aria-hidden="true">min</span>
+                </div>
+              </div>
+              <div>
+                <label for="max-missing">Missing ingredients</label>
+                <select id="max-missing">
+                  <option value="0">None</option>
+                  <option value="1">Up to 1</option>
+                  <option value="2" selected>Up to 2</option>
+                  <option value="3">Up to 3</option>
+                  <option value="5">Up to 5</option>
+                  <option value="">Any number</option>
+                </select>
+              </div>
+            </div>
+            <p id="time-hint" class="hint">A time limit excludes recipes with no reported total.
+              Source estimates are not independently timed.</p>
+            <details class="extra-filters">
+              <summary>Required ingredients, exclusions &amp; servings</summary>
+              <label for="must-use">Must include</label>
+              <input id="must-use" type="text" list="ingredient-names" autocomplete="off"
+                placeholder="Comma-separated ingredients" maxlength="4000">
+              <label for="exclude">Exclude ingredients</label>
+              <input id="exclude" type="text" list="ingredient-names" autocomplete="off"
+                placeholder="Comma-separated ingredients" maxlength="4000"
+                aria-describedby="exclusion-hint">
+              <p id="exclusion-hint" class="hint">Canonical ingredient matching only.
+                This is not an allergy check; inspect the original ingredient list.</p>
+              <label for="min-servings">Minimum reported servings</label>
+              <input id="min-servings" type="number" min="1" step="any" placeholder="Any">
+              <p class="hint">Does not scale quantities. Unknown servings do not pass a limit.</p>
+            </details>
+            <label for="ranking">Ranking</label>
+            <select id="ranking">
+              <option value="learned">Trained ranker</option>
+              <option value="heuristic">Simple overlap baseline</option>
+            </select>
+            <p id="query-error" class="notice error" role="alert" tabindex="-1" hidden></p>
+            <button type="submit" id="find-recipes" class="primary-button">Find recipes</button>
+          </fieldset>
+        </form>
+        <section id="recipe-results" class="results-panel" aria-labelledby="results-heading">
+          <div class="results-heading">
+            <h2 id="results-heading">Recipe matches</h2>
+            <p id="result-count" role="status" aria-live="polite">Loading the public sample&hellip;</p>
+          </div>
+          <p class="hint">Matches use canonical ingredient names. Read the full ingredient list,
+            instructions and source notes before cooking.</p>
+          <p id="sample-warning" class="hint" hidden></p>
+          <div id="results">
+            <div class="empty-state">Loading the catalog and ranking weights.
+              No private recipe database is needed.</div>
+          </div>
+          <button type="button" id="show-all" class="secondary-button" hidden>Show all matches</button>
+        </section>
+      </div>
+      <section class="about" aria-labelledby="about-heading">
+        <div>
+          <h2 id="about-heading">What this demonstrates</h2>
+          <p>Filters choose eligible recipes first. The same supervised ranking weights
+            published with llmmm then order them. Switch to the simple baseline to compare.</p>
+        </div>
+        <div>
+          <h2>What it does not establish</h2>
+          <p>This is a separately sourced sample, not the full training catalog or a new
+            quality benchmark. Ingredient frequencies come from this small catalog.
+            Scores are not probabilities of a good meal.</p>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>Search runs in your browser. The app does not send your pantry inputs to a server
+        or store them between visits.</p>
+      <nav aria-label="Project resources">
+        <a id="model-link" href="https://huggingface.co/incrediblecrab/llmmm-recipes/tree/v0.4.0-recipe-search"
+          target="_blank" rel="noopener noreferrer">Model &amp; evidence</a>
+        <a id="dataset-link" href="https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-sample"
+          target="_blank" rel="noopener noreferrer">Sample &amp; attribution</a>
+        <a id="code-link" href="https://github.com/incrediblecrab/llmmm"
+          target="_blank" rel="noopener noreferrer">Source code</a>
+      </nav>
+      <p class="license-note" id="license-note"></p>
+    </footer>
+  </div>
+  <noscript>This demo needs JavaScript to run the ranker locally. The public sample and model
+    are also available through the links in the footer.</noscript>
+</body>
+</html>

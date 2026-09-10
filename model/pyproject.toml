@@ -21,6 +21,7 @@ hf = [
     "transformers>=4.35",
     "safetensors>=0.4",
 ]
+demo = ["torch>=2.2", "safetensors>=0.4", "huggingface-hub>=1.0"]
 generation = ["mlx-lm>=0.26"]
 azure = [
     "azure-ai-ml>=1.16",

@@ -23,6 +23,7 @@ from ingredient_model.data.recipe_search_metadata import (
     RecipeSearchMetadata, default_search_metadata_path)
 from ingredient_model.recipe_ranker import FEATURE_NAMES, RecipeRankingPolicy
 from ingredient_model.recipe_ingredients import CanonicalIngredientIndex
+from ingredient_model.recipe_demo import add_demo_links
 from evaluate_recipe_search import _operational_pass
 from export_native_model import render_production_card
 from train_recipe_ranker import array_digest
@@ -431,6 +432,7 @@ or scan budget is reached. There is no silent fallback between learned and heuri
 """
     card = card.replace("- ingredient-completion\n", "- ingredient-completion\n- recipe-retrieval\n")
     card = card.replace("## Training evidence\n", section + "## Ingredient-model training evidence\n", 1)
+    card = add_demo_links(card)
     card = card.replace("## Evaluation status\n", "## Ingredient-model evaluation status\n", 1)
     card = card.replace("## Usage\n", "## Ingredient-predictor usage\n", 1)
     card = card.replace("Inference does not require the training corpus.",

@@ -1,0 +1,1564 @@
+{
+  "schema_version": 1,
+  "catalog": "Small separately sourced public demonstration catalog; not training data or a benchmark.",
+  "license": "CC-BY-SA-4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+  "vocabulary": {
+    "url": "https://huggingface.co/incrediblecrab/llmmm-recipes/resolve/v0.4.0-recipe-search/config.json",
+    "fetched_url": "https://huggingface.co/api/resolve-cache/models/incrediblecrab/llmmm-recipes/9b152b52ece1ebd88d802726346b1d3d949f422f/config.json?%2Fincrediblecrab%2Fllmmm-recipes%2Fresolve%2Fv0.4.0-recipe-search%2Fconfig.json=&etag=%228f9665c0367f0d8b731905647bdcaeb2bf5d66d0%22",
+    "sha256": "1bf792345b8face5975534312b676fcea1b53e5fa9c0e844948c4db743aa72ce",
+    "retrieved_at": "2026-09-10T16:29:44.645341+00:00",
+    "cache_path": ".artifacts/demo-sources/vocabulary-config.source",
+    "key": "vocabulary",
+    "version": "v0.4.0-recipe-search",
+    "size": 1790,
+    "used_entries": [
+      "apple",
+      "bacon",
+      "baking_powder",
+      "baking_soda",
+      "balsamic_vinegar",
+      "basil",
+      "bay_leaf",
+      "black_pepper",
+      "bread",
+      "brown_sugar",
+      "butter",
+      "cardamom",
+      "carrot",
+      "celery_seed",
+      "chickpea",
+      "chocolate",
+      "cinnamon",
+      "clove",
+      "coconut",
+      "cognac",
+      "cornstarch",
+      "curry_leaf",
+      "egg",
+      "flour",
+      "garlic",
+      "ginger",
+      "green_bean",
+      "green_chili",
+      "lemon",
+      "lentil",
+      "margarine",
+      "milk",
+      "mozzarella_cheese",
+      "mustard_seed",
+      "nut",
+      "oat",
+      "oil",
+      "olive_oil",
+      "onion",
+      "orange",
+      "oregano",
+      "paprika",
+      "parsley",
+      "pea",
+      "peanut",
+      "peanut_butter",
+      "potato",
+      "salt",
+      "shallot",
+      "sherry",
+      "shrimp",
+      "sugar",
+      "tomato",
+      "turmeric",
+      "vanilla",
+      "vegetable_oil",
+      "vinegar",
+      "water"
+    ]
+  },
+  "license_evidence": [
+    {
+      "url": "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+      "fetched_url": "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+      "sha256": "54685d66b318e2f73e69e857639da54885229edf684c3056532f311e50a5776f",
+      "retrieved_at": "2026-09-10T16:42:46.418646+00:00",
+      "cache_path": ".artifacts/demo-sources/copyright-policy-4622060.html",
+      "finding": "Text reuse under CC BY-SA 4.0; page-link attribution, retained external credits, share-alike, change notice and license notice; non-text media and fair use are separate."
+    },
+    {
+      "url": "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+      "fetched_url": "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+      "sha256": "97be36b8cbf190ed1d6aa3a22d0cfa15cd530c18230517421fbcb8328db2ab70",
+      "retrieved_at": "2026-09-10T16:42:47.721774+00:00",
+      "cache_path": ".artifacts/demo-sources/terms-of-use-554823.html",
+      "finding": "Section 7 permits page-link attribution and requires preserving additional external attribution and licensing modifications under CC BY-SA 4.0 or later."
+    },
+    {
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en",
+      "fetched_url": "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en",
+      "sha256": "a7dbad04e9a44a69a06d2ea5f20cceccb163091550591ed41ac610f112789246",
+      "retrieved_at": "2026-09-10T16:29:44.897388+00:00",
+      "cache_path": ".artifacts/demo-sources/license-legalcode.source",
+      "finding": "CC BY-SA 4.0 legal code: attribution, indicating modifications, share-alike, license link and no additional restrictions."
+    }
+  ],
+  "talk_page_audit_source": {
+    "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+    "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+    "sha256": "e33e714a276f97ee0cc3139128f6ed359e1721d0512011ea569b127aca1514b1",
+    "retrieved_at": "2026-09-10T16:33:58.696807+00:00",
+    "cache_path": ".artifacts/demo-sources/selected-talk-pages.source"
+  },
+  "selection_review": "Selected ingredient/procedure text, per-page license links, talk snapshots and earliest revisions were reviewed. No third-party copyright/reprint restriction was found for the selected text. Images, captions and other media are not reused. Wikipedia-origin attribution for Oat Porridge is retained. Pancakes (North American) was excluded after its talk-page provenance/measurement concerns; Chokladboll was excluded because its summary time conflicts with mandatory chilling.",
+  "sources": [
+    {
+      "id": "oat-porridge",
+      "source_title": "Cookbook:Oat Porridge",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AOat+Porridge&oldid=4606890",
+      "source_revision_id": 4606890,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AOat_Porridge&oldid=4606890&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AOat_Porridge&oldid=4606890&action=raw",
+        "sha256": "c742d8ca191ecfd7618e0706350781261e36f8dcc2bd7216aea1e4dd5ce42b04",
+        "retrieved_at": "2026-09-10T16:42:48.196609+00:00",
+        "cache_path": ".artifacts/demo-sources/oat-porridge-4606890.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3AOat+Porridge&oldid=4606890",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AOat+Porridge&oldid=4606890",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AOat+Porridge&oldid=4606890",
+        "sha256": "27705acce33eba058def54f099aee4e2a2eee66c40d9447627bc7426d0d256e1",
+        "retrieved_at": "2026-09-10T16:33:57.001150+00:00",
+        "cache_path": ".artifacts/demo-sources/oat-porridge-4606890.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Oat Porridge\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3AOat+Porridge&action=history. Originally moved from Porridge by English Wikipedia contributors; https://en.wikipedia.org/w/index.php?title=Porridge&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AOat+Porridge&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AOat+Porridge&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AOat+Porridge&rvdir=newer&rvlimit=1",
+        "sha256": "7ee626ffa9a24a10c69146aa8a2bf8d75b93548952c7223f803c30f5685da05c",
+        "retrieved_at": "2026-09-10T16:34:52.170931+00:00",
+        "cache_path": ".artifacts/demo-sources/oat-porridge-origin.source",
+        "source_revision_id": 69760,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AOat+Porridge&oldid=69760"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": null,
+        "revision_url": null,
+        "finding": "Talk page did not exist at retrieval."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": "15 minutes",
+        "servings": "1",
+        "yield": null
+      },
+      "time_note": null,
+      "servings_note": null,
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected.",
+        "The earliest revision's edit summary credits the Wikipedia Porridge article; that additional attribution is retained.",
+        "The procedure suggests toppings absent from the Ingredients section; they are not invented as additional ingredient lines or canonical entries."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "½ cup (45 g) rolled oats or other grain",
+          "canonical_ingredients": [
+            "oat"
+          ],
+          "unmapped_reason": "Other grain is unspecified."
+        },
+        {
+          "raw_ingredient": "¾ cup (180 ml) water",
+          "canonical_ingredients": [
+            "water"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "¾ cup (180 ml) milk",
+          "canonical_ingredients": [
+            "milk"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "a6d9c8fe3c1ee347e9faf5c1409fe1e16d3dcb2351344e65bd45426407cd5b5a"
+    },
+    {
+      "id": "potato-curry",
+      "source_title": "Cookbook:Potato Curry (Aloo Masala)",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Curry+%28Aloo+Masala%29&oldid=4615205",
+      "source_revision_id": 4615205,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato_Curry_%28Aloo_Masala%29&oldid=4615205&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato_Curry_%28Aloo_Masala%29&oldid=4615205&action=raw",
+        "sha256": "34b9903ea6d149754c1bd0e60bf63dd1bfdc317b316dfbdc186b9f8a5f6f66b9",
+        "retrieved_at": "2026-09-10T16:42:49.161077+00:00",
+        "cache_path": ".artifacts/demo-sources/potato-curry-4615205.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Curry+%28Aloo+Masala%29&oldid=4615205",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Curry+%28Aloo+Masala%29&oldid=4615205",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Curry+%28Aloo+Masala%29&oldid=4615205",
+        "sha256": "8db3a8a506ab4a8ca9a227d1291e85d53908eb8803358e7f19b62a62eb329383",
+        "retrieved_at": "2026-09-10T16:33:56.970699+00:00",
+        "cache_path": ".artifacts/demo-sources/potato-curry-4615205.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Potato Curry (Aloo Masala)\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Curry+%28Aloo+Masala%29&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Curry+%28Aloo+Masala%29&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3APotato+Curry+%28Aloo+Masala%29&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3APotato+Curry+%28Aloo+Masala%29&rvdir=newer&rvlimit=1",
+        "sha256": "83cfd91d6dcca322b3c349e421251233a72f671a7073a6749f5e9ba2b2985a02",
+        "retrieved_at": "2026-09-10T16:34:52.131622+00:00",
+        "cache_path": ".artifacts/demo-sources/potato-curry-origin.source",
+        "source_revision_id": 41802,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Curry+%28Aloo+Masala%29&oldid=41802"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": null,
+        "revision_url": null,
+        "finding": "Talk page did not exist at retrieval."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": "20 minutes",
+        "servings": "4-6",
+        "yield": null
+      },
+      "time_note": null,
+      "servings_note": "Servings are a range or otherwise ambiguous; no endpoint or midpoint is chosen.",
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected.",
+        "The recipe starts with par-boiled potatoes; no extra preparation time is added."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "1 tablespoon oil",
+          "canonical_ingredients": [
+            "oil"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ teaspoon mustard seed",
+          "canonical_ingredients": [
+            "mustard_seed"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ tablespoon chana dhal (optional)",
+          "canonical_ingredients": [
+            "chickpea"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "5 curry leaves",
+          "canonical_ingredients": [
+            "curry_leaf"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 medium onion, chopped thin",
+          "canonical_ingredients": [
+            "onion"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "4-5 split green chillies",
+          "canonical_ingredients": [
+            "green_chili"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "4 large potatoes, cubed and par-boiled",
+          "canonical_ingredients": [
+            "potato"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 pinch of turmeric powder",
+          "canonical_ingredients": [
+            "turmeric"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ teaspoon salt",
+          "canonical_ingredients": [
+            "salt"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "42d70eb5b288c4581d08cfca284f249f0e1fa2119f84caced2963bf93a4c17d6"
+    },
+    {
+      "id": "keralan-vegetable-stew",
+      "source_title": "Cookbook:Keralan Vegetable Stew",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AKeralan+Vegetable+Stew&oldid=4615200",
+      "source_revision_id": 4615200,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AKeralan_Vegetable_Stew&oldid=4615200&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AKeralan_Vegetable_Stew&oldid=4615200&action=raw",
+        "sha256": "8a943d98427e7830edc331e4d4e4ded17e9087fbbe5b61e9c7b0850af45b034a",
+        "retrieved_at": "2026-09-10T16:42:50.243581+00:00",
+        "cache_path": ".artifacts/demo-sources/keralan-vegetable-stew-4615200.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3AKeralan+Vegetable+Stew&oldid=4615200",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AKeralan+Vegetable+Stew&oldid=4615200",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AKeralan+Vegetable+Stew&oldid=4615200",
+        "sha256": "34ed6d3ccc455a4f8f06fd1401ffe3fd4a3da80951c5cd2fea5d990fdbcf4e20",
+        "retrieved_at": "2026-09-10T16:33:57.677516+00:00",
+        "cache_path": ".artifacts/demo-sources/keralan-vegetable-stew-4615200.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Keralan Vegetable Stew\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3AKeralan+Vegetable+Stew&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AKeralan+Vegetable+Stew&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AKeralan+Vegetable+Stew&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AKeralan+Vegetable+Stew&rvdir=newer&rvlimit=1",
+        "sha256": "4fa8a3d5eba8fd4df420b31d2cd3a7b67ea80057d80bd3e72451ea0139a1b325",
+        "retrieved_at": "2026-09-10T16:34:52.139286+00:00",
+        "cache_path": ".artifacts/demo-sources/keralan-vegetable-stew-origin.source",
+        "source_revision_id": 41816,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AKeralan+Vegetable+Stew&oldid=41816"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": 4054910,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook+talk%3AKeralan+Vegetable+Stew&oldid=4054910",
+        "finding": "No additional third-party license/reprint notice found."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": "25 minutes",
+        "servings": "6",
+        "yield": null
+      },
+      "time_note": null,
+      "servings_note": null,
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected.",
+        "The recipe starts with boiled vegetables; no extra preparation time is added."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "½ coconut, freshly grated",
+          "canonical_ingredients": [
+            "coconut"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1½ cups boiled vegetables (carrots, green beans, potatoes, peas, etc.)",
+          "canonical_ingredients": [
+            "carrot",
+            "green_bean",
+            "potato",
+            "pea"
+          ],
+          "unmapped_reason": "The vegetable mixture ends with 'etc.'; only its named examples are mapped."
+        },
+        {
+          "raw_ingredient": "2 Tbsp oil",
+          "canonical_ingredients": [
+            "oil"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 onion, diced",
+          "canonical_ingredients": [
+            "onion"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 very small piece of ginger, chopped",
+          "canonical_ingredients": [
+            "ginger"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2–5 green chillies (as desired), split lengthwise",
+          "canonical_ingredients": [
+            "green_chili"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "10 curry leaves",
+          "canonical_ingredients": [
+            "curry_leaf"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "4 cloves",
+          "canonical_ingredients": [
+            "clove"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 small pieces cinnamon",
+          "canonical_ingredients": [
+            "cinnamon"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 pods green cardamom",
+          "canonical_ingredients": [
+            "cardamom"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 Tbsp vinegar",
+          "canonical_ingredients": [
+            "vinegar"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 Tbsp flour or rice flour or cornstarch",
+          "canonical_ingredients": [
+            "flour",
+            "cornstarch"
+          ],
+          "unmapped_reason": "The vocabulary has no generic rice_flour entry; glutinous rice flour is not assumed."
+        },
+        {
+          "raw_ingredient": "1 pinch of salt",
+          "canonical_ingredients": [
+            "salt"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 tsp ground black pepper",
+          "canonical_ingredients": [
+            "black_pepper"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 tsp mustard seed",
+          "canonical_ingredients": [
+            "mustard_seed"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 shallot",
+          "canonical_ingredients": [
+            "shallot"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "98d6dd39e09e23f82625aae83e1bb4120c72df00661512fb912ab3f460b04c8c"
+    },
+    {
+      "id": "garlic-shrimp",
+      "source_title": "Cookbook:Gambas al Ajillo (Garlic Shrimp)",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGambas+al+Ajillo+%28Garlic+Shrimp%29&oldid=4533840",
+      "source_revision_id": 4533840,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGambas_al_Ajillo_%28Garlic_Shrimp%29&oldid=4533840&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGambas_al_Ajillo_%28Garlic_Shrimp%29&oldid=4533840&action=raw",
+        "sha256": "1847e6e41e36124123fc200e6ad7f4735f59519017c1549b4cd9071af9c5d2d9",
+        "retrieved_at": "2026-09-10T16:42:51.218698+00:00",
+        "cache_path": ".artifacts/demo-sources/garlic-shrimp-4533840.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGambas+al+Ajillo+%28Garlic+Shrimp%29&oldid=4533840",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGambas+al+Ajillo+%28Garlic+Shrimp%29&oldid=4533840",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGambas+al+Ajillo+%28Garlic+Shrimp%29&oldid=4533840",
+        "sha256": "7beff1cbc34f45e27d5bf70071db6b425c71b395f3090c3c26b91c2a8c79c798",
+        "retrieved_at": "2026-09-10T16:33:57.375299+00:00",
+        "cache_path": ".artifacts/demo-sources/garlic-shrimp-4533840.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Gambas al Ajillo (Garlic Shrimp)\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3AGambas+al+Ajillo+%28Garlic+Shrimp%29&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGambas+al+Ajillo+%28Garlic+Shrimp%29&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AGambas+al+Ajillo+%28Garlic+Shrimp%29&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AGambas+al+Ajillo+%28Garlic+Shrimp%29&rvdir=newer&rvlimit=1",
+        "sha256": "c372ee5ef7c417d3155ec4c383eb514ee20fade1211f8a69258bf77b36655681",
+        "retrieved_at": "2026-09-10T16:34:52.374724+00:00",
+        "cache_path": ".artifacts/demo-sources/garlic-shrimp-origin.source",
+        "source_revision_id": 667826,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGambas+al+Ajillo+%28Garlic+Shrimp%29&oldid=667826"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": null,
+        "revision_url": null,
+        "finding": "Talk page did not exist at retrieval."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": "20 minutes",
+        "servings": "4",
+        "yield": null
+      },
+      "time_note": null,
+      "servings_note": null,
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected.",
+        "The procedure mentions salt and pepper absent from the Ingredients section; no new ingredient lines or canonical entries are supplied."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "1 pound shrimp",
+          "canonical_ingredients": [
+            "shrimp"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "4–6 large cloves of garlic, finely minced",
+          "canonical_ingredients": [
+            "garlic"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 teaspoon sweet Spanish paprika",
+          "canonical_ingredients": [
+            "paprika"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2–3 oz dry sherry (you may substitute cognac instead)",
+          "canonical_ingredients": [
+            "sherry",
+            "cognac"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "¼ cup virgin olive oil",
+          "canonical_ingredients": [
+            "olive_oil"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "3 teaspoon chopped fresh parsley",
+          "canonical_ingredients": [
+            "parsley"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 oz fresh lemon juice",
+          "canonical_ingredients": [
+            "lemon"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "be68c1aff9e7d5e7cc6328f020db4a201b4595c86b4d1190f1f74b4a7ed694ec"
+    },
+    {
+      "id": "garlic-croutons",
+      "source_title": "Cookbook:Garlic Croutons I",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGarlic+Croutons+I&oldid=4656175",
+      "source_revision_id": 4656175,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGarlic_Croutons_I&oldid=4656175&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGarlic_Croutons_I&oldid=4656175&action=raw",
+        "sha256": "001a804e7274337f2d563e8cccfabac558aed9127acec51033d7e36a2786573b",
+        "retrieved_at": "2026-09-10T16:42:52.204219+00:00",
+        "cache_path": ".artifacts/demo-sources/garlic-croutons-4656175.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGarlic+Croutons+I&oldid=4656175",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGarlic+Croutons+I&oldid=4656175",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGarlic+Croutons+I&oldid=4656175",
+        "sha256": "4e4f392883f5df69cfaa787b75d9401d223aefe2fac58fbb9b56b29281c86d26",
+        "retrieved_at": "2026-09-10T16:33:57.363543+00:00",
+        "cache_path": ".artifacts/demo-sources/garlic-croutons-4656175.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Garlic Croutons I\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3AGarlic+Croutons+I&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGarlic+Croutons+I&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AGarlic+Croutons+I&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AGarlic+Croutons+I&rvdir=newer&rvlimit=1",
+        "sha256": "52cead4e41e8366d6e3bcf36a99d8d87ebd43a3a814c6b3937654a7ac02d7d9d",
+        "retrieved_at": "2026-09-10T16:34:52.361592+00:00",
+        "cache_path": ".artifacts/demo-sources/garlic-croutons-origin.source",
+        "source_revision_id": 27996,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AGarlic+Croutons+I&oldid=27996"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": null,
+        "revision_url": null,
+        "finding": "Talk page did not exist at retrieval."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": "20 minutes",
+        "servings": "4",
+        "yield": null
+      },
+      "time_note": null,
+      "servings_note": null,
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "4 slices day-old French bread, cubed",
+          "canonical_ingredients": [
+            "bread"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 cloves garlic, minced",
+          "canonical_ingredients": [
+            "garlic"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "4 tablespoons olive oil",
+          "canonical_ingredients": [
+            "olive_oil"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "Salt to taste",
+          "canonical_ingredients": [
+            "salt"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "dd1f33f56e65b85559cf3be4ed1e66c22cee76afb0518804f7f31d5f6a467021"
+    },
+    {
+      "id": "mozzarella-bruschetta",
+      "source_title": "Cookbook:Fresh Mozzarella Bruschetta",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AFresh+Mozzarella+Bruschetta&oldid=4605220",
+      "source_revision_id": 4605220,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AFresh_Mozzarella_Bruschetta&oldid=4605220&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AFresh_Mozzarella_Bruschetta&oldid=4605220&action=raw",
+        "sha256": "2b516bf72c853c86cc9a7300b6c0941191250121d22fe146d7233bb90b64df6c",
+        "retrieved_at": "2026-09-10T16:42:53.207802+00:00",
+        "cache_path": ".artifacts/demo-sources/mozzarella-bruschetta-4605220.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3AFresh+Mozzarella+Bruschetta&oldid=4605220",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AFresh+Mozzarella+Bruschetta&oldid=4605220",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AFresh+Mozzarella+Bruschetta&oldid=4605220",
+        "sha256": "ac5258ba0c432082f8ace5a981685dc1ce33a1d8dbf1e8af4140d19a4d33d112",
+        "retrieved_at": "2026-09-10T16:33:57.703843+00:00",
+        "cache_path": ".artifacts/demo-sources/mozzarella-bruschetta-4605220.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Fresh Mozzarella Bruschetta\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3AFresh+Mozzarella+Bruschetta&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AFresh+Mozzarella+Bruschetta&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AFresh+Mozzarella+Bruschetta&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AFresh+Mozzarella+Bruschetta&rvdir=newer&rvlimit=1",
+        "sha256": "92e4ba53865c3810101aeb767c9781976408b240213204caab03d6e07fbe29eb",
+        "retrieved_at": "2026-09-10T16:34:52.394944+00:00",
+        "cache_path": ".artifacts/demo-sources/mozzarella-bruschetta-origin.source",
+        "source_revision_id": 248146,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AFresh+Mozzarella+Bruschetta&oldid=248146"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": 3818481,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook+talk%3AFresh+Mozzarella+Bruschetta&oldid=3818481",
+        "finding": "No additional third-party license/reprint notice found."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": "15 minutes",
+        "servings": null,
+        "yield": "24 bruschette"
+      },
+      "time_note": null,
+      "servings_note": "No serving count is reported; an item yield is not a serving count.",
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "1 long loaf of crusty French bread",
+          "canonical_ingredients": [
+            "bread"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "3 medium ripe Roma tomatoes",
+          "canonical_ingredients": [
+            "tomato"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "3 large fresh mozzarella balls",
+          "canonical_ingredients": [
+            "mozzarella_cheese"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "24 fresh basil leaves",
+          "canonical_ingredients": [
+            "basil"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "Coarse salt",
+          "canonical_ingredients": [
+            "salt"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "Black pepper",
+          "canonical_ingredients": [
+            "black_pepper"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "Extra virgin olive oil",
+          "canonical_ingredients": [
+            "olive_oil"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "Oregano",
+          "canonical_ingredients": [
+            "oregano"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "Balsamic vinegar",
+          "canonical_ingredients": [
+            "balsamic_vinegar"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "b4edbca515b92e6d1e054ba688910f60d8b5db0cda6a7a62bb6b8c398fd90ee9"
+    },
+    {
+      "id": "peanut-butter-cookies",
+      "source_title": "Cookbook:Peanut Butter Cookies",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APeanut+Butter+Cookies&oldid=4525009",
+      "source_revision_id": 4525009,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APeanut_Butter_Cookies&oldid=4525009&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APeanut_Butter_Cookies&oldid=4525009&action=raw",
+        "sha256": "53a00b8ba677c1ec38abc872a49024a8e9b83ed0fc30ee673db0c6c4579104a8",
+        "retrieved_at": "2026-09-10T16:32:06.609472+00:00",
+        "cache_path": ".artifacts/demo-sources/peanut-butter-cookies-4525009.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3APeanut+Butter+Cookies&oldid=4525009",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APeanut+Butter+Cookies&oldid=4525009",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APeanut+Butter+Cookies&oldid=4525009",
+        "sha256": "3e72756c1532c175543454f74e1bfbfa064cd62e43e5533b85377de5a9d16b59",
+        "retrieved_at": "2026-09-10T16:33:58.167280+00:00",
+        "cache_path": ".artifacts/demo-sources/peanut-butter-cookies-4525009.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Peanut Butter Cookies\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3APeanut+Butter+Cookies&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APeanut+Butter+Cookies&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3APeanut+Butter+Cookies&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3APeanut+Butter+Cookies&rvdir=newer&rvlimit=1",
+        "sha256": "b5db36f3b39e82315b2a98e13f44233901f89cb1d6b863e4bb623d7c6454714b",
+        "retrieved_at": "2026-09-10T16:34:52.560679+00:00",
+        "cache_path": ".artifacts/demo-sources/peanut-butter-cookies-origin.source",
+        "source_revision_id": 196223,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APeanut+Butter+Cookies&oldid=196223"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": null,
+        "revision_url": null,
+        "finding": "Talk page did not exist at retrieval."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": "½ hour",
+        "servings": null,
+        "yield": "Makes about a dozen and a half"
+      },
+      "time_note": null,
+      "servings_note": "No serving count is reported; an item yield is not a serving count.",
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "110 g (120 ml / ½ cup / 4 oz) peanut butter",
+          "canonical_ingredients": [
+            "peanut_butter"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "110 g (120 ml / ½ cup / 4 oz) white granulated sugar",
+          "canonical_ingredients": [
+            "sugar"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "110 g (120 ml / ½ cup / 4 oz) brown sugar",
+          "canonical_ingredients": [
+            "brown_sugar"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "110 g (120 ml / ½ cup / 4 oz) butter or margarine, melted",
+          "canonical_ingredients": [
+            "butter",
+            "margarine"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 egg",
+          "canonical_ingredients": [
+            "egg"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ teaspoon vanilla essence",
+          "canonical_ingredients": [
+            "vanilla"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "280 g (300 ml / 1 ¼ cup / 10 oz) all-purpose flour",
+          "canonical_ingredients": [
+            "flour"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "¼ teaspoon salt",
+          "canonical_ingredients": [
+            "salt"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "¾ teaspoon baking soda",
+          "canonical_ingredients": [
+            "baking_soda"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "3926d9ab25b778a519215b68aa9ae4113ed6b83ec7d76cda8e03e9c7e940fc03"
+    },
+    {
+      "id": "chocolate-chip-cookies",
+      "source_title": "Cookbook:Chocolate Chip Cookies I",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AChocolate+Chip+Cookies+I&oldid=4630845",
+      "source_revision_id": 4630845,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AChocolate_Chip_Cookies_I&oldid=4630845&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AChocolate_Chip_Cookies_I&oldid=4630845&action=raw",
+        "sha256": "98080b85fe5b1d4fa78d7eecfeccbb9d6585140bde1d1884cc1d001455418bfb",
+        "retrieved_at": "2026-09-10T16:42:54.222778+00:00",
+        "cache_path": ".artifacts/demo-sources/chocolate-chip-cookies-4630845.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3AChocolate+Chip+Cookies+I&oldid=4630845",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AChocolate+Chip+Cookies+I&oldid=4630845",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AChocolate+Chip+Cookies+I&oldid=4630845",
+        "sha256": "07dd2c423491e9955a8566d619bc1a29abfb53f6a985c17d569f8668c60990e5",
+        "retrieved_at": "2026-09-10T16:33:58.001513+00:00",
+        "cache_path": ".artifacts/demo-sources/chocolate-chip-cookies-4630845.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Chocolate Chip Cookies I\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3AChocolate+Chip+Cookies+I&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AChocolate+Chip+Cookies+I&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AChocolate+Chip+Cookies+I&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AChocolate+Chip+Cookies+I&rvdir=newer&rvlimit=1",
+        "sha256": "6291d4ec3ed4a46a5c5e935e6951d25b2a7e4dc3f00d07f5f63b5de131483112",
+        "retrieved_at": "2026-09-10T16:34:52.560903+00:00",
+        "cache_path": ".artifacts/demo-sources/chocolate-chip-cookies-origin.source",
+        "source_revision_id": 3688069,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AChocolate+Chip+Cookies+I&oldid=3688069"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": null,
+        "revision_url": null,
+        "finding": "Talk page did not exist at retrieval."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": "Prep: 20 minutes<br>Cooking: 12 minutes<br>Total: 32 minutes",
+        "servings": "10",
+        "yield": "56 cookies"
+      },
+      "time_note": null,
+      "servings_note": null,
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected.",
+        "The explicitly labeled Total: 32 minutes is used, not a sum of components.",
+        "The source's Fahrenheit/Celsius pairs and volume/weight pairs are preserved even where they appear inconsistent; no conversion corrections are made."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "2 sticks (½ lb / 225 g / 1 cup) butter, softened",
+          "canonical_ingredients": [
+            "butter"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "¾ cup (180 ml) granulated white sugar",
+          "canonical_ingredients": [
+            "sugar"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "¾ cup (180 ml) packed brown sugar",
+          "canonical_ingredients": [
+            "brown_sugar"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "¼ teaspoon vanilla extract",
+          "canonical_ingredients": [
+            "vanilla"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 standard (100 g) eggs",
+          "canonical_ingredients": [
+            "egg"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 ¼ cups (600 ml / 290 g) all-purpose flour",
+          "canonical_ingredients": [
+            "flour"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 teaspoon baking soda",
+          "canonical_ingredients": [
+            "baking_soda"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 teaspoon salt",
+          "canonical_ingredients": [
+            "salt"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 teaspoon dry ground lemon or orange peel (optional)",
+          "canonical_ingredients": [
+            "lemon",
+            "orange"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 cups (480 ml / 12 oz) semi-sweet chocolate morsels / chips",
+          "canonical_ingredients": [
+            "chocolate"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "5 oz (150 g) chopped nuts, such as groundnuts (optional)",
+          "canonical_ingredients": [
+            "nut",
+            "peanut"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "8110d2b3dcdd1c5c2e092a6e6214a733fc5de437b92e16c545c98e3fad6726b7"
+    },
+    {
+      "id": "potato-salad",
+      "source_title": "Cookbook:Potato Salad",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Salad&oldid=4525019",
+      "source_revision_id": 4525019,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato_Salad&oldid=4525019&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato_Salad&oldid=4525019&action=raw",
+        "sha256": "01e13127b4c848b5e6189bd0c38d0e69050aa4285ff649546c4fc5c15774edfe",
+        "retrieved_at": "2026-09-10T16:42:55.209011+00:00",
+        "cache_path": ".artifacts/demo-sources/potato-salad-4525019.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Salad&oldid=4525019",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Salad&oldid=4525019",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Salad&oldid=4525019",
+        "sha256": "29a5169c54fae6cdad1bc82584f250b8437c5d75cec67a0350b71c49ad704c9f",
+        "retrieved_at": "2026-09-10T16:33:57.971757+00:00",
+        "cache_path": ".artifacts/demo-sources/potato-salad-4525019.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Potato Salad\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Salad&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Salad&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3APotato+Salad&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3APotato+Salad&rvdir=newer&rvlimit=1",
+        "sha256": "0676e76df7714d4acab6a78e98c2f2c9735c2d08bc7d6f194e94c94f971f93f1",
+        "retrieved_at": "2026-09-10T16:34:52.648473+00:00",
+        "cache_path": ".artifacts/demo-sources/potato-salad-origin.source",
+        "source_revision_id": 249537,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3APotato+Salad&oldid=249537"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": 2031516,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook+talk%3APotato+Salad&oldid=2031516",
+        "finding": "No additional third-party license/reprint notice found."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": "30 minutes",
+        "servings": null,
+        "yield": null
+      },
+      "time_note": null,
+      "servings_note": "No serving count is reported; an item yield is not a serving count.",
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "2 pounds (~1 kg) potatoes",
+          "canonical_ingredients": [
+            "potato"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "6 slices of bacon",
+          "canonical_ingredients": [
+            "bacon"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ cup (120 g) finely-chopped yellow onion",
+          "canonical_ingredients": [
+            "onion"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 tablespoons white granulated sugar",
+          "canonical_ingredients": [
+            "sugar"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ teaspoon celery seed",
+          "canonical_ingredients": [
+            "celery_seed"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 hard boiled eggs",
+          "canonical_ingredients": [
+            "egg"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "¼ cup (60 g) flour",
+          "canonical_ingredients": [
+            "flour"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ cup (120 ml) vinegar",
+          "canonical_ingredients": [
+            "vinegar"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 cup (240 ml) water",
+          "canonical_ingredients": [
+            "water"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 tablespoon fresh parsley",
+          "canonical_ingredients": [
+            "parsley"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 ½ teaspoon salt",
+          "canonical_ingredients": [
+            "salt"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "Pepper",
+          "canonical_ingredients": [],
+          "unmapped_reason": "Generic pepper has no exact vocabulary entry; a pepper variety is not assumed."
+        },
+        {
+          "raw_ingredient": "Paprika",
+          "canonical_ingredients": [
+            "paprika"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "673b4fc7c84e9e9e8dde910ebe458d00aa906db2d6dd1e710fe6b7dc1bdc8340"
+    },
+    {
+      "id": "red-lentil-soup",
+      "source_title": "Cookbook:Red Lentil Soup",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3ARed+Lentil+Soup&oldid=4518501",
+      "source_revision_id": 4518501,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3ARed_Lentil_Soup&oldid=4518501&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3ARed_Lentil_Soup&oldid=4518501&action=raw",
+        "sha256": "e391f1ce5c693b2eb4fdeeed0314d4401e46af5a3e3d789b33254ff7910aa092",
+        "retrieved_at": "2026-09-10T16:42:56.227878+00:00",
+        "cache_path": ".artifacts/demo-sources/red-lentil-soup-4518501.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3ARed+Lentil+Soup&oldid=4518501",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3ARed+Lentil+Soup&oldid=4518501",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3ARed+Lentil+Soup&oldid=4518501",
+        "sha256": "608e62077d639f110fa16d2ca31443061c32023b7922253a09821d59cbd02937",
+        "retrieved_at": "2026-09-10T16:33:58.462509+00:00",
+        "cache_path": ".artifacts/demo-sources/red-lentil-soup-4518501.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Red Lentil Soup\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3ARed+Lentil+Soup&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3ARed+Lentil+Soup&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3ARed+Lentil+Soup&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3ARed+Lentil+Soup&rvdir=newer&rvlimit=1",
+        "sha256": "cd9a91ab1b8d83bcc94f38c97c7d3a1ba3c0a6f511ade6b8ebc05f431158c896",
+        "retrieved_at": "2026-09-10T16:37:26.615121+00:00",
+        "cache_path": ".artifacts/demo-sources/red-lentil-soup-origin.source",
+        "source_revision_id": 31685,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3ARed+Lentil+Soup&oldid=31685"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": 4469910,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook+talk%3ARed+Lentil+Soup&oldid=4469910",
+        "finding": "No additional third-party license/reprint notice found."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": null,
+        "servings": "4",
+        "yield": null
+      },
+      "time_note": "No overall time is reported in the recipe summary.",
+      "servings_note": null,
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected.",
+        "The simmering-time range in a step is not an overall recipe time."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "1–2 tablespoons olive oil",
+          "canonical_ingredients": [
+            "olive_oil"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 onion, diced",
+          "canonical_ingredients": [
+            "onion"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 carrots, diced",
+          "canonical_ingredients": [
+            "carrot"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 cloves garlic, minced",
+          "canonical_ingredients": [
+            "garlic"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ lb dry red lentils",
+          "canonical_ingredients": [
+            "lentil"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "6 cups water or stock",
+          "canonical_ingredients": [
+            "water"
+          ],
+          "unmapped_reason": "Generic stock has no exact vocabulary entry; a vegetable or meat stock is not assumed."
+        },
+        {
+          "raw_ingredient": "1 bay leaf",
+          "canonical_ingredients": [
+            "bay_leaf"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "f97121d0b6e4bcc0ea8e806be99687beff55d5a77e25496f323b986af1d24390"
+    },
+    {
+      "id": "apple-crisp",
+      "source_title": "Cookbook:Apple Crisp I",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AApple+Crisp+I&oldid=4587326",
+      "source_revision_id": 4587326,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AApple_Crisp_I&oldid=4587326&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AApple_Crisp_I&oldid=4587326&action=raw",
+        "sha256": "5be4864521bd4de2ef6e47779486569b1871c6dea9aa828af577abf1965d8861",
+        "retrieved_at": "2026-09-10T16:42:57.254569+00:00",
+        "cache_path": ".artifacts/demo-sources/apple-crisp-4587326.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3AApple+Crisp+I&oldid=4587326",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AApple+Crisp+I&oldid=4587326",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AApple+Crisp+I&oldid=4587326",
+        "sha256": "7a675958f1172f485564f404a2a668ca56a711da6f87b2af976cf84be7d1cb8e",
+        "retrieved_at": "2026-09-10T16:33:58.280164+00:00",
+        "cache_path": ".artifacts/demo-sources/apple-crisp-4587326.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Apple Crisp I\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3AApple+Crisp+I&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AApple+Crisp+I&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AApple+Crisp+I&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AApple+Crisp+I&rvdir=newer&rvlimit=1",
+        "sha256": "f60d855b60125f82ea5161ba7712c1572655472e8125c415f54f0c4a01a62145",
+        "retrieved_at": "2026-09-10T16:34:52.780595+00:00",
+        "cache_path": ".artifacts/demo-sources/apple-crisp-origin.source",
+        "source_revision_id": 90074,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AApple+Crisp+I&oldid=90074"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": null,
+        "revision_url": null,
+        "finding": "Talk page did not exist at retrieval."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": null,
+        "servings": null,
+        "yield": null
+      },
+      "time_note": "No overall time is reported in the recipe summary.",
+      "servings_note": "No serving count is reported; an item yield is not a serving count.",
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected.",
+        "A baking time appears in a step, but no overall recipe time is published."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "6 cups sliced and cored baking apples (for example, Granny Smith)",
+          "canonical_ingredients": [
+            "apple"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ cup (100 g) all-purpose flour",
+          "canonical_ingredients": [
+            "flour"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ cup (100 g) rolled oats",
+          "canonical_ingredients": [
+            "oat"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "¾ teaspoon (3 g) cinnamon",
+          "canonical_ingredients": [
+            "cinnamon"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "⅓ cup (75 g) cold butter or cold margarine",
+          "canonical_ingredients": [
+            "butter",
+            "margarine"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "⅔–¾ cup (120–150 g) brown sugar",
+          "canonical_ingredients": [
+            "brown_sugar"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "e0a48b2464e250c3a745a9ecf98ca3c31a74d766a91025e009ea4504d028e90b"
+    },
+    {
+      "id": "waffles",
+      "source_title": "Cookbook:Waffles",
+      "source_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AWaffles&oldid=4519091",
+      "source_revision_id": 4519091,
+      "fetched_source": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AWaffles&oldid=4519091&action=raw",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AWaffles&oldid=4519091&action=raw",
+        "sha256": "1de32ba338d1e18cc60e4aba5da2034b4c9ac4b5530cd173d29938fd140eb5c9",
+        "retrieved_at": "2026-09-10T16:42:58.217884+00:00",
+        "cache_path": ".artifacts/demo-sources/waffles-4519091.wikitext"
+      },
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "license_evidence_urls": [
+        "https://en.wikibooks.org/w/index.php?title=Cookbook%3AWaffles&oldid=4519091",
+        "https://en.wikibooks.org/w/index.php?title=Wikibooks%3ACopyrights&oldid=4622060",
+        "https://foundation.wikimedia.org/w/index.php?title=Policy%3ATerms_of_Use&oldid=554823",
+        "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en"
+      ],
+      "per_page_license_evidence": {
+        "url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AWaffles&oldid=4519091",
+        "fetched_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AWaffles&oldid=4519091",
+        "sha256": "fd0e03d0b955012f5b13aeb4794b6f6458a74728a386d6e3bfb84ad2effe7c84",
+        "retrieved_at": "2026-09-10T16:33:58.506456+00:00",
+        "cache_path": ".artifacts/demo-sources/waffles-4519091.html",
+        "rel_license": "https://creativecommons.org/licenses/by-sa/4.0/deed.en"
+      },
+      "attribution": "English Wikibooks contributors, \"Cookbook:Waffles\". CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/); contributors: https://en.wikibooks.org/w/index.php?title=Cookbook%3AWaffles&action=history.",
+      "attribution_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AWaffles&action=history",
+      "original_revision_audit": {
+        "url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AWaffles&rvdir=newer&rvlimit=1",
+        "fetched_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook%3AWaffles&rvdir=newer&rvlimit=1",
+        "sha256": "a5048399fd064297bc24d45694290767461d277467c8b314e4bebf8d494d7ee5",
+        "retrieved_at": "2026-09-10T16:37:27.839781+00:00",
+        "cache_path": ".artifacts/demo-sources/waffles-origin.source",
+        "source_revision_id": 695457,
+        "revision_url": "https://en.wikibooks.org/w/index.php?title=Cookbook%3AWaffles&oldid=695457"
+      },
+      "talk_page_audit": {
+        "fetched_source_url": "https://en.wikibooks.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions&rvprop=ids%7Ctimestamp%7Ccomment%7Ccontent&rvslots=main&titles=Cookbook+talk%3APancakes+%28North+American%29%7CCookbook+talk%3AOat+Porridge%7CCookbook+talk%3APotato+Curry+%28Aloo+Masala%29%7CCookbook+talk%3AKeralan+Vegetable+Stew%7CCookbook+talk%3AGambas+al+Ajillo+%28Garlic+Shrimp%29%7CCookbook+talk%3AGarlic+Croutons+I%7CCookbook+talk%3AFresh+Mozzarella+Bruschetta%7CCookbook+talk%3APeanut+Butter+Cookies%7CCookbook+talk%3AChocolate+Chip+Cookies+I%7CCookbook+talk%3APotato+Salad%7CCookbook+talk%3ARed+Lentil+Soup%7CCookbook+talk%3AApple+Crisp+I%7CCookbook+talk%3AWaffles%7CCookbook+talk%3AChokladboll+%28Swedish+Chocolate+Balls%29",
+        "source_revision_id": null,
+        "revision_url": null,
+        "finding": "Talk page did not exist at retrieval."
+      },
+      "transformation": "Extracted every Ingredients bullet and Procedure step, in source order. Removed wiki links, formatting and images; decoded entities and normalized whitespace. Displayed explicit temperature-template arguments without converting temperatures. Preserved source measurements and alternatives. Added reviewed vocabulary mappings and parsed only explicit summary metadata; did not combine component times, infer servings from yields, or add ingredients.",
+      "source_summary_fields": {
+        "time": "Prep: 10 minutes<br>Cooking: 5 minutes per waffle",
+        "servings": null,
+        "yield": "3 ea. 4-section waffles"
+      },
+      "time_note": "Component, per-item or ambiguous time only; no overall duration inferred.",
+      "servings_note": "No serving count is reported; an item yield is not a serving count.",
+      "source_limitations": [
+        "Canonical ingredients cover the source Ingredients section, not every serving suggestion in the procedure or every constituent of a mixture. Measurements and instructions are source-reported, not kitchen-tested or corrected.",
+        "Only preparation and per-waffle cooking times are reported. They are not added or multiplied; total_minutes is null."
+      ],
+      "ingredient_mapping": [
+        {
+          "raw_ingredient": "1 tablespoon white granulated sugar",
+          "canonical_ingredients": [
+            "sugar"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 tablespoon baking powder",
+          "canonical_ingredients": [
+            "baking_powder"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1½ cups (360 ml) milk",
+          "canonical_ingredients": [
+            "milk"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "½ cup (120 ml) vegetable oil",
+          "canonical_ingredients": [
+            "vegetable_oil"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1 teaspoon salt",
+          "canonical_ingredients": [
+            "salt"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "2 eggs, separated",
+          "canonical_ingredients": [
+            "egg"
+          ],
+          "unmapped_reason": null
+        },
+        {
+          "raw_ingredient": "1¾ cups (420 ml) flour",
+          "canonical_ingredients": [
+            "flour"
+          ],
+          "unmapped_reason": null
+        }
+      ],
+      "record_sha256": "9af9869bed4c8c53cef9c6320795d62263083d12510ada209010d16155cf7ffe"
+    }
+  ],
+  "counts": {
+    "recipes": 12,
+    "known_total_minutes": 9,
+    "total_minutes_at_most_30": 8,
+    "known_servings": 6
+  },
+  "recipes_sha256": "844bb9b14dd0df6446a2201384f382f41400c29e0a6b33538adc522c36e9fe2b"
+}

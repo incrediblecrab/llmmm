@@ -59,6 +59,11 @@ venv/
 .coverage
 htmlcov/
 
+# Browser demo tooling and local browser-test output
+node_modules/
+playwright-report/
+test-results/
+
 # Azure — holds the subscription id. Not secret, but per-developer.
 model/cloud/config.json
 .env
