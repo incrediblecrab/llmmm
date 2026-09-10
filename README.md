@@ -81,19 +81,25 @@ content.
 
 The [completion verification](model/results/all_record_training_validation.json)
 checks the saved per-epoch counters against the checksum-verified corpus and
-restores the complete predictor. The [export evidence](model/results/all_record_release.json)
+restores the complete predictor. The [export evidence](model/results/public_model_export.json)
 records identical state tensors and exact logits on 192 synthetic reload
 comparisons. This verifies the package, not its prediction quality.
 
 The model is on Hugging Face as
-[llmmm-recipes, v0.3.0-all-recipes](https://huggingface.co/incrediblecrab/llmmm-recipes/tree/v0.3.0-all-recipes).
-It remains **private**. The [publication receipt](model/results/huggingface_all_record_release.json)
-records all remote file hashes, preserved preview history and successful
-inference without the private corpus. No source recipe text was uploaded.
+[llmmm-recipes, v0.3.1-public](https://huggingface.co/incrediblecrab/llmmm-recipes/tree/v0.3.1-public).
+It is **public and ungated**: downloads and inference do not require a Hugging
+Face account. The [public-release receipt](model/results/huggingface_public_release.json)
+records remote file hashes, preserved version history, and fresh anonymous
+download and inference without the private corpus. These are the same weights
+as `v0.3.0-all-recipes`; this update changes access and documentation, not training.
+No source recipe text was uploaded, and no permissive weights license is granted.
 
 The old holdout is part of this training data, so the production checkpoint has
 no held-out score from this corpus and does not enter the scored leaderboard.
-The earlier preview's scores do not apply to these weights.
+The earlier evaluated checkpoint improved recall@10 from **61.5% to 65.5%** on
+20,000 completion cases, as recorded in its [comparison](model/results/native_full_release.json).
+Those scores do not apply to these weights. More training records alone do not
+establish better predictions.
 
 ## Generation and evaluation work
 
@@ -152,12 +158,14 @@ Baseline downloads contain public model assets only; inference stays local.
 problems but is not an automatic training-readiness gate. None of these
 commands publishes a model or runs GitHub Actions.
 
-For a later private release, export with a new `--tag` using
-`scripts/export_native_model.py --production`, then explicitly run
-`python scripts/publish_native_model.py --folder /private/export-directory --out results/new-release.json`.
+For a later public release, export with a new `--tag` using
+`scripts/export_native_model.py --production --public`, then explicitly run
+`python scripts/publish_native_model.py --public --folder /private/export-directory --out results/new-release.json`.
 The publisher admits only the six model-package files, removes stale evaluation
-metadata, verifies remote bytes and corpus-free inference, and preserves older
-tags. Existing version tags and publication receipts are not overwritten.
+metadata, verifies remote bytes and fresh anonymous, corpus-free inference, and
+preserves older tags. Publishing publicly requires the explicit `--public`
+flag; without it, the publisher only accepts private repositories. Existing
+version tags and publication receipts are not overwritten.
 
 A separate `.venv-generation` environment contains MLX support so experiments
 with the [pinned Qwen base](model/generation_base.lock.json) do not alter the
@@ -176,7 +184,7 @@ fine-tune; no generator-training result or T5 generation win is asserted here.
 | Which normalization fixes were used? | The tracked code and [`model/data/aliases/`](model/data/aliases/) |
 | Where did source corpora come from? | [`raw-data/README.md`](raw-data/README.md) and [`raw-data/MANIFEST.md`](raw-data/MANIFEST.md) |
 | Which external model revisions and exact assets were compared? | [`model/hf_baselines.lock.json`](model/hf_baselines.lock.json) and the diagnostic's code/weight fingerprints |
-| Which model version is on Hugging Face? | [`model/results/huggingface_all_record_release.json`](model/results/huggingface_all_record_release.json) |
+| Which model version is on Hugging Face? | [`model/results/huggingface_public_release.json`](model/results/huggingface_public_release.json) |
 
 The published benchmark is not overwritten by new training. Older investigations
 remain in [the model notes](model/README.md), [architecture notes](model/ARCHITECTURE.md)

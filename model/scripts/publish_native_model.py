@@ -1,4 +1,4 @@
-"""Publish a verified all-record package privately, preserving older model tags."""
+"""Publish verified all-record weights; public access requires explicit --public."""
 from __future__ import annotations
 
 import argparse
@@ -52,19 +52,25 @@ def main() -> int:
     parser.add_argument("--folder", type=Path, required=True)
     parser.add_argument("--out", type=Path,
                         default=PATHS.results / "huggingface_all_record_release.json")
+    parser.add_argument("--public", action="store_true",
+                        help="authorize public, ungated access to this model repository and its history")
     args = parser.parse_args()
     if args.out.exists():
         raise FileExistsError(f"{args.out}: refusing to overwrite a publication receipt")
     package = read_package(args.folder)
     repo, tag = package["repo_id"], package["tag"]
+    visibility = "public" if args.public else "private"
+    policy = json.loads((args.folder / "release_policy.json").read_text())
+    if policy.get("visibility", "private") != visibility:
+        raise ValueError("exported access policy differs from the requested publication visibility")
     disable_progress_bars()
     set_client_factory(lambda: httpx.Client(
         transport=httpx.HTTPTransport(local_address="0.0.0.0"),
         follow_redirects=True, timeout=60.0))
     api = HfApi()
     before = api.model_info(repo)
-    if not before.private:
-        raise ValueError("this publisher requires an existing private model repository")
+    if not before.private and not args.public:
+        raise ValueError("publishing to a public repository requires explicit --public")
     tags = {ref.name: ref.target_commit for ref in api.list_repo_refs(repo).tags}
     if tag in tags:
         raise ValueError(f"{tag}: version tags are immutable; choose a new version")
@@ -98,19 +104,29 @@ def main() -> int:
             raise ValueError(f"{name}: downloaded bytes differ from the published package")
     if set(api.list_repo_files(repo, revision=commit.oid)) - {".gitattributes"} != FILES:
         raise ValueError("the remote package inventory differs from the allowed files")
+    if args.public:
+        api.update_repo_settings(repo, private=False, gated=False)
     child = """
 import json, sys
+import httpx
+from huggingface_hub import set_client_factory
 from ingredient_model.config import PATHS
 from ingredient_model.hub import IngredientPredictor
 assert not PATHS.data.exists()
+public = sys.argv[5] == "public"
+set_client_factory(lambda: httpx.Client(
+    transport=httpx.HTTPTransport(local_address="0.0.0.0"),
+    follow_redirects=True, timeout=60.0))
 model = IngredientPredictor.from_pretrained(
-    sys.argv[1], revision=sys.argv[2], token=True, local_files_only=True)
+    sys.argv[1], revision=sys.argv[2], token=not public, local_files_only=not public,
+    cache_dir=sys.argv[6] if public else None)
 contexts = json.loads(sys.argv[3])
 print(json.dumps([model.recommend(context, top_k=int(sys.argv[4])) for context in contexts]))
 """
     with tempfile.TemporaryDirectory(prefix="llmmm-inference-") as temporary:
         process = subprocess.run(
-            [sys.executable, "-c", child, repo, commit.oid, json.dumps(contexts), str(top_k)],
+            [sys.executable, "-c", child, repo, commit.oid, json.dumps(contexts),
+             str(top_k), visibility, str(Path(temporary) / "fresh-hub-cache")],
             env={**os.environ, "IM_DATA": str(Path(temporary) / "absent-data")},
             check=True, capture_output=True, text=True)
     if json.loads(process.stdout) != expected:
@@ -118,14 +134,18 @@ print(json.dumps([model.recommend(context, top_k=int(sys.argv[4])) for context i
     api.create_tag(repo, tag=tag, revision=commit.oid, exist_ok=False)
     after = api.model_info(repo)
     current_tags = {ref.name: ref.target_commit for ref in api.list_repo_refs(repo).tags}
-    if (not after.private or after.sha != commit.oid
+    if (after.private != (not args.public) or after.sha != commit.oid
             or api.model_info(repo, revision=tag).sha != commit.oid
             or any(current_tags.get(name) != revision for name, revision in tags.items())):
         raise ValueError("repository visibility, publication revision or version tags changed unexpectedly")
+    if args.public:
+        anonymous = HfApi(token=False).model_info(repo, revision=tag)
+        if anonymous.private or anonymous.gated or anonymous.sha != commit.oid:
+            raise ValueError("anonymous access does not resolve the public, ungated release")
     receipt = {
         "repo_id": repo, "url": f"https://huggingface.co/{repo}",
         "revision": commit.oid, "tag": tag, "private": after.private,
-        "status": "verified_private_all_record_model",
+        "status": f"verified_{visibility}_all_record_model",
         "source_code_revision": package["source_code_revision"],
         "recipes_per_epoch": package["training"]["recipes_per_epoch"],
         "epochs": package["training"]["epochs"],
@@ -136,13 +156,14 @@ print(json.dumps([model.recommend(context, top_k=int(sys.argv[4])) for context i
         "verification": {
             "file_hashes_match": True, "version_tag_matches_commit": True,
             "remote_model_reloads": True, "inference_without_private_corpus": True,
+            "anonymous_download_and_inference": args.public,
             "recommendation_contexts_matched": len(contexts),
             "stale_evaluation_file_absent": True,
         },
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(receipt, indent=2) + "\n")
-    print(f"Verified private model: {receipt['url']}/tree/{tag}")
+    print(f"Verified {visibility} model: {receipt['url']}/tree/{tag}")
     print(f"Revision: {commit.oid}; publication receipt: {args.out}")
     return 0
 

@@ -95,9 +95,10 @@ def export_production(args, generation: dict, candidate: Path, manifest: dict) -
         },
         "evaluation_status": "not_run",
     }
+    visibility = "public" if args.public else "private"
     policy = {
-        "version": 1, "release_tier": "private_educational_all_record_model",
-        "public_release_cleared": False, "weights_license": None,
+        "version": 2, "release_tier": f"{visibility}_educational_all_record_model",
+        "visibility": visibility, "weights_license": None,
         "scope": "Complete ingredient predictor; recipe-text generation is unsupported.",
         "intended_use": "Noncommercial research and education.",
         "rights_note": "No permissive weights license is granted. Dataset license labels "
@@ -112,6 +113,8 @@ def export_production(args, generation: dict, candidate: Path, manifest: dict) -
     }.items():
         (args.out / filename).write_text(json.dumps(document, indent=2) + "\n")
     shutil.copyfile(candidate / "manifest.json", args.out / "training_manifest.json")
+    login = "" if args.public else "\nhf auth login"
+    token = "False" if args.public else "True"
     (args.out / "README.md").write_text(f"""---
 library_name: pytorch
 tags:
@@ -157,13 +160,17 @@ Settings and losses are in [training_manifest.json](training_manifest.json).
 previously held out for evaluation. The older `v0.2.0-preview` remains available
 as a separate evaluated checkpoint; its scores do not apply to these weights.
 
+Training on more records does not, by itself, prove better predictions.
+The earlier checkpoint's [completion comparison](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/model/results/native_full_release.json)
+is separate evidence. This model needs a fresh test set that excludes duplicate
+recipe families and accounts for source overlap before claiming an improvement.
+
 ## Usage
 
 Install the inference implementation from its pinned source revision:
 
 ```bash
-python -m pip install "ingredient-model[torch,hf] @ git+https://github.com/incrediblecrab/llmmm.git@{source_revision}#subdirectory=model"
-hf auth login
+python -m pip install "ingredient-model[torch,hf] @ git+https://github.com/incrediblecrab/llmmm.git@{source_revision}#subdirectory=model"{login}
 ```
 
 ```python
@@ -172,7 +179,7 @@ from ingredient_model.hub import IngredientPredictor
 model = IngredientPredictor.from_pretrained(
     "{args.repo_id}",
     revision="{args.tag}",
-    token=True,
+    token={token},
 )
 print(model.recommend(["tomato", "basil"], top_k=10))
 ```
@@ -205,9 +212,13 @@ def main() -> int:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--report", type=Path)
     parser.add_argument("--production", action="store_true")
+    parser.add_argument("--public", action="store_true",
+                        help="prepare public-access documentation; this does not upload or change visibility")
     parser.add_argument("--repo-id", default="incrediblecrab/llmmm-recipes")
     parser.add_argument("--tag", default="v0.3.0-all-recipes")
     args = parser.parse_args()
+    if args.public and not args.production:
+        parser.error("--public requires --production")
     args.candidate = args.candidate or (
         DEFAULT_PRODUCTION if args.production else DEFAULT_CANDIDATE)
     args.report = args.report or PATHS.results / (

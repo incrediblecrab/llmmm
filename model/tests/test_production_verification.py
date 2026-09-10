@@ -88,8 +88,9 @@ def test_incomplete_or_inconsistent_training_cannot_pass_verification(production
         verify_full_training(run, data, expected_recipes=3)
 
 
+@pytest.mark.parametrize("public", [False, True])
 def test_production_export_has_coverage_and_reload_evidence_not_a_borrowed_score(
-        production, tmp_path, monkeypatch):
+        production, tmp_path, monkeypatch, public):
     pytest.importorskip("huggingface_hub")
     pytest.importorskip("safetensors")
     from ingredient_model.config import REPO
@@ -103,7 +104,7 @@ def test_production_export_has_coverage_and_reload_evidence_not_a_borrowed_score
     manifest = json.loads((run / "manifest.json").read_text())
     args = SimpleNamespace(
         out=tmp_path / "export", report=tmp_path / "release.json", candidate="fixture",
-        repo_id="incrediblecrab/llmmm-recipes", tag="v0.3.0-all-recipes")
+        repo_id="incrediblecrab/llmmm-recipes", tag="v0.3.0-all-recipes", public=public)
     assert exporter.export_production(args, generation, run, manifest) == 0
     report = json.loads(args.report.read_text())
     assert report["training"]["example_presentations"] == 6
@@ -115,6 +116,11 @@ def test_production_export_has_coverage_and_reload_evidence_not_a_borrowed_score
     card = (args.out / "README.md").read_text()
     assert "all 3 canonical recipe records" in card
     assert "no held-out quality score" in card
+    assert ("hf auth login" not in card) is public
+    assert f"token={not public}" in card
+    policy = json.loads((args.out / "release_policy.json").read_text())
+    assert policy["visibility"] == ("public" if public else "private")
+    assert policy["weights_license"] is None
     from publish_native_model import read_package
     assert read_package(args.out)["training"]["recipes_per_epoch"] == 3
     (args.out / "evaluation.json").write_text('{"recall_at_10": 1.0}')

@@ -2,7 +2,9 @@ PY := ./.venv/bin/python
 PIP := ./.venv/bin/pip
 BUNDLE ?= ../.artifacts/workspace-v2-20260909.tar.gz
 HF_EXPORT ?= ../.artifacts/hf/llmmm-ingredients-full-v0.2
-PRODUCTION_EXPORT ?= ../.artifacts/hf/llmmm-recipes-v0.3
+PRODUCTION_EXPORT ?= ../.artifacts/hf/llmmm-recipes-v0.3.1-public
+PRODUCTION_TAG ?= v0.3.1-public
+PRODUCTION_REPORT ?= results/public_model_export.json
 
 .PHONY: help setup setup-train setup-hf data import-legacy test test-code gate list baselines report clean check check-core check-code sanity sanity-derived recipes text coverage aliases rebuild docs snapshot restore verify train train-full-native train-all-recipes verify-all-recipes export-all-recipes export-native status hf-compare generation-audit
 
@@ -66,7 +68,7 @@ verify-all-recipes:
 	$(PY) scripts/verify_full_training.py --out results/all_record_training_validation.json
 
 export-all-recipes:
-	OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 $(PY) scripts/export_native_model.py --production --out "$(PRODUCTION_EXPORT)"
+	OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 $(PY) scripts/export_native_model.py --production --public --tag "$(PRODUCTION_TAG)" --out "$(PRODUCTION_EXPORT)" --report "$(PRODUCTION_REPORT)"
 
 export-native:
 	$(PY) scripts/export_native_model.py --out "$(HF_EXPORT)"

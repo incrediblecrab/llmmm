@@ -1,0 +1,57 @@
+{
+  "repo_id": "incrediblecrab/llmmm-recipes",
+  "url": "https://huggingface.co/incrediblecrab/llmmm-recipes",
+  "revision": "b12bcd5a887b86b162e95703861b642e645f092f",
+  "tag": "v0.3.1-public",
+  "private": false,
+  "status": "verified_public_all_record_model",
+  "source_code_revision": "b7b94fd83e4cdec0a226987c1d60dd21d009bf95",
+  "recipes_per_epoch": 4653430,
+  "epochs": 3,
+  "example_presentations": 13960290,
+  "evaluation_status": "not_run",
+  "files": {
+    "README.md": {
+      "bytes": 3449,
+      "sha256": "efa8014f2ae3eea8e40baacf2da9799c9be5f8924b7396ab8f2c0995b3bf77e5"
+    },
+    "config.json": {
+      "bytes": 32799,
+      "sha256": "1bf792345b8face5975534312b676fcea1b53e5fa9c0e844948c4db743aa72ce"
+    },
+    "model.safetensors": {
+      "bytes": 6062848,
+      "sha256": "1afa035ad661e197acac39df7b249516dba5bffd65cb7ad1007c4f0daa6e7eed"
+    },
+    "release_policy.json": {
+      "bytes": 590,
+      "sha256": "083ab1b1217b8c33d312135345f86246c5b33aa3e3c6f9d4b82212b73bc6d066"
+    },
+    "training_manifest.json": {
+      "bytes": 2313,
+      "sha256": "dc4acfede9d363ba34eef77ac610ce5c19e03f8b5a774dbbddf6c6a2714d3399"
+    },
+    "training_verification.json": {
+      "bytes": 5717,
+      "sha256": "ade537f81e38bb2323a25380eaf683c9c0d18f65d1c3271bdb33be11d2303693"
+    }
+  },
+  "preserved_tags": {
+    "v0.3.0-all-recipes": "a2f67609a1cedb9578daab40b3e1f8192731e6de",
+    "v0.2.0-preview": "e236fad997a37b6a89cf5cdce8d58fa4e70d2d66"
+  },
+  "preserved_tag_refs": {
+    "v0.3.0-all-recipes": "a2f67609a1cedb9578daab40b3e1f8192731e6de",
+    "v0.2.0-preview": "80448d074299eb587d6c434099d51eb3897de44b"
+  },
+  "verified_at": "2026-09-10T02:35:28.375702+00:00",
+  "verification": {
+    "file_hashes_match": true,
+    "version_tag_matches_commit": true,
+    "remote_model_reloads": true,
+    "inference_without_private_corpus": true,
+    "anonymous_download_and_inference": true,
+    "recommendation_contexts_matched": 3,
+    "stale_evaluation_file_absent": true
+  }
+}
