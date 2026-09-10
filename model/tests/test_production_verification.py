@@ -62,6 +62,20 @@ def test_completed_coverage_requires_counts_code_and_real_restorable_weights(pro
     assert not any("recall" in key for key in result)
 
 
+def test_training_learns_weights_and_biases_from_a_fresh_network(production):
+    import torch
+    from models.set_transformer.train import _build
+
+    run, _ = production
+    manifest = artifacts.Manifest.load(run)
+    torch.manual_seed(manifest.seed)
+    initial = _build(manifest.shape[0], manifest.params, "cpu")
+    for name in ("tok.weight", "bias"):
+        trained = np.load(run / f"state__{name.replace('.', '__')}.npy", allow_pickle=False)
+        assert not np.array_equal(
+            trained, initial.state_dict()[name].detach().numpy())
+
+
 @pytest.mark.parametrize("defect", [
     "examples", "unique_rows", "ingredient_slots", "missing_epoch",
     "missing_weights", "false_score", "different_corpus",
@@ -118,6 +132,18 @@ def test_production_export_has_coverage_and_reload_evidence_not_a_borrowed_score
     assert "no held-out quality score" in card
     assert ("hf auth login" not in card) is public
     assert f"token={not public}" in card
+    assert "its own learned\nweights and biases" in card
+    assert "No pretrained checkpoint was used for initialization" in card
+    assert card.rsplit("\n## ", 1)[1].startswith("Ideas for using this model\n")
+    assert card.index("## Acknowledgements") < card.index("## Ideas for using this model")
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("rendering documentation must not train, load data or export weights")
+
+    monkeypatch.setattr(exporter, "load_recipes", forbidden)
+    monkeypatch.setattr(exporter, "verify_full_training", forbidden)
+    monkeypatch.setattr(exporter, "export_predictor", forbidden)
+    assert exporter.render_production_card(report, public=public) == card
     policy = json.loads((args.out / "release_policy.json").read_text())
     assert policy["visibility"] == ("public" if public else "private")
     assert policy["weights_license"] is None

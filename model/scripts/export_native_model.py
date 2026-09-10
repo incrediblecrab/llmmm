@@ -113,9 +113,22 @@ def export_production(args, generation: dict, candidate: Path, manifest: dict) -
     }.items():
         (args.out / filename).write_text(json.dumps(document, indent=2) + "\n")
     shutil.copyfile(candidate / "manifest.json", args.out / "training_manifest.json")
-    login = "" if args.public else "\nhf auth login"
-    token = "False" if args.public else "True"
-    (args.out / "README.md").write_text(f"""---
+    (args.out / "README.md").write_text(render_production_card(report, public=args.public))
+    args.report.parent.mkdir(parents=True, exist_ok=True)
+    args.report.write_text(json.dumps(report, indent=2) + "\n")
+    print(f"Verified all-record export: {verification['recipes_per_epoch']:,} records "
+          f"per epoch; {contexts_checked} exact reload comparisons; no held-out score")
+    print(f"Local export: {args.out}; no upload performed")
+    return 0
+
+
+def render_production_card(report: dict, *, public: bool) -> str:
+    verification = report["training"]
+    source_revision = report["source_code_revision"]
+    contexts_checked = report["reload_parity"]["context_count"]
+    login = "" if public else "\nhf auth login"
+    token = "False" if public else "True"
+    return f"""---
 library_name: pytorch
 tags:
 - ingredient-completion
@@ -125,10 +138,11 @@ tags:
 
 # llmmm-recipes
 
-A {report['n_parameters']:,}-parameter ingredient-completion model trained from
-scratch on **all {verification['recipes_per_epoch']:,} canonical recipe records**.
-Each record is a set of normalized ingredient names. The model predicts missing
-ingredients; recipe-text generation is unsupported.
+llmmm-recipes predicts missing ingredients from a set of ingredient names.
+We trained its {report['n_parameters']:,} parameters, including its weights and
+biases, from scratch on **all {verification['recipes_per_epoch']:,} canonical recipe records**.
+No pretrained checkpoint was used for initialization. It does not generate
+cooking instructions.
 
 ## Training evidence
 
@@ -141,29 +155,23 @@ ingredients; recipe-text generation is unsupported.
 | Optimizer steps | {verification['optimizer_steps']:,} |
 | Recipe length, in canonical ingredients | {verification['minimum_recipe_length']} to {verification['maximum_recipe_length']} |
 
-There was no sampling cap or length exclusion. Single-ingredient records,
-two-ingredient records and long records were included. During each epoch, the
-trainer checked that every record was visited exactly once and that all
-ingredient slots were processed. Record counts do not imply unique recipe
-content: different records can describe the same recipe.
+Every record was processed once per epoch, including single-ingredient records,
+pairs and long ingredient lists. No sampling or length filters were applied.
+Different records can describe the same recipe.
 
-The complete saved predictor was restored. Exported weights were byte-identical
-at the tensor level, and reloaded logits matched the native predictor exactly
-on {contexts_checked} synthetic contexts. This checks serialization and inference,
-not prediction quality. Corpus and artifact hashes, per-epoch coverage and reload
-evidence are in [training_verification.json](training_verification.json).
-Settings and losses are in [training_manifest.json](training_manifest.json).
+All saved parameter tensors matched after export and reload. The reloaded model
+also matched the native predictor's logits on {contexts_checked} synthetic contexts.
+These checks establish serialization fidelity, not prediction quality.
+[training_verification.json](training_verification.json) contains the corpus hash,
+per-epoch coverage and reload evidence.
+[training_manifest.json](training_manifest.json) records settings and losses.
 
 ## Evaluation status
 
 **This checkpoint has no held-out quality score.** Training includes the rows
-previously held out for evaluation. The older `v0.2.0-preview` remains available
-as a separate evaluated checkpoint; its scores do not apply to these weights.
-
-Training on more records does not, by itself, prove better predictions.
-The earlier checkpoint's [completion comparison](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/model/results/native_full_release.json)
-is separate evidence. This model needs a fresh test set that excludes duplicate
-recipe families and accounts for source overlap before claiming an improvement.
+previously held out for evaluation. The [earlier completion results](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/model/results/native_full_release.json)
+belong to `v0.2.0-preview`, not these weights. Measuring improvement requires
+new test recipes, with duplicate families and source overlap accounted for.
 
 ## Usage
 
@@ -177,8 +185,8 @@ python -m pip install "ingredient-model[torch,hf] @ git+https://github.com/incre
 from ingredient_model.hub import IngredientPredictor
 
 model = IngredientPredictor.from_pretrained(
-    "{args.repo_id}",
-    revision="{args.tag}",
+    "{report['repo_id']}",
+    revision="{report['tag']}",
     token={token},
 )
 print(model.recommend(["tomato", "basil"], top_k=10))
@@ -196,13 +204,42 @@ granted. This package contains no source recipes, titles or cooking instructions
 Predictions have not been validated for taste, allergies or food safety.
 Review the [data provenance](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/raw-data/README.md)
 and applicable terms before redistribution or commercial use.
-""")
-    args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(json.dumps(report, indent=2) + "\n")
-    print(f"Verified all-record export: {verification['recipes_per_epoch']:,} records "
-          f"per epoch; {contexts_checked} exact reload comparisons; no held-out score")
-    print(f"Local export: {args.out}; no upload performed")
-    return 0
+
+## Acknowledgements
+
+This project started with a replication and audit of
+[Epicure](https://arxiv.org/abs/2605.22391) by Jakub Radzikowski and Josef Chen.
+Their ingredient-embedding work and published source inventory informed that
+research. llmmm-recipes is a separately trained model with its own learned
+weights and biases, not a fine-tune of Epicure or another pretrained model.
+
+The method draws on [Transformer attention](https://arxiv.org/abs/1706.03762)
+(Vaswani and coauthors), [masked prediction in BERT](https://aclanthology.org/N19-1423/)
+(Devlin and coauthors), and work on
+[attention over unordered sets](https://proceedings.mlr.press/v97/lee19d.html)
+(Lee and coauthors). Our implementation uses a standard Transformer encoder
+without positional encodings, rather than the Set Transformer reference architecture.
+
+We credit the authors and curators of
+[RecipeNLG](https://aclanthology.org/2020.inlg-1.4/) and the other datasets in our
+[source inventory](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/raw-data/README.md).
+[Epicure Cooc](https://huggingface.co/Kaikaku/epicure-cooc),
+[Epicure Core](https://huggingface.co/Kaikaku/epicure-core) and
+[RecipeBERT](https://huggingface.co/alexdseo/RecipeBERT) were comparison models;
+their weights are not part of this checkpoint. The implementation uses
+[PyTorch](https://pytorch.org/), and [Hugging Face Hub](https://huggingface.co/docs/hub)
+hosts the release.
+
+## Ideas for using this model
+
+- Add ingredient autocomplete to a recipe editor. After a user enters at least
+  two known ingredients, show ranked suggestions for them to accept or reject.
+- Expand an ingredient query against a recipe catalog. Use the suggested names
+  to find related entries; the catalog supplies the recipes and instructions.
+- Use it in a learning experiment. Change the input ingredients and inspect how
+  the rankings move, or compare it with popularity and co-occurrence baselines
+  on genuinely new recipes.
+"""
 
 
 def main() -> int:

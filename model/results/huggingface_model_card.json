@@ -1,0 +1,25 @@
+{
+  "status": "verified_public_documentation_update",
+  "repo_id": "incrediblecrab/llmmm-recipes",
+  "url": "https://huggingface.co/incrediblecrab/llmmm-recipes",
+  "revision": "14dea2d989167a3f9a62ff16623ab8ed36f487c0",
+  "previous_revision": "b12bcd5a887b86b162e95703861b642e645f092f",
+  "model_tag": "v0.3.1-public",
+  "model_release_revision": "b12bcd5a887b86b162e95703861b642e645f092f",
+  "private": false,
+  "readme": {
+    "bytes": 5093,
+    "sha256": "d0f334a9ddd17116dd210c9e843290fc9502474273e6e89194a3a9e09ac49e42"
+  },
+  "template": "model/scripts/export_native_model.py",
+  "template_sha256": "f57d0a64c8e39022ff501a9d4299b80342ac510ec810e7b302b2c6125b2d825f",
+  "unchanged_release_files": {
+    "config.json": "1bf792345b8face5975534312b676fcea1b53e5fa9c0e844948c4db743aa72ce",
+    "model.safetensors": "1afa035ad661e197acac39df7b249516dba5bffd65cb7ad1007c4f0daa6e7eed",
+    "release_policy.json": "083ab1b1217b8c33d312135345f86246c5b33aa3e3c6f9d4b82212b73bc6d066",
+    "training_manifest.json": "dc4acfede9d363ba34eef77ac610ce5c19e03f8b5a774dbbddf6c6a2714d3399",
+    "training_verification.json": "ade537f81e38bb2323a25380eaf683c9c0d18f65d1c3271bdb33be11d2303693"
+  },
+  "version_tags_preserved": true,
+  "verified_at": "2026-09-10T02:59:50.180293+00:00"
+}
