@@ -20,7 +20,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 import httpx
-from huggingface_hub import CommitOperationAdd, HfApi, hf_hub_download, set_client_factory
+from huggingface_hub import CommitOperationAdd, CommitOperationDelete, HfApi, hf_hub_download, set_client_factory
 from huggingface_hub.errors import RepositoryNotFoundError, RevisionNotFoundError
 
 from ingredient_model._hashing import file_sha256
@@ -57,6 +57,7 @@ def public_files(api: HfApi, repository: str, kind: str, revision: str, expected
 
 def publish_files(api: HfApi, repository: str, kind: str, files: dict,
                   *, update: bool) -> str:
+    initialized_extras = set()
     try:
         existing = api.repo_info(repository, repo_type=kind)
     except RepositoryNotFoundError as error:
@@ -67,6 +68,9 @@ def publish_files(api: HfApi, repository: str, kind: str, files: dict,
         arguments = {"space_sdk": "static"} if kind == "space" else {}
         api.create_repo(repository, repo_type=kind, private=False, exist_ok=False, **arguments)
         existing = api.repo_info(repository, repo_type=kind)
+        initialized_extras = {file.rfilename for file in existing.siblings} - {".gitattributes"} - set(files)
+        if initialized_extras - ({"style.css"} if kind == "space" else set()):
+            raise ValueError(f"the new repository contains unexpected starter files: {initialized_extras}")
     else:
         if existing.private or getattr(existing, "gated", False):
             raise ValueError(f"refusing to repurpose a private or gated repository: {repository}")
@@ -97,7 +101,8 @@ def publish_files(api: HfApi, repository: str, kind: str, files: dict,
     commit = api.create_commit(
         repository, repo_type=kind, parent_commit=existing.sha,
         operations=[CommitOperationAdd(path_in_repo=name, path_or_fileobj=data)
-                    for name, data in sorted(files.items())],
+                    for name, data in sorted(files.items())]
+        + [CommitOperationDelete(path_in_repo=name) for name in sorted(initialized_extras)],
         commit_message="Publish the public recipe sample" if kind == "dataset"
         else "Deploy the verified browser-only recipe finder",
     )
