@@ -82,14 +82,16 @@ restores the complete predictor. The [export evidence](model/results/public_mode
 records identical state tensors and exact logits on 192 synthetic reload
 comparisons. This verifies the package, not its prediction quality.
 
-The public model is
-[llmmm-recipes, v0.3.1-public](https://huggingface.co/incrediblecrab/llmmm-recipes/tree/v0.3.1-public).
-It is **public and ungated**: downloads and inference do not require a Hugging
-Face account. The [public-release receipt](model/results/huggingface_public_release.json)
-records remote file hashes, preserved version history, and fresh anonymous
-download and inference without the private corpus. These are the same weights
-as `v0.3.0-all-recipes`; this update changes access and documentation, not training.
-No source recipe text was uploaded, and no permissive weights license is granted.
+The current public release is
+[llmmm-recipes, v0.4.0-recipe-search](https://huggingface.co/incrediblecrab/llmmm-recipes/tree/v0.4.0-recipe-search).
+It is **public and ungated**. The ingredient predictor's weights remain unchanged
+from `v0.3.0-all-recipes`; this release adds separate recipe-ranking policies and
+the finder described below. The [release receipt](model/results/huggingface_recipe_search_release.json)
+records preserved native artifact hashes and older tags, anonymous installation
+of the pinned SDK source, and isolated inference before and after upload.
+The [earlier access release](model/results/huggingface_public_release.json)
+records when the ingredient checkpoint became public. No source recipe text was
+uploaded, and no permissive weights license is granted.
 
 The old holdout is part of this training data, so the production checkpoint has
 no held-out score from this corpus and does not enter the scored leaderboard.
@@ -133,7 +135,8 @@ cd model
   --ingredients chicken rice broccoli \
   --must-use chicken --max-total-minutes 30 --max-missing 2 \
   --catalog data/recipes/recipe_search.sqlite \
-  --policy training/recipe_ranker_full_coordinated/supervised
+  --corpus data/recipes/recipe_ids.npz \
+  --revision v0.4.0-recipe-search
 ```
 
 Ingredient matching uses the canonical vocabulary, not every component of a
@@ -191,9 +194,11 @@ The source set reached the test shortlist on **99%** of queries, but **162 of 20
 test queries reached a retrieval budget. These are synthetic queries over known
 recipes, not evidence of taste, food safety or unseen-recipe generalization.
 
-The live release checks passed; the Hugging Face update remains to be published.
-The existing public ingredient checkpoint is unchanged. To reproduce ranking
-training and verify its coverage:
+The supervised policy is the public default. Both trained policies are included
+in the [Hugging Face release](https://huggingface.co/incrediblecrab/llmmm-recipes/tree/v0.4.0-recipe-search),
+with [checkpoint-bound export evidence](model/results/recipe_search_export.json).
+The existing ingredient checkpoint is unchanged. To reproduce ranking training
+and verify its coverage:
 
 ```bash
 make setup-hf
@@ -287,8 +292,9 @@ generation evaluation have not run.
 | Which normalization fixes were used? | The tracked code and [`model/data/aliases/`](model/data/aliases/) |
 | Where did source corpora come from? | [`raw-data/README.md`](raw-data/README.md) and [`raw-data/MANIFEST.md`](raw-data/MANIFEST.md) |
 | Which external model revisions and exact assets were compared? | [`model/hf_baselines.lock.json`](model/hf_baselines.lock.json) and the diagnostic's code/weight fingerprints |
-| Which model version is on Hugging Face? | [`model/results/huggingface_public_release.json`](model/results/huggingface_public_release.json) |
-| Which model-card revision is live? | [Documentation receipt](model/results/huggingface_model_card.json); text is rendered by [`export_native_model.py`](model/scripts/export_native_model.py) |
+| Which model version and model card are on Hugging Face? | [Current release receipt](model/results/huggingface_recipe_search_release.json); the card is rendered by [`export_recipe_search.py`](model/scripts/export_recipe_search.py) |
+| Which bytes, data identities and model-selection results were exported? | [Recipe-search export evidence](model/results/recipe_search_export.json) |
+| Which ingredient-only access and documentation updates preceded this release? | [Public-access receipt](model/results/huggingface_public_release.json) and [earlier card receipt](model/results/huggingface_model_card.json) |
 
 New training leaves the published benchmark unchanged. Older investigations
 remain in [the model notes](model/README.md), [architecture notes](model/ARCHITECTURE.md)

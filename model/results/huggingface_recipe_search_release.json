@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "repo_id": "incrediblecrab/llmmm-recipes",
+  "url": "https://huggingface.co/incrediblecrab/llmmm-recipes",
+  "tag": "v0.4.0-recipe-search",
+  "revision": "9b152b52ece1ebd88d802726346b1d3d949f422f",
+  "previous_revision": "14dea2d989167a3f9a62ff16623ab8ed36f487c0",
+  "source_code_revision": "2d9bd9a9ac59883f6a91a1070e4d9f19b2395406",
+  "status": "verified_public_recipe_search_release",
+  "private": false,
+  "gated": false,
+  "selected_policy": "supervised",
+  "files": {
+    "README.md": {
+      "bytes": 9721,
+      "sha256": "7d4984377b1a491945080a7327512aa589c136ffc75f39554c3a0feb5b46d689"
+    },
+    "recipe_catalog.json": {
+      "bytes": 988,
+      "sha256": "968565d64242e394d2118d9dce1c0e7da853a0801468c25aed66a556ab16d751"
+    },
+    "recipe_evaluation.json": {
+      "bytes": 7788,
+      "sha256": "2cb367689fa5df9f4408697b170ed01224738c80282ebde8f3e9fa73c37654f2"
+    },
+    "recipe_policies/reinforce/recipe_ranker.safetensors": {
+      "bytes": 3340,
+      "sha256": "ee53b89166b4be30102dd65ed16a21cb9844d680ab1587257e3324a53f411a26"
+    },
+    "recipe_policies/reinforce/recipe_ranker_config.json": {
+      "bytes": 843,
+      "sha256": "43adb7fddbbd1df77b3837d80ec9c60c12b26d8cf0d5f2f4d71b035b9ca48dec"
+    },
+    "recipe_policies/supervised/recipe_ranker.safetensors": {
+      "bytes": 3340,
+      "sha256": "b4557181a76760d6fe2543443cc01d5ade2d247d26d49aae4b84b23e9521301d"
+    },
+    "recipe_policies/supervised/recipe_ranker_config.json": {
+      "bytes": 843,
+      "sha256": "3398c7719d723c48a46b40c162e129e8e2bb1c22f64d37165025537036fd63f2"
+    },
+    "recipe_release_policy.json": {
+      "bytes": 340,
+      "sha256": "cd558006bcd2fc1e2487bc20ae2745c6ab6277f38dbc9794436bf052362bedeb"
+    },
+    "recipe_search_config.json": {
+      "bytes": 2227,
+      "sha256": "6deaaa616d0f8d9ffb6fa5d0af45077dec750a8808e98924359ae885a3da3d44"
+    },
+    "recipe_training.json": {
+      "bytes": 22505,
+      "sha256": "bca0d97060ef9f0c53f22697f5f96677bc0de6b4f18d2ea37cf835c62c102216"
+    }
+  },
+  "preserved_native_files": {
+    "config.json": {
+      "bytes": 32799,
+      "sha256": "1bf792345b8face5975534312b676fcea1b53e5fa9c0e844948c4db743aa72ce"
+    },
+    "model.safetensors": {
+      "bytes": 6062848,
+      "sha256": "1afa035ad661e197acac39df7b249516dba5bffd65cb7ad1007c4f0daa6e7eed"
+    },
+    "release_policy.json": {
+      "bytes": 590,
+      "sha256": "083ab1b1217b8c33d312135345f86246c5b33aa3e3c6f9d4b82212b73bc6d066"
+    },
+    "training_manifest.json": {
+      "bytes": 2313,
+      "sha256": "dc4acfede9d363ba34eef77ac610ce5c19e03f8b5a774dbbddf6c6a2714d3399"
+    },
+    "training_verification.json": {
+      "bytes": 5717,
+      "sha256": "ade537f81e38bb2323a25380eaf683c9c0d18f65d1c3271bdb33be11d2303693"
+    }
+  },
+  "preserved_tags": {
+    "v0.3.1-public": "b12bcd5a887b86b162e95703861b642e645f092f",
+    "v0.3.0-all-recipes": "a2f67609a1cedb9578daab40b3e1f8192731e6de",
+    "v0.2.0-preview": "e236fad997a37b6a89cf5cdce8d58fa4e70d2d66"
+  },
+  "preserved_tag_refs": {
+    "v0.3.1-public": "b12bcd5a887b86b162e95703861b642e645f092f",
+    "v0.3.0-all-recipes": "a2f67609a1cedb9578daab40b3e1f8192731e6de",
+    "v0.2.0-preview": "80448d074299eb587d6c434099d51eb3897de44b"
+  },
+  "verified_at": "2026-09-10T14:16:05.957535+00:00",
+  "verification": {
+    "native_artifact_bytes_unchanged": true,
+    "source_recipes_uploaded": false,
+    "anonymous_native_inference_without_corpus": true,
+    "anonymous_policy_reload_without_corpus": true,
+    "anonymous_model_download_and_search_with_authorized_local_catalog": true,
+    "anonymous_pinned_source_installation": true,
+    "inference_from_isolated_public_source_before_and_after_upload": true,
+    "native_contexts_matched": 2,
+    "policy_feature_vectors_matched": 64,
+    "real_recipe_results_matched": 5,
+    "operational_gate_passed": true
+  }
+}
