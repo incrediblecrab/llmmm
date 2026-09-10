@@ -132,7 +132,7 @@ demo-build:
 	$(PY) scripts/build_recipe_demo.py --out "$(DEMO_EXPORT)"
 
 demo-test:
-	$(PY) -m pytest -q tests/test_recipe_demo*.py tests/test_ingredient_catalog.py tests/test_ingredient_demo.py
+	$(PY) -m pytest -q tests/test_recipe_demo*.py tests/test_ingredient_catalog.py tests/test_ingredient_demo.py tests/test_ingredient_dataset.py tests/test_ingredient_publication.py
 	npm --prefix demo test
 
 ingredient-index:

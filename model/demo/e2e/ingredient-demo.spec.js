@@ -1,14 +1,17 @@
 import { expect, test } from "@playwright/test";
+import { bindServingManifest } from "./serving-manifest.js";
+
+bindServingManifest(test);
 
 test("complete index loads only on request, then searches without copied recipe prose", async ({ page }) => {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const assets = [];
-  page.on("request", (request) => assets.push(request.url()));
+  page.on("request", (request) => assets.push({ url: request.url(), method: request.method() }));
   await page.goto("/");
   await expect(page.locator("#load-index")).toBeVisible();
   await expect(page.locator("#find-recipes")).toBeDisabled();
-  expect(assets.some((url) => url.endsWith(".gz"))).toBe(false);
+  expect(assets.some(({ url }) => url.endsWith(".gz"))).toBe(false);
   const bundle = await (await page.request.get("catalog.json")).json();
   expect(bundle.catalog.n_recipes).toBe(4_653_430);
   expect(bundle.catalog.n_slots).toBe(36_707_624);
@@ -43,17 +46,35 @@ test("complete index loads only on request, then searches without copied recipe 
   await page.locator("#must-use").blur();
   await expect(page.locator("#query-error")).toContainText("both required and excluded");
   await expect(page.locator(".recipe-card")).toHaveCount(0);
+  const marker = 'private-pantry-marker<img src=x onerror="window.injected=true">';
+  await page.locator("#pantry-entry").fill(marker);
+  await page.locator("#add-ingredient").click();
+  await expect(page.locator("#query-error")).toContainText("not a recognized ingredient");
+  expect(await page.evaluate(() => window.injected)).toBeUndefined();
+  expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
+  expect(assets.every(({ url, method }) => method === "GET" && !url.includes("private-pantry-marker"))).toBe(true);
   expect(errors).toEqual([]);
 });
 
 test("corrupt compressed data disables full-index search instead of silently using the sample", async ({ page, context }) => {
   await context.route("**/ingredients.u16.gz", (route) => route.fulfill({
-    status: 200, contentType: "application/gzip", body: Buffer.from("corrupt index fixture"),
+    status: 200, contentType: "application/gzip", headers: { "access-control-allow-origin": "*" },
+    body: Buffer.from("corrupt index fixture"),
   }));
   await page.goto("/");
   await expect(page.locator("#load-index")).toBeVisible();
   await page.locator("#load-index").click();
   await expect(page.locator("#fatal-error")).toContainText("integrity check", { timeout: 30_000 });
+  await expect(page.locator("#find-recipes")).toBeDisabled();
+  await expect(page.locator(".recipe-card")).toHaveCount(0);
+});
+
+test("failed index download is explicit and never substitutes sample recommendations", async ({ page, context }) => {
+  await context.route("**/ingredient-index.json", (route) => route.abort("failed"));
+  await page.goto("/");
+  await expect(page.locator("#load-index")).toBeVisible();
+  await page.locator("#load-index").click();
+  await expect(page.locator("#fatal-error")).toContainText("index could not load");
   await expect(page.locator("#find-recipes")).toBeDisabled();
   await expect(page.locator(".recipe-card")).toHaveCount(0);
 });

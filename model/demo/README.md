@@ -162,14 +162,44 @@ source links, hard constraints, shortlist disclosure and corrupted-index
 rejection in desktop/mobile layouts. The original public-sample suite is
 separate and still uses `test:e2e`.
 
-**Publication status:** this is a working local preview, not an uploaded
-full-corpus dataset. The repository already records that source publication
-permission was obtained. The [bounded scope review](../results/ingredient_catalog_publication_scope.json)
-did not establish whether it covers this full ingredient-only distribution or
-what conditions apply; it did not establish that the export is prohibited.
-A non-sensitive scope confirmation is needed, not public permission letters.
+**Publication authorization:** the owner confirmed permission for this complete
+ingredient-only release. The [scope record](../results/ingredient_catalog_publication_scope.json)
+records the confirmation; it is not a license for copied source-page prose or
+images, and does not relicense the model weights.
 
-A bare ingredient list and copied cooking prose are not the same thing.
-Separate source agreements and database rights can still matter for bulk
-redistribution. The sample-only publisher above must not bypass that decision
-or relabel the full catalog under the sample's CC BY-SA license.
+## Publish the full ingredient dataset and demo
+
+The full publisher is separate from the twelve-recipe sample publisher. It
+packages every canonical ingredient row as bounded Parquet shards and a compact
+browser index. Before upload, a separate comparison checks every Parquet ID,
+ingredient name/ID, source/language value, source time, serving count and URL
+against the verified index. Only the fixed dataset/application inventories can
+be published.
+
+Commit and push the implementation and authorization record first, then run
+from the repository root:
+
+```bash
+model/.venv/bin/python model/scripts/publish_ingredient_demo.py \
+  --index .artifacts/ingredient-catalog-v2 \
+  --source-revision "$(git rev-parse HEAD)" \
+  --out .artifacts/hf/ingredient-demo-release \
+  --report model/results/huggingface_ingredient_demo_release.json \
+  --public --update
+```
+
+Use new artifact/receipt paths for another attempt; add `--ipv4` if needed.
+The public dataset is `incrediblecrab/llmmm-recipe-ingredients`. Its train split
+contains ingredient facts, not the separately sourced sample's instructions.
+The sample dataset is preserved unchanged.
+
+The Space downloads the index from an immutable public dataset revision rather
+than storing a second full copy. Its manifest also pins the source commit,
+model and application bytes. Browser checks run locally against the public
+dataset, then anonymously on the actual Static Space origin. The dataset viewer
+must expose the complete row count and matching fields. Only then are the model
+card's demo links updated; model files and existing model tags are preserved.
+
+The existing sample Space revision is preserved under `v0.1.0-sample`.
+The ingredient-only app uses `v0.2.0-ingredient-search`. Tags are never moved.
+No GitHub Actions, paid hardware or inference endpoint is requested.

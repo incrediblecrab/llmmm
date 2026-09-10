@@ -273,6 +273,7 @@ async function start() {
   const provenance = bundle.provenance;
   $("model-link").href = sourceUrl(`https://huggingface.co/${provenance.model_repository}/tree/${provenance.model_revision}`);
   if (provenance.dataset_repository) {
+    if (ingredientMode) $("dataset-link").textContent = "Ingredient dataset";
     $("dataset-link").href = sourceUrl(`https://huggingface.co/datasets/${provenance.dataset_repository}${
       provenance.dataset_revision ? `/tree/${provenance.dataset_revision}` : ""}`);
   } else if (ingredientMode) {

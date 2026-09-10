@@ -97,3 +97,28 @@ def test_independent_reference_applies_constraints_before_shortlisting(monkeypat
     result = reference(metadata, arrays, {**query, "max_total_minutes": 0}, policy)
     assert result["feasible_count"] == result["candidates_scored"] == 0
     assert result["learned"]["ids"] == result["heuristic"]["ids"] == []
+
+
+@pytest.mark.parametrize("arguments", [
+    {"source_revision": "main"},
+    {"dataset_revision": "main"},
+    {"dataset_revision": "a" * 40},
+])
+def test_public_preview_requires_immutable_source_and_dataset_pins(tmp_path, arguments):
+    with pytest.raises(ValueError, match="commit|pinned source"):
+        demo.build_ingredient_demo(tmp_path, tmp_path / "index", tmp_path / "out", **arguments)
+    assert not (tmp_path / "out").exists()
+
+
+def test_model_card_update_only_replaces_the_existing_demo_section():
+    card = "Before\n<!-- PUBLIC-DEMO:START -->\nOld sample description.\n<!-- PUBLIC-DEMO:END -->\nAfter"
+    updated = demo.add_ingredient_demo_links(card)
+    assert updated.startswith("Before\n")
+    assert updated.endswith("\nAfter")
+    assert "4,653,430" in updated
+    assert demo.INGREDIENT_DATASET_REPOSITORY in updated
+    assert demo.DATASET_REPOSITORY in updated
+    assert "not measure this browser retrieval" in updated
+    assert demo.add_ingredient_demo_links(updated) == updated
+    with pytest.raises(ValueError, match="single demo-link section"):
+        demo.add_ingredient_demo_links("No replacement boundary")

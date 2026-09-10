@@ -38,6 +38,7 @@ SOURCE_FILES = (
     *(f"model/demo/{name}" for name in WEB_FILES),
     "model/demo/test/python_bridge.js",
     "model/demo/e2e/demo.spec.js",
+    "model/demo/e2e/serving-manifest.js",
     "model/demo/playwright.config.js",
     "model/demo/package.json",
     "model/demo/package-lock.json",
@@ -339,11 +340,11 @@ def verify_browser(repository: Path, catalog: dict, policy: RecipeRankingPolicy,
     }
 
 
-def verify_source_revision(repository: Path, revision: str) -> dict:
+def verify_source_revision(repository: Path, revision: str, *, files: tuple[str, ...] = SOURCE_FILES) -> dict:
     if not re.fullmatch(r"[0-9a-f]{40}", revision):
         raise ValueError("source revision must be a full Git commit")
     identities = {}
-    for name in SOURCE_FILES:
+    for name in files:
         expected = subprocess.run(["git", "show", f"{revision}:{name}"], cwd=repository,
                                   check=True, capture_output=True).stdout
         current = (repository / name).read_bytes()

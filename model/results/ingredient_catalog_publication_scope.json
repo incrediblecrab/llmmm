@@ -1,11 +1,19 @@
 {
   "schema_version": 1,
-  "status": "awaiting_owner_scope_confirmation",
+  "status": "owner_confirmed",
   "review_date": "2026-09-10",
   "technical_verification": "model/results/ingredient_catalog_verification.json",
   "index_sha256": "d3a57bf5cfe4e8b4e679f913a2b1227055aa58cba387aff572af3ba50f37b36c",
-  "full_index_uploaded": false,
-  "public_demo_changed": false,
+  "full_index_uploaded_at_review": false,
+  "public_demo_changed_at_review": false,
+  "publication_receipt": "model/results/huggingface_ingredient_demo_release.json",
+  "owner_confirmation": {
+    "confirmed_at": "2026-09-10T14:27:55.474-04:00",
+    "statement": "yes we have permission to publish",
+    "context": "The owner reaffirmed publication permission in direct response to the full ingredient-only dataset scope question.",
+    "scope": "All canonical ingredient records, source identifiers, recorded original URLs and source-reported times/servings; no source recipe prose or images.",
+    "additional_conditions_specified": false
+  },
   "existing_permission_evidence": {
     "file": "prior-study/docs/LICENSE_AUDIT.md",
     "lines": "3-5",
@@ -64,9 +72,9 @@
   ],
   "decision": {
     "categorical_prohibition_established": false,
-    "public_bulk_scope_established": false,
-    "action": "Keep the complete export local pending a narrow scope confirmation; do not expand the audit or describe ingredient facts as copyrighted.",
-    "confirmation_needed": "Do the existing permissions cover public distribution of all canonical ingredient-set records from all source groups, including source identifiers, original URLs and source-reported time/servings? Specify required notices, attribution, noncommercial or recipient-acceptance conditions and any excluded sources or fields.",
+    "public_bulk_scope_established": true,
+    "action": "Proceed with the public ingredient-only dataset and free Static Space under the owner's confirmed authorization. Do not reopen the resolved scope question.",
+    "confirmation_needed": null,
     "alternative_basis": "A documented applicable basis for publishing the factual extract without additional permission can also resolve scope.",
     "private_permission_letters_required_in_repository": false,
     "model_license_changed": false

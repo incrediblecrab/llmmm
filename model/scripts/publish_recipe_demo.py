@@ -140,14 +140,17 @@ def _browser_tests(report: dict) -> list[dict]:
     return tests
 
 
-def browser_check(url: str, report_path: Path, manifest_sha256: str) -> dict:
+def browser_check(
+    url: str, report_path: Path, manifest_sha256: str, *, script: str = "test:e2e",
+    minimum_expected: int = 8, cases: list[str] | None = None,
+) -> dict:
     environment = {**os.environ, "LLMMM_DEMO_URL": url, "LLMMM_DEMO_REPORT": str(report_path)}
-    subprocess.run(["npm", "--prefix", str(ROOT / "model/demo"), "run", "test:e2e"],
+    subprocess.run(["npm", "--prefix", str(ROOT / "model/demo"), "run", script],
                    cwd=ROOT, env=environment, check=True, timeout=600)
     report = json.loads(report_path.read_text())
     stats = report["stats"]
     tests = _browser_tests(report)
-    if (report.get("errors") or stats["expected"] < 8 or stats["unexpected"]
+    if (report.get("errors") or stats["expected"] < minimum_expected or stats["unexpected"]
             or stats["flaky"] or stats["skipped"] or len(tests) != stats["expected"]):
         raise ValueError("the browser run was incomplete or contained failures, retries or skips")
     for test in tests:
@@ -165,7 +168,7 @@ def browser_check(url: str, report_path: Path, manifest_sha256: str) -> dict:
             and annotation.get("description") == "true"
             for test in tests for annotation in test.get("annotations", [])),
         "viewports": ["1360x1000", "390x844"],
-        "cases": ["anonymous_trained_inference", "original_recipe_text", "source_limitations_displayed", "zero_time_limit",
+        "cases": cases if cases is not None else ["anonymous_trained_inference", "original_recipe_text", "source_limitations_displayed", "zero_time_limit",
                   "ingredient_time_serving_constraints", "explicit_baseline_comparison",
                   "input_privacy_and_text_rendering", "corrupt_policy_rejected",
                   "failed_download_rejected", "responsive_layout"],
@@ -187,7 +190,8 @@ def wait_for_space(client: httpx.Client, url: str, expected_manifest: bytes, *, 
     raise TimeoutError(f"the public Space did not serve the intended release: {last_error}")
 
 
-def link_model_card(api: HfApi) -> dict:
+def link_model_card(api: HfApi, *, transform=add_demo_links,
+                    commit_message: str = "Link the public recipe demo and attributed sample dataset") -> dict:
     receipt = json.loads((ROOT / "model/results/huggingface_recipe_search_release.json").read_text())
     original = {**receipt["files"], **receipt["preserved_native_files"]}
     before = api.model_info(MODEL_REPOSITORY, token=False)
@@ -204,12 +208,12 @@ def link_model_card(api: HfApi) -> dict:
         if name != "README.md" and file_sha256(path) != expected["sha256"]:
             raise ValueError(f"model artifact {name} changed since the recorded release")
         before_files[name] = path.read_bytes()
-    card = add_demo_links(before_files["README.md"].decode("utf-8")).encode("utf-8")
+    card = transform(before_files["README.md"].decode("utf-8")).encode("utf-8")
     if card != before_files["README.md"]:
         commit = api.create_commit(
             MODEL_REPOSITORY, parent_commit=before.sha,
             operations=[CommitOperationAdd(path_in_repo="README.md", path_or_fileobj=card)],
-            commit_message="Link the public recipe demo and attributed sample dataset",
+            commit_message=commit_message,
         )
         revision = commit.oid
     else:
