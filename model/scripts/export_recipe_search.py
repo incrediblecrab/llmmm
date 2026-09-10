@@ -397,8 +397,9 @@ are not paired, and serving counts do not scale quantities or cooking time.
 
 The policies were initialized from scratch. Listwise supervised learning was
 followed by sampled-action REINFORCE with entropy regularization and a KL penalty
-to the supervised policy. Each stage used every canonical record:
-**{presentations:,} training queries** and **{actions:,} sampled reinforcement actions**.
+to the supervised policy. Each stage used all {coverage['recipes']:,} canonical records.
+Together, the stages produced **{presentations:,} training queries** and
+**{actions:,} sampled reinforcement actions**.
 The reward is recovery of the source's canonical ingredient set, not human feedback.
 The source is deliberately inserted into sampled training/evaluation candidate sets;
 those sampled-ranking scores are not full-catalog search accuracy.
@@ -431,6 +432,9 @@ or scan budget is reached. There is no silent fallback between learned and heuri
     card = card.replace("- ingredient-completion\n", "- ingredient-completion\n- recipe-retrieval\n")
     card = card.replace("## Training evidence\n", section + "## Ingredient-model training evidence\n", 1)
     card = card.replace("## Evaluation status\n", "## Ingredient-model evaluation status\n", 1)
+    card = card.replace("## Usage\n", "## Ingredient-predictor usage\n", 1)
+    card = card.replace("Inference does not require the training corpus.",
+                        "Ingredient prediction does not require the training corpus.", 1)
     card = card.replace("## Acknowledgements\n", """## Acknowledgements
 
 The ranking experiment uses [REINFORCE](https://doi.org/10.1007/BF00992696)
