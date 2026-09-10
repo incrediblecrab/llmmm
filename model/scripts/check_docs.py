@@ -55,6 +55,7 @@ BASELINE = Path(__file__).resolve().parent / "docs_baseline.json"
 # value the artefacts record as −0.0433. A sign error is exactly the kind of
 # drift worth catching.
 NUMBER = re.compile(r"[-−+]?\b\d{1,3}(?:,\d{3})+\b|[-−+]?\b\d*\.\d{3,4}\b")
+HTTP_URL = re.compile(r"https?://[^\s<>]+")
 
 ALLOW: dict[str, str] = {
     "0.001": "learning rate, written in prose, not read from a manifest",
@@ -176,8 +177,9 @@ def artefact_json_files() -> list[tuple[Path, str]]:
         out.append((p, "metrics.json"))
     for p in sorted((MODEL / "results").rglob("manifest.json")):
         out.append((p, "manifest.json"))
-    for name in ("corpus_stats.json", "m6_intervals.json",
-                 "ranking_stability.json"):
+    for name in ("corpus_stats.json", "m6_intervals.json", "ranking_stability.json",
+                 "recipe_catalog_build.json", "recipe_ranker_training.json",
+                 "recipe_search_live.json", "recipe_search_export.json"):
         p = MODEL / "results" / name
         if p.exists():
             out.append((p, name))
@@ -280,7 +282,7 @@ def main() -> int:
             # later run would falsify the record.
             if in_code:
                 continue
-            for m in NUMBER.finditer(line):
+            for m in NUMBER.finditer(HTTP_URL.sub("", line)):
                 token = m.group(0)
                 present.add(f"{doc.relative_to(ROOT)}::{token}")
                 checked += 1

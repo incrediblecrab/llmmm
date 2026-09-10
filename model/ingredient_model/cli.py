@@ -19,6 +19,7 @@ graph edges does not remove the recipes that produced them.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import time
 from pathlib import Path
@@ -283,6 +284,34 @@ def cmd_recipes(a) -> int:
     return 0
 
 
+def cmd_find(a) -> int:
+    from .recipe_search import RecipeFinder, RecipeQuery
+
+    options = {name: value for name, value in {
+        "max_candidates": a.max_candidates, "scan_limit": a.scan_limit,
+        "timeout_seconds": a.timeout, "metadata_index_path": a.metadata_index,
+        "corpus_path": a.corpus,
+    }.items() if value is not None}
+    try:
+        if a.heuristic:
+            finder = RecipeFinder(a.catalog, ranking="heuristic", **options)
+        elif a.policy:
+            finder = RecipeFinder.from_directory(a.policy, catalog_path=a.catalog, **options)
+        else:
+            finder = RecipeFinder.from_pretrained(
+                a.model, catalog_path=a.catalog, revision=a.revision,
+                local_files_only=a.local_only, token=False, **options)
+        result = finder.search(RecipeQuery(
+            available_ingredients=a.ingredients, must_use=a.must_use, exclude=a.exclude,
+            max_total_minutes=a.max_total_minutes, max_missing=a.max_missing,
+            min_servings=a.min_servings, language=a.language, top_k=a.top_k))
+    except (ValueError, TimeoutError) as error:
+        print(f"recipe search failed: {error}", file=sys.stderr)
+        return 2
+    print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="im", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -367,6 +396,33 @@ def build_parser() -> argparse.ArgumentParser:
     b.add_argument("--text", action="store_true",
                    help="show title, url, quantities and steps")
     b.set_defaults(fn=cmd_recipes)
+
+    f = sub.add_parser("find", help="find real recipes using hard ingredient and time constraints")
+    f.add_argument("--ingredients", nargs="+", required=True, help="available canonical ingredient names")
+    f.add_argument("--must-use", nargs="*", default=[], help="ingredients every returned recipe must include")
+    f.add_argument("--exclude", nargs="*", default=[], help="canonical ingredients recipes must not contain")
+    f.add_argument("--max-total-minutes", type=float,
+                   help="maximum source-reported total time; unknown times are excluded")
+    f.add_argument("--max-missing", type=int, default=2, help="maximum ingredients missing from your list")
+    f.add_argument("--min-servings", type=float,
+                   help="minimum source-reported servings; amounts and cooking times are not scaled")
+    f.add_argument("--language", help="source language code")
+    f.add_argument("-k", "--top-k", type=int, default=10)
+    f.add_argument("--catalog", type=Path, default=PATHS.recipes / "recipe_search.sqlite")
+    f.add_argument("--metadata-index", type=Path,
+                   help="verified local metadata index; defaults to the catalog's adjacent index")
+    f.add_argument("--corpus", type=Path,
+                   help="canonical ingredient corpus; defaults to recipe_ids.npz beside the catalog")
+    policy = f.add_mutually_exclusive_group()
+    policy.add_argument("--policy", type=Path, help="local trained ranking-policy directory")
+    policy.add_argument("--heuristic", action="store_true", help="explicitly use the non-neural baseline")
+    f.add_argument("--model", default="incrediblecrab/llmmm-recipes")
+    f.add_argument("--revision", default="v0.4.0-recipe-search")
+    f.add_argument("--local-only", action="store_true")
+    f.add_argument("--max-candidates", type=int, help="override the model's candidate budget")
+    f.add_argument("--scan-limit", type=int, help="override the model's retrieval scan limit")
+    f.add_argument("--timeout", type=float, help="override the model's request timeout in seconds")
+    f.set_defaults(fn=cmd_find)
     return ap
 
 

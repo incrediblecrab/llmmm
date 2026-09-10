@@ -1,6 +1,6 @@
 # llmmm
 
-llmmm trains and evaluates models that predict missing ingredients.
+llmmm trains ingredient predictors and recipe-ranking models.
 Our released model, [llmmm-recipes](https://huggingface.co/incrediblecrab/llmmm-recipes),
 has its own weights and biases trained from scratch on canonical recipe
 ingredient sets. No pretrained model was used to initialize it.
@@ -98,10 +98,117 @@ The earlier evaluated checkpoint improved recall@10 from **61.5% to 65.5%** on
 Those scores do not apply to these weights. More training records alone do not
 establish better predictions.
 
+## Finding recipes
+
+Give the finder ingredients and a time limit. It retrieves matching records from
+a local recipe catalog, with source links, source-reported times, matched and
+missing canonical ingredients, and the original instructions. Required and
+excluded ingredients, missing-item limits, reported servings and source language
+are enforced before ranking. A learned score cannot relax those constraints.
+
+The private catalog contains **4,653,430 records**. Only **681,275** have known
+source total times; unknown times do not pass a time limit. Prep-plus-cook sums
+are kept separately and never substituted. The [catalog report](model/results/recipe_catalog_build.json)
+records coverage and the distinction between stored text and non-whitespace
+instructions. Nonempty fields are not a cooking-quality certificate.
+
+Search requires the authorized local catalog, its derived metadata index, and
+the canonical `recipe_ids.npz` ingredient corpus. The core recovery bundle
+supplies the ingredient corpus; the catalog and metadata index must be rebuilt
+from authorized sources. None of these data files is included in the public
+model. The finder checks their hashes and filters numeric metadata and ingredient
+sets before fetching recipe text. Retrieval remains bounded and reports when a
+shortlist or scan limit is reached.
+
+With the canonical corpus and authorized raw sources restored, `make -C model text`
+builds the immutable text-v2 index and `make -C model recipe-catalog` builds
+the catalog and metadata cache. For a catalog already restored without its cache,
+use `make -C model recipe-metadata` instead. These commands refuse to overwrite
+existing outputs. Reported search measurements are bound to the evaluated catalog;
+changed source metadata requires a new evaluation.
+
+```bash
+cd model
+.venv/bin/im find \
+  --ingredients chicken rice broccoli \
+  --must-use chicken --max-total-minutes 30 --max-missing 2 \
+  --catalog data/recipes/recipe_search.sqlite \
+  --policy training/recipe_ranker_full_coordinated/supervised
+```
+
+Ingredient matching uses the canonical vocabulary, not every component of a
+source ingredient. Review the raw ingredient list and warnings before cooking.
+Exclusions are not an allergen-safety assessment. Missing quantity units are not
+invented, inconsistent name/quantity arrays are not paired, and serving counts do
+not scale quantities or cooking time. Ranking scores are not probabilities.
+
+### Ranking training
+
+The ranker has **705 parameters**, initialized from scratch. Supervised listwise
+training was followed by sampled-action REINFORCE with an entropy term and a KL
+penalty to the supervised policy. Each stage processed every canonical record
+once: **9,306,860 training queries**, **72,710 optimizer steps**, and
+**18,613,720 sampled reinforcement actions**. The [verification record](model/results/recipe_ranker_training.json)
+checks the saved per-row counts against the checksum-verified corpus.
+
+The reward is recovery of a source recipe's canonical ingredient set, not human
+preference. Pantry hashes separate training, validation and test queries; recipes
+and duplicate families are not held out. Sampled candidate lists deliberately
+include the feasible source recipe.
+
+| Ranker | Source-set recovery at rank 1 |
+|---|---:|
+| Heuristic | 95.62% |
+| Supervised | 97.23% |
+| REINFORCE | 97.34% |
+
+These are **2,852 nontrivial sampled test shortlists**, not full-catalog retrieval
+results. Validation selected the supervised policy. REINFORCE did not establish
+an additional validation gain, so its slightly higher test point estimate is not
+a reason to switch policies.
+
+### Live search evaluation
+
+The [live evaluation](model/results/recipe_search_live.json) used 200 validation
+and 200 test pantry queries, with no source recipe inserted into retrieval.
+Half included a source-total-time limit. Supervised ranking was selected on
+validation before any test scoring.
+
+| Ranker | Test source-set recovery in the top five |
+|---|---:|
+| Heuristic | 75.5% |
+| Supervised | 83.5% |
+| REINFORCE | 84.0% |
+
+The supervised improvement over the heuristic was **8.0 percentage points**,
+with a paired query-bootstrap 95% interval of **4.5 to 12.0 points**.
+Its test requests took **0.43 seconds median** and **2.05 seconds at p95**,
+excluding initialization. It had no timeouts, empty results or constraint
+violations in either partition. REINFORCE did not establish an extra validation
+gain and had one validation timeout; the cause was not isolated.
+
+The source set reached the test shortlist on **99%** of queries, but **162 of 200**
+test queries reached a retrieval budget. These are synthetic queries over known
+recipes, not evidence of taste, food safety or unseen-recipe generalization.
+
+The live release checks passed; the Hugging Face update remains to be published.
+The existing public ingredient checkpoint is unchanged. To reproduce ranking
+training and verify its coverage:
+
+```bash
+make setup-hf
+make train-recipe-policy RECIPE_RUN=training/new-recipe-ranking-run
+make verify-recipe-policy RECIPE_RUN=training/new-recipe-ranking-run \
+  RECIPE_TRAINING_REPORT=results/new-recipe-ranking-run.json
+```
+
+Training outputs and verification records are immutable. Choose fresh output
+paths for another run; no GitHub Actions or hosted training services are used.
+
 ## Generation and evaluation work
 
-The current checkpoint predicts ingredient names. Recipe generation is separate,
-unfinished work.
+The ingredient checkpoint predicts names; the finder retrieves existing recipes.
+Writing new recipes is separate, unfinished work.
 
 The external [completion diagnostic](model/results/hf_completion_diagnostic.csv)
 compares saved native predictors with pinned Epicure Cooc/Core weights and
@@ -146,14 +253,20 @@ Baseline downloads contain public model assets only; inference stays local.
 `hf-compare` does not download T5 or call a hosted model. None of these commands
 publishes a model or runs GitHub Actions.
 
-For a later public release, export with a new `--tag` using
-`scripts/export_native_model.py --production --public`, then explicitly run
-`python scripts/publish_native_model.py --public --folder /private/export-directory --out results/new-release.json`.
-The publisher admits only the six model-package files, removes stale evaluation
-metadata, verifies remote bytes and fresh anonymous, corpus-free inference, and
-preserves older tags. Publishing publicly requires the explicit `--public`
-flag; without it, the publisher only accepts private repositories. Existing
-version tags and publication receipts are not overwritten.
+The native-only exporter and publisher admit six model-package files and refuse
+unexpected remote additions. Recipe-search releases use
+`scripts/export_recipe_search.py` and `scripts/publish_recipe_search.py` instead;
+they preserve the existing native artifacts while adding only ranking weights,
+configuration and aggregate evidence.
+
+For a recipe-search release, complete `make evaluate-recipe-search`, commit and
+push the tested source, then run `make export-recipe-search`. Publication is a
+separate, explicit command:
+`python scripts/publish_recipe_search.py --public --folder /private/export-directory`.
+The publisher checks anonymously installable pinned source, isolated inference,
+remote hashes and preserved tags. Catalogs, raw text, private query cases and
+coverage arrays are excluded. Existing outputs, version tags and publication
+receipts are not overwritten.
 
 A separate `.venv-generation` environment contains MLX support so experiments
 with the [pinned Qwen base](model/generation_base.lock.json) do not alter the
@@ -166,6 +279,8 @@ generation evaluation have not run.
 |---|---|
 | Which benchmark, evaluated training cohort and default embedding? | [`model/workspace.json`](model/workspace.json) |
 | Which all-record production training and coverage? | [Declaration](model/experiments/production-v2-all-20260909.yaml) and [completion verification](model/results/all_record_training_validation.json) |
+| Which recipe-ranking training, coverage and sampled evaluation? | [Verified training record](model/results/recipe_ranker_training.json) |
+| Which source metadata supports recipe-search constraints? | [Catalog coverage and provenance](model/results/recipe_catalog_build.json) |
 | Which corpus and normalizer? | [`model/data/GENERATION.json`](model/data/GENERATION.json), verified against the corpus SHA-256 before current training |
 | What actually ran and how did it score? | Each run's `manifest.json` and `metrics.json` under [`model/results/runs/`](model/results/runs/) |
 | Which private artifact bytes restore this workspace? | `model/artifacts.lock.json`, generated by `make snapshot` |
@@ -276,6 +391,11 @@ The method draws on [Transformer attention](https://arxiv.org/abs/1706.03762)
 (Lee and coauthors). Our implementation uses a standard Transformer encoder
 without positional encodings, rather than the Set Transformer reference architecture.
 
+The ranking experiment uses [REINFORCE](https://doi.org/10.1007/BF00992696)
+(Ronald J. Williams), with a supervised warm-start and KL regularization.
+[SQLite FTS5](https://sqlite.org/fts5.html) supplies ingredient-token retrieval.
+These are method and implementation credits, not imported learned weights.
+
 We credit the authors and curators of
 [RecipeNLG](https://aclanthology.org/2020.inlg-1.4/) and the other datasets in our
 [source inventory](raw-data/README.md).
@@ -290,8 +410,10 @@ hosts the release.
 
 - Add ingredient autocomplete to a recipe editor. After a user enters at least
   two known ingredients, show ranked suggestions for them to accept or reject.
-- Expand an ingredient query against a recipe catalog. Use the suggested names
-  to find related entries; the catalog supplies the recipes and instructions.
+- Search an authorized recipe collection using pantry ingredients and a time
+  limit. Show source links, missing canonical ingredients and data-quality warnings.
+- Compare heuristic, supervised and reinforcement-trained ranking on held-out
+  pantry queries. Keep the simpler policy when an improvement is not established.
 - Use it in a learning experiment. Change the input ingredients and inspect how
   the rankings move, or compare it with popularity and co-occurrence baselines
   on genuinely new recipes.

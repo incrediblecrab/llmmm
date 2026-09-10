@@ -1,0 +1,562 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "mode": "full",
+  "completed_utc": "2026-09-10T12:39:10.573623+00:00",
+  "corpus": {
+    "generation_sha256": "851ad03658bc04db44c7e9fcf84f8b15b6e5d93f2d58e661278114970a2c27df",
+    "maximum_length": 98,
+    "minimum_length": 1,
+    "n_ingredient_slots": 36707624,
+    "n_recipes": 4653430,
+    "n_vocab": 1790,
+    "numeric_load_seconds": 0.31484866701066494,
+    "sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9"
+  },
+  "population": {
+    "catalog_ingredient_slots": 36707624,
+    "catalog_records": 4653430,
+    "maximum_source_length": 98,
+    "minimum_source_length": 1,
+    "source_row_exclusions": "none",
+    "training_population_sha256": "a5d6bceb81b6b8c6ece28a31b2cb4378bd20920d86ca5fec6f96cd955f026f8b",
+    "training_source_rows_per_epoch": 4653430
+  },
+  "model": {
+    "architecture": "20 -> tanh(hidden_dim) -> 1",
+    "hidden_dim": 32,
+    "initialization_sha256": "6c583d61ffed69177569953fc450eae3f45374b08aab55b3316482dcf69b9f3a",
+    "initialized_from_scratch": true,
+    "learned_parameter_count": 705,
+    "pretrained_parameters_used": false,
+    "time_features_enabled": true
+  },
+  "protocol": {
+    "all_rows_may_be_training_sources": true,
+    "catalog_idf_and_postings_use_all_rows": true,
+    "deployment_sha256_frozen_before_test_scoring": "9c374e7a81f53c3325fb76aa6056f351e7a6d162b50a03e5ce33cc5a5ab29c72",
+    "evaluation_scope": "sampled-candidate ranking with forced feasible source, NOT exhaustive retrieval",
+    "ingredient_set_disjoint_recipes": false,
+    "missing_constraint": "uniform integer 0..2, enforced before ranking",
+    "name": "held-out synthetic pantry queries over a known full catalog",
+    "negative_sampling": "7/8 pool draws from IDF-weighted pantry-ingredient postings; 1/8 uniform rows; keep hardest fixed-baseline feasible non-equivalent negatives plus available equivalent positives",
+    "pantry_corruption": "remove uniformly 0..min(max_missing, source_length-1); add 0..4 distinct non-source IDs sampled proportional to sqrt(document frequency)",
+    "pantry_partition": "BLAKE2b-128(person=llmmm-query-v1, sorted unique uint16-LE IDs); first 8 bytes LE modulo 10; 0..7 train, 8 validation, 9 test",
+    "selection": {
+      "comparisons": [
+        {
+          "challenger": "supervised",
+          "challenger_selected": true,
+          "incumbent": "heuristic",
+          "mean_paired_recovery_difference": 0.011103400416377515,
+          "paired_bootstrap_95_percent_interval": [
+            0.0034698126301179735,
+            0.018736988202637056
+          ]
+        },
+        {
+          "challenger": "reinforce",
+          "challenger_selected": false,
+          "incumbent": "supervised",
+          "mean_paired_recovery_difference": 0.0006939625260235947,
+          "paired_bootstrap_95_percent_interval": [
+            -0.002081887578070784,
+            0.0034698126301179735
+          ]
+        }
+      ],
+      "interval_caveat": "Per-comparison query bootstrap, conditional on this synthetic generator; not human-preference confidence.",
+      "metric": "uniform-tie expected top1 source-set recovery on nontrivial sampled shortlists",
+      "rule": "Fixed order heuristic -> supervised -> reinforce; replace only if the lower bound of the paired 95% query bootstrap interval is > 0. Test is not consulted.",
+      "selected": "supervised",
+      "split": "validation"
+    },
+    "source_insertion_in_candidate_set": true,
+    "tie_rule": "absolute logit/score tolerance 1e-06; primary reward expectation is uniform over all tied best candidates",
+    "time_constraint": "When source time is known, half of queries use a budget 1.0..1.5 times source time (minimum 1 minute); only known in-budget candidates survive",
+    "validation_test_pantry_contexts_never_used_for_training": true
+  },
+  "reward": {
+    "definition": "1 iff selected candidate's complete canonical ingredient set equals the source set; otherwise 0",
+    "equivalent_sets_are_positive": true,
+    "human_feedback": false,
+    "not_measured": [
+      "human taste or satisfaction",
+      "food safety",
+      "full-catalog retrieval recall",
+      "unseen-recipe generalization",
+      "production readiness"
+    ]
+  },
+  "evaluation": {
+    "bootstrap_repetitions": 2000,
+    "case_generation_seconds": 1.7181662080110982,
+    "rl_validation_mean_difference_from_supervised": 0.0006939625260235947,
+    "rl_validation_result": "higher point estimate than supervised; see validation intervals",
+    "test": {
+      "case_sha256": "dd8d23522e5c81fa5bc674ed353bdfffb26ebf1215bcd03a844f1a6ffc079337",
+      "paired_nontrivial_comparisons_to_heuristic": {
+        "reinforce_minus_heuristic": {
+          "mean_difference": 0.017180925666199158,
+          "paired_bootstrap_95_percent_interval": [
+            0.010869565217391304,
+            0.023492286115007012
+          ]
+        },
+        "supervised_minus_heuristic": {
+          "mean_difference": 0.016129032258064516,
+          "paired_bootstrap_95_percent_interval": [
+            0.009817671809256662,
+            0.02244039270687237
+          ]
+        }
+      },
+      "policies": {
+        "heuristic": {
+          "all_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.964111328125,
+              0.9743713378906249
+            ],
+            "expected_top1_recovery": 0.969482421875,
+            "mean_top_tie_size": 1.0087890625,
+            "optimistic_top1_recovery": 0.969482421875,
+            "pessimistic_top1_recovery": 0.969482421875,
+            "queries": 4096,
+            "recipe_id_tiebroken_top1_recovery": 0.969482421875,
+            "top_score_tie_fraction": 0.008056640625
+          },
+          "nontrivial_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.9484484572230014,
+              0.9635343618513323
+            ],
+            "expected_top1_recovery": 0.9561711079943899,
+            "mean_top_tie_size": 1.0101683029453015,
+            "optimistic_top1_recovery": 0.9561711079943899,
+            "pessimistic_top1_recovery": 0.9561711079943899,
+            "queries": 2852,
+            "recipe_id_tiebroken_top1_recovery": 0.9561711079943899,
+            "top_score_tie_fraction": 0.0091164095371669
+          }
+        },
+        "reinforce": {
+          "all_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.97705078125,
+              0.9851135253906249
+            ],
+            "expected_top1_recovery": 0.9814453125,
+            "mean_top_tie_size": 1.005615234375,
+            "optimistic_top1_recovery": 0.9814453125,
+            "pessimistic_top1_recovery": 0.9814453125,
+            "queries": 4096,
+            "recipe_id_tiebroken_top1_recovery": 0.9814453125,
+            "top_score_tie_fraction": 0.00537109375
+          },
+          "nontrivial_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.9673825385694249,
+              0.9789621318373072
+            ],
+            "expected_top1_recovery": 0.9733520336605891,
+            "mean_top_tie_size": 1.0063113604488079,
+            "optimistic_top1_recovery": 0.9733520336605891,
+            "pessimistic_top1_recovery": 0.9733520336605891,
+            "queries": 2852,
+            "recipe_id_tiebroken_top1_recovery": 0.9733520336605891,
+            "top_score_tie_fraction": 0.005960729312762973
+          }
+        },
+        "supervised": {
+          "all_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.976318359375,
+              0.984619140625
+            ],
+            "expected_top1_recovery": 0.980712890625,
+            "mean_top_tie_size": 1.006103515625,
+            "optimistic_top1_recovery": 0.980712890625,
+            "pessimistic_top1_recovery": 0.980712890625,
+            "queries": 4096,
+            "recipe_id_tiebroken_top1_recovery": 0.980712890625,
+            "top_score_tie_fraction": 0.005615234375
+          },
+          "nontrivial_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.9659887798036466,
+              0.9779102384291725
+            ],
+            "expected_top1_recovery": 0.9723001402524544,
+            "mean_top_tie_size": 1.0070126227208975,
+            "optimistic_top1_recovery": 0.9723001402524544,
+            "pessimistic_top1_recovery": 0.9723001402524544,
+            "queries": 2852,
+            "recipe_id_tiebroken_top1_recovery": 0.9723001402524544,
+            "top_score_tie_fraction": 0.006311360448807854
+          }
+        }
+      },
+      "queries": 4096,
+      "sampling": {
+        "candidate_actions": 17800,
+        "equivalent_positive_queries": 33,
+        "feasible_pool_slots": 18363,
+        "negative_actions": 13669,
+        "negative_actions_sharing_two_or_more_ingredients": 7755,
+        "negative_jaccard_sum": 2856.1793724112213,
+        "nontrivial_queries": 2852,
+        "positive_actions": 4131,
+        "queries": 4096,
+        "query_draw_attempts": 44477,
+        "source_jaccard_sum": 2928.2568123042583,
+        "time_constrained_queries": 304
+      }
+    },
+    "test_did_not_select_deployment": true,
+    "validation": {
+      "case_sha256": "fa281566f1ca3114f26f2aecfd7f2529a905f6dbc34bdb8d9138daeb95ed92fb",
+      "policies": {
+        "heuristic": {
+          "all_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.9658203125,
+              0.97998046875
+            ],
+            "expected_top1_recovery": 0.97314453125,
+            "mean_top_tie_size": 1.0087890625,
+            "optimistic_top1_recovery": 0.97314453125,
+            "pessimistic_top1_recovery": 0.97314453125,
+            "queries": 2048,
+            "recipe_id_tiebroken_top1_recovery": 0.97314453125,
+            "top_score_tie_fraction": 0.00732421875
+          },
+          "nontrivial_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.9514226231783484,
+              0.9715475364330326
+            ],
+            "expected_top1_recovery": 0.9618320610687023,
+            "mean_top_tie_size": 1.011797362942401,
+            "optimistic_top1_recovery": 0.9618320610687023,
+            "pessimistic_top1_recovery": 0.9618320610687023,
+            "queries": 1441,
+            "recipe_id_tiebroken_top1_recovery": 0.9618320610687023,
+            "top_score_tie_fraction": 0.009715475364330326
+          }
+        },
+        "reinforce": {
+          "all_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.97509765625,
+              0.98681640625
+            ],
+            "expected_top1_recovery": 0.9814453125,
+            "mean_top_tie_size": 1.0068359375,
+            "optimistic_top1_recovery": 0.9814453125,
+            "pessimistic_top1_recovery": 0.9814453125,
+            "queries": 2048,
+            "recipe_id_tiebroken_top1_recovery": 0.9814453125,
+            "top_score_tie_fraction": 0.005859375
+          },
+          "nontrivial_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.9646079111727967,
+              0.981263011797363
+            ],
+            "expected_top1_recovery": 0.9736294240111034,
+            "mean_top_tie_size": 1.0090215128383067,
+            "optimistic_top1_recovery": 0.9736294240111034,
+            "pessimistic_top1_recovery": 0.9736294240111034,
+            "queries": 1441,
+            "recipe_id_tiebroken_top1_recovery": 0.9736294240111034,
+            "top_score_tie_fraction": 0.007633587786259542
+          }
+        },
+        "supervised": {
+          "all_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.974609375,
+              0.9863403320312499
+            ],
+            "expected_top1_recovery": 0.98095703125,
+            "mean_top_tie_size": 1.0068359375,
+            "optimistic_top1_recovery": 0.98095703125,
+            "pessimistic_top1_recovery": 0.98095703125,
+            "queries": 2048,
+            "recipe_id_tiebroken_top1_recovery": 0.98095703125,
+            "top_score_tie_fraction": 0.005859375
+          },
+          "nontrivial_queries": {
+            "ambiguous_top_tie_fraction": 0.0,
+            "bootstrap_95_percent_interval": [
+              0.963913948646773,
+              0.9805690492713394
+            ],
+            "expected_top1_recovery": 0.9729354614850798,
+            "mean_top_tie_size": 1.0090215128383067,
+            "optimistic_top1_recovery": 0.9729354614850798,
+            "pessimistic_top1_recovery": 0.9729354614850798,
+            "queries": 1441,
+            "recipe_id_tiebroken_top1_recovery": 0.9729354614850798,
+            "top_score_tie_fraction": 0.007633587786259542
+          }
+        }
+      },
+      "queries": 2048,
+      "sampling": {
+        "candidate_actions": 8823,
+        "equivalent_positive_queries": 14,
+        "feasible_pool_slots": 9125,
+        "negative_actions": 6758,
+        "negative_actions_sharing_two_or_more_ingredients": 4016,
+        "negative_jaccard_sum": 1432.3992303311825,
+        "nontrivial_queries": 1441,
+        "positive_actions": 2065,
+        "queries": 2048,
+        "query_draw_attempts": 22263,
+        "source_jaccard_sum": 1476.049611389637,
+        "time_constrained_queries": 146
+      }
+    }
+  },
+  "training": {
+    "reinforce": {
+      "epochs": [
+        {
+          "bandit": {
+            "mean_entropy": 0.02038771767529285,
+            "mean_expected_reward": 0.9792132942986562,
+            "mean_kl_to_supervised": 0.013097146388490388,
+            "mean_policy_gradient_loss": -0.0011908555422101197,
+            "mean_sampled_reward": 0.9792131825341737,
+            "nonzero_sampled_advantages": 1924884,
+            "sampled_actions": 18613720
+          },
+          "coverage": {
+            "catalog_rows": 4653430,
+            "coverage_artifact_sha256": "141159676708c3830426383b964840632c715aac4a7376234043d4b41be80860",
+            "every_catalog_row_exactly_once": true,
+            "every_population_row_exactly_once": true,
+            "n_optimizer_steps": 36355,
+            "n_queries": 4653430,
+            "n_source_ingredient_slots": 36707624,
+            "population_rows": 4653430,
+            "seen_bitmap_sha256": "e1c84d80124c95863759a41f97a5c8bed8e5659cfb508990a7c0ad7b81b6975b",
+            "source_order_sha256": "67af0fe0a0cf48a139a5e5ee7a691d5e87690735ac454ad692dbdcad12090450",
+            "unique_source_rows": 4653430
+          },
+          "epoch": 1,
+          "mean_gradient_norm_before_clip": 0.0071938510152942114,
+          "mean_loss": -0.0009493003395420297,
+          "queries_per_second": 6052.027634476591,
+          "query_partition_bucket_counts": [
+            579977,
+            583406,
+            583308,
+            582730,
+            581620,
+            581183,
+            581442,
+            579764,
+            0,
+            0
+          ],
+          "sampling": {
+            "candidate_actions": 19900645,
+            "equivalent_positive_queries": 31299,
+            "feasible_pool_slots": 20587270,
+            "negative_actions": 15211228,
+            "negative_actions_sharing_two_or_more_ingredients": 8752935,
+            "negative_jaccard_sum": 3226106.0126649663,
+            "nontrivial_queries": 3243754,
+            "positive_actions": 4689417,
+            "queries": 4653430,
+            "query_draw_attempts": 5845724,
+            "source_jaccard_sum": 3410904.0219146013,
+            "time_constrained_queries": 340713
+          },
+          "seconds": 768.9042881249916,
+          "steps_with_nonzero_gradient": 36355,
+          "training_query_signatures_sha256": "c225a6d5379a729adda6f93f699d25f5c282df4285a1891f6b4620c49c4d8bdd"
+        }
+      ],
+      "epochs_completed": 1,
+      "n_optimizer_steps": 36355,
+      "n_queries": 4653430,
+      "seconds": 771.1606804160401,
+      "stage": "reinforce"
+    },
+    "supervised": {
+      "epochs": [
+        {
+          "bandit": null,
+          "coverage": {
+            "catalog_rows": 4653430,
+            "coverage_artifact_sha256": "141159676708c3830426383b964840632c715aac4a7376234043d4b41be80860",
+            "every_catalog_row_exactly_once": true,
+            "every_population_row_exactly_once": true,
+            "n_optimizer_steps": 36355,
+            "n_queries": 4653430,
+            "n_source_ingredient_slots": 36707624,
+            "population_rows": 4653430,
+            "seen_bitmap_sha256": "e1c84d80124c95863759a41f97a5c8bed8e5659cfb508990a7c0ad7b81b6975b",
+            "source_order_sha256": "eeb4d6a61fa4c816eaf332e4b3cdb051db31e52774fd56632837d481c6c5b122",
+            "unique_source_rows": 4653430
+          },
+          "epoch": 1,
+          "mean_gradient_norm_before_clip": 0.0351830638319403,
+          "mean_loss": 0.05646874849358468,
+          "queries_per_second": 5483.927249354538,
+          "query_partition_bucket_counts": [
+            579759,
+            584564,
+            582088,
+            582575,
+            581289,
+            582138,
+            579941,
+            581076,
+            0,
+            0
+          ],
+          "sampling": {
+            "candidate_actions": 19901596,
+            "equivalent_positive_queries": 31137,
+            "feasible_pool_slots": 20586381,
+            "negative_actions": 15212216,
+            "negative_actions_sharing_two_or_more_ingredients": 8749265,
+            "negative_jaccard_sum": 3225668.1515121646,
+            "nontrivial_queries": 3241732,
+            "positive_actions": 4689380,
+            "queries": 4653430,
+            "query_draw_attempts": 5847313,
+            "source_jaccard_sum": 3411886.606516868,
+            "time_constrained_queries": 340136
+          },
+          "seconds": 848.55793820892,
+          "steps_with_nonzero_gradient": 36355,
+          "training_query_signatures_sha256": "4d394c6791afe6b0d02c032f31aea05c47d12207376d26a661dea9159f46107a"
+        }
+      ],
+      "epochs_completed": 1,
+      "n_optimizer_steps": 36355,
+      "n_queries": 4653430,
+      "seconds": 849.564494249993,
+      "stage": "supervised"
+    }
+  },
+  "is_full_corpus_optimizer_coverage": true,
+  "process_peak_rss_bytes": 1035157504,
+  "production_or_human_preference_quality_established": false,
+  "training_totals": {
+    "queries": 9306860,
+    "optimizer_steps": 72710,
+    "source_ingredient_slots": 73415248,
+    "reinforce_sampled_actions": 18613720
+  },
+  "time_metadata": {
+    "enabled": true,
+    "n_known": 681275,
+    "n_unknown": 3972155,
+    "numeric_time_array_sha256": "40aa4fed29ada3e82e3f14069f6f51646444ce73b0740ea568eb962a64201894",
+    "semantics": "Finite positive source-provided total minutes with time_status=source_total only; prep/cook/derived totals are never substituted. Unknown remains NaN internally / None publicly."
+  },
+  "timing": {
+    "perf_counter_seconds": 1628.2882330409484,
+    "recorded_utc_elapsed_seconds": 25994.900277,
+    "clock_discrepancy_seconds": 24366.612043959052,
+    "caveat": "The timer and UTC intervals disagree; the cause was not independently established. Do not describe the perf_counter value as end-to-end calendar wall time."
+  },
+  "run_configuration": {
+    "parameters": {
+      "actions_per_query": 4,
+      "batch_size": 128,
+      "bootstrap_repetitions": 2000,
+      "candidates": 16,
+      "entropy_coefficient": 0.001,
+      "hidden_dim": 32,
+      "kl_coefficient": 0.02,
+      "max_missing": 2,
+      "max_noise": 4,
+      "max_train_rows": 0,
+      "mode": "full",
+      "pool_size": 128,
+      "reinforce_epochs": 1,
+      "reinforce_lr": 0.0003,
+      "seed": 42,
+      "supervised_epochs": 1,
+      "supervised_lr": 0.003,
+      "temperature": 1.0,
+      "test_queries": 4096,
+      "threads": 4,
+      "validation_queries": 2048
+    },
+    "code_sha256": {
+      "recipe_ranker.py": "314490211d610888460c5ce3e668f55467908b2d28442b41c0c81809585bbdff",
+      "train_recipe_ranker.py": "f5d0b0e427f59733d6f598361e291db67ed8a498c20f2716c0efd2787a74b9d7"
+    },
+    "environment": {
+      "device": "cpu",
+      "foreign_pretrained_weights": false,
+      "numpy": "2.5.1",
+      "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+      "python": "3.13.3",
+      "safetensors": "0.8.0",
+      "torch": "2.13.0",
+      "torch_interop_threads": 1,
+      "torch_threads": 4
+    },
+    "started_utc": "2026-09-10T05:25:55.673346+00:00",
+    "completed_utc": "2026-09-10T12:39:10.573623+00:00",
+    "status": "completed"
+  },
+  "checkpoint_binding": {
+    "capture": "independent_post_training_audit",
+    "audited_utc": "2026-09-10T12:44:46.359684+00:00",
+    "audit_sha256": "69087a000dc9b903c7e37970e23eebf893a6d68e5989705f07a9161c38f306f2",
+    "limitation": "These hashes were captured in the independent post-run audit, not inside the original training process.",
+    "training_report_sha256": "f21f8c48a774b89503fd96bc62d3caeb81aeb1d404db04b484ab7e96f92ba8c3",
+    "checkpoint_files_sha256": {
+      "supervised": {
+        "recipe_ranker_config.json": "3398c7719d723c48a46b40c162e129e8e2bb1c22f64d37165025537036fd63f2",
+        "recipe_ranker.safetensors": "b4557181a76760d6fe2543443cc01d5ade2d247d26d49aae4b84b23e9521301d"
+      },
+      "reinforce": {
+        "recipe_ranker_config.json": "43adb7fddbbd1df77b3837d80ec9c60c12b26d8cf0d5f2f4d71b035b9ca48dec",
+        "recipe_ranker.safetensors": "ee53b89166b4be30102dd65ed16a21cb9844d680ab1587257e3324a53f411a26"
+      }
+    }
+  },
+  "training_code_references": {
+    "recipe_ranker.py": {
+      "sha256": "314490211d610888460c5ce3e668f55467908b2d28442b41c0c81809585bbdff",
+      "git_revision": "95dd70f36a46ab726c9c222898109448cce76aa1",
+      "path": "model/ingredient_model/recipe_ranker.py"
+    },
+    "train_recipe_ranker.py": {
+      "sha256": "f5d0b0e427f59733d6f598361e291db67ed8a498c20f2716c0efd2787a74b9d7",
+      "git_revision": "95dd70f36a46ab726c9c222898109448cce76aa1",
+      "path": "model/scripts/train_recipe_ranker.py"
+    }
+  },
+  "independent_coverage_verification": {
+    "canonical_corpus_sha256_checked": true,
+    "canonical_row_and_slot_counts_checked": true,
+    "all_saved_per_row_counts_exactly_one_per_stage_epoch": true,
+    "optimizer_steps_and_reinforce_action_counts_checked": true,
+    "held_out_pantry_buckets_absent_from_training_counters": true,
+    "checkpoint_reload_checked_by_this_command": false
+  }
+}

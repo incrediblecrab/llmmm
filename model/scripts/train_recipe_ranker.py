@@ -883,6 +883,11 @@ def experiment(corpus: NumericCorpus, sampler: QuerySampler, *, output: Path,
         temperature=args.temperature, entropy_coefficient=args.entropy_coefficient,
         kl_coefficient=args.kl_coefficient, log_every=args.log_every)
     reinforce.save(output / "reinforce")
+    checkpoint_files = {
+        name: {filename: sha256_file(output / name / filename)
+               for filename in ("recipe_ranker_config.json", "recipe_ranker.safetensors")}
+        for name in ("supervised", "reinforce")
+    }
     scorers = {"heuristic": deterministic_baseline_score,
                "supervised": supervised.score, "reinforce": reinforce.score}
     validation_metrics, validation_values = {}, {}
@@ -923,6 +928,7 @@ def experiment(corpus: NumericCorpus, sampler: QuerySampler, *, output: Path,
     rl_minus_supervised = validation_values["reinforce"] - validation_values["supervised"]
     return {
         "schema_version": 1, "status": "completed", "mode": args.mode,
+        "checkpoint_files_sha256": checkpoint_files,
         "is_full_corpus_optimizer_coverage": bool(
             len(population) == corpus.n_recipes
             and all(epoch["coverage"]["every_catalog_row_exactly_once"]

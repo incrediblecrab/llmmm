@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "protocol": "held-out pantry-hash synthetic queries over a known catalog; not human-preference evaluation",
+  "scope": "source ingredient-set recovery with strict constraints; not cooking quality",
+  "corpus_sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+  "catalog_sha256": "708662e373a8825805be5b94a58ad9f1be3a3f2263df9bfb6022691bd196ff7f",
+  "catalog_recipes": 4653430,
+  "seed": 20260910,
+  "queries_per_partition": 200,
+  "release_evaluation": true,
+  "initialization_seconds": {
+    "heuristic": 2.789825792075135,
+    "supervised": 0.028023457969538867,
+    "reinforce": 0.020209875074215233
+  },
+  "request_latency_excludes_initialization": true,
+  "case_fingerprints": {
+    "validation": "13dc9a03c13ee5945d21f436b320c3a8b82ca0397913ae7c79e9db436f364804",
+    "test": "570606d449269eef104c66076b995bd5fedb6e5cbaf0b33903508c91709334cf"
+  },
+  "test_scored": true,
+  "timed_query_fraction": 0.5,
+  "query_targets_unique_by_row_within_partition": true,
+  "query_pantries_unique": true,
+  "training_query_partition_overlap": 0,
+  "query_partition": {
+    "method": "BLAKE2b-128 sorted unique uint16 little-endian pantry IDs; llmmm-query-v1",
+    "bucket": "first eight digest bytes, little-endian, modulo ten",
+    "training": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "validation": 8,
+    "test": 9
+  },
+  "target_eligibility": {
+    "ingredient_count_range": [
+      2,
+      25
+    ],
+    "nonempty_title_and_steps": true,
+    "half_require_known_source_total_time": true
+  },
+  "recipe_families_disjoint_from_training": false,
+  "policy_files_sha256": {
+    "supervised": {
+      "recipe_ranker.safetensors": "b4557181a76760d6fe2543443cc01d5ade2d247d26d49aae4b84b23e9521301d",
+      "recipe_ranker_config.json": "3398c7719d723c48a46b40c162e129e8e2bb1c22f64d37165025537036fd63f2"
+    },
+    "reinforce": {
+      "recipe_ranker.safetensors": "ee53b89166b4be30102dd65ed16a21cb9844d680ab1587257e3324a53f411a26",
+      "recipe_ranker_config.json": "43adb7fddbbd1df77b3837d80ec9c60c12b26d8cf0d5f2f4d71b035b9ca48dec"
+    }
+  },
+  "retrieval": {
+    "max_candidates": 2000,
+    "scan_limit": 50000,
+    "timeout_seconds": 5.0
+  },
+  "validation": {
+    "heuristic": {
+      "queries": 200,
+      "source_set_recall_at_1": 0.605,
+      "source_set_recall_at_5": 0.75,
+      "source_set_recall_at_10": 0.815,
+      "mrr_at_10": 0.6714980158730159,
+      "source_set_in_shortlist": 0.995,
+      "empty_results": 0,
+      "truncated_retrievals": 167,
+      "timeouts": 0,
+      "constraint_violations": 0,
+      "latency_ms": {
+        "median": 488.8073130277917,
+        "p95": 2097.736762161365,
+        "maximum": 3571.066749980673
+      }
+    },
+    "supervised": {
+      "queries": 200,
+      "source_set_recall_at_1": 0.72,
+      "source_set_recall_at_5": 0.81,
+      "source_set_recall_at_10": 0.855,
+      "mrr_at_10": 0.7638353174603174,
+      "source_set_in_shortlist": 0.995,
+      "empty_results": 0,
+      "truncated_retrievals": 167,
+      "timeouts": 0,
+      "constraint_violations": 0,
+      "latency_ms": {
+        "median": 473.47783303121105,
+        "p95": 2233.4812124841847,
+        "maximum": 3226.098999963142
+      }
+    },
+    "reinforce": {
+      "queries": 200,
+      "source_set_recall_at_1": 0.72,
+      "source_set_recall_at_5": 0.82,
+      "source_set_recall_at_10": 0.86,
+      "mrr_at_10": 0.7628214285714284,
+      "source_set_in_shortlist": 0.99,
+      "empty_results": 1,
+      "truncated_retrievals": 167,
+      "timeouts": 1,
+      "constraint_violations": 0,
+      "latency_ms": {
+        "median": 510.8116670162417,
+        "p95": 2202.06955409958,
+        "maximum": 5002.381750033237
+      }
+    }
+  },
+  "test": {
+    "heuristic": {
+      "queries": 200,
+      "source_set_recall_at_1": 0.575,
+      "source_set_recall_at_5": 0.755,
+      "source_set_recall_at_10": 0.795,
+      "mrr_at_10": 0.6596011904761903,
+      "source_set_in_shortlist": 0.99,
+      "empty_results": 0,
+      "truncated_retrievals": 162,
+      "timeouts": 0,
+      "constraint_violations": 0,
+      "latency_ms": {
+        "median": 419.5321039878763,
+        "p95": 2003.6371041031068,
+        "maximum": 2795.819791033864
+      }
+    },
+    "supervised": {
+      "queries": 200,
+      "source_set_recall_at_1": 0.715,
+      "source_set_recall_at_5": 0.835,
+      "source_set_recall_at_10": 0.88,
+      "mrr_at_10": 0.7686150793650793,
+      "source_set_in_shortlist": 0.99,
+      "empty_results": 0,
+      "truncated_retrievals": 162,
+      "timeouts": 0,
+      "constraint_violations": 0,
+      "latency_ms": {
+        "median": 426.53954145498574,
+        "p95": 2047.9378665797408,
+        "maximum": 2650.245500029996
+      }
+    },
+    "reinforce": {
+      "queries": 200,
+      "source_set_recall_at_1": 0.71,
+      "source_set_recall_at_5": 0.84,
+      "source_set_recall_at_10": 0.87,
+      "mrr_at_10": 0.7687916666666667,
+      "source_set_in_shortlist": 0.99,
+      "empty_results": 0,
+      "truncated_retrievals": 162,
+      "timeouts": 0,
+      "constraint_violations": 0,
+      "latency_ms": {
+        "median": 410.9088539844379,
+        "p95": 2028.383910155389,
+        "maximum": 2678.5429579904303
+      }
+    }
+  },
+  "selected_on_validation": "supervised",
+  "selection_frozen_before_test_scoring": true,
+  "selection_fingerprint": "cc7e3d1eb3b48eb44df6aceb0fa218091b48ed9615109fd02d663f3c9cfd0d0e",
+  "selection_rule": "start with heuristic; promote only on positive lower paired validation recall@5 CI95 and a passed validation operational gate",
+  "selection_comparisons": [
+    {
+      "candidate": "supervised",
+      "incumbent": "heuristic",
+      "difference_in_recall_at_5": 0.06,
+      "ci95": [
+        0.025,
+        0.1
+      ],
+      "validation_operational_gate_passed": true,
+      "promoted": true
+    },
+    {
+      "candidate": "reinforce",
+      "incumbent": "supervised",
+      "difference_in_recall_at_5": 0.01,
+      "ci95": [
+        -0.01,
+        0.03
+      ],
+      "validation_operational_gate_passed": false,
+      "promoted": false
+    }
+  ],
+  "paired_test_against_heuristic": {
+    "supervised": {
+      "difference_in_recall_at_5": 0.08,
+      "ci95": [
+        0.045,
+        0.12
+      ]
+    },
+    "reinforce": {
+      "difference_in_recall_at_5": 0.085,
+      "ci95": [
+        0.05,
+        0.125
+      ]
+    }
+  },
+  "operational_limits": {
+    "max_timeouts": 0,
+    "max_constraint_violations": 0,
+    "max_empty_fraction_on_known_feasible_queries": 0.05,
+    "max_request_seconds": 5.0
+  },
+  "operational_gate_passed": true,
+  "duration_s": 861.546562833013,
+  "code_sha256": "35536bcbffc0233436d245dd70e140afbf1aac2f4524c54f13277f14b921c129",
+  "serving_code_sha256": "d45a36c2197a472a280fd815d531217c45e4dafaa41f87ca5369dfc89e191a7d",
+  "metadata_index_code_sha256": "b94e1ae3f4d6d3c40398cb99c8c156c822b75834e71eadb3e8c9a86f707bbd7a",
+  "ingredient_index_code_sha256": "af356358a0f93925fd15f5f278961b84ae904cf2d4b7590bd8c43db3f0d72431",
+  "ranker_code_sha256": "314490211d610888460c5ce3e668f55467908b2d28442b41c0c81809585bbdff",
+  "query_split_code_sha256": "7ac11eef1600cbd1fa2e75e6b67dc91724fc398c587150647b9e35be356179f9",
+  "limitations": [
+    "Synthetic source recovery is a proxy, not observed user satisfaction.",
+    "Catalog items are known; the ingredient predictor was trained on all canonical records.",
+    "Validation/test pantry hashes are excluded from policy training; recipe families are not held out.",
+    "Equivalent ingredient sets count as positives even if instructions differ.",
+    "Recall includes retrieval misses; source_set_in_shortlist measures the retrieval ceiling.",
+    "Recipe times are source-reported rather than independently timed cooking measurements."
+  ]
+}

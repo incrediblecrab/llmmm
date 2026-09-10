@@ -1,0 +1,2157 @@
+{
+  "schema_version": 1,
+  "partial": false,
+  "corpus_sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+  "text_index_sha256": "b6f495a04ac9b5a1358ec65a2a6f549b60412269514c5717074965536b127967",
+  "n_recipes": 4653430,
+  "n_slots": 36707624,
+  "n_vocab": 1790,
+  "min_ingredients": 1,
+  "max_ingredients": 98,
+  "singletons": 41172,
+  "coverage": {
+    "total": {
+      "n_recipes": 4653430,
+      "n_slots": 36707624,
+      "with_title": 4503160,
+      "with_steps": 4223999,
+      "total_minutes_known": 681275,
+      "total_minutes_unknown": 3972155,
+      "total_minutes_missing": 3969221,
+      "total_minutes_invalid": 2834,
+      "total_minutes_ambiguous": 100,
+      "servings_known": 353946,
+      "servings_unknown": 4299484,
+      "servings_missing": 4297448,
+      "servings_invalid": 2006,
+      "servings_ambiguous": 30,
+      "derived_total_minutes_known": 430320,
+      "time_status": {
+        "unsupported": 3937048,
+        "source_total": 681275,
+        "missing_total": 3615,
+        "invalid_total": 2807,
+        "inconsistent_total": 27,
+        "ambiguous_total": 100,
+        "derived_only": 6034,
+        "no_total_field": 8069,
+        "component_only": 14455
+      },
+      "servings_status": {
+        "unsupported": 4126020,
+        "source_servings": 353946,
+        "invalid": 2006,
+        "missing": 171428,
+        "ambiguous": 30
+      },
+      "metadata_status": {
+        "unsupported": 3937048,
+        "matched": 716263,
+        "ambiguous": 119
+      },
+      "quantity_status": {
+        "not_supplied": 4190098,
+        "values_without_units": 92112,
+        "count_mismatch": 371220
+      },
+      "text_status": {
+        "not_supplied": 4653430
+      },
+      "with_title_and_steps": 4223998,
+      "with_title_storage_nonempty": 4503160,
+      "with_steps_storage_nonempty": 4224098,
+      "with_title_and_steps_storage_nonempty": 4224097,
+      "title_whitespace_only": 0,
+      "steps_whitespace_or_separator_only": 99
+    },
+    "by_source": {
+      "01-recipenlg": {
+        "n_recipes": 1994816,
+        "n_slots": 15857940,
+        "with_title": 1994816,
+        "with_steps": 1994816,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 1994816,
+        "total_minutes_missing": 1994816,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 1994816,
+        "servings_missing": 1994816,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 1994816
+        },
+        "servings_status": {
+          "unsupported": 1994816
+        },
+        "metadata_status": {
+          "unsupported": 1994816
+        },
+        "quantity_status": {
+          "not_supplied": 1994816
+        },
+        "text_status": {
+          "not_supplied": 1994816
+        },
+        "with_title_storage_nonempty": 1994816,
+        "with_steps_storage_nonempty": 1994816,
+        "with_title_and_steps_storage_nonempty": 1994816,
+        "with_title_and_steps": 1994816,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "02-xiachufang": {
+        "n_recipes": 1438566,
+        "n_slots": 10211315,
+        "with_title": 1438566,
+        "with_steps": 1438468,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 1438566,
+        "total_minutes_missing": 1438566,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 1438566,
+        "servings_missing": 1438566,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 1438566
+        },
+        "servings_status": {
+          "unsupported": 1438566
+        },
+        "metadata_status": {
+          "unsupported": 1438566
+        },
+        "quantity_status": {
+          "not_supplied": 1438566
+        },
+        "text_status": {
+          "not_supplied": 1438566
+        },
+        "with_title_storage_nonempty": 1438566,
+        "with_steps_storage_nonempty": 1438566,
+        "with_title_and_steps_storage_nonempty": 1438566,
+        "with_title_and_steps": 1438468,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 98
+      },
+      "03-povarenok": {
+        "n_recipes": 142058,
+        "n_slots": 1227769,
+        "with_title": 142058,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 142058,
+        "total_minutes_missing": 142058,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 142058,
+        "servings_missing": 142058,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 142058
+        },
+        "servings_status": {
+          "unsupported": 142058
+        },
+        "metadata_status": {
+          "unsupported": 142058
+        },
+        "quantity_status": {
+          "not_supplied": 142058
+        },
+        "text_status": {
+          "not_supplied": 142058
+        },
+        "with_title_storage_nonempty": 142058,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "04-spanish": {
+        "n_recipes": 46446,
+        "n_slots": 347116,
+        "with_title": 0,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 46446,
+        "total_minutes_missing": 46446,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 46446,
+        "servings_missing": 46446,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 46446
+        },
+        "servings_status": {
+          "unsupported": 46446
+        },
+        "metadata_status": {
+          "unsupported": 46446
+        },
+        "quantity_status": {
+          "not_supplied": 46446
+        },
+        "text_status": {
+          "not_supplied": 46446
+        },
+        "with_title_storage_nonempty": 0,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "05-vietnamese": {
+        "n_recipes": 31886,
+        "n_slots": 236788,
+        "with_title": 0,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 31886,
+        "total_minutes_missing": 31886,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 31886,
+        "servings_missing": 31886,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 31886
+        },
+        "servings_status": {
+          "unsupported": 31886
+        },
+        "metadata_status": {
+          "unsupported": 31886
+        },
+        "quantity_status": {
+          "not_supplied": 31886
+        },
+        "text_status": {
+          "not_supplied": 31886
+        },
+        "with_title_storage_nonempty": 0,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "06-turkish": {
+        "n_recipes": 25416,
+        "n_slots": 225334,
+        "with_title": 0,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 25416,
+        "total_minutes_missing": 25416,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 25416,
+        "servings_missing": 25416,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 25416
+        },
+        "servings_status": {
+          "unsupported": 25416
+        },
+        "metadata_status": {
+          "unsupported": 25416
+        },
+        "quantity_status": {
+          "not_supplied": 25416
+        },
+        "text_status": {
+          "not_supplied": 25416
+        },
+        "with_title_storage_nonempty": 0,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "07-indian": {
+        "n_recipes": 16151,
+        "n_slots": 164047,
+        "with_title": 0,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 16151,
+        "total_minutes_missing": 16151,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 16151,
+        "servings_missing": 16151,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 16151
+        },
+        "servings_status": {
+          "unsupported": 16151
+        },
+        "metadata_status": {
+          "unsupported": 16151
+        },
+        "quantity_status": {
+          "not_supplied": 16151
+        },
+        "text_status": {
+          "not_supplied": 16151
+        },
+        "with_title_storage_nonempty": 0,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "08-indonesian": {
+        "n_recipes": 14939,
+        "n_slots": 165518,
+        "with_title": 0,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 14939,
+        "total_minutes_missing": 14939,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 14939,
+        "servings_missing": 14939,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 14939
+        },
+        "servings_status": {
+          "unsupported": 14939
+        },
+        "metadata_status": {
+          "unsupported": 14939
+        },
+        "quantity_status": {
+          "not_supplied": 14939
+        },
+        "text_status": {
+          "not_supplied": 14939
+        },
+        "with_title_storage_nonempty": 0,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "09-chefkoch": {
+        "n_recipes": 4290,
+        "n_slots": 38914,
+        "with_title": 0,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 4290,
+        "total_minutes_missing": 4290,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 4290,
+        "servings_missing": 4290,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 4290
+        },
+        "servings_status": {
+          "unsupported": 4290
+        },
+        "metadata_status": {
+          "unsupported": 4290
+        },
+        "quantity_status": {
+          "not_supplied": 4290
+        },
+        "text_status": {
+          "not_supplied": 4290
+        },
+        "with_title_storage_nonempty": 0,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "allrecipes-33k": {
+        "n_recipes": 32700,
+        "n_slots": 304043,
+        "with_title": 32700,
+        "with_steps": 32700,
+        "total_minutes_known": 30831,
+        "total_minutes_unknown": 1869,
+        "total_minutes_missing": 1827,
+        "total_minutes_invalid": 42,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 32700,
+        "servings_unknown": 0,
+        "servings_missing": 0,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 25912,
+        "time_status": {
+          "source_total": 30831,
+          "missing_total": 1827,
+          "invalid_total": 42
+        },
+        "servings_status": {
+          "source_servings": 32700
+        },
+        "metadata_status": {
+          "matched": 32700
+        },
+        "quantity_status": {
+          "not_supplied": 32700
+        },
+        "text_status": {
+          "not_supplied": 32700
+        },
+        "with_title_storage_nonempty": 32700,
+        "with_steps_storage_nonempty": 32700,
+        "with_title_and_steps_storage_nonempty": 32700,
+        "with_title_and_steps": 32700,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "bhuvii-17k": {
+        "n_recipes": 17026,
+        "n_slots": 130803,
+        "with_title": 17026,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 17026,
+        "total_minutes_missing": 17026,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 17026,
+        "servings_missing": 17026,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 17026
+        },
+        "servings_status": {
+          "unsupported": 17026
+        },
+        "metadata_status": {
+          "unsupported": 17026
+        },
+        "quantity_status": {
+          "not_supplied": 17026
+        },
+        "text_status": {
+          "not_supplied": 17026
+        },
+        "with_title_storage_nonempty": 17026,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "filipino-2k": {
+        "n_recipes": 1984,
+        "n_slots": 21367,
+        "with_title": 1984,
+        "with_steps": 1984,
+        "total_minutes_known": 1963,
+        "total_minutes_unknown": 21,
+        "total_minutes_missing": 0,
+        "total_minutes_invalid": 21,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 1746,
+        "servings_unknown": 238,
+        "servings_missing": 0,
+        "servings_invalid": 238,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 1981,
+        "time_status": {
+          "source_total": 1963,
+          "inconsistent_total": 16,
+          "invalid_total": 5
+        },
+        "servings_status": {
+          "source_servings": 1746,
+          "invalid": 238
+        },
+        "metadata_status": {
+          "matched": 1984
+        },
+        "quantity_status": {
+          "not_supplied": 1984
+        },
+        "text_status": {
+          "not_supplied": 1984
+        },
+        "with_title_storage_nonempty": 1984,
+        "with_steps_storage_nonempty": 1984,
+        "with_title_and_steps_storage_nonempty": 1984,
+        "with_title_and_steps": 1984,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "foodcom-522k": {
+        "n_recipes": 463334,
+        "n_slots": 3665409,
+        "with_title": 463334,
+        "with_steps": 463333,
+        "total_minutes_known": 461365,
+        "total_minutes_unknown": 1969,
+        "total_minutes_missing": 0,
+        "total_minutes_invalid": 1870,
+        "total_minutes_ambiguous": 99,
+        "servings_known": 303403,
+        "servings_unknown": 159931,
+        "servings_missing": 159901,
+        "servings_invalid": 0,
+        "servings_ambiguous": 30,
+        "derived_total_minutes_known": 396090,
+        "time_status": {
+          "source_total": 461365,
+          "invalid_total": 1859,
+          "inconsistent_total": 11,
+          "ambiguous_total": 99
+        },
+        "servings_status": {
+          "source_servings": 303403,
+          "missing": 159901,
+          "ambiguous": 30
+        },
+        "metadata_status": {
+          "matched": 463216,
+          "ambiguous": 118
+        },
+        "quantity_status": {
+          "values_without_units": 92112,
+          "count_mismatch": 371220,
+          "not_supplied": 2
+        },
+        "text_status": {
+          "not_supplied": 463334
+        },
+        "with_title_storage_nonempty": 463334,
+        "with_steps_storage_nonempty": 463333,
+        "with_title_and_steps_storage_nonempty": 463333,
+        "with_title_and_steps": 463333,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "foodcom-raw-231k": {
+        "n_recipes": 179227,
+        "n_slots": 1675687,
+        "with_title": 179226,
+        "with_steps": 179226,
+        "total_minutes_known": 178433,
+        "total_minutes_unknown": 794,
+        "total_minutes_missing": 0,
+        "total_minutes_invalid": 793,
+        "total_minutes_ambiguous": 1,
+        "servings_known": 0,
+        "servings_unknown": 179227,
+        "servings_missing": 179227,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "source_total": 178433,
+          "invalid_total": 793,
+          "ambiguous_total": 1
+        },
+        "servings_status": {
+          "unsupported": 179227
+        },
+        "metadata_status": {
+          "matched": 179226,
+          "ambiguous": 1
+        },
+        "quantity_status": {
+          "not_supplied": 179227
+        },
+        "text_status": {
+          "not_supplied": 179227
+        },
+        "with_title_storage_nonempty": 179226,
+        "with_steps_storage_nonempty": 179226,
+        "with_title_and_steps_storage_nonempty": 179225,
+        "with_title_and_steps": 179225,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "greek-5k": {
+        "n_recipes": 4881,
+        "n_slots": 38350,
+        "with_title": 4881,
+        "with_steps": 4881,
+        "total_minutes_known": 4869,
+        "total_minutes_unknown": 12,
+        "total_minutes_missing": 11,
+        "total_minutes_invalid": 1,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 2975,
+        "servings_unknown": 1906,
+        "servings_missing": 147,
+        "servings_invalid": 1759,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "source_total": 4869,
+          "invalid_total": 1,
+          "missing_total": 11
+        },
+        "servings_status": {
+          "source_servings": 2975,
+          "invalid": 1759,
+          "missing": 147
+        },
+        "metadata_status": {
+          "matched": 4881
+        },
+        "quantity_status": {
+          "not_supplied": 4881
+        },
+        "text_status": {
+          "not_supplied": 4881
+        },
+        "with_title_storage_nonempty": 4881,
+        "with_steps_storage_nonempty": 4881,
+        "with_title_and_steps_storage_nonempty": 4881,
+        "with_title_and_steps": 4881,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "halal-2k": {
+        "n_recipes": 2006,
+        "n_slots": 25352,
+        "with_title": 2006,
+        "with_steps": 2006,
+        "total_minutes_known": 292,
+        "total_minutes_unknown": 1714,
+        "total_minutes_missing": 1621,
+        "total_minutes_invalid": 93,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 2006,
+        "servings_missing": 1997,
+        "servings_invalid": 9,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 303,
+        "time_status": {
+          "source_total": 292,
+          "invalid_total": 93,
+          "missing_total": 1621
+        },
+        "servings_status": {
+          "missing": 1997,
+          "invalid": 9
+        },
+        "metadata_status": {
+          "matched": 2006
+        },
+        "quantity_status": {
+          "not_supplied": 2006
+        },
+        "text_status": {
+          "not_supplied": 2006
+        },
+        "with_title_storage_nonempty": 2006,
+        "with_steps_storage_nonempty": 2006,
+        "with_title_and_steps_storage_nonempty": 2006,
+        "with_title_and_steps": 2006,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "hebrew-9.7k": {
+        "n_recipes": 8698,
+        "n_slots": 64516,
+        "with_title": 0,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 8698,
+        "total_minutes_missing": 8698,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 8698,
+        "servings_missing": 8698,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 8698
+        },
+        "servings_status": {
+          "unsupported": 8698
+        },
+        "metadata_status": {
+          "unsupported": 8698
+        },
+        "quantity_status": {
+          "not_supplied": 8698
+        },
+        "text_status": {
+          "not_supplied": 8698
+        },
+        "with_title_storage_nonempty": 0,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "indian-7k": {
+        "n_recipes": 6053,
+        "n_slots": 64151,
+        "with_title": 6053,
+        "with_steps": 6053,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 6053,
+        "total_minutes_missing": 6053,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 6053,
+        "servings_missing": 6053,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 6034,
+        "time_status": {
+          "derived_only": 6034,
+          "no_total_field": 16,
+          "component_only": 3
+        },
+        "servings_status": {
+          "unsupported": 6053
+        },
+        "metadata_status": {
+          "matched": 6053
+        },
+        "quantity_status": {
+          "not_supplied": 6053
+        },
+        "text_status": {
+          "not_supplied": 6053
+        },
+        "with_title_storage_nonempty": 6053,
+        "with_steps_storage_nonempty": 6053,
+        "with_title_and_steps_storage_nonempty": 6053,
+        "with_title_and_steps": 6053,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "japanese-3k": {
+        "n_recipes": 3692,
+        "n_slots": 18509,
+        "with_title": 3692,
+        "with_steps": 3692,
+        "total_minutes_known": 3522,
+        "total_minutes_unknown": 170,
+        "total_minutes_missing": 156,
+        "total_minutes_invalid": 14,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 3692,
+        "servings_missing": 3692,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "source_total": 3522,
+          "invalid_total": 14,
+          "missing_total": 156
+        },
+        "servings_status": {
+          "unsupported": 3692
+        },
+        "metadata_status": {
+          "matched": 3692
+        },
+        "quantity_status": {
+          "not_supplied": 3692
+        },
+        "text_status": {
+          "not_supplied": 3692
+        },
+        "with_title_storage_nonempty": 3692,
+        "with_steps_storage_nonempty": 3692,
+        "with_title_and_steps_storage_nonempty": 3692,
+        "with_title_and_steps": 3692,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "kaggle-food-13k": {
+        "n_recipes": 13463,
+        "n_slots": 140304,
+        "with_title": 13463,
+        "with_steps": 13461,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 13463,
+        "total_minutes_missing": 13463,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 13463,
+        "servings_missing": 13463,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 13463
+        },
+        "servings_status": {
+          "unsupported": 13463
+        },
+        "metadata_status": {
+          "unsupported": 13463
+        },
+        "quantity_status": {
+          "not_supplied": 13463
+        },
+        "text_status": {
+          "not_supplied": 13463
+        },
+        "with_title_storage_nonempty": 13463,
+        "with_steps_storage_nonempty": 13462,
+        "with_title_and_steps_storage_nonempty": 13462,
+        "with_title_and_steps": 13461,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 1
+      },
+      "moroccan-4.6k": {
+        "n_recipes": 2443,
+        "n_slots": 31322,
+        "with_title": 0,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 2443,
+        "total_minutes_missing": 2443,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 2443,
+        "servings_missing": 2443,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 2443
+        },
+        "servings_status": {
+          "unsupported": 2443
+        },
+        "metadata_status": {
+          "unsupported": 2443
+        },
+        "quantity_status": {
+          "not_supplied": 2443
+        },
+        "text_status": {
+          "not_supplied": 2443
+        },
+        "with_title_storage_nonempty": 0,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "persian-6k": {
+        "n_recipes": 5793,
+        "n_slots": 47793,
+        "with_title": 5793,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 5793,
+        "total_minutes_missing": 5793,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 5793,
+        "servings_missing": 5793,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 5793
+        },
+        "servings_status": {
+          "unsupported": 5793
+        },
+        "metadata_status": {
+          "unsupported": 5793
+        },
+        "quantity_status": {
+          "not_supplied": 5793
+        },
+        "text_status": {
+          "not_supplied": 5793
+        },
+        "with_title_storage_nonempty": 5793,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "povarenok-detail": {
+        "n_recipes": 20757,
+        "n_slots": 216588,
+        "with_title": 20757,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 20757,
+        "total_minutes_missing": 20757,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 11884,
+        "servings_unknown": 8873,
+        "servings_missing": 8873,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "component_only": 13169,
+          "no_total_field": 7588
+        },
+        "servings_status": {
+          "source_servings": 11884,
+          "missing": 8873
+        },
+        "metadata_status": {
+          "matched": 20757
+        },
+        "quantity_status": {
+          "not_supplied": 20757
+        },
+        "text_status": {
+          "not_supplied": 20757
+        },
+        "with_title_storage_nonempty": 20757,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "romanian-881": {
+        "n_recipes": 791,
+        "n_slots": 5908,
+        "with_title": 791,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 791,
+        "total_minutes_missing": 791,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 791,
+        "servings_missing": 791,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 791
+        },
+        "servings_status": {
+          "unsupported": 791
+        },
+        "metadata_status": {
+          "unsupported": 791
+        },
+        "quantity_status": {
+          "not_supplied": 791
+        },
+        "text_status": {
+          "not_supplied": 791
+        },
+        "with_title_storage_nonempty": 791,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "taiwan-1.8k": {
+        "n_recipes": 1748,
+        "n_slots": 8741,
+        "with_title": 1748,
+        "with_steps": 1748,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 1748,
+        "total_minutes_missing": 1748,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 1238,
+        "servings_unknown": 510,
+        "servings_missing": 510,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "no_total_field": 465,
+          "component_only": 1283
+        },
+        "servings_status": {
+          "missing": 510,
+          "source_servings": 1238
+        },
+        "metadata_status": {
+          "matched": 1748
+        },
+        "quantity_status": {
+          "not_supplied": 1748
+        },
+        "text_status": {
+          "not_supplied": 1748
+        },
+        "with_title_storage_nonempty": 1748,
+        "with_steps_storage_nonempty": 1748,
+        "with_title_and_steps_storage_nonempty": 1748,
+        "with_title_and_steps": 1748,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "thai-1k": {
+        "n_recipes": 1023,
+        "n_slots": 4995,
+        "with_title": 1023,
+        "with_steps": 1023,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 1023,
+        "total_minutes_missing": 1023,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 1023,
+        "servings_missing": 1023,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 1023
+        },
+        "servings_status": {
+          "unsupported": 1023
+        },
+        "metadata_status": {
+          "unsupported": 1023
+        },
+        "quantity_status": {
+          "not_supplied": 1023
+        },
+        "text_status": {
+          "not_supplied": 1023
+        },
+        "with_title_storage_nonempty": 1023,
+        "with_steps_storage_nonempty": 1023,
+        "with_title_and_steps_storage_nonempty": 1023,
+        "with_title_and_steps": 1023,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "thai-1k-seasoning": {
+        "n_recipes": 681,
+        "n_slots": 2617,
+        "with_title": 681,
+        "with_steps": 681,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 681,
+        "total_minutes_missing": 681,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 681,
+        "servings_missing": 681,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 681
+        },
+        "servings_status": {
+          "unsupported": 681
+        },
+        "metadata_status": {
+          "unsupported": 681
+        },
+        "quantity_status": {
+          "not_supplied": 681
+        },
+        "text_status": {
+          "not_supplied": 681
+        },
+        "with_title_storage_nonempty": 681,
+        "with_steps_storage_nonempty": 681,
+        "with_title_and_steps_storage_nonempty": 681,
+        "with_title_and_steps": 681,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "thefoodprocessor-74k": {
+        "n_recipes": 72230,
+        "n_slots": 813862,
+        "with_title": 72230,
+        "with_steps": 0,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 72230,
+        "total_minutes_missing": 72230,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 72230,
+        "servings_missing": 72230,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 72230
+        },
+        "servings_status": {
+          "unsupported": 72230
+        },
+        "metadata_status": {
+          "unsupported": 72230
+        },
+        "quantity_status": {
+          "not_supplied": 72230
+        },
+        "text_status": {
+          "not_supplied": 72230
+        },
+        "with_title_storage_nonempty": 72230,
+        "with_steps_storage_nonempty": 0,
+        "with_title_and_steps_storage_nonempty": 0,
+        "with_title_and_steps": 0,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      },
+      "turkish-102k": {
+        "n_recipes": 100332,
+        "n_slots": 952566,
+        "with_title": 100332,
+        "with_steps": 79927,
+        "total_minutes_known": 0,
+        "total_minutes_unknown": 100332,
+        "total_minutes_missing": 100332,
+        "total_minutes_invalid": 0,
+        "total_minutes_ambiguous": 0,
+        "servings_known": 0,
+        "servings_unknown": 100332,
+        "servings_missing": 100332,
+        "servings_invalid": 0,
+        "servings_ambiguous": 0,
+        "derived_total_minutes_known": 0,
+        "time_status": {
+          "unsupported": 100332
+        },
+        "servings_status": {
+          "unsupported": 100332
+        },
+        "metadata_status": {
+          "unsupported": 100332
+        },
+        "quantity_status": {
+          "not_supplied": 100332
+        },
+        "text_status": {
+          "not_supplied": 100332
+        },
+        "with_title_storage_nonempty": 100332,
+        "with_steps_storage_nonempty": 79927,
+        "with_title_and_steps_storage_nonempty": 79927,
+        "with_title_and_steps": 79927,
+        "title_whitespace_only": 0,
+        "steps_whitespace_or_separator_only": 0
+      }
+    }
+  },
+  "sources": {
+    "01-recipenlg": {
+      "supported": false,
+      "reason": "CSV schema has no structured timing or serving fields.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "02-xiachufang": {
+      "supported": false,
+      "reason": "Sampled JSONL keys have no timing/servings; sparse optional fields were not exhaustively scanned. No duration is inferred from descriptions or instructions.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "03-povarenok": {
+      "supported": false,
+      "reason": "CSV schema contains only URL, name and ingredients.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "04-spanish": {
+      "supported": false,
+      "reason": "The immutable text index has no mirrored source identity.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "05-vietnamese": {
+      "supported": false,
+      "reason": "Chat/prose source; no supported structured metadata reader.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "06-turkish": {
+      "supported": false,
+      "reason": "Structured components exist, but the text index has no mirrored identity.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "07-indian": {
+      "supported": false,
+      "reason": "Structured totals/servings exist in part, but the text index has no identity.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "08-indonesian": {
+      "supported": false,
+      "reason": "The immutable text index has no mirrored source identity.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "09-chefkoch": {
+      "supported": false,
+      "reason": "No supported duration fields; calendar dates are not recipe durations.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "allrecipes-33k": {
+      "supported": true,
+      "reason": "Only full, unit-labelled duration fields are parsed.",
+      "fields": {
+        "total": [
+          "total_time",
+          "en"
+        ],
+        "prep": [
+          "prep_time",
+          "en"
+        ],
+        "cook": [
+          "cook_time",
+          "en"
+        ],
+        "servings": [
+          "servings",
+          "number"
+        ]
+      },
+      "inputs": [
+        {
+          "bytes": 64087916,
+          "sha256": "46fa522b43cc29a7adfd04886464501c23fe27b234a20fee3628d02fbe6cce2f",
+          "artifact_name": "recipe.csv"
+        }
+      ],
+      "reader_rows": 32722,
+      "empty_normalized": 1,
+      "metadata_records": 32721,
+      "unique_text_keys": 32718,
+      "duplicate_metadata_records": 3,
+      "matched_text_keys": 32700,
+      "unmatched_text_keys": 18,
+      "ambiguous_text_keys": 0
+    },
+    "bhuvii-17k": {
+      "supported": false,
+      "reason": "No supported structured timing or serving fields.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "filipino-2k": {
+      "supported": true,
+      "reason": "Explicit structured metadata fields.",
+      "fields": {
+        "total": [
+          "total_time",
+          "en"
+        ],
+        "prep": [
+          "prep_time",
+          "en"
+        ],
+        "cook": [
+          "cook_time",
+          "en"
+        ],
+        "servings": [
+          "servings",
+          "en"
+        ]
+      },
+      "inputs": [
+        {
+          "bytes": 1120010,
+          "sha256": "3306a4790c2fac611ac50bf5dbfd47eef03f73e3f3b0fe880bca7d9abb5869a8",
+          "artifact_name": "train-00000-of-00001.parquet"
+        }
+      ],
+      "reader_rows": 1988,
+      "empty_normalized": 0,
+      "metadata_records": 1988,
+      "unique_text_keys": 1988,
+      "duplicate_metadata_records": 0,
+      "matched_text_keys": 1984,
+      "unmatched_text_keys": 4,
+      "ambiguous_text_keys": 0
+    },
+    "foodcom-522k": {
+      "supported": true,
+      "reason": "RecipeYield is not a serving count.",
+      "fields": {
+        "total": [
+          "TotalTime",
+          "iso8601"
+        ],
+        "prep": [
+          "PrepTime",
+          "iso8601"
+        ],
+        "cook": [
+          "CookTime",
+          "iso8601"
+        ],
+        "servings": [
+          "RecipeServings",
+          "number"
+        ]
+      },
+      "inputs": [
+        {
+          "bytes": 704213964,
+          "sha256": "7d564e2fabb9d50d101c4605bddec2612b5e10225778ab015ab68490452788c2",
+          "artifact_name": "recipes.csv"
+        }
+      ],
+      "reader_rows": 522517,
+      "empty_normalized": 2379,
+      "metadata_records": 520138,
+      "unique_text_keys": 519587,
+      "duplicate_metadata_records": 551,
+      "matched_text_keys": 463334,
+      "unmatched_text_keys": 56253,
+      "ambiguous_text_keys": 129
+    },
+    "foodcom-raw-231k": {
+      "supported": true,
+      "reason": "Source numeric total minutes; no servings column.",
+      "fields": {
+        "total": [
+          "minutes",
+          "minutes"
+        ],
+        "prep": null,
+        "cook": null,
+        "servings": null
+      },
+      "inputs": [
+        {
+          "bytes": 132121597,
+          "sha256": "22dd0e58910700b01e8cfd74a9c1ff438d1dbb4f39e00d60db06bc2041133182",
+          "artifact_name": "food_recipes.parquet"
+        }
+      ],
+      "reader_rows": 231637,
+      "empty_normalized": 12,
+      "metadata_records": 231625,
+      "unique_text_keys": 231624,
+      "duplicate_metadata_records": 1,
+      "matched_text_keys": 179227,
+      "unmatched_text_keys": 52397,
+      "ambiguous_text_keys": 1
+    },
+    "greek-5k": {
+      "supported": true,
+      "reason": "Explicit structured metadata fields.",
+      "fields": {
+        "total": [
+          "Total Time",
+          "el"
+        ],
+        "prep": [
+          "Preparation Time",
+          "el"
+        ],
+        "cook": null,
+        "servings": [
+          "Number of Servings",
+          "el"
+        ]
+      },
+      "inputs": [
+        {
+          "bytes": 18565451,
+          "sha256": "293f6d414dfedf2808e128636191268bbbb555302f8dd731d2707fa760fa3e9e",
+          "artifact_name": "recipes_greek.csv"
+        }
+      ],
+      "reader_rows": 5434,
+      "empty_normalized": 540,
+      "metadata_records": 4894,
+      "unique_text_keys": 4894,
+      "duplicate_metadata_records": 0,
+      "matched_text_keys": 4881,
+      "unmatched_text_keys": 13,
+      "ambiguous_text_keys": 0
+    },
+    "halal-2k": {
+      "supported": true,
+      "reason": "Bare numeric durations have no declared unit and remain invalid.",
+      "fields": {
+        "total": [
+          "total_time",
+          "en"
+        ],
+        "prep": [
+          "prep_time",
+          "en"
+        ],
+        "cook": [
+          "cook_time",
+          "en"
+        ],
+        "servings": [
+          "servings",
+          "en"
+        ]
+      },
+      "inputs": [
+        {
+          "bytes": 4591044,
+          "sha256": "786854ae2da4621585239ff67fc7ea7b79d5e4f9d1f3d5e90b2d19bfe480b918",
+          "artifact_name": "recipes.jsonl"
+        }
+      ],
+      "reader_rows": 2016,
+      "empty_normalized": 0,
+      "metadata_records": 2016,
+      "unique_text_keys": 2016,
+      "duplicate_metadata_records": 0,
+      "matched_text_keys": 2006,
+      "unmatched_text_keys": 10,
+      "ambiguous_text_keys": 0
+    },
+    "hebrew-9.7k": {
+      "supported": false,
+      "reason": "JSON-LD may have metadata, but the text index has no mirrored identity.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "indian-7k": {
+      "supported": true,
+      "reason": "No total field. Prep + cook is retained only as a derived sum.",
+      "fields": {
+        "total": null,
+        "prep": [
+          "prep_time (in mins)",
+          "minutes"
+        ],
+        "cook": [
+          "cook_time (in mins)",
+          "minutes"
+        ],
+        "servings": null
+      },
+      "inputs": [
+        {
+          "bytes": 16251035,
+          "sha256": "03a20c91ce5b5e3faf0ebecd233bb38e586099e29a7091e08a2f4ade0d7b7009",
+          "artifact_name": "Food_Recipe.csv"
+        }
+      ],
+      "reader_rows": 7096,
+      "empty_normalized": 1002,
+      "metadata_records": 6094,
+      "unique_text_keys": 6087,
+      "duplicate_metadata_records": 7,
+      "matched_text_keys": 6053,
+      "unmatched_text_keys": 34,
+      "ambiguous_text_keys": 0
+    },
+    "japanese-3k": {
+      "supported": true,
+      "reason": "Explicit structured metadata fields.",
+      "fields": {
+        "total": [
+          "合計時間",
+          "ja"
+        ],
+        "prep": null,
+        "cook": null,
+        "servings": null
+      },
+      "inputs": [
+        {
+          "bytes": 4539368,
+          "sha256": "2ffb21181fdd509431b4c5a0f3468779818a75753ff4a41bb340350902d1d0e1",
+          "artifact_name": "recipe_jap.csv"
+        }
+      ],
+      "reader_rows": 3756,
+      "empty_normalized": 63,
+      "metadata_records": 3693,
+      "unique_text_keys": 3693,
+      "duplicate_metadata_records": 0,
+      "matched_text_keys": 3692,
+      "unmatched_text_keys": 1,
+      "ambiguous_text_keys": 0
+    },
+    "kaggle-food-13k": {
+      "supported": false,
+      "reason": "CSV schema has no structured timing or serving fields.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "moroccan-4.6k": {
+      "supported": false,
+      "reason": "Prompt/prose source without a mirrored text identity.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "persian-6k": {
+      "supported": false,
+      "reason": "No total field. Bare preparation/cooking numbers have no declared unit; suitable_for is not treated as a documented serving count.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "povarenok-detail": {
+      "supported": true,
+      "reason": "Cooking time is a component, not a documented total.",
+      "fields": {
+        "total": null,
+        "prep": null,
+        "cook": [
+          "cooking_time",
+          "ru"
+        ],
+        "servings": [
+          "portions_count",
+          "number"
+        ]
+      },
+      "inputs": [
+        {
+          "bytes": 91688188,
+          "sha256": "8a50b497d6c652c52e4ecbc8b09678ca53b1dba29829ab6fcab7ca3dfa1d452c",
+          "artifact_name": "train-00000-of-00002-d1fbf0221320b7a4.parquet"
+        },
+        {
+          "bytes": 108326199,
+          "sha256": "14fb1955c34d94cb2e637396bf470eeb69e14e5704cf6eef7f7e9b655080d1af",
+          "artifact_name": "train-00001-of-00002-8ce75ff1e8c43597.parquet"
+        }
+      ],
+      "reader_rows": 154155,
+      "empty_normalized": 8,
+      "metadata_records": 154147,
+      "unique_text_keys": 154147,
+      "duplicate_metadata_records": 0,
+      "matched_text_keys": 20757,
+      "unmatched_text_keys": 133390,
+      "ambiguous_text_keys": 0
+    },
+    "romanian-881": {
+      "supported": false,
+      "reason": "No supported structured metadata in the unnamed CSV fields.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "taiwan-1.8k": {
+      "supported": true,
+      "reason": "Cooking time is not promoted to a total.",
+      "fields": {
+        "total": null,
+        "prep": null,
+        "cook": [
+          "cooking_time",
+          "zh"
+        ],
+        "servings": [
+          "servings",
+          "number"
+        ]
+      },
+      "inputs": [
+        {
+          "bytes": 1079443,
+          "sha256": "90f55626d0a3bf6b69ab13c17c36d00a8522486b1b5ae53a692b413f704f17d0",
+          "artifact_name": "train-00000-of-00001.parquet"
+        }
+      ],
+      "reader_rows": 1799,
+      "empty_normalized": 42,
+      "metadata_records": 1757,
+      "unique_text_keys": 1757,
+      "duplicate_metadata_records": 0,
+      "matched_text_keys": 1748,
+      "unmatched_text_keys": 9,
+      "ambiguous_text_keys": 0
+    },
+    "thai-1k": {
+      "supported": false,
+      "reason": "CSV schema has no structured timing or serving fields.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "thai-1k-seasoning": {
+      "supported": false,
+      "reason": "CSV schema has no structured timing or serving fields.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "thefoodprocessor-74k": {
+      "supported": false,
+      "reason": "Recipe prose only; times are not inferred from text.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    },
+    "turkish-102k": {
+      "supported": false,
+      "reason": "Parquet schema has no structured timing or serving fields.",
+      "fields": {},
+      "inputs": [],
+      "reader_rows": 0,
+      "empty_normalized": 0,
+      "metadata_records": 0
+    }
+  },
+  "inputs": [
+    {
+      "bytes": 543,
+      "sha256": "851ad03658bc04db44c7e9fcf84f8b15b6e5d93f2d58e661278114970a2c27df",
+      "artifact_name": "GENERATION.json"
+    },
+    {
+      "bytes": 42080799,
+      "sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+      "artifact_name": "recipe_ids.npz"
+    },
+    {
+      "bytes": 1417451606,
+      "sha256": "b6f495a04ac9b5a1358ec65a2a6f549b60412269514c5717074965536b127967",
+      "artifact_name": "recipe_text_v2.parquet"
+    },
+    {
+      "bytes": 35104,
+      "sha256": "5a10278cd71eeb66051d23ef8621b917a60ecd493d4580f60d324623191f8005",
+      "artifact_name": "vocab.json"
+    },
+    {
+      "bytes": 64087916,
+      "sha256": "46fa522b43cc29a7adfd04886464501c23fe27b234a20fee3628d02fbe6cce2f",
+      "artifact_name": "recipe.csv"
+    },
+    {
+      "bytes": 1120010,
+      "sha256": "3306a4790c2fac611ac50bf5dbfd47eef03f73e3f3b0fe880bca7d9abb5869a8",
+      "artifact_name": "train-00000-of-00001.parquet"
+    },
+    {
+      "bytes": 704213964,
+      "sha256": "7d564e2fabb9d50d101c4605bddec2612b5e10225778ab015ab68490452788c2",
+      "artifact_name": "recipes.csv"
+    },
+    {
+      "bytes": 132121597,
+      "sha256": "22dd0e58910700b01e8cfd74a9c1ff438d1dbb4f39e00d60db06bc2041133182",
+      "artifact_name": "food_recipes.parquet"
+    },
+    {
+      "bytes": 18565451,
+      "sha256": "293f6d414dfedf2808e128636191268bbbb555302f8dd731d2707fa760fa3e9e",
+      "artifact_name": "recipes_greek.csv"
+    },
+    {
+      "bytes": 4591044,
+      "sha256": "786854ae2da4621585239ff67fc7ea7b79d5e4f9d1f3d5e90b2d19bfe480b918",
+      "artifact_name": "recipes.jsonl"
+    },
+    {
+      "bytes": 16251035,
+      "sha256": "03a20c91ce5b5e3faf0ebecd233bb38e586099e29a7091e08a2f4ade0d7b7009",
+      "artifact_name": "Food_Recipe.csv"
+    },
+    {
+      "bytes": 4539368,
+      "sha256": "2ffb21181fdd509431b4c5a0f3468779818a75753ff4a41bb340350902d1d0e1",
+      "artifact_name": "recipe_jap.csv"
+    },
+    {
+      "bytes": 91688188,
+      "sha256": "8a50b497d6c652c52e4ecbc8b09678ca53b1dba29829ab6fcab7ca3dfa1d452c",
+      "artifact_name": "train-00000-of-00002-d1fbf0221320b7a4.parquet"
+    },
+    {
+      "bytes": 108326199,
+      "sha256": "14fb1955c34d94cb2e637396bf470eeb69e14e5704cf6eef7f7e9b655080d1af",
+      "artifact_name": "train-00001-of-00002-8ce75ff1e8c43597.parquet"
+    },
+    {
+      "bytes": 1079443,
+      "sha256": "90f55626d0a3bf6b69ab13c17c36d00a8522486b1b5ae53a692b413f704f17d0",
+      "artifact_name": "train-00000-of-00001.parquet"
+    }
+  ],
+  "code": [
+    {
+      "bytes": 52069,
+      "sha256": "2171459e12ad3748eaca2388e062812faedb9825d70e356ba381c4b2a750e44a",
+      "artifact_name": "recipe_catalog.py"
+    },
+    {
+      "bytes": 23515,
+      "sha256": "6f1b8c733f7733814b6b89a3a14aae907fa6c64df6262cfdb6acc07b96a50652",
+      "artifact_name": "text.py"
+    },
+    {
+      "bytes": 6041,
+      "sha256": "f77d6f676d5a50d467eee01a399b19a42532995268621a7ffc6bfdd5863def7b",
+      "artifact_name": "recipes.py"
+    },
+    {
+      "bytes": 2771,
+      "sha256": "880805fa719944ccb598113c09be339296605cf26f2c082d0710ca8287fe8646",
+      "artifact_name": "build_recipe_catalog.py"
+    },
+    {
+      "bytes": 17072,
+      "sha256": "dfe7badcffa63e6d0cd88e897e7368053ad62649713e0ca0bb3ac03419d96e8e",
+      "artifact_name": "corpus.py"
+    },
+    {
+      "bytes": 9352,
+      "sha256": "d24cb8dd398e3912b531d2cf1ee6efafe41a27392242a2283e740f3aff9c52cf",
+      "artifact_name": "normalize.py"
+    },
+    {
+      "bytes": 7824,
+      "sha256": "69caeaf8c1da83fd7c6024100b465a163395c1cc5d518b80e6f2dd989b1b7b58",
+      "artifact_name": "normalizer.py"
+    },
+    {
+      "bytes": 40100,
+      "sha256": "aa425b4174d288c0d20b0d35b46111c28b911c68e0dba22eaadf8db49e50612a",
+      "artifact_name": "lexicons.py"
+    },
+    {
+      "bytes": 20533,
+      "sha256": "ea7a6ee16c73b2ac2c12838ddc1a2662521dd3e31403c77315ff25c9a254feb9",
+      "artifact_name": "multilingual.py"
+    },
+    {
+      "bytes": 16007,
+      "sha256": "7a6579afd648d1b22a3514e3cde300c65820ce82e11ec83508170e0f9e5dad00",
+      "artifact_name": "build_recipe_cooc.py"
+    },
+    {
+      "bytes": 3569,
+      "sha256": "217229deecd8c3d4197aabcb15e45ce19aa2b21e0f234f3f242fc89fb46d3e9e",
+      "artifact_name": "en.json"
+    },
+    {
+      "bytes": 12044,
+      "sha256": "1ec19af86ebbba2da6e26e49b87aa3dca215722fe0ded0b2b848e3a357c61e5e",
+      "artifact_name": "ru.json"
+    },
+    {
+      "bytes": 17869,
+      "sha256": "d98343b33f35fabb16c618a3a6caf3a291f93bd7a303f603a1f318c3437963d3",
+      "artifact_name": "zh.json"
+    }
+  ],
+  "verification": {
+    "sqlite_integrity": "ok",
+    "fts_integrity": "ok",
+    "recipe_rows": 4653430,
+    "fts_rows": 4653430,
+    "ingredient_slots": 36707624,
+    "fts_tokens": 36707624,
+    "all_row_identities_checked": true,
+    "all_ingredient_blobs_checked": true,
+    "all_fts_tokens_checked": true,
+    "all_text_fields_checked": true,
+    "text_content_sha256": "d077d10a3abe60ff7639c0e9a1889ed93605a5825c6b3b6a2e8fc709ea2ca3a0"
+  },
+  "build": {
+    "started_at": "2026-09-10T04:06:03.811930+00:00",
+    "completed_at": "2026-09-10T04:14:20.951425+00:00",
+    "elapsed_seconds": 497.144,
+    "sqlite_version": "3.53.4",
+    "batch_size": 8192,
+    "sqlite_threads": 2,
+    "text_arrow_use_threads": false,
+    "arrow_cpu_threads": 2,
+    "arrow_io_threads": 2,
+    "require_metadata_match": true,
+    "privacy": "local-only; exported report contains no source text or filesystem paths",
+    "join": "exact v2 text fingerprint plus normalized ingredient identity",
+    "output_bytes": 5346344960,
+    "artifact_name": "recipe_search.sqlite"
+  },
+  "published_validation": {
+    "catalog_sha256": "708662e373a8825805be5b94a58ad9f1be3a3f2263df9bfb6022691bd196ff7f",
+    "catalog_bytes": 5346344960,
+    "read_only_metadata_validated": true,
+    "fts_postings_equal_corpus_frequencies": true,
+    "fts_distinct_terms": 1610,
+    "zero_frequency_vocabulary_terms": 180,
+    "fts_total_postings": 36707624,
+    "numeric_totals_without_source_total_status": 0,
+    "nonpositive_totals_or_servings": 0,
+    "numeric_metadata_finite_or_null": true,
+    "full_recipe_view": {
+      "predicate": "bool((title or '').strip()) and any(fragment.strip() for fragment in (steps or '').split('\\x1f'))",
+      "recipes_with_title_and_steps": 4223998,
+      "recipes_with_title_steps_and_source_total": 681272,
+      "recipes_with_title_steps_and_unknown_total": 3542726,
+      "timed_full_recipes_by_source": {
+        "allrecipes-33k": 30831,
+        "filipino-2k": 1963,
+        "foodcom-522k": 461364,
+        "foodcom-raw-231k": 178431,
+        "greek-5k": 4869,
+        "halal-2k": 292,
+        "japanese-3k": 3522
+      },
+      "remaining_sources_with_reliable_total": 0,
+      "note": "All 4653430 canonical rows remain stored; this is a read-only serving predicate.",
+      "storage_nonempty_recipes_with_title_and_steps": 4224097
+    },
+    "index_probes": [
+      {
+        "name": "total_minutes_at_most_30",
+        "matching_rows": 265065,
+        "elapsed_ms": 59.907,
+        "query_plan": "SEARCH recipes USING COVERING INDEX recipes_total_minutes (total_minutes<?)"
+      },
+      {
+        "name": "servings_equal_4",
+        "matching_rows": 107542,
+        "elapsed_ms": 23.282,
+        "query_plan": "SEARCH recipes USING COVERING INDEX recipes_servings (servings=?)"
+      },
+      {
+        "name": "source_foodcom_522k",
+        "matching_rows": 463334,
+        "elapsed_ms": 189.824,
+        "query_plan": "SEARCH recipes USING COVERING INDEX recipes_source (source=?)"
+      }
+    ],
+    "runtime": {
+      "python": "3.13.3",
+      "numpy": "2.5.1",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.0"
+    },
+    "focused_tests": {
+      "passed": 132,
+      "test_files": [
+        "test_recipe_catalog.py",
+        "test_text_extraction.py"
+      ]
+    }
+  },
+  "coverage_definitions": {
+    "version": 2,
+    "with_title": "bool((title or '').strip())",
+    "with_steps": "any(fragment.strip() for fragment in (steps or '').split('\\x1f'))",
+    "with_title_and_steps": "with_title and with_steps",
+    "storage_nonempty": "value IS NOT NULL AND value != ''; not SQLite length(value)>0",
+    "whitespace_only": "storage_nonempty and not the corresponding Python-strip predicate",
+    "unicode_database_version": "15.1.0",
+    "notes": "Python strip includes Unicode whitespace and U+001F separators. NUL and zero-width space are not whitespace. These counters measure non-whitespace presence, not instruction quality, parsing success, or recipe completeness."
+  },
+  "content_coverage_audit": {
+    "catalog_sha256": "708662e373a8825805be5b94a58ad9f1be3a3f2263df9bfb6022691bd196ff7f",
+    "catalog_modified": false,
+    "catalog_rebuilt": false,
+    "rows_scanned": 4653430,
+    "stored_catalog_metadata_unchanged": true,
+    "historical_build_provenance_preserved": true,
+    "note": "Exported coverage uses version 2; immutable database metadata still records legacy raw string presence. Original build fingerprints are historical, not hashes of the revised builder.",
+    "steps_storage_nonempty": 4224098,
+    "steps_python_nonempty": 4223999,
+    "title_steps_storage_nonempty": 4224097,
+    "title_steps_python_nonempty": 4223998,
+    "timed_title_steps_python_nonempty": 681272,
+    "excluded_whitespace_only": 99,
+    "excluded_by_source": {
+      "02-xiachufang": 98,
+      "kaggle-food-13k": 1
+    },
+    "separator_or_newline_whitespace_only": 97,
+    "ordinary_space_only": 2,
+    "ordinary_space_only_by_source": {
+      "02-xiachufang": 1,
+      "kaggle-food-13k": 1
+    },
+    "additional_unicode_whitespace_only_rows": 0,
+    "rejected_codepoint_sets": {
+      "U+000A,U+001F": 6,
+      "U+000A,U+001F,U+0020": 6,
+      "U+001F": 26,
+      "U+001F,U+0020": 59,
+      "U+0020": 2
+    },
+    "sqlite_default_trim_length_nonempty": 4224095,
+    "sqlite_ascii_separator_trim_length_nonempty": 4223998,
+    "sqlite_length_leading_nul_undercount": 1,
+    "nul_note": "One leading U+0000 record is retained by Python strip but undercounted by SQLite length. This is not part of the 99 whitespace-only exclusions.",
+    "fixture_tests_passed": 145,
+    "builder_revision_sha256": "6a4e443076d52b0881077b65559523595b307816c97fa7685e0af34d88e9f71d",
+    "catalog_sha256_after": "708662e373a8825805be5b94a58ad9f1be3a3f2263df9bfb6022691bd196ff7f"
+  },
+  "search_metadata": {
+    "format_version": 1,
+    "partial": false,
+    "catalog": {
+      "sha256": "708662e373a8825805be5b94a58ad9f1be3a3f2263df9bfb6022691bd196ff7f",
+      "bytes": 5346344960,
+      "schema_version": 1,
+      "metadata_sha256": "4bb6e1fcdc312b9bbcb99130710b6fce8f05905e147a54963da8b46e054a73c4",
+      "corpus_sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
+      "text_index_sha256": "b6f495a04ac9b5a1358ec65a2a6f549b60412269514c5717074965536b127967",
+      "vocabulary_sha256": "9f8f7c03f13d2c33ec0724b86e241d4fa28bfd19715f9bec3a10cd9a1dccef7c",
+      "ingredient_frequency_sha256": "c690720211f9c2abd44d84722e88ae975dde8b7e4f45990a68f9ad41fcd0cef3",
+      "n_recipes": 4653430,
+      "n_slots": 36707624,
+      "n_vocab": 1790
+    },
+    "n_languages": 15,
+    "arrays": {
+      "total_minutes.npy": {
+        "sha256": "092a2522a348e2d33606e726f1ef91bb393793019984851ce7710d798faadf27",
+        "bytes": 37227568,
+        "dtype": "<f8",
+        "shape": [
+          4653430
+        ]
+      },
+      "servings.npy": {
+        "sha256": "c041e99eb96f476e54d54aab21bcfeb5e34b5def83d80e756753d9d001cad43d",
+        "bytes": 37227568,
+        "dtype": "<f8",
+        "shape": [
+          4653430
+        ]
+      },
+      "language_codes.npy": {
+        "sha256": "be591524ad102b70c8b04f80b9ef771b70b5e994a61d5d572fff766db7ac6777",
+        "bytes": 9306988,
+        "dtype": "<u2",
+        "shape": [
+          4653430
+        ]
+      },
+      "ingredient_counts.npy": {
+        "sha256": "65bbd9e17d9f2d66bdda1296d6161a5fb7661f32a09c1ee286c59f05354e6f14",
+        "bytes": 9306988,
+        "dtype": "<u2",
+        "shape": [
+          4653430
+        ]
+      },
+      "readable.npy": {
+        "sha256": "bbbfa2a11725898dc0562c40b8c490b86cfcff9dcb2a4117632df187164b2d1d",
+        "bytes": 4653558,
+        "dtype": "|b1",
+        "shape": [
+          4653430
+        ]
+      },
+      "language_names.npy": {
+        "sha256": "4f8c5a41c926b446e9de2d360ba6f3899a9d4386699cbd4914f76a2a881188cc",
+        "bytes": 2048,
+        "dtype": "<U32",
+        "shape": [
+          15
+        ]
+      }
+    },
+    "predicates": {
+      "total_minutes": "finite positive source_total; NaN for SQL NULL; no derived sums",
+      "servings": "finite positive source_servings; NaN for SQL NULL",
+      "readable": "bool((title or '').strip()) and any(fragment.strip() for fragment in (steps or '').split('\\x1f')) and text_status != 'unparsed_steps'"
+    },
+    "coverage": {
+      "readable": 4223998,
+      "source_totals": 681275,
+      "servings": 353946,
+      "ingredient_slots": 36707624
+    },
+    "source_counts": {
+      "01-recipenlg": 1994816,
+      "02-xiachufang": 1438566,
+      "03-povarenok": 142058,
+      "04-spanish": 46446,
+      "05-vietnamese": 31886,
+      "06-turkish": 25416,
+      "07-indian": 16151,
+      "08-indonesian": 14939,
+      "09-chefkoch": 4290,
+      "foodcom-522k": 463334,
+      "foodcom-raw-231k": 179227,
+      "povarenok-detail": 20757,
+      "turkish-102k": 100332,
+      "thefoodprocessor-74k": 72230,
+      "allrecipes-33k": 32700,
+      "bhuvii-17k": 17026,
+      "kaggle-food-13k": 13463,
+      "hebrew-9.7k": 8698,
+      "indian-7k": 6053,
+      "persian-6k": 5793,
+      "greek-5k": 4881,
+      "moroccan-4.6k": 2443,
+      "japanese-3k": 3692,
+      "filipino-2k": 1984,
+      "halal-2k": 2006,
+      "thai-1k": 1023,
+      "thai-1k-seasoning": 681,
+      "taiwan-1.8k": 1748,
+      "romanian-881": 791
+    },
+    "build": {
+      "elapsed_seconds": 39.197224,
+      "batch_size": 8192,
+      "python": "3.13.3",
+      "numpy": "2.5.1",
+      "builder_sha256": "9d0184431e2c80ba799d54da7c62fc8b90cd2e44291b612196f1c0cca881e2d9",
+      "catalog_modified": false,
+      "all_record_ids_checked": true,
+      "all_ingredient_ids_and_frequencies_checked": true
+    },
+    "artifact_name": "recipe_search.sqlite.metadata",
+    "output_bytes": 97728314,
+    "manifest_sha256": "40a5c231a186394def37ea6fa570e9c074319e92bb5b1b43020ece029b3335fc",
+    "performance": {
+      "catalog_unchanged_sha256": "708662e373a8825805be5b94a58ad9f1be3a3f2263df9bfb6022691bd196ff7f",
+      "cold_process_hash_cache_load_ms": 2532.561,
+      "warm_process_load_ms": [
+        19.001,
+        20.363,
+        16.687
+      ],
+      "filter_50000_ms": [
+        6.636,
+        6.285,
+        6.209,
+        6.555,
+        6.161,
+        6.123,
+        6.465
+      ],
+      "filter_median_ms": 6.285,
+      "input_ids": 50000,
+      "surviving_ids": 3899,
+      "constraints": {
+        "max_total_minutes": 45,
+        "max_ingredients": 12
+      },
+      "baseline_primary_key_batches": 98,
+      "prefiltered_primary_key_batches": 8,
+      "baseline_r_star_fetch_and_python_filter_ms": 2056.823,
+      "prefiltered_r_star_fetch_ms": 14.761,
+      "prefilter_and_fetch_ms": 21.046,
+      "ordered_results_equal_independent_row_checks": true,
+      "benchmark_note": "Deterministic 50,000 uniformly sampled unique canonical IDs; 512-ID SQL batches. OS page cache was not evicted; this does not benchmark FTS or full end-to-end search.",
+      "build_elapsed_seconds": 39.29202,
+      "build_peak_rss_bytes": 244482048,
+      "build_peak_footprint_bytes": 112558680,
+      "focused_tests_passed": 215
+    }
+  }
+}

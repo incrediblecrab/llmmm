@@ -20,6 +20,7 @@
 # to this public repository or include credentials in their input manifest.
 /.artifacts/
 /model/data/hf_cache/
+/model/training/
 
 # ---------------------------------------------------------------------------
 # The prior study's derived artefacts (199 MB). Its own scripts regenerate
