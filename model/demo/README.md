@@ -1,18 +1,23 @@
 # Browser recipe demo
 
-The demo filters a small public recipe catalog, then runs the released supervised
-ranker in JavaScript. It does not need the private corpus, a Python backend or an
-API key. The source recipe text, license notices and revision links live in
-[`../demo_data/`](../demo_data/).
+The live [demo](https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo)
+searches the full public ingredient-only index, then runs the released supervised
+ranker in JavaScript. It needs no private corpus, Python backend or API key.
+The [release receipt](../results/huggingface_ingredient_demo_release.json) pins
+the actual dataset and application revisions.
+
+The original twelve-recipe sample is also retained. Its complete recipe text,
+license notices and revision links live in [`../demo_data/`](../demo_data/).
+The sample and full-index modes share the ranking implementation.
 
 The weights are downloaded from the exact public model commit recorded in
 [`huggingface_recipe_search_release.json`](../results/huggingface_recipe_search_release.json).
 The builder checks the original safetensors and configuration hashes before
 exporting their numbers to JSON. The full published vocabulary is retained:
-changing its size would change the feature normalizer. Document frequencies
-and recipe counts describe this sample only, not the original training corpus.
+changing its size would change the feature normalizer. The sample mode uses
+sample frequencies; the full-index mode uses full-corpus frequencies.
 
-## Build and run locally
+## Build the licensed sample locally
 
 From the repository root, with the model environment prepared:
 
@@ -58,7 +63,7 @@ The Hub renders `README.md` as HTML rather than serving its original Markdown.
 Its source hash is recorded under `documentation_files` and checked through the
 exact Hub revision, separately from browser assets.
 
-## Publish
+## Publish the licensed sample
 
 Commit and push the source, including the curation inputs, before publication:
 
@@ -74,6 +79,8 @@ The publisher creates a public dataset and a **static** Space. It never requests
 paid hardware. It pins the dataset revision, builds a fresh app, runs the browser
 checks locally, uploads only the serving allowlist, then repeats the checks
 anonymously against the actual hosting origin returned by the Hub.
+This preserves the historical sample workflow; its guards refuse to replace the
+full ingredient dataset's current deployment.
 
 Only after the live app works does it add demo links to the model card. All
 non-README model files and existing model tags must remain unchanged. A failed
@@ -85,7 +92,7 @@ inspected update of the existing demo repositories; changed dataset bytes requir
 a new `--dataset-tag`. Old tags are never moved. Regeneration and hosting stay
 local/Hugging Face; no GitHub Actions are used.
 
-## Scope
+## Sample scope
 
 The demo retrieves existing recipes; it is not a recipe-writing model. Ingredient
 selection is a canonical-name picker, not the ingredient predictor. Filters
@@ -99,13 +106,13 @@ The full-catalog recovery measurements must not be applied to this demo.
 
 ## Full ingredient-only index
 
-The second mode scans every canonical ingredient record, including singletons,
+The full mode scans every canonical ingredient record, including singletons,
 duplicates and records without readable instructions. It does not copy recipe
 titles, quantities, raw ingredient sentences, instructions, images or descriptive
 prose. Known overall time and servings must carry their source-reported status;
 unknown values remain unknown.
 
-The complete local export has 4,653,430 records and 36,707,624 ingredient slots.
+The public dataset has 4,653,430 records and 36,707,624 ingredient slots.
 Seven compressed arrays total 37,769,040 bytes (36.0 MiB). The browser reconstructs
 offsets, verifies sorted unique sets and full-corpus document frequencies, then
 searches in a worker. The user must request the initial download. Loaded arrays
@@ -125,8 +132,41 @@ discloses truncation. This is a different retrieval pipeline from the private
 SQLite/FTS finder: neither its recovery benchmark nor the public sample's
 statistics measure this mode.
 
-With the authorized canonical corpus and private catalog restored, run from the
-repository root:
+### Rebuild from public data
+
+From the repository root with the model environment prepared, fetch only the
+index at the revision recorded in the release receipt:
+
+```bash
+model/.venv/bin/python - <<'PY'
+import json
+from pathlib import Path
+from huggingface_hub import snapshot_download
+from ingredient_model.ingredient_demo import build_ingredient_demo
+
+root = Path.cwd()
+release = json.loads((root / "model/results/huggingface_ingredient_demo_release.json").read_text())
+snapshot = snapshot_download(
+    release["dataset"]["repository"],
+    repo_type="dataset",
+    revision=release["dataset"]["revision"],
+    allow_patterns=["index/**"],
+    token=False,
+)
+build_ingredient_demo(root, Path(snapshot) / "index", root / ".artifacts/public-demo-preview")
+PY
+python3 -m http.server 7860 --bind 127.0.0.1 \
+  --directory .artifacts/public-demo-preview
+```
+
+This uses public weights and public ingredient facts, not the private SQLite
+catalog or original corpus arrays. Existing preview directories are not
+overwritten. The full dataset also provides a standard Parquet `train` split
+with IDs, ingredient IDs/names, source/language, times, servings and source URLs.
+
+### Rebuild from original inputs
+
+With the authorized canonical corpus and private catalog restored, run:
 
 ```bash
 make -C model ingredient-index

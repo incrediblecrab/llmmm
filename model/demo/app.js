@@ -295,7 +295,7 @@ async function start() {
     $("license-note").textContent = "No original titles, descriptive prose, images, quantities or instructions "
       + "are included. Model-weight terms are unchanged. "
       + (provenance.dataset_repository ? "See the dataset's publication terms and source inventory."
-        : "This is a local preview; the complete index has not been published.");
+        : "This is a local preview without a pinned public dataset revision.");
     $("index-download").hidden = false;
     $("source-link-filter").hidden = false;
     $("download-size").textContent = `${(bundle.catalog.bytes.initial_compressed_download / 1024 ** 2).toFixed(1)} MiB`;

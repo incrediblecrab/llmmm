@@ -6,66 +6,55 @@ has its own weights and biases trained from scratch on canonical recipe
 ingredient sets. No pretrained model was used to initialize it.
 
 The code, training records and evaluations are here; the weights are on Hugging
-Face. The original training corpus is not redistributed. See the [source inventory](raw-data/README.md)
-and [source-term notes](prior-study/docs/LICENSE_AUDIT.md) for provenance and
-downstream obligations.
+Face. The full ingredient-only dataset is public; original recipe prose and
+images are not redistributed. See the [source inventory](raw-data/README.md)
+for provenance.
 
 ## Public recipe demo
 
 **[Try the demo](https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo)**
-| **[Download the public sample](https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-sample)**
+| **[Download the ingredient dataset](https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-ingredients)**
 
-The demo runs the published supervised ranker in your browser on a
-[small, openly licensed catalog](model/demo_data/README.md). It needs no private
-recipe database, login or API key. Choose pantry ingredients,
+The demo searches **all 4,653,430 canonical ingredient records** and runs the
+published supervised ranker in your browser. It needs no private recipe database,
+login or API key. Choose pantry ingredients,
 source-time and missing-item limits, required/excluded ingredients and reported
 servings; switch to the simple baseline to compare the ordering.
-Hosting uses a free Static Space, not paid inference hardware. Pantry inputs
-are not sent to a server or stored between visits.
+An optional **36.0 MiB** index download enables local search; original-link files
+load as needed. Hosting uses a free Static Space, not paid inference hardware.
+Pantry inputs are not sent to a server or stored between visits.
 
-The sample contains **12 Wikibooks recipes under CC BY-SA 4.0**. Nine have a
-reported overall time and six have reported servings. Four contain ingredient
-lines that are not fully mapped; those gaps and source inconsistencies remain
-visible. Original measurements, instructions, revision links and attribution are
-retained. No source times or missing units are invented.
+The index contains normalized ingredient names, source-reported times and
+servings, source identifiers and original links. It does not copy titles,
+quantities, instructions, descriptions or images. **2,292,411 records have
+recorded source links; 2,361,019 do not.** The link-only filter is on by default.
+Disable it to include unlinked ingredient sets.
 
-This is a separately sourced demonstration catalog, not the full training
-dataset or a held-out quality benchmark. Its ingredient frequencies describe
-only the sample, so the full-catalog recovery scores below do not apply to it.
-The [build and publication instructions](model/demo/README.md) keep the code and
-data provenance in this repository. The [release receipt](model/results/huggingface_recipe_demo_release.json)
-pins the public dataset, Space, model and source revisions, and records the
-documentation-only model-card update.
+Every record is checked against the hard constraints. At most 2,000 feasible
+records, selected by the baseline, receive learned scores. This is not a
+guaranteed global learned top-k or a collection of unique, complete cooking
+recipes. Unknown metadata cannot pass a corresponding constraint.
+The private finder's recovery benchmark below does not evaluate this browser
+retrieval pipeline.
 
-### Full ingredient-only search: local preview
+The [release receipt](model/results/huggingface_ingredient_demo_release.json)
+pins the public dataset, Space, model and source revisions. It records an
+independent comparison of every exported row and **36,707,624 ingredient slots**,
+anonymous browser operation, and the dataset viewer's complete record count.
+The model-card update changed documentation only; weights and existing model
+tags were preserved. [Build and publication instructions](model/demo/README.md)
+include rebuilding from the public index without the private corpus.
 
-A separate browser index now covers **all 4,653,430 canonical records**, not
-just the public sample. It contains normalized ingredient names, source-reported
-times and servings, source identifiers and original links. It contains no copied
-titles, quantities, instructions, descriptions or images.
+### Complete sample recipes
 
-The [verification record](model/results/ingredient_catalog_verification.json)
-compares every record and all **36,707,624 ingredient slots** with the canonical
-corpus. Twenty Python/browser searches agree on feasibility, shortlist size and
-ordered results. This is implementation evidence, not a recipe-quality score.
-The initial compressed arrays total **36.0 MiB**; original-link files load only
-when needed. The same published weights do the ranking locally.
-
-**2,292,411 records have recorded source links; 2,361,019 do not.** The preview
-defaults to records with links, so a result can lead to quantities and directions
-on its original site. Uncheck that filter to search unlinked ingredient sets too.
-Every record is checked against constraints; at most 2,000 feasible records,
-selected by the baseline, receive learned scores. This is not a guaranteed
-global learned top-k or a collection of unique, complete cooking recipes.
-
-The owner has confirmed permission to publish this full ingredient-only dataset;
-the [scope record](model/results/ingredient_catalog_publication_scope.json)
-records that confirmation. The public release is being prepared. Until its
-receipt is recorded here, the public Space above still serves the twelve
-licensed sample recipes.
-[Local build instructions](model/demo/README.md#full-ingredient-only-index)
-reproduce the complete index without running a server-side model or uploading
-the private corpus.
+The [separate public sample](https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-sample)
+still contains **12 Wikibooks recipes under CC BY-SA 4.0**, with complete
+ingredients, instructions, source revisions and attribution. Nine have a reported
+overall time and six have reported servings. Four contain incompletely mapped
+ingredient lines; those gaps remain documented.
+Its [original release receipt](model/results/huggingface_recipe_demo_release.json)
+and the Space tag `v0.1.0-sample` preserve the earlier demonstration. The sample
+is not a held-out quality benchmark or a subset of the canonical training corpus.
 
 ## Evaluated results
 
@@ -343,15 +332,16 @@ generation evaluation have not run.
 | Which all-record production training and coverage? | [Declaration](model/experiments/production-v2-all-20260909.yaml) and [completion verification](model/results/all_record_training_validation.json) |
 | Which recipe-ranking training, coverage and sampled evaluation? | [Verified training record](model/results/recipe_ranker_training.json) |
 | Which source metadata supports recipe-search constraints? | [Catalog coverage and provenance](model/results/recipe_catalog_build.json) |
-| Which public demo code, source recipes and redistribution terms? | [Browser implementation](model/demo/), [public sample card](model/demo_data/README.md) and [source revisions/mappings](model/demo_data/sources.json) |
+| Which public ingredient facts and browser implementation? | [Full dataset and live-release receipt](model/results/huggingface_ingredient_demo_release.json), [browser implementation](model/demo/) and [publication scope](model/results/ingredient_catalog_publication_scope.json) |
+| Which complete sample recipes and attribution? | [Public sample card](model/demo_data/README.md) and [source revisions/mappings](model/demo_data/sources.json) |
 | Which corpus and normalizer? | [`model/data/GENERATION.json`](model/data/GENERATION.json), verified against the corpus SHA-256 before current training |
 | What actually ran and how did it score? | Each run's `manifest.json` and `metrics.json` under [`model/results/runs/`](model/results/runs/) |
 | Which private artifact bytes restore this workspace? | `model/artifacts.lock.json`, generated by `make snapshot` |
 | Which normalization fixes were used? | The tracked code and [`model/data/aliases/`](model/data/aliases/) |
 | Where did source corpora come from? | [`raw-data/README.md`](raw-data/README.md) and [`raw-data/MANIFEST.md`](raw-data/MANIFEST.md) |
 | Which external model revisions and exact assets were compared? | [`model/hf_baselines.lock.json`](model/hf_baselines.lock.json) and the diagnostic's code/weight fingerprints |
-| Which model version and model card are on Hugging Face? | [Model release receipt](model/results/huggingface_recipe_search_release.json) and [latest demo/card update](model/results/huggingface_recipe_demo_release.json); the card is rendered by [`export_recipe_search.py`](model/scripts/export_recipe_search.py) |
-| Which public demo and sample versions are deployed? | [Demo release receipt](model/results/huggingface_recipe_demo_release.json), including pinned revisions, asset hashes and anonymous browser results |
+| Which model version and model card are on Hugging Face? | [Model release receipt](model/results/huggingface_recipe_search_release.json) and [latest demo/card update](model/results/huggingface_ingredient_demo_release.json); the base card is rendered by [`export_recipe_search.py`](model/scripts/export_recipe_search.py) |
+| Which public demo, dataset and historical sample versions? | [Full ingredient release](model/results/huggingface_ingredient_demo_release.json) and [original sample release](model/results/huggingface_recipe_demo_release.json), including pinned revisions and artifact hashes |
 | Which bytes, data identities and model-selection results were exported? | [Recipe-search export evidence](model/results/recipe_search_export.json) |
 | Which ingredient-only access and documentation updates preceded this release? | [Public-access receipt](model/results/huggingface_public_release.json) and [earlier card receipt](model/results/huggingface_model_card.json) |
 
