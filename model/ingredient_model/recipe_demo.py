@@ -392,8 +392,10 @@ the recipe-text license does not relicense the weights or project code.
 - Source commit: `{provenance['source_revision'] or 'local preview; not committed'}`.
 - [Source and reproduction instructions](https://github.com/incrediblecrab/llmmm).
 
-`manifest.json` records the exact serving files and their SHA256 digests.
-The app verifies the catalog and policy digests before enabling search.
+`manifest.json` records the exact application assets and their SHA256 digests.
+The app verifies the catalog and policy digests before enabling search. The Hub
+renders this README as HTML; its raw source hash is recorded separately under
+`documentation_files` and verified through the pinned Hub repository.
 """
 
 
@@ -461,10 +463,14 @@ def build_demo(repository: Path, output: Path, *, source_revision: str | None = 
         (staged / "policy.json").write_bytes(_json_bytes(exported))
         (staged / "README.md").write_text(space_card(catalog, provenance), encoding="utf-8")
         files = {name: {"bytes": (staged / name).stat().st_size, "sha256": file_sha256(staged / name)}
-                 for name in (*WEB_FILES, "catalog.json", "policy.json", "README.md")}
+                 for name in (*WEB_FILES, "catalog.json", "policy.json")}
         manifest = {
             "schema_version": 1, "built_at": datetime.now(timezone.utc).isoformat(),
             "files": files, "provenance": provenance, "source_files_sha256": source_files,
+            "documentation_files": {
+                "README.md": {"bytes": (staged / "README.md").stat().st_size,
+                              "sha256": file_sha256(staged / "README.md")},
+            },
             "verification": verification,
             "catalog_summary": {
                 "recipes": len(rows), "source_total_times": sum(row["total_minutes"] is not None for row in rows),

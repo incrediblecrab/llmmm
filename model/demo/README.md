@@ -54,6 +54,9 @@ Serving assets are checksum-verified. Hugging Face adds its own
 `window.huggingface` variables bootstrap to static HTML; the browser checks remove
 only that recognized bootstrap before comparing the served HTML to the source.
 Other asset bytes must match exactly.
+The Hub renders `README.md` as HTML rather than serving its original Markdown.
+Its source hash is recorded under `documentation_files` and checked through the
+exact Hub revision, separately from browser assets.
 
 ## Publish
 
