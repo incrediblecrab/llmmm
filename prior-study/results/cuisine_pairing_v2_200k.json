@@ -1,0 +1,536 @@
+{
+  "cuisines": {
+    "north_american": {
+      "region": "North America",
+      "recipes_available": 2669991,
+      "recipes_used": 198903,
+      "capped": true,
+      "real": 29.891588265697518,
+      "null_mean": 28.6604433219336,
+      "null_mc_se": 0.009813979655988507,
+      "delta": 1.231144943763919,
+      "delta_se": 0.051700134856096806,
+      "delta_ci_lo": 1.1298126794459693,
+      "delta_ci_hi": 1.3324772080818688,
+      "boot_ci_lo": 1.124950480142387,
+      "boot_ci_hi": 1.3393171145408433,
+      "rel_delta": 0.04295624216048794,
+      "rel_ci_lo": 0.03942062817225626,
+      "rel_ci_hi": 0.04649185614871962,
+      "sign_resolved": true,
+      "direction": "pairing"
+    },
+    "chinese": {
+      "region": "East Asia",
+      "recipes_available": 1433167,
+      "recipes_used": 194319,
+      "capped": true,
+      "real": 15.650975380227747,
+      "null_mean": 15.417628882925607,
+      "null_mc_se": 0.006330890257334439,
+      "delta": 0.23334649730213997,
+      "delta_se": 0.04265888659700855,
+      "delta_ci_lo": 0.14973507957200322,
+      "delta_ci_hi": 0.3169579150322767,
+      "boot_ci_lo": 0.14671277319213083,
+      "boot_ci_hi": 0.31676598440461234,
+      "rel_delta": 0.015135044375115403,
+      "rel_ci_lo": 0.009711939540705166,
+      "rel_ci_hi": 0.020558149209525638,
+      "sign_resolved": true,
+      "direction": "pairing"
+    },
+    "russian": {
+      "region": "Eastern Europe",
+      "recipes_available": 162762,
+      "recipes_used": 162302,
+      "capped": false,
+      "real": 25.279190262459746,
+      "null_mean": 25.294825154756143,
+      "null_mc_se": 0.0065029724484970625,
+      "delta": -0.01563489229639714,
+      "delta_se": 0.0496865815023173,
+      "delta_ci_lo": -0.11302059204093905,
+      "delta_ci_hi": 0.08175080744814477,
+      "boot_ci_lo": -0.11364770790667685,
+      "boot_ci_hi": 0.08510337307284824,
+      "rel_delta": -0.000618106359729367,
+      "rel_ci_lo": -0.00446813098526945,
+      "rel_ci_hi": 0.0032319182658107166,
+      "sign_resolved": false,
+      "direction": "contrast"
+    },
+    "turkish": {
+      "region": "Middle East",
+      "recipes_available": 125748,
+      "recipes_used": 125323,
+      "capped": false,
+      "real": 22.036070261912787,
+      "null_mean": 22.69400708056083,
+      "null_mc_se": 0.007483109820968255,
+      "delta": -0.657936818648043,
+      "delta_se": 0.05121040445271363,
+      "delta_ci_lo": -0.7583092113753617,
+      "delta_ci_hi": -0.5575644259207243,
+      "boot_ci_lo": -0.7571706729895528,
+      "boot_ci_hi": -0.5568270275698965,
+      "rel_delta": -0.028991654770902785,
+      "rel_ci_lo": -0.03341451373851523,
+      "rel_ci_hi": -0.024568795803290345,
+      "sign_resolved": true,
+      "direction": "contrast"
+    },
+    "spanish": {
+      "region": "Southern Europe",
+      "recipes_available": 46446,
+      "recipes_used": 45803,
+      "capped": false,
+      "real": 36.9884897298803,
+      "null_mean": 35.644042695524845,
+      "null_mc_se": 0.023602250108722342,
+      "delta": 1.3444470343554542,
+      "delta_se": 0.1115255957768797,
+      "delta_ci_lo": 1.12585686663277,
+      "delta_ci_hi": 1.5630372020781385,
+      "boot_ci_lo": 1.12501986935948,
+      "boot_ci_hi": 1.5642512305716016,
+      "rel_delta": 0.037718702276278306,
+      "rel_ci_lo": 0.031586115981566895,
+      "rel_ci_hi": 0.04385128857098972,
+      "sign_resolved": true,
+      "direction": "pairing"
+    },
+    "vietnamese": {
+      "region": "Southeast Asia",
+      "recipes_available": 31884,
+      "recipes_used": 31241,
+      "capped": false,
+      "real": 20.764377760718826,
+      "null_mean": 21.203073600291958,
+      "null_mc_se": 0.02060339526600664,
+      "delta": -0.43869583957313196,
+      "delta_se": 0.09445895792622314,
+      "delta_ci_lo": -0.6238353971085293,
+      "delta_ci_hi": -0.2535562820377346,
+      "boot_ci_lo": -0.6187822356659133,
+      "boot_ci_hi": -0.2507869185872946,
+      "rel_delta": -0.020690200290918732,
+      "rel_ci_lo": -0.029421932351352084,
+      "rel_ci_hi": -0.011958468230485379,
+      "sign_resolved": true,
+      "direction": "contrast"
+    },
+    "indian": {
+      "region": "South Asia",
+      "recipes_available": 22204,
+      "recipes_used": 22160,
+      "capped": false,
+      "real": 36.4258239958878,
+      "null_mean": 35.19330642988314,
+      "null_mc_se": 0.02583513473326078,
+      "delta": 1.2325175660046597,
+      "delta_se": 0.1416798247914019,
+      "delta_ci_lo": 0.954825109413512,
+      "delta_ci_hi": 1.5102100225958073,
+      "boot_ci_lo": 0.9632015008495173,
+      "boot_ci_hi": 1.5178171247669385,
+      "rel_delta": 0.03502136318053116,
+      "rel_ci_lo": 0.027130872494627454,
+      "rel_ci_hi": 0.042911853866434854,
+      "sign_resolved": true,
+      "direction": "pairing"
+    },
+    "indonesian": {
+      "region": "Southeast Asia",
+      "recipes_available": 14939,
+      "recipes_used": 14929,
+      "capped": false,
+      "real": 23.116729544060945,
+      "null_mean": 21.89723557717291,
+      "null_mc_se": 0.021835850401425428,
+      "delta": 1.2194939668880345,
+      "delta_se": 0.13445167534365807,
+      "delta_ci_lo": 0.9559686832144647,
+      "delta_ci_hi": 1.4830192505616042,
+      "boot_ci_lo": 0.9408554861993185,
+      "boot_ci_hi": 1.4846611600524073,
+      "rel_delta": 0.05569168594776016,
+      "rel_ci_lo": 0.04365704884734528,
+      "rel_ci_hi": 0.06772632304817504,
+      "sign_resolved": true,
+      "direction": "pairing"
+    },
+    "israeli": {
+      "region": "Middle East",
+      "recipes_available": 8698,
+      "recipes_used": 8586,
+      "capped": false,
+      "real": 36.67419312591574,
+      "null_mean": 36.784615164239696,
+      "null_mc_se": 0.057016097912614985,
+      "delta": -0.11042203832395359,
+      "delta_se": 0.2742908757795668,
+      "delta_ci_lo": -0.6480321548519045,
+      "delta_ci_hi": 0.4271880782039973,
+      "boot_ci_lo": -0.6303932141758162,
+      "boot_ci_hi": 0.4250264773890742,
+      "rel_delta": -0.0030018538410944364,
+      "rel_ci_lo": -0.017616934469981662,
+      "rel_ci_hi": 0.011613226787792788,
+      "sign_resolved": false,
+      "direction": "contrast"
+    },
+    "persian": {
+      "region": "Middle East",
+      "recipes_available": 5793,
+      "recipes_used": 5737,
+      "capped": false,
+      "real": 48.02194563377477,
+      "null_mean": 45.29348601015633,
+      "null_mc_se": 0.06080834611295433,
+      "delta": 2.7284596236184413,
+      "delta_se": 0.3697494343832643,
+      "delta_ci_lo": 2.0037507322272434,
+      "delta_ci_hi": 3.453168515009639,
+      "boot_ci_lo": 1.9562476280967613,
+      "boot_ci_hi": 3.392423299018837,
+      "rel_delta": 0.06023955901752911,
+      "rel_ci_lo": 0.04423926945649392,
+      "rel_ci_hi": 0.0762398485785643,
+      "sign_resolved": true,
+      "direction": "pairing"
+    },
+    "greek": {
+      "region": "Southern Europe",
+      "recipes_available": 4881,
+      "recipes_used": 4832,
+      "capped": false,
+      "real": 38.98765752890737,
+      "null_mean": 38.89372710146811,
+      "null_mc_se": 0.04375490571851708,
+      "delta": 0.09393042743926117,
+      "delta_se": 0.3300644970470983,
+      "delta_ci_lo": -0.5529959867730515,
+      "delta_ci_hi": 0.7408568416515738,
+      "boot_ci_lo": -0.5513501202287909,
+      "boot_ci_hi": 0.7429053545586646,
+      "rel_delta": 0.002415053388794812,
+      "rel_ci_lo": -0.014218127908656451,
+      "rel_ci_hi": 0.019048234686246075,
+      "sign_resolved": false,
+      "direction": "pairing"
+    },
+    "german": {
+      "region": "Western Europe",
+      "recipes_available": 4290,
+      "recipes_used": 4285,
+      "capped": false,
+      "real": 36.526179543106416,
+      "null_mean": 36.733121914820345,
+      "null_mc_se": 0.07081738318663343,
+      "delta": -0.2069423717139287,
+      "delta_se": 0.30482349075110327,
+      "delta_ci_lo": -0.8043964135860912,
+      "delta_ci_hi": 0.39051167015823374,
+      "boot_ci_lo": -0.8368458916048802,
+      "boot_ci_hi": 0.36802834087505754,
+      "rel_delta": -0.0056336723078915804,
+      "rel_ci_lo": -0.021898395008499112,
+      "rel_ci_hi": 0.010631050392715951,
+      "sign_resolved": false,
+      "direction": "contrast"
+    },
+    "japanese": {
+      "region": "East Asia",
+      "recipes_available": 3692,
+      "recipes_used": 3492,
+      "capped": false,
+      "real": 20.248634111219346,
+      "null_mean": 21.01812714412774,
+      "null_mc_se": 0.06956600412587775,
+      "delta": -0.7694930329083931,
+      "delta_se": 0.33252270175232745,
+      "delta_ci_lo": -1.4212375283429548,
+      "delta_ci_hi": -0.1177485374738313,
+      "boot_ci_lo": -1.4228369508854384,
+      "boot_ci_hi": -0.1017183164567724,
+      "rel_delta": -0.03661092292532744,
+      "rel_ci_lo": -0.06761960847401358,
+      "rel_ci_hi": -0.0056022373766412914,
+      "sign_resolved": true,
+      "direction": "contrast"
+    },
+    "moroccan": {
+      "region": "North Africa",
+      "recipes_available": 2443,
+      "recipes_used": 2442,
+      "capped": false,
+      "real": 43.27437275811453,
+      "null_mean": 40.40516301970429,
+      "null_mc_se": 0.07023953788931081,
+      "delta": 2.869209738410241,
+      "delta_se": 0.3547045353620684,
+      "delta_ci_lo": 2.1739888491005868,
+      "delta_ci_hi": 3.5644306277198954,
+      "boot_ci_lo": 2.1563317523389385,
+      "boot_ci_hi": 3.5230320548447334,
+      "rel_delta": 0.07101096800453498,
+      "rel_ci_lo": 0.053804729064956446,
+      "rel_ci_hi": 0.0882172069441135,
+      "sign_resolved": true,
+      "direction": "pairing"
+    },
+    "filipino": {
+      "region": "Southeast Asia",
+      "recipes_available": 1984,
+      "recipes_used": 1982,
+      "capped": false,
+      "real": 27.328990796849624,
+      "null_mean": 25.707125456228276,
+      "null_mc_se": 0.04820344160402505,
+      "delta": 1.6218653406213477,
+      "delta_se": 0.3652082005398089,
+      "delta_ci_lo": 0.9060572675633223,
+      "delta_ci_hi": 2.337673413679373,
+      "boot_ci_lo": 0.885173475953233,
+      "boot_ci_hi": 2.3581972072673,
+      "rel_delta": 0.0630901087475887,
+      "rel_ci_lo": 0.03524537463770786,
+      "rel_ci_hi": 0.09093484285746953,
+      "sign_resolved": true,
+      "direction": "pairing"
+    },
+    "taiwanese": {
+      "region": "East Asia",
+      "recipes_available": 1726,
+      "recipes_used": 1574,
+      "capped": false,
+      "real": 12.85476367068977,
+      "null_mean": 12.848375025284875,
+      "null_mc_se": 0.08774449900601658,
+      "delta": 0.0063886454048951435,
+      "delta_se": 0.5627908394315105,
+      "delta_ci_lo": -1.0966813998808655,
+      "delta_ci_hi": 1.1094586906906558,
+      "boot_ci_lo": -1.03198793549901,
+      "boot_ci_hi": 1.1928502815661286,
+      "rel_delta": 0.000497233727403088,
+      "rel_ci_lo": -0.08535564985631713,
+      "rel_ci_hi": 0.0863501173111233,
+      "sign_resolved": false,
+      "direction": "pairing"
+    },
+    "thai": {
+      "region": "Southeast Asia",
+      "recipes_available": 1704,
+      "recipes_used": 1685,
+      "capped": false,
+      "real": 27.02281393394946,
+      "null_mean": 21.87256188198798,
+      "null_mc_se": 0.09656213399397398,
+      "delta": 5.1502520519614805,
+      "delta_se": 0.6838675046374728,
+      "delta_ci_lo": 3.809871742872034,
+      "delta_ci_hi": 6.490632361050928,
+      "boot_ci_lo": 3.8103463120036554,
+      "boot_ci_hi": 6.400104627925078,
+      "rel_delta": 0.23546633813402099,
+      "rel_ci_lo": 0.17418497949293527,
+      "rel_ci_hi": 0.29674769677510676,
+      "sign_resolved": true,
+      "direction": "pairing"
+    },
+    "romanian": {
+      "region": "Eastern Europe",
+      "recipes_available": 791,
+      "recipes_used": 777,
+      "capped": false,
+      "real": 33.761591725830485,
+      "null_mean": 32.897149180471565,
+      "null_mc_se": 0.15312456066757754,
+      "delta": 0.8644425453589193,
+      "delta_se": 0.9168854286125886,
+      "delta_ci_lo": -0.9326528947217543,
+      "delta_ci_hi": 2.661537985439593,
+      "boot_ci_lo": -0.8669193290162545,
+      "boot_ci_hi": 2.717274392596944,
+      "rel_delta": 0.026277126343582088,
+      "rel_ci_lo": -0.02835056890812279,
+      "rel_ci_hi": 0.08090482159528697,
+      "sign_resolved": false,
+      "direction": "pairing"
+    }
+  },
+  "regions": {
+    "North America": {
+      "mean_rel_delta": 0.04295624216048794,
+      "cuisines": 1
+    },
+    "East Asia": {
+      "mean_rel_delta": -0.006992881607602981,
+      "cuisines": 3
+    },
+    "Eastern Europe": {
+      "mean_rel_delta": 0.01282950999192636,
+      "cuisines": 2
+    },
+    "Middle East": {
+      "mean_rel_delta": 0.009415350135177296,
+      "cuisines": 3
+    },
+    "Southern Europe": {
+      "mean_rel_delta": 0.020066877832536557,
+      "cuisines": 2
+    },
+    "Southeast Asia": {
+      "mean_rel_delta": 0.08338948313461278,
+      "cuisines": 4
+    },
+    "South Asia": {
+      "mean_rel_delta": 0.03502136318053116,
+      "cuisines": 1
+    },
+    "Western Europe": {
+      "mean_rel_delta": -0.0056336723078915804,
+      "cuisines": 1
+    },
+    "North Africa": {
+      "mean_rel_delta": 0.07101096800453498,
+      "cuisines": 1
+    }
+  },
+  "scored": {
+    "prereg": {
+      "agree": 5,
+      "disagree": 6,
+      "unresolved": 4,
+      "majority_disagree": true,
+      "detail": {
+        "spanish": {
+          "predicted": 1,
+          "observed": 1,
+          "agree": true,
+          "resolved": true
+        },
+        "german": {
+          "predicted": 1,
+          "observed": -1,
+          "agree": false,
+          "resolved": false
+        },
+        "greek": {
+          "predicted": 1,
+          "observed": 1,
+          "agree": true,
+          "resolved": false
+        },
+        "romanian": {
+          "predicted": 1,
+          "observed": 1,
+          "agree": true,
+          "resolved": false
+        },
+        "russian": {
+          "predicted": 1,
+          "observed": -1,
+          "agree": false,
+          "resolved": false
+        },
+        "chinese": {
+          "predicted": -1,
+          "observed": 1,
+          "agree": false,
+          "resolved": true
+        },
+        "japanese": {
+          "predicted": -1,
+          "observed": -1,
+          "agree": true,
+          "resolved": true
+        },
+        "thai": {
+          "predicted": -1,
+          "observed": 1,
+          "agree": false,
+          "resolved": true
+        },
+        "vietnamese": {
+          "predicted": -1,
+          "observed": -1,
+          "agree": true,
+          "resolved": true
+        },
+        "filipino": {
+          "predicted": -1,
+          "observed": 1,
+          "agree": false,
+          "resolved": true
+        },
+        "indonesian": {
+          "predicted": -1,
+          "observed": 1,
+          "agree": false,
+          "resolved": true
+        }
+      }
+    },
+    "ahn_actual": {
+      "agree": 2,
+      "disagree": 5,
+      "unresolved": 3,
+      "majority_disagree": true,
+      "detail": {
+        "north_american": {
+          "predicted": 1,
+          "observed": 1,
+          "agree": true,
+          "resolved": true
+        },
+        "german": {
+          "predicted": 1,
+          "observed": -1,
+          "agree": false,
+          "resolved": false
+        },
+        "spanish": {
+          "predicted": -1,
+          "observed": 1,
+          "agree": false,
+          "resolved": true
+        },
+        "greek": {
+          "predicted": -1,
+          "observed": 1,
+          "agree": false,
+          "resolved": false
+        },
+        "chinese": {
+          "predicted": -1,
+          "observed": 1,
+          "agree": false,
+          "resolved": true
+        },
+        "japanese": {
+          "predicted": -1,
+          "observed": -1,
+          "agree": true,
+          "resolved": true
+        },
+        "taiwanese": {
+          "predicted": -1,
+          "observed": 1,
+          "agree": false,
+          "resolved": false
+        }
+      }
+    }
+  },
+  "params": {
+    "seed": 20260805,
+    "max_recipes": 200000,
+    "n_null": 20,
+    "n_boot": 2000,
+    "min_recipes": 500,
+    "max_size": 40
+  }
+}

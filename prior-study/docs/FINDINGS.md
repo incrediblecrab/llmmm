@@ -428,9 +428,14 @@ Sampling 40,000 random pairs, the highest-scoring "novel discoveries" were
    pairings like `tomato+basil` (88.6/75.9) sit lower. Pairs with `core ≥ 90` or
    `chem ≥ 97` are now excluded from the novel label.
 
-This is the food-pairing hypothesis' known weak spot (cf. Ahn et al. 2011: East Asian
-cuisines actively *avoid* compound sharing), and it hit the exact feature meant to be the
-app's differentiator.
+This hit the exact feature meant to be the app's differentiator. Note that the guard is
+justified by the measurement above — every false novel sat at `core ≥ 80`, `chem ≥ 93` —
+and **not** by appeal to Ahn et al. 2011. An earlier draft cited Ahn's "East Asian cuisines
+avoid compound sharing" as settled support; our own H4 re-run finds that claim does not
+reproduce at scale (`results/FINDINGS.md`, and `docs/PREREGISTRATION.md` Corrections C1/C2),
+with Chinese sitting significantly on the *pairing* side across 1.39M recipes. The
+substitutable-vs-pairable distinction survives that correction because it was measured here
+directly; the citation did not, and has been withdrawn.
 
 After both guards, novel fires on 0.21% of random pairs and the top hits read like real
 suggestions: `peanut+tamari`, `ghee+curry_powder`, `clementine+mint`,

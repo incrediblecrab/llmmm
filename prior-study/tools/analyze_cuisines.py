@@ -2,11 +2,30 @@
 """H4: the food-pairing hypothesis across cuisines (Ahn et al. 2011, at scale).
 
 Ahn et al. found that North American and Western European recipes combine
-ingredients that *share* flavour compounds, while East Asian recipes avoid
-doing so. They had ~57k recipes from three western sites. This runs the same
-statistic over 4.6M recipes spanning ~20 national sources, which is the point:
-their asymmetry was derived from a corpus thin outside the west, so testing it
-on natively-sourced regional corpora is a real test rather than a restatement.
+ingredients that *share* flavour compounds, while East Asian **and Southern
+European** recipes avoid doing so. They had 56,498 recipes from three sites.
+This draws on a corpus of 4,647,847 recipes, of which 4,543,143 fall in a
+mapped cuisine, spanning ~20 national sources: their asymmetry was derived from
+a corpus thin outside the west, so testing it on natively-sourced regional
+corpora is a real test rather than a restatement.
+
+Note that `MAX_RECIPES` caps each cuisine, so a default run analyses 253,145
+recipes, not the whole corpus — 5.6% of what is mapped, and it truncates
+hardest where the comparison lives (north_american 30k of 2.67M, chinese 30k of
+1.43M). Re-running at 200k per cuisine moves every *capped* cuisine's relative
+Delta by at most 0.55pp, so the cap is a runtime bound rather than a
+result-distorting one.
+
+The same comparison exposes a real problem elsewhere. Among cuisines small
+enough that neither run capped them — identical samples both times — estimates
+still moved by up to 1.84pp (taiwanese, n=1,574, -0.14% to -1.97%), purely from
+redrawing the null. That swing is larger than most of the reported effects, and
+it is invisible in a z-score built from null scatter alone.
+
+`analyze_cuisines_v2.py` supersedes this script for the H4 verdict. The z-score
+reported here divides Delta by the scatter of the null replicates, which
+ignores sampling error in the observed statistic and so grows without bound as
+the corpus grows; v2 reports a recipe-level CI instead.
 
 Statistic, following the paper:
 

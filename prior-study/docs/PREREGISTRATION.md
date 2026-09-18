@@ -809,3 +809,150 @@ production choice — a shipped model should use all available data — and it i
 not what the holdout run is for. The holdout run exists to establish that the
 metrics we *quote* are not inflated by that decision. This amendment establishes
 it: the difference is +0.0002 on the shipped configuration. No re-export needed.
+
+---
+
+### Correction C1 — 2026-09-17, H4 verdict reversed (post-hoc, not a registered amendment)
+
+This is a correction, not an amendment. Every amendment above was registered
+before the run it governs. This one was written after seeing results, and is
+recorded as an erratum against the H4 verdict that `results/FINDINGS.md`
+previously reported as **SUPPORTED**. The corrected verdict is **FALSIFIED**.
+
+**1. The verdict logic did not implement the registered criterion.** H4 registered:
+"Falsified if: signs disagree with Ahn for a majority of strata." The summariser
+instead compared regional mean effect sizes:
+
+```python
+west = mean over ("North America", "Western Europe", "Southern Europe")
+east = mean over ("East Asia",)
+ok   = west > east
+```
+
+That is a weaker test, and it passes on data that fails the registered one.
+Scored as registered, per stratum: **agree 5, disagree 6 of 11** — a majority
+disagree, which is the registered falsification condition.
+
+**2. Southern Europe was placed on the wrong side.** The H4 prediction listed
+`Δ_s > 0` for Spanish and Greek. Ahn et al. 2011 state the opposite (*Sci. Rep.*
+1:196, [doi:10.1038/srep00196](https://doi.org/10.1038/srep00196)):
+
+> "North American and Western European cuisines exhibit a statistically
+> significant tendency towards recipes whose ingredients share flavor compounds.
+> By contrast, East Asian **and Southern European** cuisines avoid recipes whose
+> ingredients share flavor compounds."
+
+(Emphasis added. Quoted from the Results section, which reads "Figure 3D
+indicates that North American and Western European cuisines…".)
+
+Both the registered list and Ahn's own five regions are now scored separately.
+Against Ahn's regions: **agree 2, disagree 5**.
+
+**3. Significance was computed against the wrong quantity.** The reported
+z = Δ / sd(null replicates) uses the scatter of the *null* and ignores sampling
+error in the observed statistic, so it grows without bound as the corpus grows.
+Two runs that never capped `taiwanese` (n=1,574, identical sample) still moved
+its estimate from −0.14% to −1.97%, a 1.84pp swing from redrawing the null
+alone — larger than most reported effects, and invisible to that z.
+`tools/analyze_cuisines_v2.py` reports a recipe-level CI instead, linearised
+over the ratio estimator and cross-checked against a 2,000-sample bootstrap.
+
+**4. The registered null was not the null that ran.** H4 registered a
+"degree-preserving null (configuration model, 1,000 rewirings)". The
+implementation drew each recipe at its true size from the cuisine's own
+ingredient-frequency distribution, with `N_NULL = 15` replicates. That
+deviation was never recorded. It is, however, the *better* of the two for this
+purpose, which the registration got backwards: Ahn et al.'s own primary null
+(SI "Null models", A/B Frequency-conserving) is "for a given recipe with Ni
+ingredients in this cuisine, we pick Ni ingredients randomly from the set of
+all nc ingredients, according to fi" — that is, size-preserving and
+frequency-weighted, exactly what was implemented. Replicating a paper's claim
+is a like-for-like comparison only if the null matches theirs, so v2 retains
+it deliberately rather than merely for comparability.
+
+**What the corrected numbers show.** Re-run on the full corpus with no cuisine
+capped (4,485,919 recipes, `results/cuisine_pairing_v2.json`), the asymmetry
+does not track Ahn's west / East Asia split. `chinese` (n=1,393,014) sits
+significantly on the *pairing* side (+1.54%, CI [+0.205, +0.268]) where Ahn
+predicts avoidance; `japanese` (−2.73%) and `taiwanese` (−1.61%) lean the
+predicted way but neither sign is resolved by its CI — so "East Asian" is not
+one effect. The largest effect in the corpus is `thai` at +23.07%, a Southeast
+Asian cuisine the registration predicted would be negative, and Southeast Asia
+is the most pairing-positive region overall (+8.16%). `north_american` is
++4.19% and resolved, which is the one part of Ahn's claim that does reproduce
+cleanly here.
+
+Eleven of 18 signs are resolved. Of the 11 pre-registered strata, five have
+signs their own CI cannot resolve (german, greek, japanese, romanian, russian),
+so the registered majority test is being decided partly on unresolved signs —
+recorded here rather than treated as a stronger result than it is.
+
+**What this does not license.** These are native-language source corpora with
+uneven sizes and an LLM-curated 1,790-ingredient vocabulary fixed by the
+upstream release; "cuisine" here is source provenance, not per-recipe
+attribution. The result is evidence that Ahn's split does not survive this
+corpus, not proof that no such asymmetry exists.
+
+**Scope.** H4 is internal to `prior-study/`. It is not an input to
+`llmmm-recipes`, and it appears in no published model card, dataset card or
+README. No released artefact is affected.
+
+---
+
+## Correction C2 — 2026-09-17, robustness of the H4 verdict (post-hoc)
+
+C1 reversed the H4 verdict but tested none of the ways the reversal could
+itself be an artefact. Three were run afterwards. All are post-hoc and none
+were registered.
+
+**1. Duplicate recipes — material, verdict survives.** The sources overlap
+(RecipeNLG re-publishes food.com), so 27.5% of analysed recipes share an
+ingredient set with another: 33.6% within `chinese`, 24.3% within
+`north_american`. Duplicates pseudo-replicate the CI without adding evidence.
+Collapsing them and re-running the full test
+(`results/cuisine_pairing_v2_dedup.json`, `--dedup`) leaves the registered
+verdict unchanged at agree 5 / disagree 6, and leaves both resolved anchors
+essentially where they were: `north_american` +4.18%, `chinese` +1.5%
+(Δ +0.241, CI [+0.205, +0.276], n=925,141). Small cuisines move a lot —
+`thai` +23.07% → +15.1% — which is consistent with duplicates inflating the
+tail, and is a reason to lean on the large strata.
+
+**2. The secondary Ahn-region scoring is not robust — do not cite it.** Scored
+against Ahn's own five regions, the full corpus gives agree 3 / disagree 4 but
+the deduplicated corpus gives agree 4 / disagree 3, because `greek` flips sign
+(+0.63% → −0.2%) while unresolved in both. A majority that a deduplication pass
+can reverse is not a result. Only the pre-registered per-stratum scoring, which
+survives both, should be relied on.
+
+**3. FlavorDB coverage does not explain the contrast.** Only 489 of the 1,790
+vocabulary ingredients carry any compound, and a pair contributes nothing
+unless both ends are covered, so per-cuisine pair coverage ranges from 41%
+(`chinese`) to 81% (`persian`). Spearman r between relative Δ and pair coverage
+is +0.079 across 18 cuisines (permutation p = 0.75, 10,000 permutations), so the
+cuisine contrast is not a restatement of how well the database covers each
+larder.
+
+**4. "Trivial couplings" do not explain it either.** Palermo et al. 2024
+(arXiv:2406.15533) report that food pairing in Ahn's data is "mostly due to
+trivial couplings of very similar ingredients". Masking the 6,045 ingredient
+pairs that are the same food twice — one name's tokens contained in the
+other's, or compound Jaccard ≥ 0.9 — and re-scoring against byte-identical null
+draws (`tools/audit_trivial_pairs.py`,
+`results/trivial_pairs_audit.json`) moves relative Δ by at most 0.38pp and
+flips no resolved sign. Vocabulary granularity is not driving the effect.
+
+**What C2 adds to the claim.** The one comparison that is both large and stable
+is Chinese. Ahn et al.'s East Asian avoidance claim rests on 2,512 recipes in
+total (their Table S2: Korean, Chinese, Japanese); `chinese` here is 1.39M
+recipes, roughly 550×, and is resolved on the *pairing* side under every check
+above. By contrast 41,525 of Ahn's 56,498 recipes are North American — and
+North American is the one regional claim that reproduces cleanly here. Every
+other regional claim in the original rested on ≤4,180 recipes.
+
+**What C2 still does not license.** The corpus contains no Korean data at all,
+yet Korean sits inside Ahn's East Asian group, so their grouping cannot be
+reproduced as defined. `japanese` and `taiwanese` remain unresolved, so "East
+Asia" is not adjudicated as a bloc — only Chinese is. The compound data is
+FlavorDB (489 covered ingredients, 1,788 compounds), not the Fenaroli-derived
+network Ahn used (381 ingredients, 1,021 compounds), so this is a
+conceptual replication on different chemistry, not a reanalysis of their data.

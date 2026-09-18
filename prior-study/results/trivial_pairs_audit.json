@@ -1,0 +1,544 @@
+{
+  "cuisines": {
+    "north_american": {
+      "all": {
+        "real": 29.873299641605133,
+        "null_mean": 28.639820152898267,
+        "delta": 1.233479488706866,
+        "delta_se": 0.06122231615610792,
+        "rel_delta": 0.04306868835494561,
+        "rel_ci_lo": 0.038878866665236836,
+        "rel_ci_hi": 0.047258510044654374,
+        "sign_resolved": true,
+        "recipes_used": 149172
+      },
+      "kept": {
+        "real": 29.692905316276253,
+        "null_mean": 28.48605971619525,
+        "delta": 1.206845600081003,
+        "delta_se": 0.06115974019454398,
+        "rel_delta": 0.042366182339878766,
+        "rel_ci_lo": 0.038158050644038974,
+        "rel_ci_hi": 0.04657431403571855,
+        "sign_resolved": true,
+        "recipes_used": 149172
+      },
+      "sign_flipped": false
+    },
+    "chinese": {
+      "all": {
+        "real": 15.670711470252295,
+        "null_mean": 15.454784789584735,
+        "delta": 0.21592668066755927,
+        "delta_se": 0.050475880587028794,
+        "rel_delta": 0.013971510027954336,
+        "rel_ci_lo": 0.007570079836752383,
+        "rel_ci_hi": 0.02037294021915629,
+        "sign_resolved": true,
+        "recipes_used": 145736
+      },
+      "kept": {
+        "real": 15.440587425113359,
+        "null_mean": 15.246432444690369,
+        "delta": 0.19415498042299006,
+        "delta_se": 0.050164471364090975,
+        "rel_delta": 0.012734453199286323,
+        "rel_ci_lo": 0.006285576438752126,
+        "rel_ci_hi": 0.01918332995982052,
+        "sign_resolved": true,
+        "recipes_used": 145736
+      },
+      "sign_flipped": false
+    },
+    "russian": {
+      "all": {
+        "real": 25.267389851142113,
+        "null_mean": 25.251172457396066,
+        "delta": 0.016217393746046582,
+        "delta_se": 0.053187701564349724,
+        "rel_delta": 0.0006422431977528437,
+        "rel_ci_lo": -0.0034861946101158066,
+        "rel_ci_hi": 0.004770681005621494,
+        "sign_resolved": false,
+        "recipes_used": 149575
+      },
+      "kept": {
+        "real": 25.092193701845822,
+        "null_mean": 25.067028938248527,
+        "delta": 0.025164763597295803,
+        "delta_se": 0.05323384073156488,
+        "rel_delta": 0.0010038989327090992,
+        "rel_ci_lo": -0.0031584742025715052,
+        "rel_ci_hi": 0.005166272067989704,
+        "sign_resolved": false,
+        "recipes_used": 149575
+      },
+      "sign_flipped": false
+    },
+    "turkish": {
+      "all": {
+        "real": 22.036070261912787,
+        "null_mean": 22.703384728058353,
+        "delta": -0.6673144661455659,
+        "delta_se": 0.05239983351789453,
+        "rel_delta": -0.029392730385300405,
+        "rel_ci_lo": -0.033916446779365,
+        "rel_ci_hi": -0.02486901399123581,
+        "sign_resolved": true,
+        "recipes_used": 125323
+      },
+      "kept": {
+        "real": 21.869650970737915,
+        "null_mean": 22.57612081307516,
+        "delta": -0.7064698423372455,
+        "delta_se": 0.05251135919542266,
+        "rel_delta": -0.031292791537866294,
+        "rel_ci_lo": -0.03585169095531714,
+        "rel_ci_hi": -0.026733892120415444,
+        "sign_resolved": true,
+        "recipes_used": 125323
+      },
+      "sign_flipped": false
+    },
+    "spanish": {
+      "all": {
+        "real": 36.9884897298803,
+        "null_mean": 35.68957360763618,
+        "delta": 1.2989161222441226,
+        "delta_se": 0.11542033532219562,
+        "rel_delta": 0.03639483442767176,
+        "rel_ci_lo": 0.03005618046339183,
+        "rel_ci_hi": 0.042733488391951686,
+        "sign_resolved": true,
+        "recipes_used": 45803
+      },
+      "kept": {
+        "real": 36.713986024583626,
+        "null_mean": 35.54664888768935,
+        "delta": 1.1673371368942753,
+        "delta_se": 0.11540704690776873,
+        "rel_delta": 0.03283958329187402,
+        "rel_ci_lo": 0.02647617579729119,
+        "rel_ci_hi": 0.039202990786456844,
+        "sign_resolved": true,
+        "recipes_used": 45803
+      },
+      "sign_flipped": false
+    },
+    "vietnamese": {
+      "all": {
+        "real": 20.764377760718826,
+        "null_mean": 21.237544910839006,
+        "delta": -0.4731671501201795,
+        "delta_se": 0.09794159265856832,
+        "rel_delta": -0.022279748064414413,
+        "rel_ci_lo": -0.03131871760711426,
+        "rel_ci_hi": -0.013240778521714567,
+        "sign_resolved": true,
+        "recipes_used": 31241
+      },
+      "kept": {
+        "real": 20.693015407590114,
+        "null_mean": 21.163236742257403,
+        "delta": -0.4702213346672899,
+        "delta_se": 0.0979509685475694,
+        "rel_delta": -0.02221878157835762,
+        "rel_ci_lo": -0.031290357003769496,
+        "rel_ci_hi": -0.013147206152945737,
+        "sign_resolved": true,
+        "recipes_used": 31241
+      },
+      "sign_flipped": false
+    },
+    "indian": {
+      "all": {
+        "real": 36.4258239958878,
+        "null_mean": 35.17707921387206,
+        "delta": 1.2487447820157342,
+        "delta_se": 0.1454882412410315,
+        "rel_delta": 0.035498819399516615,
+        "rel_ci_lo": 0.027392491096967543,
+        "rel_ci_hi": 0.04360514770206568,
+        "sign_resolved": true,
+        "recipes_used": 22160
+      },
+      "kept": {
+        "real": 36.2201746858846,
+        "null_mean": 35.02524032781585,
+        "delta": 1.1949343580687497,
+        "delta_se": 0.14482412732658057,
+        "rel_delta": 0.03411637855685957,
+        "rel_ci_lo": 0.026012071865360017,
+        "rel_ci_hi": 0.04222068524835912,
+        "sign_resolved": true,
+        "recipes_used": 22160
+      },
+      "sign_flipped": false
+    },
+    "indonesian": {
+      "all": {
+        "real": 23.116729544060945,
+        "null_mean": 21.958542491607687,
+        "delta": 1.1581870524532576,
+        "delta_se": 0.1378101333156312,
+        "rel_delta": 0.052744259000610076,
+        "rel_ci_lo": 0.040443448898943746,
+        "rel_ci_hi": 0.0650450691022764,
+        "sign_resolved": true,
+        "recipes_used": 14929
+      },
+      "kept": {
+        "real": 23.05284195429177,
+        "null_mean": 21.90954878974007,
+        "delta": 1.1432931645517002,
+        "delta_se": 0.13783982086357704,
+        "rel_delta": 0.05218241486958819,
+        "rel_ci_lo": 0.03985144212864676,
+        "rel_ci_hi": 0.0645133876105296,
+        "sign_resolved": true,
+        "recipes_used": 14929
+      },
+      "sign_flipped": false
+    },
+    "israeli": {
+      "all": {
+        "real": 36.67419312591574,
+        "null_mean": 36.6573992788678,
+        "delta": 0.016793847047942734,
+        "delta_se": 0.27964482331269214,
+        "rel_delta": 0.0004581298013038264,
+        "rel_ci_lo": -0.014493936206522503,
+        "rel_ci_hi": 0.015410195809130155,
+        "sign_resolved": false,
+        "recipes_used": 8586
+      },
+      "kept": {
+        "real": 36.50437508696969,
+        "null_mean": 36.51388598989924,
+        "delta": -0.009510902929548593,
+        "delta_se": 0.2796755062968491,
+        "rel_delta": -0.00026047358892941646,
+        "rel_ci_lo": -0.015272953840783785,
+        "rel_ci_hi": 0.014752006662924953,
+        "sign_resolved": false,
+        "recipes_used": 8586
+      },
+      "sign_flipped": true
+    },
+    "persian": {
+      "all": {
+        "real": 48.02194563377477,
+        "null_mean": 45.30349808324206,
+        "delta": 2.7184475505327086,
+        "delta_se": 0.3771326619879844,
+        "rel_delta": 0.06000524607476774,
+        "rel_ci_lo": 0.04368906633654406,
+        "rel_ci_hi": 0.07632142581299142,
+        "sign_resolved": true,
+        "recipes_used": 5737
+      },
+      "kept": {
+        "real": 47.92548043413323,
+        "null_mean": 45.211447027780544,
+        "delta": 2.7140334063526836,
+        "delta_se": 0.3764097494297229,
+        "rel_delta": 0.06002978415366851,
+        "rel_ci_lo": 0.04371172407412865,
+        "rel_ci_hi": 0.07634784423320837,
+        "sign_resolved": true,
+        "recipes_used": 5737
+      },
+      "sign_flipped": false
+    },
+    "greek": {
+      "all": {
+        "real": 38.98765752890737,
+        "null_mean": 38.917373652072236,
+        "delta": 0.07028387683513415,
+        "delta_se": 0.33593414175270636,
+        "rel_delta": 0.0018059768745826389,
+        "rel_ci_lo": -0.015112711516925635,
+        "rel_ci_hi": 0.01872466526609091,
+        "sign_resolved": false,
+        "recipes_used": 4832
+      },
+      "kept": {
+        "real": 38.84775886709107,
+        "null_mean": 38.75647411329089,
+        "delta": 0.0912847538001813,
+        "delta_se": 0.33680227412841185,
+        "rel_delta": 0.0023553420657757076,
+        "rel_ci_lo": -0.014677488510143626,
+        "rel_ci_hi": 0.01938817264169504,
+        "sign_resolved": false,
+        "recipes_used": 4832
+      },
+      "sign_flipped": false
+    },
+    "german": {
+      "all": {
+        "real": 36.526179543106416,
+        "null_mean": 36.536292475031566,
+        "delta": -0.010112931925149837,
+        "delta_se": 0.314648137415349,
+        "rel_delta": -0.0002767914104054451,
+        "rel_ci_lo": -0.01715618194395605,
+        "rel_ci_hi": 0.016602599123145163,
+        "sign_resolved": false,
+        "recipes_used": 4285
+      },
+      "kept": {
+        "real": 36.29350820801286,
+        "null_mean": 36.34035199747446,
+        "delta": -0.046843789461597396,
+        "delta_se": 0.3148170105428732,
+        "rel_delta": -0.0012890296017180267,
+        "rel_ci_lo": -0.01826853879048191,
+        "rel_ci_hi": 0.015690479587045857,
+        "sign_resolved": false,
+        "recipes_used": 4285
+      },
+      "sign_flipped": false
+    },
+    "japanese": {
+      "all": {
+        "real": 20.248634111219346,
+        "null_mean": 21.1248385286519,
+        "delta": -0.8762044174325538,
+        "delta_se": 0.3434213298641906,
+        "rel_delta": -0.04147744922377258,
+        "rel_ci_lo": -0.07334068953308293,
+        "rel_ci_hi": -0.009614208914462229,
+        "sign_resolved": true,
+        "recipes_used": 3492
+      },
+      "kept": {
+        "real": 20.18559146160688,
+        "null_mean": 21.073556816737963,
+        "delta": -0.8879653551310831,
+        "delta_se": 0.3438321148288364,
+        "rel_delta": -0.042136472872287244,
+        "rel_ci_lo": -0.07411545728982308,
+        "rel_ci_hi": -0.010157488454751413,
+        "sign_resolved": true,
+        "recipes_used": 3492
+      },
+      "sign_flipped": false
+    },
+    "moroccan": {
+      "all": {
+        "real": 43.27437275811453,
+        "null_mean": 40.32459403038757,
+        "delta": 2.949778727726958,
+        "delta_se": 0.3681620250090522,
+        "rel_delta": 0.07315085988228626,
+        "rel_ci_lo": 0.055256133689284406,
+        "rel_ci_hi": 0.09104558607528809,
+        "sign_resolved": true,
+        "recipes_used": 2442
+      },
+      "kept": {
+        "real": 43.094696270085834,
+        "null_mean": 40.18233455006756,
+        "delta": 2.912361720018275,
+        "delta_se": 0.36608667106828807,
+        "rel_delta": 0.07247865890891544,
+        "rel_ci_lo": 0.054621810039176544,
+        "rel_ci_hi": 0.09033550777865434,
+        "sign_resolved": true,
+        "recipes_used": 2442
+      },
+      "sign_flipped": false
+    },
+    "filipino": {
+      "all": {
+        "real": 27.328990796849624,
+        "null_mean": 25.791249366955974,
+        "delta": 1.53774142989365,
+        "delta_se": 0.3754167406506108,
+        "rel_delta": 0.0596226033107113,
+        "rel_ci_lo": 0.031092895377371182,
+        "rel_ci_hi": 0.08815231124405142,
+        "sign_resolved": true,
+        "recipes_used": 1982
+      },
+      "kept": {
+        "real": 26.973979707664636,
+        "null_mean": 25.547556886645825,
+        "delta": 1.4264228210188108,
+        "delta_se": 0.36703469095417335,
+        "rel_delta": 0.055834020738179786,
+        "rel_ci_lo": 0.027675242289731863,
+        "rel_ci_hi": 0.0839927991866277,
+        "sign_resolved": true,
+        "recipes_used": 1982
+      },
+      "sign_flipped": false
+    },
+    "taiwanese": {
+      "all": {
+        "real": 12.85476367068977,
+        "null_mean": 13.102521744993593,
+        "delta": -0.2477580743038228,
+        "delta_se": 0.576928569863221,
+        "rel_delta": -0.018909190087663078,
+        "rel_ci_lo": -0.10521166063032625,
+        "rel_ci_hi": 0.06739328045500009,
+        "sign_resolved": false,
+        "recipes_used": 1574
+      },
+      "kept": {
+        "real": 12.756658350751804,
+        "null_mean": 13.016873440765963,
+        "delta": -0.26021509001415843,
+        "delta_se": 0.5781353060489796,
+        "rel_delta": -0.01999059844887348,
+        "rel_ci_lo": -0.10704262403800152,
+        "rel_ci_hi": 0.06706142714025456,
+        "sign_resolved": false,
+        "recipes_used": 1574
+      },
+      "sign_flipped": false
+    },
+    "thai": {
+      "all": {
+        "real": 27.02281393394946,
+        "null_mean": 22.01231984747625,
+        "delta": 5.010494086473212,
+        "delta_se": 0.6985807097893503,
+        "rel_delta": 0.22762226431339422,
+        "rel_ci_lo": 0.1654199066939128,
+        "rel_ci_hi": 0.28982462193287567,
+        "sign_resolved": true,
+        "recipes_used": 1685
+      },
+      "kept": {
+        "real": 27.00310217798746,
+        "null_mean": 21.999240612680154,
+        "delta": 5.003861565307307,
+        "delta_se": 0.6989923497951047,
+        "rel_delta": 0.22745610420857568,
+        "rel_ci_lo": 0.1651800906988759,
+        "rel_ci_hi": 0.28973211771827545,
+        "sign_resolved": true,
+        "recipes_used": 1685
+      },
+      "sign_flipped": false
+    },
+    "romanian": {
+      "all": {
+        "real": 33.761591725830485,
+        "null_mean": 33.05487444123061,
+        "delta": 0.7067172845998755,
+        "delta_se": 0.9533458584515963,
+        "rel_delta": 0.02138012309973745,
+        "rel_ci_lo": -0.035148843176849125,
+        "rel_ci_hi": 0.07790908937632401,
+        "sign_resolved": false,
+        "recipes_used": 777
+      },
+      "kept": {
+        "real": 33.70422473485844,
+        "null_mean": 33.02075116136383,
+        "delta": 0.6834735734946094,
+        "delta_se": 0.9539749450876261,
+        "rel_delta": 0.020698304837302204,
+        "rel_ci_lo": -0.03592641830223405,
+        "rel_ci_hi": 0.07732302797683846,
+        "sign_resolved": false,
+        "recipes_used": 777
+      },
+      "sign_flipped": false
+    }
+  },
+  "coverage": {
+    "north_american": {
+      "token_coverage": 0.7710133288380369,
+      "pair_coverage": 0.5851742832035606
+    },
+    "chinese": {
+      "token_coverage": 0.6638665647859094,
+      "pair_coverage": 0.4127942886018618
+    },
+    "russian": {
+      "token_coverage": 0.7617125400766561,
+      "pair_coverage": 0.5736297198538368
+    },
+    "spanish": {
+      "token_coverage": 0.8133381104969503,
+      "pair_coverage": 0.6473577976487297
+    },
+    "vietnamese": {
+      "token_coverage": 0.7380397671916433,
+      "pair_coverage": 0.5174315929006792
+    },
+    "turkish": {
+      "token_coverage": 0.8012301556294653,
+      "pair_coverage": 0.6225343900818494
+    },
+    "indian": {
+      "token_coverage": 0.8478172120892868,
+      "pair_coverage": 0.7110022260635983
+    },
+    "indonesian": {
+      "token_coverage": 0.6803698220382512,
+      "pair_coverage": 0.45189619513817436
+    },
+    "german": {
+      "token_coverage": 0.7859185408455058,
+      "pair_coverage": 0.6082367122029618
+    },
+    "israeli": {
+      "token_coverage": 0.8381311719768958,
+      "pair_coverage": 0.6939567320678732
+    },
+    "persian": {
+      "token_coverage": 0.8987996732094602,
+      "pair_coverage": 0.81025092103953
+    },
+    "greek": {
+      "token_coverage": 0.8305788360617217,
+      "pair_coverage": 0.6843120696375211
+    },
+    "moroccan": {
+      "token_coverage": 0.7917338319685344,
+      "pair_coverage": 0.6264787938291647
+    },
+    "japanese": {
+      "token_coverage": 0.7769949205308865,
+      "pair_coverage": 0.5828639193596206
+    },
+    "filipino": {
+      "token_coverage": 0.747147033858342,
+      "pair_coverage": 0.5493425073782373
+    },
+    "thai": {
+      "token_coverage": 0.6719346766758857,
+      "pair_coverage": 0.48109610288890325
+    },
+    "taiwanese": {
+      "token_coverage": 0.6961588260681916,
+      "pair_coverage": 0.4654440024273481
+    },
+    "romanian": {
+      "token_coverage": 0.8160841533763149,
+      "pair_coverage": 0.6557980541677623
+    }
+  },
+  "coverage_correlation": {
+    "spearman_r": 0.07946336429308565,
+    "perm_p": 0.7519,
+    "n_cuisines": 18
+  },
+  "params": {
+    "seed": 20260805,
+    "max_recipes": 150000,
+    "n_null": 8,
+    "jaccard": 0.9,
+    "masked_pairs_name": 799,
+    "masked_pairs_total": 6045,
+    "vocab_with_compounds": 489,
+    "vocab_total": 1790,
+    "max_size": 40
+  }
+}
