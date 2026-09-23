@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "status": "verified_public_documentation_update",
+  "verified_at": "2026-09-23T18:47:13.771985+00:00",
+  "change": "Markdown source formatting only: hard-wrapped card paragraphs joined onto single lines.",
+  "source_code_revision": "20857d66634d89af4cfb30898e6c4b144cdc2aac",
+  "card_generators_revision": "20857d66634d89af4cfb30898e6c4b144cdc2aac",
+  "previous_generators_reproduced_live_cards_byte_for_byte": true,
+  "rendering_comparison": {
+    "result": "identical for all four cards",
+    "checks": [
+      "text with whitespace collapsed",
+      "YAML front matter",
+      "markdown-it-py CommonMark+tables HTML",
+      "pandoc GFM HTML"
+    ],
+    "tools": {
+      "markdown-it-py": "4.2.0",
+      "pandoc": "pandoc 3.11"
+    }
+  },
+  "repositories": {
+    "incrediblecrab/llmmm-recipe-ingredients": {
+      "kind": "dataset",
+      "previous_revision": "873e563ad040053bbc8bf402de2dd7b813a343e0",
+      "revision": "96f323f3dae02b809e12e536cc23249d60e6db46",
+      "changed_files": {
+        "README.md": {
+          "before": {
+            "bytes": 3105,
+            "sha256": "daf2cc94ed73c99c53d692d1cb4561a88a7d288481ff0f2f8d978d45466d058f"
+          },
+          "after": {
+            "bytes": 3105,
+            "sha256": "e6c79c8b8817fe51d8d062c495fe9b831306ed88c4b9f8c358a09c290a2e789b"
+          }
+        },
+        "dataset-manifest.json": {
+          "before": {
+            "bytes": 39913,
+            "sha256": "f4a75dce55e9c08e2fd100382f925dab6b1e4d58afacac27e5fe59092827ece2"
+          },
+          "after": {
+            "bytes": 39913,
+            "sha256": "a8e6192cedd923e7cac58d0d08613128e18cfbc0f0161f9068bb62a2cac695cf"
+          }
+        }
+      },
+      "unchanged_files_verified": 312,
+      "preserved_tags": {
+        "v0.1.0": "873e563ad040053bbc8bf402de2dd7b813a343e0"
+      },
+      "url": "https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-ingredients"
+    },
+    "incrediblecrab/llmmm-recipe-sample": {
+      "kind": "dataset",
+      "previous_revision": "e66ba8738ea6dbd164a21ec41ed781a45a9c8f4d",
+      "revision": "ebe33c27023333287c05ca0ff8074643027b092f",
+      "changed_files": {
+        "README.md": {
+          "before": {
+            "bytes": 6695,
+            "sha256": "a0f01b585aa00a9859ef6283dfc3d8a847268450992af313cc32ffdb74012dbf"
+          },
+          "after": {
+            "bytes": 6695,
+            "sha256": "fdfc9127299aa57240290cc9315772a5d5cb62cdd0d132998ed703a4815d2bde"
+          }
+        }
+      },
+      "unchanged_files_verified": 3,
+      "preserved_tags": {
+        "v0.1.0": "e66ba8738ea6dbd164a21ec41ed781a45a9c8f4d"
+      },
+      "url": "https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-sample"
+    },
+    "incrediblecrab/llmmm-recipes-demo": {
+      "kind": "space",
+      "previous_revision": "426ff58b59ebc9e290e20a0e1788acfcc1742bef",
+      "revision": "a414e535d4227b50bf468843675dd5c81a3a0916",
+      "changed_files": {
+        "README.md": {
+          "before": {
+            "bytes": 2593,
+            "sha256": "a41ef09fcdae702ecbb77e99363f3b1f676d262075afc04ba4b6d6e56c6e7bdf"
+          },
+          "after": {
+            "bytes": 2593,
+            "sha256": "68ea77c1a1dc3671cab173c26375295e37170baca3cb8713e30a13677d449a65"
+          }
+        },
+        "manifest.json": {
+          "before": {
+            "bytes": 8856,
+            "sha256": "c7fda9343cfbdaef3a39008714499584f376b9d47638410fca98a880ff536dd0"
+          },
+          "after": {
+            "bytes": 8856,
+            "sha256": "022d743fe663f6295979873afb69f4eebd174273d913344bfb7f5f00f6121cc5"
+          }
+        }
+      },
+      "unchanged_files_verified": 12,
+      "preserved_tags": {
+        "v0.2.0-ingredient-search": "426ff58b59ebc9e290e20a0e1788acfcc1742bef",
+        "v0.1.0-sample": "4acf3cdf464086462a391a6de7c0400594d524bd"
+      },
+      "url": "https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo"
+    },
+    "incrediblecrab/llmmm-recipes": {
+      "kind": "model",
+      "url": "https://huggingface.co/incrediblecrab/llmmm-recipes",
+      "previous_revision": "913c3dba61e7a11dba01c53f7de653ce9326dd59",
+      "revision": "6ed5ff2326defc7c4cba25ab1fe28c5ebe048d0f",
+      "changed_file": "README.md",
+      "readme_sha256": "3ccc846c2b309931275893096e3d743df5014e735344833632c8db1eb3c55d0d",
+      "non_readme_artifact_sha256": {
+        "recipe_catalog.json": "968565d64242e394d2118d9dce1c0e7da853a0801468c25aed66a556ab16d751",
+        "recipe_evaluation.json": "2cb367689fa5df9f4408697b170ed01224738c80282ebde8f3e9fa73c37654f2",
+        "recipe_policies/reinforce/recipe_ranker.safetensors": "ee53b89166b4be30102dd65ed16a21cb9844d680ab1587257e3324a53f411a26",
+        "recipe_policies/reinforce/recipe_ranker_config.json": "43adb7fddbbd1df77b3837d80ec9c60c12b26d8cf0d5f2f4d71b035b9ca48dec",
+        "recipe_policies/supervised/recipe_ranker.safetensors": "b4557181a76760d6fe2543443cc01d5ade2d247d26d49aae4b84b23e9521301d",
+        "recipe_policies/supervised/recipe_ranker_config.json": "3398c7719d723c48a46b40c162e129e8e2bb1c22f64d37165025537036fd63f2",
+        "recipe_release_policy.json": "cd558006bcd2fc1e2487bc20ae2745c6ab6277f38dbc9794436bf052362bedeb",
+        "recipe_search_config.json": "6deaaa616d0f8d9ffb6fa5d0af45077dec750a8808e98924359ae885a3da3d44",
+        "recipe_training.json": "bca0d97060ef9f0c53f22697f5f96677bc0de6b4f18d2ea37cf835c62c102216",
+        "config.json": "1bf792345b8face5975534312b676fcea1b53e5fa9c0e844948c4db743aa72ce",
+        "model.safetensors": "1afa035ad661e197acac39df7b249516dba5bffd65cb7ad1007c4f0daa6e7eed",
+        "release_policy.json": "083ab1b1217b8c33d312135345f86246c5b33aa3e3c6f9d4b82212b73bc6d066",
+        "training_manifest.json": "dc4acfede9d363ba34eef77ac610ce5c19e03f8b5a774dbbddf6c6a2714d3399",
+        "training_verification.json": "ade537f81e38bb2323a25380eaf683c9c0d18f65d1c3271bdb33be11d2303693"
+      },
+      "preserved_tags": {
+        "v0.4.0-recipe-search": "9b152b52ece1ebd88d802726346b1d3d949f422f",
+        "v0.3.1-public": "b12bcd5a887b86b162e95703861b642e645f092f",
+        "v0.3.0-all-recipes": "a2f67609a1cedb9578daab40b3e1f8192731e6de",
+        "v0.2.0-preview": "80448d074299eb587d6c434099d51eb3897de44b"
+      },
+      "changed_files": {
+        "README.md": {
+          "before": {
+            "bytes": 11053,
+            "sha256": "af49fcc6c0da345e4af27e6c1fa4df9833eb80e5ac485cc9a4980ac23d05ec8b"
+          },
+          "after": {
+            "bytes": 11041,
+            "sha256": "3ccc846c2b309931275893096e3d743df5014e735344833632c8db1eb3c55d0d"
+          }
+        }
+      }
+    }
+  },
+  "live_space_browser_check": {
+    "url": "https://incrediblecrab-llmmm-recipes-demo.static.hf.space",
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "served_manifest_sha256": "022d743fe663f6295979873afb69f4eebd174273d913344bfb7f5f00f6121cc5",
+    "report_sha256": "b11269948c9ac51e0aae15909fa7a999e638d651a3307c5f868693359a7a6b80",
+    "host_html_bootstrap_removed_before_source_hash_check": true,
+    "viewports": [
+      "1360x1000",
+      "390x844"
+    ],
+    "cases": [
+      "anonymous_trained_inference",
+      "optional_large_download",
+      "complete_population",
+      "original_source_links",
+      "no_copied_recipe_prose",
+      "zero_time_limit",
+      "required_excluded_and_missing_constraints",
+      "explicit_baseline_comparison",
+      "source_link_filter",
+      "shortlist_disclosure",
+      "input_privacy_and_text_rendering",
+      "corrupt_index_rejected",
+      "failed_download_rejected",
+      "responsive_layout"
+    ]
+  },
+  "dataset_viewer": {
+    "status": "verified",
+    "rows_compared": 20,
+    "total_rows": 4653430,
+    "exact_fields": [
+      "id",
+      "ingredient_ids",
+      "ingredients",
+      "source",
+      "language",
+      "total_minutes",
+      "servings",
+      "source_url"
+    ]
+  },
+  "space_pinned_dataset_revision_unchanged": "873e563ad040053bbc8bf402de2dd7b813a343e0",
+  "weights_changed": false,
+  "dataset_records_changed": false,
+  "application_assets_changed": false,
+  "tags_moved": false
+}
