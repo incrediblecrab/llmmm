@@ -132,7 +132,7 @@ def test_production_export_has_coverage_and_reload_evidence_not_a_borrowed_score
     assert "no held-out quality score" in card
     assert ("hf auth login" not in card) is public
     assert f"token={not public}" in card
-    assert "its own learned\nweights and biases" in card
+    assert "its own learned weights and biases" in card
     assert "No pretrained checkpoint was used for initialization" in card
     assert card.rsplit("\n## ", 1)[1].startswith("Ideas for using this model\n")
     assert card.index("## Acknowledgements") < card.index("## Ideas for using this model")

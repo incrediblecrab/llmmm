@@ -138,11 +138,7 @@ tags:
 
 # llmmm-recipes
 
-llmmm-recipes predicts missing ingredients from a set of ingredient names.
-We trained its {report['n_parameters']:,} parameters, including its weights and
-biases, from scratch on **all {verification['recipes_per_epoch']:,} canonical recipe records**.
-No pretrained checkpoint was used for initialization. It does not generate
-cooking instructions.
+llmmm-recipes predicts missing ingredients from a set of ingredient names. We trained its {report['n_parameters']:,} parameters, including its weights and biases, from scratch on **all {verification['recipes_per_epoch']:,} canonical recipe records**. No pretrained checkpoint was used for initialization. It does not generate cooking instructions.
 
 ## Training evidence
 
@@ -155,23 +151,13 @@ cooking instructions.
 | Optimizer steps | {verification['optimizer_steps']:,} |
 | Recipe length, in canonical ingredients | {verification['minimum_recipe_length']} to {verification['maximum_recipe_length']} |
 
-Every record was processed once per epoch, including single-ingredient records,
-pairs and long ingredient lists. No sampling or length filters were applied.
-Different records can describe the same recipe.
+Every record was processed once per epoch, including single-ingredient records, pairs and long ingredient lists. No sampling or length filters were applied. Different records can describe the same recipe.
 
-All saved parameter tensors matched after export and reload. The reloaded model
-also matched the native predictor's logits on {contexts_checked} synthetic contexts.
-These checks establish serialization fidelity, not prediction quality.
-[training_verification.json](training_verification.json) contains the corpus hash,
-per-epoch coverage and reload evidence.
-[training_manifest.json](training_manifest.json) records settings and losses.
+All saved parameter tensors matched after export and reload. The reloaded model also matched the native predictor's logits on {contexts_checked} synthetic contexts. These checks establish serialization fidelity, not prediction quality. [training_verification.json](training_verification.json) contains the corpus hash, per-epoch coverage and reload evidence. [training_manifest.json](training_manifest.json) records settings and losses.
 
 ## Evaluation status
 
-**This checkpoint has no held-out quality score.** Training includes the rows
-previously held out for evaluation. The [earlier completion results](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/model/results/native_full_release.json)
-belong to `v0.2.0-preview`, not these weights. Measuring improvement requires
-new test recipes, with duplicate families and source overlap accounted for.
+**This checkpoint has no held-out quality score.** Training includes the rows previously held out for evaluation. The [earlier completion results](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/model/results/native_full_release.json) belong to `v0.2.0-preview`, not these weights. Measuring improvement requires new test recipes, with duplicate families and source overlap accounted for.
 
 ## Usage
 
@@ -192,53 +178,25 @@ model = IngredientPredictor.from_pretrained(
 print(model.recommend(["tomato", "basil"], top_k=10))
 ```
 
-Inference does not require the training corpus. Supply at least two distinct
-ingredient names from `model.vocabulary`; spaces can replace underscores.
-Unknown names raise an error, and recommendations exclude supplied ingredients.
-Scores are unnormalized logits, not calibrated probabilities.
+Inference does not require the training corpus. Supply at least two distinct ingredient names from `model.vocabulary`; spaces can replace underscores. Unknown names raise an error, and recommendations exclude supplied ingredients. Scores are unnormalized logits, not calibrated probabilities.
 
 ## Intended use and limits
 
-For noncommercial research and education. No permissive weights license is
-granted. This package contains no source recipes, titles or cooking instructions.
-Predictions have not been validated for taste, allergies or food safety.
-Review the [data provenance](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/raw-data/README.md)
-and applicable terms before redistribution or commercial use.
+For noncommercial research and education. No permissive weights license is granted. This package contains no source recipes, titles or cooking instructions. Predictions have not been validated for taste, allergies or food safety. Review the [data provenance](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/raw-data/README.md) and applicable terms before redistribution or commercial use.
 
 ## Acknowledgements
 
-This project started with a replication and audit of
-[Epicure](https://arxiv.org/abs/2605.22391) by Jakub Radzikowski and Josef Chen.
-Their ingredient-embedding work and published source inventory informed that
-research. llmmm-recipes is a separately trained model with its own learned
-weights and biases, not a fine-tune of Epicure or another pretrained model.
+This project started with a replication and audit of [Epicure](https://arxiv.org/abs/2605.22391) by Jakub Radzikowski and Josef Chen. Their ingredient-embedding work and published source inventory informed that research. llmmm-recipes is a separately trained model with its own learned weights and biases, not a fine-tune of Epicure or another pretrained model.
 
-The method draws on [Transformer attention](https://arxiv.org/abs/1706.03762)
-(Vaswani and coauthors), [masked prediction in BERT](https://aclanthology.org/N19-1423/)
-(Devlin and coauthors), and work on
-[attention over unordered sets](https://proceedings.mlr.press/v97/lee19d.html)
-(Lee and coauthors). Our implementation uses a standard Transformer encoder
-without positional encodings, rather than the Set Transformer reference architecture.
+The method draws on [Transformer attention](https://arxiv.org/abs/1706.03762) (Vaswani and coauthors), [masked prediction in BERT](https://aclanthology.org/N19-1423/) (Devlin and coauthors), and work on [attention over unordered sets](https://proceedings.mlr.press/v97/lee19d.html) (Lee and coauthors). Our implementation uses a standard Transformer encoder without positional encodings, rather than the Set Transformer reference architecture.
 
-We credit the authors and curators of
-[RecipeNLG](https://aclanthology.org/2020.inlg-1.4/) and the other datasets in our
-[source inventory](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/raw-data/README.md).
-[Epicure Cooc](https://huggingface.co/Kaikaku/epicure-cooc),
-[Epicure Core](https://huggingface.co/Kaikaku/epicure-core) and
-[RecipeBERT](https://huggingface.co/alexdseo/RecipeBERT) were comparison models;
-their weights are not part of this checkpoint. The implementation uses
-[PyTorch](https://pytorch.org/), and [Hugging Face Hub](https://huggingface.co/docs/hub)
-hosts the release.
+We credit the authors and curators of [RecipeNLG](https://aclanthology.org/2020.inlg-1.4/) and the other datasets in our [source inventory](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/raw-data/README.md). [Epicure Cooc](https://huggingface.co/Kaikaku/epicure-cooc), [Epicure Core](https://huggingface.co/Kaikaku/epicure-core) and [RecipeBERT](https://huggingface.co/alexdseo/RecipeBERT) were comparison models; their weights are not part of this checkpoint. The implementation uses [PyTorch](https://pytorch.org/), and [Hugging Face Hub](https://huggingface.co/docs/hub) hosts the release.
 
 ## Ideas for using this model
 
-- Add ingredient autocomplete to a recipe editor. After a user enters at least
-  two known ingredients, show ranked suggestions for them to accept or reject.
-- Expand an ingredient query against a recipe catalog. Use the suggested names
-  to find related entries; the catalog supplies the recipes and instructions.
-- Use it in a learning experiment. Change the input ingredients and inspect how
-  the rankings move, or compare it with popularity and co-occurrence baselines
-  on genuinely new recipes.
+- Add ingredient autocomplete to a recipe editor. After a user enters at least two known ingredients, show ranked suggestions for them to accept or reject.
+- Expand an ingredient query against a recipe catalog. Use the suggested names to find related entries; the catalog supplies the recipes and instructions.
+- Use it in a learning experiment. Change the input ingredients and inspect how the rankings move, or compare it with popularity and co-occurrence baselines on genuinely new recipes.
 """
 
 
@@ -349,22 +307,13 @@ tags:
 
 # llmmm-recipes
 
-A {report['n_parameters']:,}-parameter set transformer that predicts missing
-ingredients. It was trained from random initialization. The package contains
-the complete predictor. It does not generate recipes.
+A {report['n_parameters']:,}-parameter set transformer that predicts missing ingredients. It was trained from random initialization. The package contains the complete predictor. It does not generate recipes.
 
-This is a local research candidate. Public-release permissions remain unresolved,
-and this card grants no weights license.
+This is a local research candidate. Public-release permissions remain unresolved, and this card grants no weights license.
 
 ## Measured result
 
-The hidden ingredient appeared among the top ten predictions in {recall:.1%}
-of {report['n_completion']:,} test cases, compared with
-{report['previous_recall_at_10']:.1%} for the earlier capped run.
-The paired gain was {100 * report['paired_improvement']:.1f} percentage points,
-with a 95% bootstrap interval of
-{100 * report['paired_improvement_ci95'][0]:.1f} to
-{100 * report['paired_improvement_ci95'][1]:.1f} percentage points.
+The hidden ingredient appeared among the top ten predictions in {recall:.1%} of {report['n_completion']:,} test cases, compared with {report['previous_recall_at_10']:.1%} for the earlier capped run. The paired gain was {100 * report['paired_improvement']:.1f} percentage points, with a 95% bootstrap interval of {100 * report['paired_improvement_ci95'][0]:.1f} to {100 * report['paired_improvement_ci95'][1]:.1f} percentage points.
 
 | Training measure | Count |
 |---|---:|
@@ -373,11 +322,7 @@ with a 95% bootstrap interval of
 | Epochs | {report['training']['epochs']} |
 | Examples processed across all epochs | {report['training']['n_examples_seen']:,} |
 
-The split holds out recipe rows but does not exclude duplicate recipe families
-or account for external pretraining overlap. The bootstrap resamples test cases;
-it does not measure variation across training runs. Exact scores, run identities,
-and package hashes are in [evaluation.json](evaluation.json). Training settings
-are in [training_manifest.json](training_manifest.json).
+The split holds out recipe rows but does not exclude duplicate recipe families or account for external pretraining overlap. The bootstrap resamples test cases; it does not measure variation across training runs. Exact scores, run identities, and package hashes are in [evaluation.json](evaluation.json). Training settings are in [training_manifest.json](training_manifest.json).
 
 ## Local usage
 
@@ -397,18 +342,11 @@ model = IngredientPredictor.from_pretrained(
 print(model.recommend(["tomato", "basil"], top_k=10))
 ```
 
-Use ingredient names from `model.vocabulary`. Spaces can replace underscores.
-Unknown names raise an error. Recommendations exclude ingredients already
-supplied. Scores are unnormalized logits, not calibrated probabilities.
-`forward()` returns the logits.
+Use ingredient names from `model.vocabulary`. Spaces can replace underscores. Unknown names raise an error. Recommendations exclude ingredients already supplied. Scores are unnormalized logits, not calibrated probabilities. `forward()` returns the logits.
 
 ## Data and limitations
 
-The training corpus includes sources with noncommercial or unresolved terms.
-This package contains no source recipes, titles or cooking instructions.
-Predictions have not been validated for taste, allergies or food safety.
-Review the source repository's data provenance and release permissions before
-redistribution or commercial use.
+The training corpus includes sources with noncommercial or unresolved terms. This package contains no source recipes, titles or cooking instructions. Predictions have not been validated for taste, allergies or food safety. Review the source repository's data provenance and release permissions before redistribution or commercial use.
 """)
     print(f"Verified full predictor: {recall:.3%}; paired improvement "
           f"{100 * report['paired_improvement']:.3f} percentage points")

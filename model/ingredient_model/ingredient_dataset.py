@@ -296,58 +296,27 @@ configs:
 
 # llmmm recipe ingredients
 
-This factual extract contains **{rows:,} canonical ingredient records**,
-**{metadata['n_slots']:,} ingredient slots** and **{len(metadata['vocabulary']):,} canonical
-ingredient names** from **{len(metadata['source_names']):,} source groups**. These are
-normalized ingredient facts, not complete recipes. Counts describe the complete
-canonical corpus, not a sample or a count of unique content: duplicate ingredient
-sets remain, and a record is not necessarily a unique or complete recipe.
+This factual extract contains **{rows:,} canonical ingredient records**, **{metadata['n_slots']:,} ingredient slots** and **{len(metadata['vocabulary']):,} canonical ingredient names** from **{len(metadata['source_names']):,} source groups**. These are normalized ingredient facts, not complete recipes. Counts describe the complete canonical corpus, not a sample or a count of unique content: duplicate ingredient sets remain, and a record is not necessarily a unique or complete recipe.
 
-The `train` split preserves every original zero-based `id`, including
-{coverage['singletons']:,} singleton records and records without links.
-`ingredient_ids` and `ingredients` are aligned, sorted canonical ID sets and their
-exact vocabulary names. `source` and `language` retain the index's source
-identifiers and language labels.
+The `train` split preserves every original zero-based `id`, including {coverage['singletons']:,} singleton records and records without links. `ingredient_ids` and `ingredients` are aligned, sorted canonical ID sets and their exact vocabulary names. `source` and `language` retain the index's source identifiers and language labels.
 
-Source-reported positive `total_minutes` are available for
-**{coverage['source_total_times']:,} of {rows:,} records**; source-reported `servings`
-for **{coverage['source_servings']:,} of {rows:,} records**. Unknown values are null,
-not NaN, zero, guessed totals or sums of component times. Serving counts do not
-scale ingredient quantities. These source facts are not independently measured.
+Source-reported positive `total_minutes` are available for **{coverage['source_total_times']:,} of {rows:,} records**; source-reported `servings` for **{coverage['source_servings']:,} of {rows:,} records**. Unknown values are null, not NaN, zero, guessed totals or sums of component times. Serving counts do not scale ingredient quantities. These source facts are not independently measured.
 
-`source_url` retains recorded original HTTP(S) links for **{links:,} records**;
-**{rows - links:,} records have null URLs**. Missing, invalid or sensitive links
-are not replaced with generated URLs. Original titles, descriptions, ingredient
-prose, quantities, instructions, authors and images are not included. Consult a
-recorded source page for the complete recipe, where a link is available.
+`source_url` retains recorded original HTTP(S) links for **{links:,} records**; **{rows - links:,} records have null URLs**. Missing, invalid or sensitive links are not replaced with generated URLs. Original titles, descriptions, ingredient prose, quantities, instructions, authors and images are not included. Consult a recorded source page for the complete recipe, where a link is available.
 
-Canonical matching does not recover quantities or every compound constituent,
-and exclusions are not an allergy-safety guarantee.
+Canonical matching does not recover quantities or every compound constituent, and exclusions are not an allergy-safety guarantee.
 
-[Model and its separate terms]({_MODEL_URL}) |
-[Browser demo]({_DEMO_URL}) |
-[Exact source revision `{source_revision}`]({_SOURCE_REPOSITORY}/tree/{source_revision})
+[Model and its separate terms]({_MODEL_URL}) | [Browser demo]({_DEMO_URL}) | [Exact source revision `{source_revision}`]({_SOURCE_REPOSITORY}/tree/{source_revision})
 
-`index/` preserves the ingredient index's compressed arrays and URL shards
-byte-for-byte; only its publication provenance changes. `dataset-manifest.json`
-records the source revision, input and copied index hashes, Parquet counts and
-every other file's bytes and SHA256. Packaging stages a release locally; it does
-not upload it.
+`index/` preserves the ingredient index's compressed arrays and URL shards byte-for-byte; only its publication provenance changes. `dataset-manifest.json` records the source revision, input and copied index hashes, Parquet counts and every other file's bytes and SHA256. Packaging stages a release locally; it does not upload it.
 
 ## Use
 
-This is a factual ingredient extract. The maintainer confirmed permission to
-publish this ingredient-only data. `license: other` is not a grant of rights to
-source-page prose or photos, or to the separate model weights. Source-page
-material and model weights retain their separate terms.
+This is a factual ingredient extract. The maintainer confirmed permission to publish this ingredient-only data. `license: other` is not a grant of rights to source-page prose or photos, or to the separate model weights. Source-page material and model weights retain their separate terms.
 
 ## Acknowledgements
 
-Thanks to the original recipe contributors and the dataset contributors and
-curators identified in the
-[source inventory]({_SOURCE_REPOSITORY}/blob/{source_revision}/raw-data/README.md).
-Original source identifiers and recorded source URLs are retained for attribution
-and provenance wherever available.
+Thanks to the original recipe contributors and the dataset contributors and curators identified in the [source inventory]({_SOURCE_REPOSITORY}/blob/{source_revision}/raw-data/README.md). Original source identifiers and recorded source URLs are retained for attribution and provenance wherever available.
 """
 
 

@@ -355,19 +355,9 @@ def render_card(native: dict, config: dict, training: dict, evaluation: dict,
             f"(paired query-bootstrap CI95: {100 * low:.1f} to {100 * high:.1f} points).\n\n")
     section = f"""## Finding recipes
 
-This release also includes a constrained recipe finder and our own
-{training['model']['learned_parameter_count']:,}-parameter ranking policies. It retrieves existing
-recipes; it does not write new ones. Supply canonical ingredient names, a maximum
-source-reported total time, required or excluded ingredients, missing-item limits,
-servings, and an optional source-language code.
+This release also includes a constrained recipe finder and our own {training['model']['learned_parameter_count']:,}-parameter ranking policies. It retrieves existing recipes; it does not write new ones. Supply canonical ingredient names, a maximum source-reported total time, required or excluded ingredients, missing-item limits, servings, and an optional source-language code.
 
-**Recipe search requires an authorized local catalog, its verified metadata
-index, and the canonical `recipe_ids.npz` ingredient corpus. These data files
-are not included in this public model.** The catalog contains
-{coverage['recipes']:,} records, but only {coverage['known_source_total_minutes']:,}
-have a known source total time. Unknown times do not pass a time limit.
-The repository's catalog builder reconstructs these files from authorized local
-sources; [recipe_catalog.json](recipe_catalog.json) records the measured coverage.
+**Recipe search requires an authorized local catalog, its verified metadata index, and the canonical `recipe_ids.npz` ingredient corpus. These data files are not included in this public model.** The catalog contains {coverage['recipes']:,} records, but only {coverage['known_source_total_minutes']:,} have a known source total time. Unknown times do not pass a time limit. The repository's catalog builder reconstructs these files from authorized local sources; [recipe_catalog.json](recipe_catalog.json) records the measured coverage.
 
 ```python
 from ingredient_model.recipe_search import RecipeFinder, RecipeQuery
@@ -389,45 +379,19 @@ for recipe in result.recipes:
     print(recipe.title, recipe.total_minutes, recipe.missing_ingredients, recipe.source_url)
 ```
 
-Returned records include source ingredients, separate quantity values, instructions,
-and warnings. Normalized ingredient matches are not a complete shopping list or an
-allergen-safety check. Missing units are not invented, inconsistent quantity arrays
-are not paired, and serving counts do not scale quantities or cooking time.
+Returned records include source ingredients, separate quantity values, instructions, and warnings. Normalized ingredient matches are not a complete shopping list or an allergen-safety check. Missing units are not invented, inconsistent quantity arrays are not paired, and serving counts do not scale quantities or cooking time.
 
 ### Ranking training and measured limits
 
-The policies were initialized from scratch. Listwise supervised learning was
-followed by sampled-action REINFORCE with entropy regularization and a KL penalty
-to the supervised policy. Each stage used all {coverage['recipes']:,} canonical records.
-Together, the stages produced **{presentations:,} training queries** and
-**{actions:,} sampled reinforcement actions**.
-The reward is recovery of the source's canonical ingredient set, not human feedback.
-The source is deliberately inserted into sampled training/evaluation candidate sets;
-those sampled-ranking scores are not full-catalog search accuracy.
-[recipe_training.json](recipe_training.json) records coverage and the complete protocol.
+The policies were initialized from scratch. Listwise supervised learning was followed by sampled-action REINFORCE with entropy regularization and a KL penalty to the supervised policy. Each stage used all {coverage['recipes']:,} canonical records. Together, the stages produced **{presentations:,} training queries** and **{actions:,} sampled reinforcement actions**. The reward is recovery of the source's canonical ingredient set, not human feedback. The source is deliberately inserted into sampled training/evaluation candidate sets; those sampled-ranking scores are not full-catalog search accuracy. [recipe_training.json](recipe_training.json) records coverage and the complete protocol.
 
 {choice}
 
-The separate live search evaluation did not insert the source recipe into retrieval.
-On {score['queries']:,} held-out test pantry queries, the selected policy recovered
-the source ingredient set in its top five **{score['source_set_recall_at_5']:.1%}**
-of the time. The source set reached the shortlist on
-**{score['source_set_in_shortlist']:.1%}** of queries. Median request time was
-**{score['latency_ms']['median'] / 1000:.2f}s**, with p95
-**{score['latency_ms']['p95'] / 1000:.2f}s**;
-{score['timeouts']} timeouts and {score['constraint_violations']} constraint violations
-were observed. Full counts, failures, truncation and paired comparisons are in
-[recipe_evaluation.json](recipe_evaluation.json).
+The separate live search evaluation did not insert the source recipe into retrieval. On {score['queries']:,} held-out test pantry queries, the selected policy recovered the source ingredient set in its top five **{score['source_set_recall_at_5']:.1%}** of the time. The source set reached the shortlist on **{score['source_set_in_shortlist']:.1%}** of queries. Median request time was **{score['latency_ms']['median'] / 1000:.2f}s**, with p95 **{score['latency_ms']['p95'] / 1000:.2f}s**; {score['timeouts']} timeouts and {score['constraint_violations']} constraint violations were observed. Full counts, failures, truncation and paired comparisons are in [recipe_evaluation.json](recipe_evaluation.json).
 
-{paired}{score['truncated_retrievals']} of {score['queries']} test queries reached a retrieval
-budget. Request timings exclude initialization; this is a measured local run,
-not a service-level guarantee.
+{paired}{score['truncated_retrievals']} of {score['queries']} test queries reached a retrieval budget. Request timings exclude initialization; this is a measured local run, not a service-level guarantee.
 
-Validation and test pantry hashes are excluded from ranking-policy training.
-Recipes and duplicate families are not held out. These synthetic recovery
-measurements do not establish taste, cooking quality, unseen-recipe generalization
-or a service-level guarantee. Retrieval is bounded and reports when its shortlist
-or scan budget is reached. There is no silent fallback between learned and heuristic ranking.
+Validation and test pantry hashes are excluded from ranking-policy training. Recipes and duplicate families are not held out. These synthetic recovery measurements do not establish taste, cooking quality, unseen-recipe generalization or a service-level guarantee. Retrieval is bounded and reports when its shortlist or scan budget is reached. There is no silent fallback between learned and heuristic ranking.
 
 """
     card = card.replace("- ingredient-completion\n", "- ingredient-completion\n- recipe-retrieval\n")
@@ -439,17 +403,12 @@ or scan budget is reached. There is no silent fallback between learned and heuri
                         "Ingredient prediction does not require the training corpus.", 1)
     card = card.replace("## Acknowledgements\n", """## Acknowledgements
 
-The ranking experiment uses [REINFORCE](https://doi.org/10.1007/BF00992696)
-(Ronald J. Williams), with a supervised warm-start and KL regularization.
-[SQLite FTS5](https://sqlite.org/fts5.html) supplies the ingredient-token retrieval
-index. These are method and implementation credits, not imported learned weights.
+The ranking experiment uses [REINFORCE](https://doi.org/10.1007/BF00992696) (Ronald J. Williams), with a supervised warm-start and KL regularization. [SQLite FTS5](https://sqlite.org/fts5.html) supplies the ingredient-token retrieval index. These are method and implementation credits, not imported learned weights.
 """, 1)
     card = card.replace("## Ideas for using this model\n", """## Ideas for using this model
 
-- Build a pantry search over an authorized recipe collection, showing source links,
-  reported cooking times, missing canonical ingredients and data-quality warnings.
-- Compare supervised, reinforcement-trained and heuristic rankings on held-out
-  queries. Keep the simpler policy when measured gains are not established.
+- Build a pantry search over an authorized recipe collection, showing source links, reported cooking times, missing canonical ingredients and data-quality warnings.
+- Compare supervised, reinforcement-trained and heuristic rankings on held-out queries. Keep the simpler policy when measured gains are not established.
 """, 1)
     return card
 

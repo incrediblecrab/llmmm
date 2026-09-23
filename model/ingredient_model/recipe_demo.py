@@ -370,36 +370,20 @@ datasets:
 
 # llmmm recipe finder
 
-Try the released supervised ranker on **{catalog['n_recipes']} openly licensed sample recipes**.
-Enter pantry ingredients, a total-time limit and optional constraints. The app filters
-the complete small sample before ranking. It does not generate recipes.
+Try the released supervised ranker on **{catalog['n_recipes']} openly licensed sample recipes**. Enter pantry ingredients, a total-time limit and optional constraints. The app filters the complete small sample before ranking. It does not generate recipes.
 
-Everything runs in the browser, including the trained model's forward pass.
-No GPU, backend, private corpus, account or API key is needed to use the demo.
-Pantry inputs are not sent to a server or stored between visits.
+Everything runs in the browser, including the trained model's forward pass. No GPU, backend, private corpus, account or API key is needed to use the demo. Pantry inputs are not sent to a server or stored between visits.
 
-The sample is separately sourced from Wikibooks, not extracted from the private
-training corpus. It is not a held-out benchmark, and the full-catalog quality
-measurements do not apply to it. Document frequencies are recomputed from this
-sample; the full published vocabulary and supervised weights are retained.
-Time and servings are source reports, not independently measured values. Unknown
-metadata cannot pass a corresponding limit. Canonical exclusions are not an
-allergy-safety check, and servings do not scale quantities.
+The sample is separately sourced from Wikibooks, not extracted from the private training corpus. It is not a held-out benchmark, and the full-catalog quality measurements do not apply to it. Document frequencies are recomputed from this sample; the full published vocabulary and supervised weights are retained. Time and servings are source reports, not independently measured values. Unknown metadata cannot pass a corresponding limit. Canonical exclusions are not an allergy-safety check, and servings do not scale quantities.
 
-Recipe text is licensed under {licenses}; see the [dataset](https://huggingface.co/datasets/{DATASET_REPOSITORY})
-and individual recipes for source revisions, contributor-history links and changes.
-The model weights retain their [separate terms](https://huggingface.co/{MODEL_REPOSITORY}/blob/{provenance['model_revision']}/recipe_release_policy.json);
-the recipe-text license does not relicense the weights or project code.
+Recipe text is licensed under {licenses}; see the [dataset](https://huggingface.co/datasets/{DATASET_REPOSITORY}) and individual recipes for source revisions, contributor-history links and changes. The model weights retain their [separate terms](https://huggingface.co/{MODEL_REPOSITORY}/blob/{provenance['model_revision']}/recipe_release_policy.json); the recipe-text license does not relicense the weights or project code.
 
 - Model commit: `{provenance['model_revision']}` (supervised).
 - Dataset commit: `{provenance['dataset_revision'] or 'local preview; not published'}`.
 - Source commit: `{provenance['source_revision'] or 'local preview; not committed'}`.
 - [Source and reproduction instructions](https://github.com/incrediblecrab/llmmm).
 
-`manifest.json` records the exact application assets and their SHA256 digests.
-The app verifies the catalog and policy digests before enabling search. The Hub
-renders this README as HTML; its raw source hash is recorded separately under
-`documentation_files` and verified through the pinned Hub repository.
+`manifest.json` records the exact application assets and their SHA256 digests. The app verifies the catalog and policy digests before enabling search. The Hub renders this README as HTML; its raw source hash is recorded separately under `documentation_files` and verified through the pinned Hub repository.
 """
 
 
@@ -408,15 +392,9 @@ def add_demo_links(card: str) -> str:
     section = f"""{start}
 ## Try the public demo
 
-[Open the browser demo](https://huggingface.co/spaces/{SPACE_REPOSITORY}) or
-[download the public recipe sample](https://huggingface.co/datasets/{DATASET_REPOSITORY}).
-The demo runs the released supervised ranker on a small, separately sourced
-Wikibooks catalog. It needs no private dataset, API key or login.
+[Open the browser demo](https://huggingface.co/spaces/{SPACE_REPOSITORY}) or [download the public recipe sample](https://huggingface.co/datasets/{DATASET_REPOSITORY}). The demo runs the released supervised ranker on a small, separately sourced Wikibooks catalog. It needs no private dataset, API key or login.
 
-This is not the full training catalog or a new quality benchmark. The demo uses
-sample-specific ingredient frequencies; the full-catalog measurements below do
-not apply to it. Recipe-text licenses, source revisions and attribution are
-recorded with the sample. The model weights retain their existing terms.
+This is not the full training catalog or a new quality benchmark. The demo uses sample-specific ingredient frequencies; the full-catalog measurements below do not apply to it. Recipe-text licenses, source revisions and attribution are recorded with the sample. The model weights retain their existing terms.
 {end}
 """
     if start in card or end in card:

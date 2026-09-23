@@ -81,32 +81,15 @@ datasets:
 
 # llmmm recipe finder
 
-Search **{metadata['n_recipes']:,} canonical ingredient records** with pantry ingredients,
-source-reported time and serving limits, required/excluded ingredients, and a
-missing-item allowance. The same independently trained supervised weights from
-[llmmm-recipes](https://huggingface.co/{MODEL_REPOSITORY}) rank the results.
+Search **{metadata['n_recipes']:,} canonical ingredient records** with pantry ingredients, source-reported time and serving limits, required/excluded ingredients, and a missing-item allowance. The same independently trained supervised weights from [llmmm-recipes](https://huggingface.co/{MODEL_REPOSITORY}) rank the results.
 
-This is ingredient-only retrieval, not recipe generation. Original titles,
-quantities, instructions, descriptions and photos are not included. Open the
-recorded source link for the original recipe. There are
-**{metadata['coverage']['url_statuses'].get('source_url', 0):,} records with links**;
-the link-only filter is on by default and can be disabled. A record is not
-necessarily a unique or complete recipe.
+This is ingredient-only retrieval, not recipe generation. Original titles, quantities, instructions, descriptions and photos are not included. Open the recorded source link for the original recipe. There are **{metadata['coverage']['url_statuses'].get('source_url', 0):,} records with links**; the link-only filter is on by default and can be disabled. A record is not necessarily a unique or complete recipe.
 
-The initial array download is **{metadata['bytes']['initial_compressed_download'] / 1024**2:.1f} MiB**.
-Loading is optional. Search and model inference then run in your browser;
-source-link shards download as needed. This is a free Static Space, with no
-server-side model, paid hardware, API key or per-search inference fee.
-Pantry inputs are not sent to a server or stored between visits.
+The initial array download is **{metadata['bytes']['initial_compressed_download'] / 1024**2:.1f} MiB**. Loading is optional. Search and model inference then run in your browser; source-link shards download as needed. This is a free Static Space, with no server-side model, paid hardware, API key or per-search inference fee. Pantry inputs are not sent to a server or stored between visits.
 
-All records are checked against the hard constraints. The baseline retains at
-most 2,000 feasible records for learned ranking; the app discloses truncation.
-Those results are not guaranteed global learned top-k. The private finder's
-recovery scores do not evaluate this browser retrieval pipeline.
+All records are checked against the hard constraints. The baseline retains at most 2,000 feasible records for learned ranking; the app discloses truncation. Those results are not guaranteed global learned top-k. The private finder's recovery scores do not evaluate this browser retrieval pipeline.
 
-Missing time/serving metadata cannot pass its corresponding constraint. Values
-are source reports, not independently measured. Canonical exclusions are not an
-allergy-safety check; serving limits do not scale quantities.
+Missing time/serving metadata cannot pass its corresponding constraint. Values are source reports, not independently measured. Canonical exclusions are not an allergy-safety check; serving limits do not scale quantities.
 
 - [Ingredient dataset and source provenance](https://huggingface.co/datasets/{INGREDIENT_DATASET_REPOSITORY})
 - [Separate twelve-recipe Wikibooks sample, with complete instructions](https://huggingface.co/datasets/{DATASET_REPOSITORY})
@@ -115,9 +98,7 @@ allergy-safety check; serving limits do not scale quantities.
 - Dataset revision: `{provenance['dataset_revision'] or 'local preview'}`.
 - Source revision: `{provenance['source_revision'] or 'local preview'}`.
 
-The maintainer confirmed permission to publish this factual ingredient extract.
-Original recipe-page content and model weights retain their separate terms.
-`manifest.json` pins the application assets and dataset index by SHA256.
+The maintainer confirmed permission to publish this factual ingredient extract. Original recipe-page content and model weights retain their separate terms. `manifest.json` pins the application assets and dataset index by SHA256.
 """
 
 
@@ -128,33 +109,23 @@ def add_ingredient_demo_links(card: str) -> str:
     section = f"""{start}
 ## Try the public demo
 
-[Open the browser demo](https://huggingface.co/spaces/{SPACE_REPOSITORY}) or
-[download all 4,653,430 ingredient records](https://huggingface.co/datasets/{INGREDIENT_DATASET_REPOSITORY}).
-The demo uses the released supervised weights and full-corpus ingredient
-frequencies. An optional 36.0 MiB index download enables local browser search,
-with no login, API key or paid inference service.
+[Open the browser demo](https://huggingface.co/spaces/{SPACE_REPOSITORY}) or [download all 4,653,430 ingredient records](https://huggingface.co/datasets/{INGREDIENT_DATASET_REPOSITORY}). The demo uses the released supervised weights and full-corpus ingredient frequencies. An optional 36.0 MiB index download enables local browser search, with no login, API key or paid inference service.
 
-The dataset contains normalized ingredient names, source-reported times and
-servings, source identifiers and recorded original links. It does not copy
-titles, quantities, instructions, descriptions or images. The link-only filter
-is enabled by default; unlinked ingredient sets remain available when disabled.
+The dataset contains normalized ingredient names, source-reported times and servings, source identifiers and recorded original links. It does not copy titles, quantities, instructions, descriptions or images. The link-only filter is enabled by default; unlinked ingredient sets remain available when disabled.
 
-All records are checked against constraints, then at most 2,000 baseline-selected
-candidates receive learned scores. This is not a new quality benchmark or a
-guaranteed global learned top-k. The private catalog's recovery scores below do
-not measure this browser retrieval pipeline.
+All records are checked against constraints, then at most 2,000 baseline-selected candidates receive learned scores. This is not a new quality benchmark or a guaranteed global learned top-k. The private catalog's recovery scores below do not measure this browser retrieval pipeline.
 
-The [separately sourced twelve-recipe sample](https://huggingface.co/datasets/{DATASET_REPOSITORY})
-remains available with complete Wikibooks instructions and attribution.
-Model weights and their terms are unchanged.
+The [separately sourced twelve-recipe sample](https://huggingface.co/datasets/{DATASET_REPOSITORY}) remains available with complete Wikibooks instructions and attribution. Model weights and their terms are unchanged.
 {end}"""
     before, remaining = card.split(start, 1)
     _, after = remaining.split(end, 1)
     updated = before + section + after
-    return updated.replace(
-        "**Recipe search requires an authorized local catalog, its verified metadata\nindex, and the canonical",
-        "**The text-backed Python finder requires an authorized local catalog, its\nverified metadata index, and the canonical",
-        1,
+    # \s+ matches both the joined card and the hard-wrapped one already published on the Hub.
+    return re.sub(
+        r"\*\*Recipe search requires an authorized local catalog, its verified metadata\s+index, and the canonical",
+        "**The text-backed Python finder requires an authorized local catalog, its verified metadata index, and the canonical",
+        updated,
+        count=1,
     )
 
 
