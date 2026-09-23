@@ -267,3 +267,7 @@ The public demo sample credits [Wikibooks Cookbook contributors](https://en.wiki
 - Search an authorized recipe collection using pantry ingredients and a time limit. Show source links, missing canonical ingredients and data-quality warnings.
 - Compare heuristic, supervised and reinforcement-trained ranking on held-out pantry queries. Keep the simpler policy when an improvement is not established.
 - Use it in a learning experiment. Change the input ingredients and inspect how the rankings move, or compare it with popularity and co-occurrence baselines on genuinely new recipes.
+
+## License
+
+Project code and documentation are released under the [MIT License](LICENSE). Two tracked items are not covered: the Wikibooks recipe text in `model/demo_data/`, which stays under CC BY-SA 4.0 as its [card](model/demo_data/README.md) records, and `paper/epicure.pdf`, a copy of the Epicure paper that remains its authors' work.
