@@ -2,9 +2,7 @@
 
 ## What it is
 
-Skip-gram with negative sampling trained on random walks over ingredient graphs.
-Three registered models share one architecture and differ only in which edges
-the walk may traverse.
+Skip-gram with negative sampling trained on random walks over ingredient graphs. Three registered models share one architecture and differ only in which edges the walk may traverse.
 
 | model | walks over | reads as |
 |---|---|---|
@@ -14,9 +12,7 @@ the walk may traverse.
 
 ## When to use it
 
-`sgns-cooc` is the reference baseline. Every new family should be compared
-against it before it is taken seriously, because it is the strongest model that
-prior work found on held-out link prediction.
+`sgns-cooc` is the reference baseline. Every new family should be compared against it before it is taken seriously, because it is the strongest model that prior work found on held-out link prediction.
 
 ## Key parameters
 
@@ -32,14 +28,8 @@ prior work found on held-out link prediction.
 
 ## Known behaviour
 
-- `sgns-chem` collapses: effective dimensionality near 3 and held-out link AUC
-  at chance. This is a property of the walk schema, not a bug — chemistry-only
-  walks cannot express ingredient–ingredient structure. `ii_repeat` traces the
-  curve between the two regimes smoothly, which is how the collapse was
-  attributed to the schema rather than to the optimiser.
-- Nearest neighbours contain near-duplicates (`rice → brown_rice`,
-  `lamb → mutton`). Any product surface needs a dedup filter; that is a
-  presentation concern, not a modelling defect.
+- `sgns-chem` collapses: effective dimensionality near 3 and held-out link AUC at chance. This is a property of the walk schema, not a bug — chemistry-only walks cannot express ingredient–ingredient structure. `ii_repeat` traces the curve between the two regimes smoothly, which is how the collapse was attributed to the schema rather than to the optimiser.
+- Nearest neighbours contain near-duplicates (`rice → brown_rice`, `lamb → mutton`). Any product surface needs a dedup filter; that is a presentation concern, not a modelling defect.
 
 ## Cost
 

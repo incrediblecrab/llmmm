@@ -1,16 +1,12 @@
 # recipe/expansion/ — corpora beyond the Epicure paper
 
-The numbered `recipe/01-…09-` folders are **frozen** as the verified 1:1 reproduction of supplement Table A1
-(4,137,626 recipes, 6/9 sources exact). Nothing in this folder may be moved into it.
+The numbered `recipe/01-…09-` folders are **frozen** as the verified 1:1 reproduction of supplement Table A1 (4,137,626 recipes, 6/9 sources exact). Nothing in this folder may be moved into it.
 
-This folder holds corpora the paper did **not** use. Every source below was counted with the
-same rule recovered from the paper (`tools/verify_corpus_table_a1.py`):
+This folder holds corpora the paper did **not** use. Every source below was counted with the same rule recovered from the paper (`tools/verify_corpus_table_a1.py`):
 
 > a record counts as a recipe when it carries a non-empty ingredient list.
 
-Net-new figures come from `tools/audit_expansion.py`, which normalises titles
-(Unicode-aware `\w`, casefolded) and subtracts (a) titles already in `recipe/` and
-(b) titles already claimed by an earlier row in this table.
+Net-new figures come from `tools/audit_expansion.py`, which normalises titles (Unicode-aware `\w`, casefolded) and subtracts (a) titles already in `recipe/` and (b) titles already claimed by an earlier row in this table.
 
 ## Recipe corpora
 
@@ -40,22 +36,13 @@ Net-new figures come from `tools/audit_expansion.py`, which normalises titles
 Combined unique corpus: **4,137,626 + 177,718 = 4,315,344 recipes.**
 
 ### Language coverage
-The paper covers 7 languages (en, zh, ru, vi, es, tr, id, de + Indian-English).
-This expansion adds **8 new languages/locales**: Hebrew, Persian, Greek, Japanese,
-Thai, Filipino, Romanian, and Moroccan/North-African — the first Sub-/North-African
-coverage in the project, a region the paper **excluded entirely** (Table A2:
-Sub-Saharan African had only 324 backing recipes, below the inclusion threshold).
+The paper covers 7 languages (en, zh, ru, vi, es, tr, id, de + Indian-English). This expansion adds **8 new languages/locales**: Hebrew, Persian, Greek, Japanese, Thai, Filipino, Romanian, and Moroccan/North-African — the first Sub-/North-African coverage in the project, a region the paper **excluded entirely** (Table A2: Sub-Saharan African had only 324 backing recipes, below the inclusion threshold).
 
 Turkish is the single biggest gain: 25,496 → 96,918 (**+280%**).
 
 ## Non-recipe resource
 
-`ingredient-substitutions-74k/` — `Thefoodprocessor/ingredients_alternatives`.
-Not a recipe corpus (it re-uses the same 74,465 recipes as #5) but a **ground-truth
-ingredient-substitution table**: 43,267 distinct source ingredients and
-**218,354 substitution pairs** (`Parsley: cilantro, basil, dill`).
-This is direct supervision/eval data for the app's "replace an ingredient" feature —
-the only labelled substitution ground truth we hold. Do **not** count it as recipes.
+`ingredient-substitutions-74k/` — `Thefoodprocessor/ingredients_alternatives`. Not a recipe corpus (it re-uses the same 74,465 recipes as #5) but a **ground-truth ingredient-substitution table**: 43,267 distinct source ingredients and **218,354 substitution pairs** (`Parsley: cilantro, basil, dill`). This is direct supervision/eval data for the app's "replace an ingredient" feature — the only labelled substitution ground truth we hold. Do **not** count it as recipes.
 
 ## `_duplicates/` — verified redundant, retained for provenance
 
@@ -69,24 +56,15 @@ the only labelled substitution ground truth we hold. Do **not** count it as reci
 
 ## Rejected before download
 
-- `AkashPS11`, `mdivanisova`, `Vatazh0k` `/recipes_data_food.com` — advertised 1,048,543 rows;
-  actually an **Excel export padded to the 1,048,576-row limit with only 1,228 real records**.
-  Verified by parsing: `distinct RecipeId = 1228`. Do not trust the datasets-server row count here.
-- `CodeKapital`, `ahmedtra`, `Kaiser1308`, `skadewdl3`, `Mango008` `/CookingRecipes` etc. —
-  byte-identical re-uploads of RecipeNLG (2,231,142).
-- `Sultannn/id_recipe` (15,641), `SinclairSchneider/deutsche_rezepte` (12,190),
-  `J555`/`Frorozcol`/`somosnlp` `recetas-cocina`, `rogozinushka/povarenok-recipes` (146,582) —
-  identical to corpora already in `recipe/`.
-- `Zappandy/recipe_nlg` (500k), `rk404/recipe_short` (350k), `KingName1/food.com` (87k),
-  `tiagomosantos`/`OdinMeng` (496k) — strict subsets.
-- `yemalin/african-food` (2,771) — VLM-generated **image captions**, not recipes
-  ("visible ingredients include sliced okra…"). Hallucination risk; no ingredient list.
+- `AkashPS11`, `mdivanisova`, `Vatazh0k` `/recipes_data_food.com` — advertised 1,048,543 rows; actually an **Excel export padded to the 1,048,576-row limit with only 1,228 real records**. Verified by parsing: `distinct RecipeId = 1228`. Do not trust the datasets-server row count here.
+- `CodeKapital`, `ahmedtra`, `Kaiser1308`, `skadewdl3`, `Mango008` `/CookingRecipes` etc. — byte-identical re-uploads of RecipeNLG (2,231,142).
+- `Sultannn/id_recipe` (15,641), `SinclairSchneider/deutsche_rezepte` (12,190), `J555`/`Frorozcol`/`somosnlp` `recetas-cocina`, `rogozinushka/povarenok-recipes` (146,582) — identical to corpora already in `recipe/`.
+- `Zappandy/recipe_nlg` (500k), `rk404/recipe_short` (350k), `KingName1/food.com` (87k), `tiagomosantos`/`OdinMeng` (496k) — strict subsets.
+- `yemalin/african-food` (2,771) — VLM-generated **image captions**, not recipes ("visible ingredients include sliced okra…"). Hallucination risk; no ingredient list.
 - `Tinsae/Ethiopian-foods` (1,097) — image + dish-name label only.
-- `devkyle/ghanaian-food-dataset` (149 images), `infinite-dataset-hub/GhanaianEats`
-  (91 synthetic nutrition rows) — too small / synthetic.
+- `devkyle/ghanaian-food-dataset` (149 images), `infinite-dataset-hub/GhanaianEats` (91 synthetic nutrition rows) — too small / synthetic.
 - `Dashyash/indian_cuisine_dataset` (15,039) — `image` column only.
-- `tiptoghosh/food-recipes-15k` / `rahul7star/food-recipes` — 15.6 GB of images for
-  15,698 food.com recipes already covered.
+- `tiptoghosh/food-recipes-15k` / `rahul7star/food-recipes` — 15.6 GB of images for 15,698 food.com recipes already covered.
 
 ## Reproducing
 
@@ -97,19 +75,10 @@ the only labelled substitution ground truth we hold. Do **not** count it as reci
 
 ## Known gaps
 
-Sub-Saharan African remains unsolved. HF has no real African recipe corpus with
-ingredient lists — every candidate is images or captions. Morocco (2,589) is the only
-African foothold. Filling West/East African properly will need scraping
-(e.g. allnigerianrecipes, kenyanfoodrecipes) rather than a dataset download.
+Sub-Saharan African remains unsolved. HF has no real African recipe corpus with ingredient lists — every candidate is images or captions. Morocco (2,589) is the only African foothold. Filling West/East African properly will need scraping (e.g. allnigerianrecipes, kenyanfoodrecipes) rather than a dataset download.
 
 ## Sweep exhaustiveness
 
-Hugging Face is exhausted for this purpose. The final sweep enumerated **1,836 distinct
-datasets** across 68 cuisine/region/language queries; only **7** carried a real ingredient
-column, and of those only `halal-2k` and `thai-1k` survived dedup. Earlier sweeps covered
-761 and 231 candidates. Anything not listed in this file was checked and rejected.
+Hugging Face is exhausted for this purpose. The final sweep enumerated **1,836 distinct datasets** across 68 cuisine/region/language queries; only **7** carried a real ingredient column, and of those only `halal-2k` and `thai-1k` survived dedup. Earlier sweeps covered 761 and 231 candidates. Anything not listed in this file was checked and rejected.
 
-GitHub was searched for the African gap (`gh search repos` across Nigerian/Ghanaian/Kenyan/
-Ethiopian/pan-African terms, plus `gh search code`). Every hit is a tutorial web app, not a
-corpus — the largest data file found is `Jogwums/nigerian-food-api/db.json` at **5.4 KB**
-(~15 recipes). Confirmed: no downloadable African recipe corpus exists.
+GitHub was searched for the African gap (`gh search repos` across Nigerian/Ghanaian/Kenyan/ Ethiopian/pan-African terms, plus `gh search code`). Every hit is a tutorial web app, not a corpus — the largest data file found is `Jogwums/nigerian-food-api/db.json` at **5.4 KB** (~15 recipes). Confirmed: no downloadable African recipe corpus exists.

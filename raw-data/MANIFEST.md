@@ -1,7 +1,6 @@
 # Corpus sources
 
-One directory per source, `NN-name`. Row counts live here rather than
-in directory names so they can be corrected without a rename.
+One directory per source, `NN-name`. Row counts live here rather than in directory names so they can be corrected without a rename.
 
 | # | source | approx rows | former name |
 |---|---|---|---|

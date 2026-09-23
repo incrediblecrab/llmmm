@@ -54,8 +54,8 @@ def h1(R: dict) -> list[str]:
              ("core-ii10", 10.0), ("core-ii100", 100.0)]
     have = [(n, x) for n, x in curve if n in R and emb(R[n])]
     L = ["## H1 — the chem collapse is structural, not a training bug", "",
-         "One knob (`ii_repeat`) interpolates from Chem's pure ingredient→compound",
-         "schema (0) to Cooc's pure ingredient–ingredient schema (∞). If collapse were",
+         "One knob (`ii_repeat`) interpolates from Chem's pure ingredient→compound "
+         "schema (0) to Cooc's pure ingredient–ingredient schema (∞). If collapse were "
          "an optimiser or hardware artefact it would not track this knob.", "",
          "| ii_repeat | M1 PR | M2 broad | M4 AUC |", "|---|---|---|---|"]
     for n, x in have:
@@ -123,7 +123,7 @@ def h2(R: dict) -> list[str]:
 def h3(R: dict) -> list[str]:
     """Is popularity a removable low-rank artefact?"""
     L = ["## H3 — popularity degeneration is low-rank and removable", "",
-         "Pre-registered test: removing the top 3 principal directions should push",
+         "Pre-registered test: removing the top 3 principal directions should push "
          "M5 below 0.3 while costing M2 no more than 0.02.", "",
          "| model | M5 before | M5 after | M2 before | M2 after | M2 cost |",
          "|---|---|---|---|---|---|"]
@@ -375,7 +375,7 @@ def main() -> None:
     L = ["# Findings", "",
          f"_{done} jobs completed, {fail} failed, {len(state)} submitted._", "",
          "Verdicts are mechanical against thresholds fixed in "
-         "`docs/PREREGISTRATION.md` before any model ran.",
+         "`docs/PREREGISTRATION.md` before any model ran. "
          "Random-vector control: M2 "
          f"{RANDOM_M2:.4f}, M4 {RANDOM_M4:.4f}. 95% CI on both is ±{CI:.4f}, "
          "so smaller gaps are not differences.", ""]

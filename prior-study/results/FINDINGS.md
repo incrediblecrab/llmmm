@@ -2,14 +2,11 @@
 
 _26 jobs completed, 1 failed, 27 submitted._
 
-Verdicts are mechanical against thresholds fixed in `docs/PREREGISTRATION.md` before any model ran.
-Random-vector control: M2 0.5017, M4 0.4932. 95% CI on both is ±0.0069, so smaller gaps are not differences.
+Verdicts are mechanical against thresholds fixed in `docs/PREREGISTRATION.md` before any model ran. Random-vector control: M2 0.5017, M4 0.4932. 95% CI on both is ±0.0069, so smaller gaps are not differences.
 
 ## H1 — the chem collapse is structural, not a training bug
 
-One knob (`ii_repeat`) interpolates from Chem's pure ingredient→compound
-schema (0) to Cooc's pure ingredient–ingredient schema (∞). If collapse were
-an optimiser or hardware artefact it would not track this knob.
+One knob (`ii_repeat`) interpolates from Chem's pure ingredient→compound schema (0) to Cooc's pure ingredient–ingredient schema (∞). If collapse were an optimiser or hardware artefact it would not track this knob.
 
 | ii_repeat | M1 PR | M2 broad | M4 AUC |
 |---|---|---|---|
@@ -38,8 +35,7 @@ Chem alone sits at PR 2.7 with held-out AUC 0.5198 against a 0.50 chance and a 0
 
 ## H3 — popularity degeneration is low-rank and removable
 
-Pre-registered test: removing the top 3 principal directions should push
-M5 below 0.3 while costing M2 no more than 0.02.
+Pre-registered test: removing the top 3 principal directions should push M5 below 0.3 while costing M2 no more than 0.02.
 
 | model | M5 before | M5 after | M2 before | M2 after | M2 cost |
 |---|---|---|---|---|---|
