@@ -1,10 +1,11 @@
 import { searchIngredientCatalog } from "./ingredient-catalog.js";
-import { loadIngredientCatalog, loadResultUrls } from "./ingredient-loader.js";
+import { loadIngredientCatalog, loadResultText, loadResultUrls, loadTextManifest } from "./ingredient-loader.js";
 import { validatePolicy } from "./ranker.js";
 
 let catalog;
 let policy;
 let indexUrl;
+let textShards;
 let currentSearch = 0;
 let loading = false;
 
@@ -30,7 +31,15 @@ self.addEventListener("message", async ({ data }) => {
         maxCandidates: data.max_candidates ?? 2000,
         cancelled: () => currentSearch !== id,
       });
-      result.matches = await loadResultUrls(indexUrl, catalog, result.matches);
+      // The text manifest is fetched on the first search; a failed fetch is retried by the next one.
+      textShards ??= loadTextManifest(indexUrl, catalog).catch((error) => { textShards = undefined; throw error; });
+      const [linked, described] = await Promise.all([
+        loadResultUrls(indexUrl, catalog, result.matches),
+        textShards.then((shards) => loadResultText(indexUrl, catalog, shards, result.matches)),
+      ]);
+      result.matches = linked.map((match, position) => ({
+        ...match, title: described[position].title, ingredient_lines: described[position].ingredient_lines,
+      }));
       if (currentSearch !== id) throw new DOMException("Superseded by a newer search.", "AbortError");
       self.postMessage({ id, result });
     } else {

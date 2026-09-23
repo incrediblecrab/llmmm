@@ -1,11 +1,10 @@
-"""Verify full ingredient-only coverage and compare browser retrieval with Python."""
+"""Verify full recipe-card index coverage and compare browser retrieval with Python."""
 from __future__ import annotations
 
 import argparse
-import gzip
-import hashlib
 import json
 import subprocess
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -13,7 +12,12 @@ import numpy as np
 import torch
 
 from ingredient_model._hashing import file_sha256
-from ingredient_model.ingredient_catalog import load_ingredient_catalog, public_source_url
+from ingredient_model.data.recipe_search_metadata import _catalog_binding, _catalog_stamp, _read_connection
+from ingredient_model.ingredient_catalog import (
+    TEXT_COVERAGE, ingredient_lines, load_ingredient_catalog, load_text_shards, public_source_url,
+    read_text_shard, recipe_title,
+)
+from ingredient_model.ingredient_dataset import _read_url_shard
 from ingredient_model.ingredient_demo import load_ingredient_policy
 from ingredient_model.recipe_demo import browser_policy
 from ingredient_model.recipe_ingredients import CanonicalIngredientIndex
@@ -96,7 +100,57 @@ def reference_search(metadata: dict, arrays: dict, query: dict, policy, *, max_c
     return result
 
 
-def verify(index_directory: Path, corpus_path: Path, repository: Path, *, ipv4: bool = False) -> dict:
+def compare_with_catalog(index_directory: Path, metadata: dict, arrays: dict, catalog_path: Path) -> Counter:
+    """Recompute every exported link, title and ingredient line from the private catalog, in ID order."""
+    identity, stamp, _ = _catalog_binding(catalog_path)
+    if identity["sha256"] != metadata["identity"]["catalog_sha256"]:
+        raise ValueError("the private catalog is not the one this index was exported from")
+    url_records, text_records = metadata["url_shards"], load_text_shards(index_directory, metadata)
+    url_size, text_size = metadata["rows_per_url_shard"], metadata["rows_per_text_shard"]
+    counts = Counter()
+    connection = _read_connection(catalog_path)
+    try:
+        cursor = connection.execute("SELECT id, source, url, title, raw_ingredients FROM recipes ORDER BY id")
+        while batch := cursor.fetchmany(8192):
+            for recipe_id, source, url, title, raw in batch:
+                if recipe_id != counts["rows"] or recipe_id >= metadata["n_recipes"]:
+                    raise ValueError("catalog record IDs are not complete, ordered and contiguous")
+                if recipe_id % url_size == 0:
+                    urls = _read_url_shard(index_directory, url_records[recipe_id // url_size])
+                if recipe_id % text_size == 0:
+                    titles, lines = read_text_shard(index_directory, text_records[recipe_id // text_size])
+                exported = urls[recipe_id % url_size]
+                if bool(arrays["has_source_url"][recipe_id]) != (exported is not None):
+                    raise ValueError("a URL availability flag differs from the actual recorded link")
+                if exported is not None:
+                    normalized, status = public_source_url(exported)
+                    if normalized != exported or status != "source_url":
+                        raise ValueError("a source URL failed the public-link policy")
+                    counts["source_urls"] += 1
+                if exported != public_source_url(url)[0]:
+                    raise ValueError(f"recipe {recipe_id}: the exported link differs from the catalog")
+                exported_title, exported_lines = titles[recipe_id % text_size], lines[recipe_id % text_size]
+                if exported_title != recipe_title(title) or exported_lines != ingredient_lines(raw, source):
+                    raise ValueError(f"recipe {recipe_id}: exported card text differs from the catalog")
+                counts["recipe_titles"] += exported_title is not None
+                counts["ingredient_line_records"] += exported_lines is not None
+                counts["ingredient_lines"] += len(exported_lines or ())
+                counts["rows"] += 1
+    finally:
+        connection.close()
+    if _catalog_stamp(catalog_path) != stamp:
+        raise ValueError("the private catalog changed during comparison")
+    if counts["rows"] != metadata["n_recipes"]:
+        raise ValueError("the catalog comparison did not cover every exported record")
+    if counts["source_urls"] != metadata["coverage"]["url_statuses"]["source_url"]:
+        raise ValueError("source URL coverage differs from its recorded count")
+    if any(counts[name] != metadata["coverage"][name] for name in TEXT_COVERAGE):
+        raise ValueError("declared card-text coverage differs from the catalog")
+    return counts
+
+
+def verify(index_directory: Path, corpus_path: Path, catalog_path: Path, repository: Path, *,
+           ipv4: bool = False) -> dict:
     torch.set_num_threads(4)
     metadata, arrays = load_ingredient_catalog(index_directory)
     canonical = CanonicalIngredientIndex.load(
@@ -115,29 +169,8 @@ def verify(index_directory: Path, corpus_path: Path, repository: Path, *, ipv4: 
             ("source_servings", int(np.count_nonzero(np.isfinite(arrays["servings"]))))):
         if metadata["coverage"][field] != measured:
             raise ValueError(f"declared {field} coverage differs from the actual array")
-    url_count = 0
-    for record in metadata["url_shards"]:
-        path = index_directory / record["file"]
-        if file_sha256(path) != record["sha256"] or path.stat().st_size != record["bytes"]:
-            raise ValueError("a source URL shard failed its compressed hash check")
-        with gzip.open(path, "rb") as stream:
-            raw = stream.read(record["raw_bytes"] + 1)
-        if len(raw) != record["raw_bytes"] or hashlib.sha256(raw).hexdigest() != record["raw_sha256"]:
-            raise ValueError("a source URL shard failed its decompressed integrity check")
-        shard = json.loads(raw)
-        if (set(shard) != {"first_id", "urls"} or shard["first_id"] != record["first_id"]
-                or len(shard["urls"]) != record["rows"]):
-            raise ValueError("a source URL shard contains prose fields or misaligned records")
-        for position, url in enumerate(shard["urls"]):
-            if bool(arrays["has_source_url"][shard["first_id"] + position]) != (url is not None):
-                raise ValueError("a URL availability flag differs from the actual recorded link")
-            if url is not None:
-                normalized, status = public_source_url(url)
-                if normalized != url or status != "source_url":
-                    raise ValueError("a source URL failed the public-link policy")
-                url_count += 1
-    if url_count != metadata["coverage"]["url_statuses"]["source_url"]:
-        raise ValueError("source URL coverage differs from its recorded count")
+    compared = compare_with_catalog(index_directory, metadata, arrays, catalog_path)
+    url_count = compared["source_urls"]
     _, policy, model_source = load_ingredient_policy(repository, metadata, ipv4=ipv4)
     process = subprocess.run(
         ["node", str(repository / "model/demo/test/full_catalog_bridge.js")],
@@ -172,7 +205,7 @@ def verify(index_directory: Path, corpus_path: Path, repository: Path, *, ipv4: 
                         "candidates_scored": reference["candidates_scored"], "node_search_ms": timings})
     canonical.check_unchanged()
     return {
-        "schema_version": 1, "status": "verified_local_complete_ingredient_index",
+        "schema_version": 2, "status": "verified_local_complete_recipe_card_index",
         "verified_at": datetime.now(timezone.utc).isoformat(),
         "index_sha256": file_sha256(index_directory / "ingredient-index.json"),
         "corpus_sha256": metadata["identity"]["corpus_sha256"],
@@ -182,6 +215,14 @@ def verify(index_directory: Path, corpus_path: Path, repository: Path, *, ipv4: 
         "records_compared": metadata["n_recipes"], "ingredient_slots_compared": metadata["n_slots"],
         "source_urls_checked": url_count, "url_records_checked": metadata["n_recipes"],
         "source_urls_unavailable": metadata["n_recipes"] - url_count,
+        "catalog_records_compared": compared["rows"],
+        "recipe_titles_compared": compared["recipe_titles"],
+        "ingredient_line_records_compared": compared["ingredient_line_records"],
+        "ingredient_lines_compared": compared["ingredient_lines"],
+        "catalog_comparison_scope": (
+            "Every exported link, title and ingredient line was recomputed from the private catalog in ID order "
+            "with the export's own normalization functions. This checks alignment, completeness and integrity; "
+            "unit tests, not this comparison, check the normalization rules."),
         "coverage": metadata["coverage"], "index_bytes": metadata["bytes"],
         "initial_download_bytes": metadata["bytes"]["initial_compressed_download"],
         "python_browser_searches_matched": len(browser["results"]),
@@ -189,7 +230,8 @@ def verify(index_directory: Path, corpus_path: Path, repository: Path, *, ipv4: 
         "checks": checked, "node_cold_load_ms": browser["load_ms"],
         "node_process_memory_bytes": browser["memory"],
         "timing_scope": "Local Node process; excludes network, source-URL loading and UI. Not a service guarantee.",
-        "prose_fields_in_export": False, "quality_benchmark": False, "public_upload": False,
+        "fields_in_export": metadata["fields_included"],
+        "cooking_instructions_in_export": False, "quality_benchmark": False, "public_upload": False,
     }
 
 
@@ -197,19 +239,22 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--index", type=Path, required=True)
     parser.add_argument("--corpus", type=Path, default=Path("model/data/recipes/recipe_ids.npz"))
+    parser.add_argument("--catalog", type=Path, default=Path("model/data/recipes/recipe_search.sqlite"))
     parser.add_argument("--report", type=Path, required=True, help="new aggregate report path")
     parser.add_argument("--ipv4", action="store_true")
     args = parser.parse_args()
     if args.report.exists():
         parser.error("choose a new verification report; existing evidence is not overwritten")
-    report = verify(args.index.resolve(), args.corpus.resolve(), Path(__file__).resolve().parents[2], ipv4=args.ipv4)
+    report = verify(args.index.resolve(), args.corpus.resolve(), args.catalog.resolve(),
+                    Path(__file__).resolve().parents[2], ipv4=args.ipv4)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     with args.report.open("x", encoding="utf-8") as stream:
         json.dump(report, stream, indent=2, allow_nan=False)
         stream.write("\n")
     print(json.dumps({name: report[name] for name in (
-        "records_compared", "ingredient_slots_compared", "source_urls_checked",
-        "python_browser_searches_matched", "max_absolute_score_error", "public_upload")}, indent=2))
+        "records_compared", "ingredient_slots_compared", "source_urls_checked", "recipe_titles_compared",
+        "ingredient_lines_compared", "python_browser_searches_matched", "max_absolute_score_error",
+        "public_upload")}, indent=2))
 
 
 if __name__ == "__main__":

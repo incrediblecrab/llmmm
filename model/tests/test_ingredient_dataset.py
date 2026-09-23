@@ -18,7 +18,9 @@ import yaml
 from ingredient_model import ingredient_dataset as dataset
 from ingredient_model._hashing import file_sha256
 from ingredient_model.data.recipe_catalog import _SCHEMA
-from ingredient_model.ingredient_catalog import ARRAYS, build_ingredient_catalog, load_ingredient_catalog
+from ingredient_model.ingredient_catalog import (
+    ARRAYS, TEXT_MANIFEST, build_ingredient_catalog, load_ingredient_catalog, load_text_shards,
+)
 
 REVISION = "0123456789abcdef0123456789abcdef01234567"
 VOCABULARY = ["egg", "salt", "milk", "cr\u00e8me fra\u00eeche"]
@@ -55,8 +57,9 @@ def ingredient_index(tmp_path, request):
         for position, (ingredients, source, language, minutes, servings, url) in enumerate(rows):
             fields = {
                 "id": position, "source": source, "language": language,
-                "title": "PRIVATE TITLE", "steps": "PRIVATE INSTRUCTIONS",
-                "raw_ingredients": "PRIVATE INGREDIENT PROSE",
+                "title": None if position == 1 else f"Fixture &amp; recipe {position}",
+                "steps": "PRIVATE INSTRUCTIONS", "ingredient_quantities": "PRIVATE QUANTITIES",
+                "raw_ingredients": None if position == 1 else "1 egg\x1fa pinch of salt",
                 "ingredient_ids": np.asarray(ingredients, dtype="<u2").tobytes(),
                 "url": url, "total_minutes": minutes,
                 "time_status": "source_total" if minutes is not None else "unknown",
@@ -68,8 +71,8 @@ def ingredient_index(tmp_path, request):
                 f"INSERT INTO recipes ({','.join(fields)}) VALUES ({','.join('?' for _ in fields)})",
                 list(fields.values()))
     index = tmp_path / "ingredient-index"
-    build_ingredient_catalog(catalog, corpus, index, rows_per_shard=3)
-    for filename in ("browser-probe.json", "private-source.txt", "urls/undeclared.json.gz"):
+    build_ingredient_catalog(catalog, corpus, index, rows_per_shard=3, rows_per_text_shard=2)
+    for filename in ("browser-probe.json", "private-source.txt", "urls/undeclared.json.gz", "text/undeclared.json.gz"):
         (index / filename).write_bytes(b"PRIVATE EXTRA INPUT MUST NOT BE EXPORTED")
     return index
 
@@ -92,11 +95,15 @@ def _metadata(index):
 
 def _write_metadata(index, metadata):
     arrays, shards = metadata["arrays"].values(), metadata["url_shards"]
+    text_shards = json.loads(gzip.decompress((index / TEXT_MANIFEST).read_bytes()))["shards"]
     metadata["bytes"].update(
         initial_compressed_download=sum(record["bytes"] for record in arrays),
         initial_uncompressed_arrays=sum(record["raw_bytes"] for record in arrays),
         url_shards_compressed=sum(record["bytes"] for record in shards),
         largest_url_shard_compressed=max(record["bytes"] for record in shards),
+        text_manifest_compressed=metadata["text_manifest"]["bytes"],
+        text_shards_compressed=sum(record["bytes"] for record in text_shards),
+        largest_text_shard_compressed=max(record["bytes"] for record in text_shards),
     )
     (index / "ingredient-index.json").write_text(json.dumps(metadata, allow_nan=False), encoding="utf-8")
 
@@ -107,6 +114,21 @@ def _rewrite_url_shard(index, metadata, position, raw):
     (index / record["file"]).write_bytes(compressed)
     record.update(bytes=len(compressed), sha256=hashlib.sha256(compressed).hexdigest(),
                   raw_bytes=len(raw), raw_sha256=hashlib.sha256(raw).hexdigest())
+    _write_metadata(index, metadata)
+
+
+def _gzip_record(path, raw):
+    compressed = gzip.compress(raw, mtime=0)
+    path.write_bytes(compressed)
+    return {"bytes": len(compressed), "sha256": hashlib.sha256(compressed).hexdigest(),
+            "raw_bytes": len(raw), "raw_sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def _rewrite_text_shard(index, metadata, position, payload):
+    manifest = json.loads(gzip.decompress((index / TEXT_MANIFEST).read_bytes()))
+    record = manifest["shards"][position]
+    record.update(_gzip_record(index / record["file"], json.dumps(payload).encode()))
+    metadata["text_manifest"].update(_gzip_record(index / TEXT_MANIFEST, json.dumps(manifest).encode()))
     _write_metadata(index, metadata)
 
 
@@ -136,16 +158,16 @@ def test_complete_bounded_parquet_and_fixed_inventory(ingredient_index, tmp_path
         key: value for key, value in original.items() if key != "publication"}
     assert original["publication"]["status"] == "local_export_only"
     assert copied["publication"] == {
-        "status": "public_ingredient_only_release_staging",
-        "scope": "public-ingredient-only-release", "source_revision": REVISION,
+        "status": "public_recipe_card_release_staging",
+        "scope": "public-recipe-card-release", "source_revision": REVISION,
         "input_index_sha256": before["ingredient-index.json"],
-        "maintainer_confirmed_permission": True, "private_prose_exported": False, "uploaded": False,
+        "maintainer_confirmed_permission": True, "cooking_instructions_exported": False, "uploaded": False,
     }
     assert manifest["input_index_sha256"] == before["ingredient-index.json"]
     assert manifest["copied_index_sha256"] == file_sha256(output / "index/ingredient-index.json")
     assert manifest["copied_index_sha256"] != manifest["input_index_sha256"]
     assert manifest["source_revision"] == REVISION
-    assert manifest["private_prose_exported"] is False
+    assert manifest["cooking_instructions_exported"] is False
     assert manifest["uploaded"] is False
     parquet_paths = sorted((output / "data").glob("*.parquet"))
     assert [path.name for path in parquet_paths] == [
@@ -199,7 +221,9 @@ def test_complete_bounded_parquet_and_fixed_inventory(ingredient_index, tmp_path
         if item["name"] in {"ingredients", "ingredient_ids"}:
             assert item["item_nullable"] is False
     expected_files = {"README.md", "index/ingredient-index.json"}
-    for record in [*original["arrays"].values(), *original["url_shards"]]:
+    text_records = load_text_shards(ingredient_index, original)
+    assert [record["file"] for record in text_records] == [f"text/{position:04d}.json.gz" for position in range(4)]
+    for record in [*original["arrays"].values(), *original["url_shards"], original["text_manifest"], *text_records]:
         name = "index/" + record["file"]
         expected_files.add(name)
         assert (output / name).read_bytes() == (ingredient_index / record["file"]).read_bytes()
@@ -223,6 +247,11 @@ def test_complete_bounded_parquet_and_fixed_inventory(ingredient_index, tmp_path
     assert "https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo" in card
     assert "**3 of 7 records**" in card and "**2 of 7 records**" in card
     assert "**4 records have null URLs**" in card
+    assert "**6 recorded titles** and **12 ingredient lines** from **6 records**" in card
+    assert "Cooking instructions are not included" in card
+    first_text = json.loads(gzip.decompress((output / "index/text/0000.json.gz").read_bytes()))
+    assert first_text == {"first_id": 0, "titles": ["Fixture & recipe 0", None],
+                          "ingredient_lines": [["1 egg", "a pinch of salt"], None]}
     assert "## Use" in card and "## Acknowledgements" in card
     assert not list(output.parent.glob(".ingredient-dataset-*"))
 
@@ -322,8 +351,8 @@ def test_urls_are_preserved_or_rejected_never_guessed(ingredient_index, tmp_path
 
 
 @pytest.mark.parametrize("location", [
-    "index", "array", "url_record", "identity", "coverage", "bytes", "semantics", "publication",
-    "included_fields", "url_statuses", "source_counts",
+    "index", "array", "url_record", "text_manifest", "identity", "coverage", "bytes", "semantics",
+    "publication", "included_fields", "url_statuses", "source_counts",
 ])
 def test_unexpected_manifest_fields_cannot_be_exported(ingredient_index, tmp_path, location):
     metadata = _metadata(ingredient_index)
@@ -332,7 +361,8 @@ def test_unexpected_manifest_fields_cannot_be_exported(ingredient_index, tmp_pat
     else:
         targets = {
             "index": metadata, "array": metadata["arrays"]["ingredients"],
-            "url_record": metadata["url_shards"][0], "identity": metadata["identity"],
+            "url_record": metadata["url_shards"][0], "text_manifest": metadata["text_manifest"],
+            "identity": metadata["identity"],
             "coverage": metadata["coverage"], "bytes": metadata["bytes"],
             "semantics": metadata["semantics"], "publication": metadata["publication"],
             "url_statuses": metadata["coverage"]["url_statuses"],
@@ -355,10 +385,22 @@ def test_duplicate_index_fields_are_rejected(ingredient_index, tmp_path):
     _assert_unpublished(output)
 
 
-@pytest.mark.parametrize("damage", ["array", "frequency", "coverage", "shard_path", "shard_boundary"])
+@pytest.mark.parametrize("damage", [
+    "array", "frequency", "coverage", "shard_path", "shard_boundary", "text_coverage", "text_bytes",
+])
 def test_existing_catalog_checks_and_statistics_are_enforced(ingredient_index, tmp_path, damage):
     metadata = _metadata(ingredient_index)
-    if damage == "array":
+    if damage == "text_coverage":
+        metadata["coverage"]["ingredient_lines"] += 1
+    elif damage == "text_bytes":
+        metadata["bytes"]["text_shards_compressed"] += 1
+        (ingredient_index / "ingredient-index.json").write_text(json.dumps(metadata), encoding="utf-8")
+        output = tmp_path / "dataset"
+        with pytest.raises(ValueError, match="byte statistics"):
+            dataset.build_ingredient_dataset(ingredient_index, output, source_revision=REVISION)
+        _assert_unpublished(output)
+        return
+    elif damage == "array":
         path = ingredient_index / ARRAYS["ingredients"][0]
         path.write_bytes(path.read_bytes() + b"corrupt")
     elif damage == "frequency":
@@ -376,7 +418,10 @@ def test_existing_catalog_checks_and_statistics_are_enforced(ingredient_index, t
     _assert_unpublished(output)
 
 
-@pytest.mark.parametrize("filename", ["ingredient-index.json", "ingredients.u16.gz", "urls", "urls/0000.json.gz"])
+@pytest.mark.parametrize("filename", [
+    "ingredient-index.json", "ingredients.u16.gz", "urls", "urls/0000.json.gz",
+    "text", "text/0000.json.gz", TEXT_MANIFEST,
+])
 def test_declared_input_symlinks_are_rejected(ingredient_index, tmp_path, filename):
     path = ingredient_index / filename
     target = path.with_name(path.name + ".original")
@@ -384,6 +429,22 @@ def test_declared_input_symlinks_are_rejected(ingredient_index, tmp_path, filena
     path.symlink_to(target, target_is_directory=target.is_dir())
     output = tmp_path / "dataset"
     with pytest.raises(ValueError, match="symlink"):
+        dataset.build_ingredient_dataset(ingredient_index, output, source_revision=REVISION)
+    _assert_unpublished(output)
+
+
+@pytest.mark.parametrize("payload,match", [
+    ({"first_id": 0, "titles": [None, None], "ingredient_lines": [["1 egg", "a pinch of salt"], None]}, "text shards"),
+    ({"first_id": 0, "titles": ["Fixture & recipe 0", None], "ingredient_lines": [["1 egg"], None]}, "text shards"),
+    ({"first_id": 0, "titles": ["Fixture & recipe 0", None], "ingredient_lines": [["1 egg", "a pinch of salt"], None],
+      "steps": ["PRIVATE"]}, "alignment"),
+    ({"first_id": 0, "titles": ["PRIVATE\nINSTRUCTIONS", None], "ingredient_lines": [None, None]}, "single-line"),
+])
+def test_text_shards_are_counted_and_bounded_before_export(ingredient_index, tmp_path, payload, match):
+    metadata = _metadata(ingredient_index)
+    _rewrite_text_shard(ingredient_index, metadata, 0, payload)
+    output = tmp_path / "dataset"
+    with pytest.raises(ValueError, match=match):
         dataset.build_ingredient_dataset(ingredient_index, output, source_revision=REVISION)
     _assert_unpublished(output)
 

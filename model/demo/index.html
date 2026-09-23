@@ -27,15 +27,17 @@
       <div id="fatal-error" class="notice error" role="alert" hidden></div>
       <section id="index-download" class="index-download" aria-labelledby="download-heading" hidden>
         <h2 id="download-heading">Load the ingredient index</h2>
-        <p>One initial download of <strong id="download-size"></strong>.
-          Ranking runs locally; source-link files are downloaded as needed.
-          No paid inference service is used.</p>
+        <p>One initial download of <strong id="download-size"></strong>. Ranking runs locally; recipe text and source links for the results shown download as needed. No paid inference service is used.</p>
         <p id="index-coverage" class="hint"></p>
         <button type="button" id="load-index" class="secondary-button">Load all ingredient records</button>
         <p id="download-status" role="status" aria-live="polite"></p>
       </section>
       <div class="workspace">
         <form id="recipe-query" class="query-panel" novalidate>
+          <div class="examples">
+            <span class="small-label">Try a pantry</span>
+            <div id="examples" class="example-buttons"></div>
+          </div>
           <fieldset id="controls" disabled>
             <legend class="sr-only">Recipe search</legend>
             <div class="panel-heading">
@@ -53,10 +55,6 @@
             <datalist id="ingredient-names"></datalist>
             <p id="pantry-hint" class="hint">Use the suggested names, or paste a comma-separated list.
               Salt, oil and other staples are not assumed.</p>
-            <div class="examples">
-              <span class="small-label">Try a pantry</span>
-              <div id="examples" class="example-buttons"></div>
-            </div>
             <div class="basic-filters">
               <div>
                 <label for="max-time">Total time limit</label>
@@ -120,6 +118,7 @@
             instructions and source notes before cooking.</p>
           <p id="sample-warning" class="hint" hidden></p>
           <p id="shortlist-warning" class="hint" hidden></p>
+          <p id="precomputed-note" class="hint" hidden>These example results were ranked in advance from the complete index, with the same trained ranker and filters. Load the index to search your own pantry.</p>
           <div id="results">
             <div class="empty-state">Loading the catalog and ranking weights.
               No private recipe database is needed.</div>

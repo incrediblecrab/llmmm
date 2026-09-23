@@ -10,6 +10,8 @@ let policy;
 let topK = 5;
 let ingredientMode = false;
 let ingredientClient;
+let indexReady = false;
+let currentExample;
 let searchSequence = 0;
 
 function element(tag, text = "", className = "") {
@@ -110,16 +112,27 @@ function ingredientLine(label, ingredients, className, empty) {
   return row;
 }
 
+function canonicalSummary(names) {
+  return names.slice(0, 3).map(displayName).join(", ") + (names.length > 3 ? ` + ${names.length - 3} more` : "");
+}
+
+function recordText(node, language) {
+  node.lang = language;
+  node.dir = "auto";
+  return node;
+}
+
 function recipeCard(recipe, index) {
   const article = element("article", "", "recipe-card");
   article.dataset.recipeId = recipe.id;
   const titleRow = element("div", "", "recipe-topline");
   const title = element("h3", "", "recipe-title");
-  const heading = ingredientMode
-    ? recipe.canonical_ingredients.slice(0, 3).map(displayName).join(", ")
-      + (recipe.canonical_ingredients.length > 3 ? ` + ${recipe.canonical_ingredients.length - 3} more` : "")
-    : recipe.title;
-  title.append(recipe.source_url ? link(heading, recipe.source_url, ingredientMode) : document.createTextNode(heading));
+  if (ingredientMode) {
+    if (recipe.title === null) title.textContent = canonicalSummary(recipe.canonical_ingredients);
+    else recordText(title, recipe.language).textContent = recipe.title;
+  } else {
+    title.append(recipe.source_url ? link(recipe.title, recipe.source_url) : document.createTextNode(recipe.title));
+  }
   titleRow.append(element("span", String(index + 1).padStart(2, "0"), "recipe-number"), title);
   const time = recipe.total_minutes === null ? "Total time not reported"
     : `Source total: ${recipe.total_minutes} min`;
@@ -130,20 +143,29 @@ function recipeCard(recipe, index) {
     ingredientLine("Need", recipe.missing_ingredients,
       recipe.missing_ingredients.length ? "need" : "have", "No other canonical ingredients"));
   if (ingredientMode) {
+    if (recipe.ingredient_lines === null) {
+      article.append(element("p", "No original ingredient lines are stored for this record.", "hint"));
+    } else {
+      const list = recordText(element("ul", "", "recipe-ingredients"), recipe.language);
+      list.append(...recipe.ingredient_lines.map((text) => element("li", text)));
+      article.append(element("h4", "Ingredients", "card-heading"), list);
+    }
     const details = element("details", "", "recipe-details");
-    details.append(element("summary", "All canonical ingredients"));
+    details.append(element("summary", "Canonical ingredient names"));
     details.append(element("p", recipe.canonical_ingredients.map(displayName).join(", ")));
-    details.append(element("p", "Ingredient names only. Quantities, complete ingredient coverage "
-      + "and cooking instructions are not supplied by this index.", "hint"));
+    details.append(element("p", "Search matches these normalized names, which can omit optional items, "
+      + "alternatives and compound ingredients.", "hint"));
     article.append(details);
     const source = element("p", `${recipe.source} / Record ${recipe.id.toLocaleString()} / ${recipe.language}`, "attribution");
     article.append(source);
     if (recipe.source_url) {
       const original = element("p", "", "original-recipe");
       original.append(link("Open original recipe", recipe.source_url, true));
-      article.append(original);
+      article.append(original, element("p", "Cooking steps are on the original page and are not copied here. "
+        + "Some older recipe sites no longer respond.", "hint"));
     } else {
-      article.append(element("p", "No original recipe link was recorded for this ingredient set.", "hint"));
+      article.append(element("p", "No original recipe link was recorded, so this record's cooking steps "
+        + "are not available here.", "hint"));
     }
     return article;
   }
@@ -180,11 +202,43 @@ function showEmpty(title, explanation) {
   $("results").replaceChildren(box);
 }
 
+function renderResult(result, precomputed = false) {
+  $("results").dataset.ranking = result.ranking;
+  $("results").dataset.origin = precomputed ? "precomputed" : "live";
+  const scope = ingredientMode ? "ingredient records" : "sample recipes";
+  $("result-count").textContent = `${result.feasible_count.toLocaleString()} match${
+    result.feasible_count === 1 ? "" : "es"} in ${catalog.n_recipes.toLocaleString()} ${scope}${
+    result.matches.length < result.feasible_count ? ` / showing ${result.matches.length}` : ""}`;
+  const absent = [...selected].filter((name) => catalog.ingredient_frequency[catalog.index.get(name)] === 0);
+  $("sample-warning").hidden = !absent.length;
+  $("sample-warning").textContent = `Not represented in this ${ingredientMode ? "index" : "sample"}: ${absent.map(displayName).join(", ")}.`;
+  $("shortlist-warning").hidden = !result.retrieval_truncated;
+  if (result.retrieval_truncated) {
+    $("shortlist-warning").textContent = `All ${result.scanned.toLocaleString()} records were checked. `
+      + `The baseline retained ${result.candidates_scored.toLocaleString()} of ${result.feasible_count.toLocaleString()} `
+      + "feasible records for ranking; these are not necessarily the learned ranker's global top results.";
+  }
+  $("precomputed-note").hidden = !precomputed;
+  if (result.matches.length) {
+    $("results").replaceChildren(...result.matches.map(recipeCard));
+    $("show-all").hidden = precomputed || result.feasible_count <= result.matches.length || topK === 100;
+    $("show-all").textContent = result.feasible_count <= 100
+      ? "Show all matches" : "Show the first 100 matches";
+  } else {
+    $("show-all").hidden = true;
+    showEmpty(ingredientMode ? "No ingredient sets fit." : "No sample recipes fit.",
+      "The filters have not been relaxed. Try a wider pantry, allow more missing ingredients, or remove a limit."
+      + (ingredientMode ? " Unknown source times and serving counts cannot pass their respective limits."
+        : " This small sample cannot cover every meal."));
+  }
+}
+
 async function runSearch() {
   const sequence = ++searchSequence;
   $("query-error").hidden = true;
   $("show-all").hidden = true;
   $("shortlist-warning").hidden = true;
+  $("precomputed-note").hidden = true;
   try {
     addPendingIngredients();
     const query = {
@@ -204,42 +258,19 @@ async function runSearch() {
       ? await ingredientClient.search(query, $("ranking").value)
       : searchRecipes(catalog, policy, query, $("ranking").value);
     if (sequence !== searchSequence) return;
-    $("results").dataset.ranking = result.ranking;
-    const scope = ingredientMode ? "ingredient records" : "sample recipes";
-    $("result-count").textContent = `${result.feasible_count.toLocaleString()} match${
-      result.feasible_count === 1 ? "" : "es"} in ${catalog.n_recipes.toLocaleString()} ${scope}${
-      result.matches.length < result.feasible_count ? ` / showing ${result.matches.length}` : ""}`;
-    const absent = [...selected].filter((name) => catalog.ingredient_frequency[catalog.index.get(name)] === 0);
-    $("sample-warning").hidden = !absent.length;
-    $("sample-warning").textContent = `Not represented in this ${ingredientMode ? "index" : "sample"}: ${absent.map(displayName).join(", ")}.`;
-    if (result.retrieval_truncated) {
-      $("shortlist-warning").hidden = false;
-      $("shortlist-warning").textContent = `All ${result.scanned.toLocaleString()} records were checked. `
-        + `The baseline retained ${result.candidates_scored.toLocaleString()} of ${result.feasible_count.toLocaleString()} `
-        + "feasible records for ranking; these are not necessarily the learned ranker's global top results.";
-    }
-    if (result.matches.length) {
-      $("results").replaceChildren(...result.matches.map(recipeCard));
-      $("show-all").hidden = result.feasible_count <= result.matches.length || topK === 100;
-      $("show-all").textContent = result.feasible_count <= 100
-        ? "Show all matches" : "Show the first 100 matches";
-    } else {
-      showEmpty(ingredientMode ? "No ingredient sets fit." : "No sample recipes fit.",
-        "The filters have not been relaxed. Try a wider pantry, allow more missing ingredients, or remove a limit."
-        + (ingredientMode ? " Unknown source times and serving counts cannot pass their respective limits."
-          : " This small sample cannot cover every meal."));
-    }
+    renderResult(result);
   } catch (error) {
     if (sequence !== searchSequence) return;
     $("query-error").textContent = error.message;
     $("query-error").hidden = false;
     $("result-count").textContent = "Search not run";
     $("sample-warning").hidden = true;
-    showEmpty("Check your search.", "The message beside the search controls explains what needs changing.");
+    showEmpty("No results shown.", "The message beside the search controls says why. If a download failed, search again.");
   }
 }
 
 function useExample(example) {
+  currentExample = example;
   selected.clear();
   example.available_ingredients.forEach((name) => selected.add(name));
   $("pantry-entry").value = "";
@@ -249,7 +280,14 @@ function useExample(example) {
   $("min-servings").value = "";
   $("max-missing").value = String(example.max_missing);
   topK = 5;
-  runSearch();
+  if (ingredientMode && !indexReady) {
+    searchSequence += 1;
+    $("query-error").hidden = true;
+    renderPantry();
+    renderResult(example.results, true);
+  } else {
+    runSearch();
+  }
 }
 
 async function start() {
@@ -269,6 +307,9 @@ async function start() {
   if (!Array.isArray(bundle.examples) || !bundle.examples.length) {
     throw new Error("The demo release contains no usable example pantries.");
   }
+  if (ingredientMode && !bundle.examples.every((example) => example.results?.matches?.length)) {
+    throw new Error("The demo release is missing its precomputed example results.");
+  }
   $("sample-size").textContent = `${catalog.n_recipes.toLocaleString()} ${ingredientMode ? "ingredient records" : "public recipes"} / Browser only`;
   const provenance = bundle.provenance;
   $("model-link").href = sourceUrl(`https://huggingface.co/${provenance.model_repository}/tree/${provenance.model_revision}`);
@@ -285,15 +326,15 @@ async function start() {
   }
   if (ingredientMode) {
     $("scope-label").textContent = "Ingredient-only recipe search";
-    $("demo-description").textContent = "Match canonical ingredient sets and source-reported limits. "
-      + "Open the original recipe for quantities and cooking instructions; none are copied into this index.";
-    $("result-scope-hint").textContent = "These are ingredient sets, not complete recipes. Names may omit "
-      + "compound ingredients, optional items and alternatives. Exclusions are not an allergy check.";
+    $("demo-description").textContent = "Find recipes that use what you have. Each result shows the recipe's "
+      + "recorded title and ingredient list; the original page has the cooking steps.";
+    $("result-scope-hint").textContent = "Matching uses canonical ingredient names. Each card lists the "
+      + "source's ingredient lines as recorded; cooking steps are not copied. Exclusions are not an allergy check.";
     $("scope-limits").textContent = "This index contains every canonical record, including duplicates "
-      + "and records without instructions or source links. Browser retrieval uses a baseline shortlist "
-      + "before trained ranking; the previous catalog's recovery scores do not measure this search.";
-    $("license-note").textContent = "No original titles, descriptive prose, images, quantities or instructions "
-      + "are included. Model-weight terms are unchanged. "
+      + "and records without a title, ingredient lines, instructions or source link. Browser retrieval uses a "
+      + "baseline shortlist before trained ranking; the previous catalog's recovery scores do not measure this search.";
+    $("license-note").textContent = "Recipe titles and ingredient lines are shown as their sources recorded them; "
+      + "cooking instructions, descriptions and images are not included. Model-weight terms are unchanged. "
       + (provenance.dataset_repository ? "See the dataset's publication terms and source inventory."
         : "This is a local preview without a pinned public dataset revision.");
     $("index-download").hidden = false;
@@ -301,11 +342,10 @@ async function start() {
     $("download-size").textContent = `${(bundle.catalog.bytes.initial_compressed_download / 1024 ** 2).toFixed(1)} MiB`;
     $("index-coverage").textContent = `${catalog.coverage.source_total_times.toLocaleString()} records have source total times; `
       + `${catalog.coverage.source_servings.toLocaleString()} have serving counts; `
-      + `${(catalog.coverage.url_statuses.source_url || 0).toLocaleString()} have source links. `
+      + `${(catalog.coverage.url_statuses.source_url || 0).toLocaleString()} have source links; `
+      + `${catalog.coverage.recipe_titles.toLocaleString()} have recorded titles and `
+      + `${catalog.coverage.ingredient_line_records.toLocaleString()} have ingredient lines. `
       + "Missing metadata is not invented.";
-    $("result-count").textContent = "Load the index to search";
-    showEmpty("The complete ingredient index.", "Loading is optional and uses your connection's data. "
-      + "Search then runs in a browser worker, without an inference server or per-search API charge.");
     $("load-index").addEventListener("click", async () => {
       $("load-index").disabled = true;
       $("download-status").textContent = "Starting the verified index download...";
@@ -324,15 +364,15 @@ async function start() {
         }
         $("download-status").textContent = `${ready.n_recipes.toLocaleString()} ingredient records verified and ready.`;
         $("load-index").hidden = true;
+        indexReady = true;
         $("controls").disabled = false;
-        useExample(bundle.examples[0]);
+        useExample(currentExample ?? bundle.examples[0]);
       } catch (error) {
         if (ingredientClient) ingredientClient.close();
         $("download-status").textContent = `The index could not load: ${error.message} Reload to retry.`;
         $("fatal-error").textContent = $("download-status").textContent;
         $("fatal-error").hidden = false;
         $("controls").disabled = true;
-        $("result-count").textContent = "Index unavailable";
       }
     });
   } else {
@@ -375,10 +415,8 @@ async function start() {
     $(id).addEventListener("change", () => { topK = 5; runSearch(); });
   }
   $("show-all").addEventListener("click", () => { topK = 100; runSearch(); });
-  if (!ingredientMode) {
-    $("controls").disabled = false;
-    useExample(bundle.examples[0]);
-  }
+  if (!ingredientMode) $("controls").disabled = false;
+  useExample(bundle.examples[0]);
 }
 
 start().catch((error) => {

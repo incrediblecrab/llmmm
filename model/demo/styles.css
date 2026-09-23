@@ -72,7 +72,7 @@ input::placeholder { color: #697364; opacity: 1; }
 }
 .remove-mark { color: var(--muted); font-size: 17px; }
 .hint { color: var(--muted); font-size: 12px; line-height: 1.55; margin: 8px 0 16px; }
-.examples { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 13px 0 14px; margin: 17px 0; }
+.examples { border-bottom: 1px solid var(--line); padding: 0 0 14px; margin: 0 0 17px; }
 .small-label { color: var(--muted); font-size: 10px; font-weight: 650; }
 .example-buttons { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 4px; }
 .example-button {
@@ -106,6 +106,9 @@ summary { color: var(--green); }
 .ingredient-label { color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding-top: 3px; }
 .have { color: var(--green); }
 .need { color: var(--rust); }
+.card-heading { font-size: 13px; margin: 17px 0 6px; }
+.recipe-ingredients { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.65; overflow-wrap: anywhere; }
+.recipe-ingredients li + li { margin-top: 3px; }
 .recipe-details { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; }
 .recipe-details h4 { font-size: 13px; margin: 18px 0 7px; }
 .recipe-details ul, .recipe-details ol { margin: 0; padding-left: 22px; line-height: 1.7; }

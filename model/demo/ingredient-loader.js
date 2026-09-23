@@ -1,10 +1,27 @@
 import { ARRAY_FORMAT, ingredientCatalogMetadata, prepareIngredientCatalog } from "./ingredient-catalog.js";
 
-export async function checkedBytes(url, expected, { maximum = 128 * 1024 * 1024, progress = null } = {}) {
+export async function checkedBytes(url, expected, {
+  maximum = 128 * 1024 * 1024, progress = null, retryDelays = [500, 1_500],
+} = {}) {
   if (!expected || !Number.isSafeInteger(expected.bytes) || expected.bytes < 1 || expected.bytes > maximum
       || !/^[a-f0-9]{64}$/.test(expected.sha256)) {
     throw new Error("An index asset has an invalid size or checksum declaration.");
   }
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      return await downloadChecked(url, expected, progress);
+    } catch (error) {
+      // fetch() and body reads reject with TypeError on network failure; HTTP, size and checksum failures are final.
+      if (!(error instanceof TypeError)) throw error;
+      if (attempt >= retryDelays.length) {
+        throw new Error(`Download failed after ${attempt + 1} attempts (network error): ${url.pathname}`);
+      }
+      await new Promise((resolve) => setTimeout(resolve, retryDelays[attempt]));
+    }
+  }
+}
+
+async function downloadChecked(url, expected, progress) {
   const response = await fetch(url, {
     credentials: "omit", cache: "force-cache", signal: AbortSignal.timeout(120_000),
   });
@@ -117,4 +134,69 @@ export async function loadResultUrls(indexUrl, catalog, matches) {
   }
   if (urls.size !== matches.length) throw new Error("Some result source URLs are missing from their expected shards.");
   return matches.map((match) => ({ ...match, source_url: urls.get(match.id) }));
+}
+
+const TEXT_SHARD_FIELDS = JSON.stringify(["bytes", "compression", "file", "first_id", "raw_bytes", "raw_sha256", "rows", "sha256"]);
+const CONTROL_CHARACTER = /[\u0000-\u001f\u007f-\u009f]/;
+
+function boundedText(value) {
+  return typeof value === "string" && value.length > 0 && !CONTROL_CHARACTER.test(value)
+    && new TextEncoder().encode(value).length <= 16_384;
+}
+
+async function checkedJson(indexUrl, record, compressedLimit, rawLimit) {
+  if (!Number.isSafeInteger(record.raw_bytes) || record.raw_bytes > rawLimit) {
+    throw new Error("A recipe text file declares an invalid size.");
+  }
+  const compressed = await checkedBytes(new URL(record.file, indexUrl), record, { maximum: compressedLimit });
+  return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(await checkedDecompression(compressed, record)));
+}
+
+export async function loadTextManifest(indexUrl, catalog) {
+  const record = catalog.text_manifest;
+  const manifest = await checkedJson(indexUrl, record, 16 * 1024 * 1024, 64 * 1024 * 1024);
+  const size = catalog.rows_per_text_shard;
+  if (!manifest || JSON.stringify(Object.keys(manifest)) !== '["shards"]' || !Array.isArray(manifest.shards)
+      || manifest.shards.length !== record.shards) {
+    throw new Error("The recipe text manifest has an unexpected structure.");
+  }
+  manifest.shards.forEach((shard, index) => {
+    const first = index * size;
+    if (!shard || JSON.stringify(Object.keys(shard).sort()) !== TEXT_SHARD_FIELDS
+        || shard.file !== `text/${String(index).padStart(4, "0")}.json.gz` || shard.first_id !== first
+        || shard.rows !== Math.min(size, catalog.n_recipes - first) || shard.compression !== "gzip") {
+      throw new Error("Recipe text shards are not contiguous, complete and safely named.");
+    }
+  });
+  return manifest.shards;
+}
+
+export async function loadResultText(indexUrl, catalog, shards, matches) {
+  const text = new Map();
+  async function loadShard(position) {
+    const record = shards[position];
+    const shard = await checkedJson(indexUrl, record, 16 * 1024 * 1024, 256 * 1024 * 1024);
+    if (!shard || JSON.stringify(Object.keys(shard).sort()) !== '["first_id","ingredient_lines","titles"]'
+        || shard.first_id !== record.first_id || !Array.isArray(shard.titles) || shard.titles.length !== record.rows
+        || !Array.isArray(shard.ingredient_lines) || shard.ingredient_lines.length !== record.rows) {
+      throw new Error("Recipe text is not aligned with its declared ingredient records.");
+    }
+    for (const match of matches) {
+      const offset = match.id - shard.first_id;
+      if (offset < 0 || offset >= record.rows) continue;
+      const title = shard.titles[offset];
+      const lines = shard.ingredient_lines[offset];
+      if ((title !== null && !boundedText(title)) || (lines !== null && (!Array.isArray(lines)
+          || lines.length < 1 || lines.length > 2_048 || !lines.every(boundedText)))) {
+        throw new Error("A result's recipe title or ingredient lines are invalid.");
+      }
+      text.set(match.id, { title, ingredient_lines: lines });
+    }
+  }
+  const positions = [...new Set(matches.map((match) => Math.floor(match.id / catalog.rows_per_text_shard)))];
+  for (let first = 0; first < positions.length; first += 4) {
+    await Promise.all(positions.slice(first, first + 4).map(loadShard));
+  }
+  if (text.size !== matches.length) throw new Error("Some result recipe text is missing from its expected shards.");
+  return matches.map((match) => ({ ...match, ...text.get(match.id) }));
 }

@@ -96,7 +96,8 @@ def _source_url(value: str) -> str | None:
     if not value:
         return None
     try:
-        parts = urlsplit(value if "://" in value else f"https://{value}")
+        # Scheme-less records get http://: some of their hosts (www.cookbooks.com) reset HTTPS connections, and HTTPS-capable hosts redirect.
+        parts = urlsplit(value if "://" in value else f"http://{value}")
     except ValueError:
         return None
     if parts.scheme not in ("http", "https") or not parts.hostname or parts.username:

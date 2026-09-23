@@ -17,6 +17,8 @@ Every record is checked against the hard constraints. At most 2,000 feasible rec
 
 The [release receipt](model/results/huggingface_ingredient_demo_release.json) pins the public dataset, Space, model and source revisions. It records an independent comparison of every exported row and **36,707,624 ingredient slots**, anonymous browser operation, and the dataset viewer's complete record count. The model-card update changed documentation only; weights and existing model tags were preserved. [Build and publication instructions](model/demo/README.md) include rebuilding from the public index without the private corpus.
 
+A release that adds each record's recorded title and original ingredient lines to the result cards is being prepared; cooking instructions stay excluded. Until its receipt is recorded here, the live demo shows the ingredient-only cards described above.
+
 ### Complete sample recipes
 
 The [separate public sample](https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-sample) still contains **12 Wikibooks recipes under CC BY-SA 4.0**, with complete ingredients, instructions, source revisions and attribution. Nine have a reported overall time and six have reported servings. Four contain incompletely mapped ingredient lines; those gaps remain documented. Its [original release receipt](model/results/huggingface_recipe_demo_release.json) and the Space tag `v0.1.0-sample` preserve the earlier demonstration. The sample is not a held-out quality benchmark or a subset of the canonical training corpus.

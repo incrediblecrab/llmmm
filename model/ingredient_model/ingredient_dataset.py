@@ -1,4 +1,4 @@
-"""Package a complete ingredient-only index locally, without training or uploading."""
+"""Package a complete recipe-card index locally, without training or uploading."""
 from __future__ import annotations
 
 import gzip
@@ -8,6 +8,7 @@ import os
 import re
 import shutil
 import tempfile
+from collections import Counter
 from collections.abc import Iterator
 from contextlib import closing
 from itertools import islice
@@ -22,7 +23,8 @@ import pyarrow.parquet as pq
 from ._hashing import file_sha256
 from .data.recipe_search_metadata import _publish_directory
 from .ingredient_catalog import (
-    ARRAYS, FORBIDDEN_FIELDS, _json_bytes, load_ingredient_catalog, public_source_url,
+    ARRAYS, FORBIDDEN_FIELDS, INCLUDED_FIELDS, TEXT_COVERAGE, TEXT_MANIFEST, _json_bytes,
+    load_ingredient_catalog, load_text_shards, public_source_url, read_text_shard,
 )
 
 ROWS_PER_SHARD = 262_144
@@ -43,14 +45,11 @@ PARQUET_SCHEMA = pa.schema([
 _INDEX_FIELDS = {
     "schema_version", "format", "endianness", "n_recipes", "n_slots", "vocabulary",
     "ingredient_frequency", "statistics_scope", "source_names", "language_names",
-    "arrays", "url_shards", "rows_per_url_shard", "identity", "coverage", "bytes",
-    "fields_included", "fields_excluded", "semantics", "publication",
+    "arrays", "url_shards", "rows_per_url_shard", "text_manifest", "rows_per_text_shard",
+    "identity", "coverage", "bytes", "fields_included", "fields_excluded", "semantics", "publication",
 }
 _BLOB_FIELDS = {"file", "bytes", "sha256", "raw_bytes", "raw_sha256", "compression"}
-_INCLUDED_FIELDS = [
-    "canonical_ingredient_ids", "source_total_minutes", "source_servings",
-    "source_code", "language_code", "source_url",
-]
+_INCLUDED_FIELDS = list(INCLUDED_FIELDS)
 _URL_STATUSES = {"source_url", "missing", "invalid_or_oversized", "sensitive_query_not_exported"}
 _SOURCE_REPOSITORY = "https://github.com/incrediblecrab/llmmm"
 _MODEL_URL = "https://huggingface.co/incrediblecrab/llmmm-recipes"
@@ -92,6 +91,9 @@ def _validate_projection(metadata: dict) -> None:
         _validate_blob_record(record, {"first_id", "rows"}, f"urls/{position:04d}.json.gz")
         if type(record["first_id"]) is not int or type(record["rows"]) is not int:
             raise ValueError("source URL shard boundaries must be integers")
+    _validate_blob_record(metadata["text_manifest"], {"shards"}, TEXT_MANIFEST)
+    if type(metadata["text_manifest"]["shards"]) is not int or type(metadata["rows_per_text_shard"]) is not int:
+        raise ValueError("text shard declarations must be integers")
     _require_fields(metadata["identity"],
                     {"corpus_sha256", "catalog_sha256", "vocabulary_sha256"}, "corpus identity")
     if any(not isinstance(value, str) or not re.fullmatch(r"[a-f0-9]{64}", value)
@@ -99,14 +101,16 @@ def _validate_projection(metadata: dict) -> None:
         raise ValueError("invalid corpus identity hashes")
     _require_fields(metadata["coverage"], {
         "records", "ingredient_slots", "min_ingredients", "max_ingredients", "singletons",
-        "source_total_times", "source_servings", "url_statuses", "rows_by_source",
+        "source_total_times", "source_servings", "url_statuses", "rows_by_source", *TEXT_COVERAGE,
     }, "ingredient coverage")
     _require_fields(metadata["bytes"], {
         "initial_compressed_download", "initial_uncompressed_arrays", "derived_uint32_offsets",
         "url_shards_compressed", "largest_url_shard_compressed",
+        "text_manifest_compressed", "text_shards_compressed", "largest_text_shard_compressed",
     }, "index byte statistics")
-    _require_fields(metadata["semantics"],
-                    {"row_identity", "times", "servings", "matching", "url_shards"}, "index semantics")
+    _require_fields(metadata["semantics"], {
+        "row_identity", "times", "servings", "matching", "url_shards", "text_shards",
+    }, "index semantics")
     if any(not isinstance(value, str) or not value.strip() or len(value) > 1024
            for value in metadata["semantics"].values()):
         raise ValueError("index semantics must be bounded strings")
@@ -119,9 +123,16 @@ def _validate_projection(metadata: dict) -> None:
         raise ValueError("expected an immutable local-export ingredient index")
 
 
-def _validate_coverage(metadata: dict, arrays: dict[str, np.ndarray]) -> None:
+def _validate_coverage(metadata: dict, arrays: dict[str, np.ndarray], directory: Path,
+                       text_shards: list[dict]) -> None:
     rows = metadata["n_recipes"]
     coverage = metadata["coverage"]
+    text = Counter()
+    for record in text_shards:
+        titles, lines = read_text_shard(directory, record)
+        text["recipe_titles"] += sum(title is not None for title in titles)
+        text["ingredient_line_records"] += sum(value is not None for value in lines)
+        text["ingredient_lines"] += sum(len(value) for value in lines if value is not None)
     observed = {
         "records": rows,
         "ingredient_slots": metadata["n_slots"],
@@ -130,10 +141,11 @@ def _validate_coverage(metadata: dict, arrays: dict[str, np.ndarray]) -> None:
         "singletons": int(np.count_nonzero(arrays["lengths"] == 1)),
         "source_total_times": int(np.count_nonzero(np.isfinite(arrays["total_minutes"]))),
         "source_servings": int(np.count_nonzero(np.isfinite(arrays["servings"]))),
+        **{name: text[name] for name in TEXT_COVERAGE},
     }
     if any(type(coverage[name]) is not int or coverage[name] != count
            for name, count in observed.items()):
-        raise ValueError("ingredient coverage differs from the complete numeric arrays")
+        raise ValueError("ingredient coverage differs from the complete numeric arrays and text shards")
     statuses = coverage["url_statuses"]
     if (not isinstance(statuses, dict) or set(statuses) - _URL_STATUSES
             or any(type(count) is not int or count < 0 for count in statuses.values())
@@ -153,6 +165,9 @@ def _validate_coverage(metadata: dict, arrays: dict[str, np.ndarray]) -> None:
         "derived_uint32_offsets": (rows + 1) * 4,
         "url_shards_compressed": sum(record["bytes"] for record in shards),
         "largest_url_shard_compressed": max(record["bytes"] for record in shards),
+        "text_manifest_compressed": metadata["text_manifest"]["bytes"],
+        "text_shards_compressed": sum(record["bytes"] for record in text_shards),
+        "largest_text_shard_compressed": max(record["bytes"] for record in text_shards),
     }
     if (any(type(value) is not int for value in metadata["bytes"].values())
             or metadata["bytes"] != expected_bytes):
@@ -296,23 +311,25 @@ configs:
 
 # llmmm recipe ingredients
 
-This factual extract contains **{rows:,} canonical ingredient records**, **{metadata['n_slots']:,} ingredient slots** and **{len(metadata['vocabulary']):,} canonical ingredient names** from **{len(metadata['source_names']):,} source groups**. These are normalized ingredient facts, not complete recipes. Counts describe the complete canonical corpus, not a sample or a count of unique content: duplicate ingredient sets remain, and a record is not necessarily a unique or complete recipe.
+This extract contains **{rows:,} canonical ingredient records**, **{metadata['n_slots']:,} ingredient slots** and **{len(metadata['vocabulary']):,} canonical ingredient names** from **{len(metadata['source_names']):,} source groups**. Each record has normalized ingredient facts and, where the source recorded them, its original title and ingredient lines. Cooking instructions are not included, so a record is not a complete recipe. Counts describe the complete canonical corpus, not a sample or a count of unique content: duplicate ingredient sets remain.
 
 The `train` split preserves every original zero-based `id`, including {coverage['singletons']:,} singleton records and records without links. `ingredient_ids` and `ingredients` are aligned, sorted canonical ID sets and their exact vocabulary names. `source` and `language` retain the index's source identifiers and language labels.
 
 Source-reported positive `total_minutes` are available for **{coverage['source_total_times']:,} of {rows:,} records**; source-reported `servings` for **{coverage['source_servings']:,} of {rows:,} records**. Unknown values are null, not NaN, zero, guessed totals or sums of component times. Serving counts do not scale ingredient quantities. These source facts are not independently measured.
 
-`source_url` retains recorded original HTTP(S) links for **{links:,} records**; **{rows - links:,} records have null URLs**. Missing, invalid or sensitive links are not replaced with generated URLs. Original titles, descriptions, ingredient prose, quantities, instructions, authors and images are not included. Consult a recorded source page for the complete recipe, where a link is available.
+`source_url` retains recorded original HTTP(S) links for **{links:,} records**; **{rows - links:,} records have null URLs**. Links recorded without a scheme use `http://`, because some of those sites refuse HTTPS connections. Missing, invalid or sensitive links are not replaced with generated URLs, and some source sites no longer respond.
+
+`index/text/` holds the text shown on the browser demo's result cards: **{coverage['recipe_titles']:,} recorded titles** and **{coverage['ingredient_lines']:,} ingredient lines** from **{coverage['ingredient_line_records']:,} records**, in ID order, {metadata['rows_per_text_shard']:,} records per gzip JSON shard. The index declares their normalization: {metadata['semantics']['text_shards']} These fields are not in the Parquet `train` split. Descriptions, authors and images are not included either; consult a recorded source page for the method, where a link is available.
 
 Canonical matching does not recover quantities or every compound constituent, and exclusions are not an allergy-safety guarantee.
 
 [Model and its separate terms]({_MODEL_URL}) | [Browser demo]({_DEMO_URL}) | [Exact source revision `{source_revision}`]({_SOURCE_REPOSITORY}/tree/{source_revision})
 
-`index/` preserves the ingredient index's compressed arrays and URL shards byte-for-byte; only its publication provenance changes. `dataset-manifest.json` records the source revision, input and copied index hashes, Parquet counts and every other file's bytes and SHA256. Packaging stages a release locally; it does not upload it.
+`index/` preserves the index's compressed arrays, URL shards, text manifest and text shards byte-for-byte; only its publication provenance changes. `dataset-manifest.json` records the source revision, input and copied index hashes, Parquet counts and every other file's bytes and SHA256. Packaging stages a release locally; it does not upload it.
 
 ## Use
 
-This is a factual ingredient extract. The maintainer confirmed permission to publish this ingredient-only data. `license: other` is not a grant of rights to source-page prose or photos, or to the separate model weights. Source-page material and model weights retain their separate terms.
+The maintainer confirmed permission to publish these ingredient facts, titles and ingredient lines. `license: other` is not a grant of rights to source-page instructions, prose or photos, or to the separate model weights. Source-page material and model weights retain their separate terms.
 
 ## Acknowledgements
 
@@ -327,7 +344,7 @@ def _inventory(directory: Path, filenames: list[str]) -> dict[str, dict]:
         if path.is_symlink():
             raise ValueError("dataset output may not contain symlinks")
         if path.is_dir():
-            if relative not in {"index", "index/urls", "data"}:
+            if relative not in {"index", "index/urls", "index/text", "data"}:
                 raise ValueError("dataset output contains an unexpected directory")
         else:
             _regular_file(path)
@@ -339,11 +356,11 @@ def _inventory(directory: Path, filenames: list[str]) -> dict[str, dict]:
 
 
 def build_ingredient_dataset(index_directory: Path, output: Path, *, source_revision: str) -> dict:
-    """Atomically stage all ingredient facts in a new, never-overwritten directory.
+    """Atomically stage all ingredient facts and card text in a new, never-overwritten directory.
 
     The validated compact NumPy arrays remain resident. Expanded ingredient names
-    use bounded Arrow batches; URLs use one decoded shard plus one batch, never a
-    corpus-sized Python list. This function neither trains nor accesses the network.
+    use bounded Arrow batches; URLs and card text use one decoded shard at a time,
+    never a corpus-sized Python list. This function neither trains nor accesses the network.
     """
     if not isinstance(source_revision, str) or not re.fullmatch(r"[a-f0-9]{40}", source_revision):
         raise ValueError("source_revision must be an exact 40-character lowercase git SHA")
@@ -361,28 +378,32 @@ def build_ingredient_dataset(index_directory: Path, output: Path, *, source_revi
     _validate_projection(metadata)
     for filename, _ in ARRAYS.values():
         _regular_file(index_directory / filename)
-    if (index_directory / "urls").is_symlink() or not (index_directory / "urls").is_dir():
-        raise ValueError("the source URL directory must be a directory, not a symlink")
+    for name in ("urls", "text"):
+        if (index_directory / name).is_symlink() or not (index_directory / name).is_dir():
+            raise ValueError(f"the {name} shard directory must be a directory, not a symlink")
+    _regular_file(index_directory / TEXT_MANIFEST)
     loaded_metadata, arrays = load_ingredient_catalog(index_directory)
     if loaded_metadata != metadata or file_sha256(index_path) != input_index_sha256:
         raise ValueError("input ingredient index changed during validation")
-    _validate_coverage(metadata, arrays)
+    text_shards = load_text_shards(index_directory, metadata)
+    _validate_coverage(metadata, arrays, index_directory, text_shards)
     publication = {
-        "status": "public_ingredient_only_release_staging",
-        "scope": "public-ingredient-only-release",
+        "status": "public_recipe_card_release_staging",
+        "scope": "public-recipe-card-release",
         "source_revision": source_revision,
         "input_index_sha256": input_index_sha256,
         "maintainer_confirmed_permission": True,
-        "private_prose_exported": False,
+        "cooking_instructions_exported": False,
         "uploaded": False,
     }
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".ingredient-dataset-", dir=output.parent) as temporary:
         staged = Path(temporary) / "dataset"
         (staged / "index/urls").mkdir(parents=True, mode=0o700)
+        (staged / "index/text").mkdir()
         (staged / "data").mkdir()
         filenames = ["README.md", "index/ingredient-index.json"]
-        for record in [*metadata["arrays"].values(), *metadata["url_shards"]]:
+        for record in [*metadata["arrays"].values(), *metadata["url_shards"], metadata["text_manifest"], *text_shards]:
             source, destination = index_directory / record["file"], staged / "index" / record["file"]
             _regular_file(source)
             shutil.copyfile(source, destination)

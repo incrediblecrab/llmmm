@@ -10,8 +10,17 @@ import pytest
 
 from ingredient_model.data.recipe_catalog import _SCHEMA
 from ingredient_model.ingredient_catalog import (
-    ARRAYS, build_ingredient_catalog, load_ingredient_catalog, public_source_url,
+    ARRAYS, TEXT_MANIFEST, build_ingredient_catalog, ingredient_lines, load_ingredient_catalog,
+    load_text_shards, public_source_url, read_text_shard, recipe_title,
 )
+
+TITLES = ["Egg &amp; Salt\n  Toast", "PB&J; Custard", ""]
+RAW_INGREDIENTS = [
+    "2 eggs\x1f1 tsp salt",
+    "<table><tr><td>milk</td><td>1 cup</td></tr><tr><td>egg</td><td>2</td></tr></table>",
+    "",
+]
+URLS = ["https://example.test/recipe/0", "www.example.test/recipe/1", "https://example.test/recipe/2"]
 
 
 @pytest.fixture
@@ -34,11 +43,12 @@ def canonical_catalog(tmp_path):
         for position in range(3):
             fields = {
                 "id": position, "source": "fixture", "language": "en",
-                "title": "PRIVATE TITLE MUST NEVER BE EXPORTED",
+                "title": TITLES[position],
                 "steps": "PRIVATE INSTRUCTIONS MUST NEVER BE EXPORTED" if position < 2 else "",
-                "raw_ingredients": "PRIVATE INGREDIENT PROSE MUST NEVER BE EXPORTED",
+                "ingredient_quantities": "PRIVATE QUANTITIES MUST NEVER BE EXPORTED",
+                "raw_ingredients": RAW_INGREDIENTS[position],
                 "ingredient_ids": flat[offsets[position]:offsets[position + 1]].tobytes(),
-                "url": f"https://example.test/recipe/{position}",
+                "url": URLS[position],
                 "total_minutes": 10.25 if position == 0 else None,
                 "time_status": "source_total" if position == 0 else "unknown",
                 "servings": 2 if position == 0 else None,
@@ -51,10 +61,10 @@ def canonical_catalog(tmp_path):
     return catalog, corpus
 
 
-def test_all_rows_roundtrip_without_copying_prose(canonical_catalog, tmp_path):
+def test_all_rows_roundtrip_with_titles_and_lines_but_no_instructions(canonical_catalog, tmp_path):
     catalog, corpus = canonical_catalog
     output = tmp_path / "ingredient-only"
-    report = build_ingredient_catalog(catalog, corpus, output, rows_per_shard=2)
+    report = build_ingredient_catalog(catalog, corpus, output, rows_per_shard=2, rows_per_text_shard=2)
     metadata, arrays = load_ingredient_catalog(output)
     assert report["coverage"]["records"] == 3
     assert report["coverage"]["singletons"] == 1
@@ -68,14 +78,65 @@ def test_all_rows_roundtrip_without_copying_prose(canonical_catalog, tmp_path):
     assert np.isnan(arrays["total_minutes"][1:]).all()
     assert metadata["ingredient_frequency"] == [2, 2, 1]
     assert len(metadata["url_shards"]) == 2
+    assert report["cooking_instructions_exported"] is False
+    assert {"recipe_title", "ingredient_lines"} <= set(metadata["fields_included"])
+    assert {"instructions", "steps", "ingredient_quantities"} <= set(metadata["fields_excluded"])
     for path in output.rglob("*"):
         if path.is_file():
             data = gzip.decompress(path.read_bytes()) if path.suffix == ".gz" else path.read_bytes()
             assert b"PRIVATE" not in data
     first = json.loads(gzip.decompress((output / metadata["url_shards"][0]["file"]).read_bytes()))
-    assert first == {"first_id": 0, "urls": ["https://example.test/recipe/0", "https://example.test/recipe/1"]}
+    assert first == {"first_id": 0, "urls": ["https://example.test/recipe/0", "http://www.example.test/recipe/1"]}
+    shards = load_text_shards(output, metadata)
+    assert [(shard["file"], shard["first_id"], shard["rows"]) for shard in shards] == [
+        ("text/0000.json.gz", 0, 2), ("text/0001.json.gz", 2, 1)]
+    text = [read_text_shard(output, shard) for shard in shards]
+    assert text == [
+        (["Egg & Salt Toast", "PB&J; Custard"], [["2 eggs", "1 tsp salt"], ["milk: 1 cup", "egg: 2"]]),
+        ([None], [None]),
+    ]
+    assert {name: report["coverage"][name] for name in ("recipe_titles", "ingredient_line_records", "ingredient_lines")} == {
+        "recipe_titles": 2, "ingredient_line_records": 2, "ingredient_lines": 4}
     with pytest.raises(FileExistsError):
         build_ingredient_catalog(catalog, corpus, output)
+
+
+@pytest.mark.parametrize("value,expected", [
+    (None, None), ("", None), ("  \n ", None),
+    ("Mac &amp; Cheese", "Mac & Cheese"), ("PB&J; &pepper", "PB&J; &pepper"),
+    ("&quot;Best&quot;\tPie", '"Best" Pie'), ("A\x00B", "A B"),
+])
+def test_titles_decode_only_complete_references_and_collapse_whitespace(value, expected):
+    assert recipe_title(value) == expected
+
+
+@pytest.mark.parametrize("value,expected", [
+    (None, None), ("", None), ("\x1f \x1f", None),
+    ("1 egg\x1f2 cups flour", ["1 egg", "2 cups flour"]),
+    ("1 egg\n\n 2 cups  flour\r\n", ["1 egg", "2 cups flour"]),
+    ("<table><tr><th>rice</th><td>2 cups</td></tr><tr><td>salt</td><td></td></tr></table>", ["rice: 2 cups", "salt"]),
+    ("<b>1</b> egg", ["<b>1</b> egg"]),
+    ("salt &amp; pepper &amp", ["salt & pepper &amp"]),
+])
+def test_ingredient_lines_keep_wording_and_split_only_recorded_breaks(value, expected):
+    assert ingredient_lines(value) == expected
+
+
+@pytest.mark.parametrize("value,source,expected", [
+    ("2 cups rice ; 1 egg ;   salt to taste", "allrecipes-33k", ["2 cups rice", "1 egg", "salt to taste"]),
+    ("1 cup ricotta (fresh ; 8 ounces)\x1f1 egg", "kaggle-food-13k", ["1 cup ricotta (fresh ; 8 ounces)", "1 egg"]),
+    ("Köfteler için ; 1 kaşık un\n2 yumurta", "turkish-102k", ["Köfteler için ; 1 kaşık un", "2 yumurta"]),
+    ("3 lbs. pork | 1 onion chopped|salt |", "filipino-2k", ["3 lbs. pork", "1 onion chopped", "salt"]),
+    ("知味人生|vlog裱花", "02-xiachufang", ["知味人生|vlog裱花"]),
+    ("a|b ; c", None, ["a|b", "c"]),
+])
+def test_one_line_lists_split_only_on_their_recorded_separator(value, source, expected):
+    assert ingredient_lines(value, source) == expected
+
+
+def test_scheme_less_urls_use_http_because_https_fails_on_some_hosts():
+    assert public_source_url("www.cookbooks.com/Recipe-Details.aspx?id=1") == (
+        "http://www.cookbooks.com/Recipe-Details.aspx?id=1", "source_url")
 
 
 def test_canonical_mismatch_never_publishes_partial_output(canonical_catalog, tmp_path):
@@ -144,4 +205,71 @@ def test_url_shards_cannot_escape_the_index_or_misalign_records(canonical_catalo
     metadata["url_shards"][0].update(patch)
     path.write_text(json.dumps(metadata))
     with pytest.raises(ValueError, match="shard"):
+        load_ingredient_catalog(output)
+
+
+def _rewrite_gzip_json(path, value):
+    raw = (json.dumps(value) + "\n").encode()
+    path.write_bytes(gzip.compress(raw, mtime=0))
+    return {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "raw_bytes": len(raw), "raw_sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def test_text_shard_corruption_is_detected(canonical_catalog, tmp_path):
+    catalog, corpus = canonical_catalog
+    output = tmp_path / "ingredient-only"
+    build_ingredient_catalog(catalog, corpus, output)
+    metadata, _ = load_ingredient_catalog(output)
+    shard = load_text_shards(output, metadata)[0]
+    path = output / shard["file"]
+    path.write_bytes(path.read_bytes() + b"corruption")
+    with pytest.raises(ValueError, match="integrity"):
+        read_text_shard(output, shard)
+
+
+@pytest.mark.parametrize("content", [
+    {"first_id": 1, "titles": [None, None, None], "ingredient_lines": [None, None, None]},
+    {"first_id": 0, "titles": [None, None], "ingredient_lines": [None, None, None]},
+    {"first_id": 0, "titles": ["a\nb", None, None], "ingredient_lines": [None, None, None]},
+    {"first_id": 0, "titles": [None, None, None], "ingredient_lines": [[], None, None]},
+    {"first_id": 0, "titles": [None, None, None], "ingredient_lines": [["x" * 20_000], None, None]},
+    {"first_id": 0, "titles": [None, None, None], "ingredient_lines": [None, None, None], "steps": ["cook"]},
+])
+def test_text_shards_cannot_misalign_or_smuggle_unbounded_text(canonical_catalog, tmp_path, content):
+    catalog, corpus = canonical_catalog
+    output = tmp_path / "ingredient-only"
+    build_ingredient_catalog(catalog, corpus, output)
+    metadata, _ = load_ingredient_catalog(output)
+    shard = load_text_shards(output, metadata)[0]
+    shard.update(_rewrite_gzip_json(output / shard["file"], content))
+    with pytest.raises(ValueError):
+        read_text_shard(output, shard)
+
+
+@pytest.mark.parametrize("patch", [
+    lambda manifest: manifest["shards"][0].update(file="../private.env"),
+    lambda manifest: manifest["shards"][0].update(first_id=1),
+    lambda manifest: manifest["shards"][0].update(rows=2),
+    lambda manifest: manifest["shards"].append(dict(manifest["shards"][0])),
+])
+def test_text_manifest_cannot_escape_the_index_or_misalign_records(canonical_catalog, tmp_path, patch):
+    catalog, corpus = canonical_catalog
+    output = tmp_path / "ingredient-only"
+    build_ingredient_catalog(catalog, corpus, output)
+    manifest = json.loads(gzip.decompress((output / TEXT_MANIFEST).read_bytes()))
+    patch(manifest)
+    index_path = output / "ingredient-index.json"
+    metadata = json.loads(index_path.read_text())
+    metadata["text_manifest"].update(_rewrite_gzip_json(output / TEXT_MANIFEST, manifest))
+    index_path.write_text(json.dumps(metadata))
+    with pytest.raises(ValueError, match="shard"):
+        load_ingredient_catalog(output)
+
+
+def test_text_manifest_must_match_its_declared_digest(canonical_catalog, tmp_path):
+    catalog, corpus = canonical_catalog
+    output = tmp_path / "ingredient-only"
+    build_ingredient_catalog(catalog, corpus, output)
+    _rewrite_gzip_json(output / TEXT_MANIFEST, {"shards": []})
+    with pytest.raises(ValueError, match="integrity"):
         load_ingredient_catalog(output)

@@ -1,18 +1,35 @@
 {
   "schema_version": 1,
   "status": "owner_confirmed",
-  "review_date": "2026-09-10",
+  "review_date": "2026-09-23",
   "technical_verification": "model/results/ingredient_catalog_verification.json",
-  "index_sha256": "d3a57bf5cfe4e8b4e679f913a2b1227055aa58cba387aff572af3ba50f37b36c",
+  "index_sha256": "b05f932727bd372f09234749b25301b28510303f16f1334fc7f23ee564b4cd1b",
   "full_index_uploaded_at_review": false,
   "public_demo_changed_at_review": false,
-  "publication_receipt": "model/results/huggingface_ingredient_demo_release.json",
+  "publication_receipt": "model/results/huggingface_recipe_card_release.json",
   "owner_confirmation": {
     "confirmed_at": "2026-09-10T14:27:55.474-04:00",
     "statement": "yes we have permission to publish",
     "context": "The owner reaffirmed publication permission in direct response to the full ingredient-only dataset scope question.",
     "scope": "All canonical ingredient records, source identifiers, recorded original URLs and source-reported times/servings; no source recipe prose or images.",
     "additional_conditions_specified": false
+  },
+  "scope_update": {
+    "requested_at": "2026-09-23",
+    "request": "since we know the recipe outputs, cant we just load the direct recipe on the cards on hugging face",
+    "follow_up": "update our hugging face",
+    "interpretation": "Treated as the owner's authorization to add each record's recorded title and original ingredient lines to the public dataset and the demo's result cards. The request did not restate permission terms; this is a recorded interpretation, not a new permission grant.",
+    "added_fields": [
+      "recipe_title",
+      "ingredient_lines"
+    ],
+    "still_excluded": [
+      "cooking instructions",
+      "descriptions",
+      "author names",
+      "images"
+    ],
+    "residual_risks": "The source-specific terms below (RecipeNLG, XiaChuFang, Food.com) and EU database rights apply to titles and ingredient lines as they did to the ingredient facts; this update does not resolve them."
   },
   "existing_permission_evidence": {
     "file": "prior-study/docs/LICENSE_AUDIT.md",
@@ -29,6 +46,13 @@
       "section": "How do I protect my recipe?",
       "finding": "A mere listing of ingredients is not protected under copyright law. Substantial explanatory or instructional expression is a different case.",
       "limit": "This does not resolve separate contractual obligations or database rights."
+    },
+    {
+      "source": "37 CFR 202.1 (Electronic Code of Federal Regulations)",
+      "url": "https://www.ecfr.gov/current/title-37/chapter-II/subchapter-A/part-202/section-202.1",
+      "section": "202.1(a), material not subject to copyright",
+      "finding": "Lists \"Words and short phrases such as names, titles, and slogans\" and \"mere listing of ingredients or contents\" among works not subject to copyright.",
+      "limit": "These are examples of material not subject to copyright; an ingredient line carrying substantial explanatory prose is not a mere listing, and contracts, site terms and database rights are separate."
     },
     {
       "source": "RecipeNLG",
@@ -73,7 +97,7 @@
   "decision": {
     "categorical_prohibition_established": false,
     "public_bulk_scope_established": true,
-    "action": "Proceed with the public ingredient-only dataset and free Static Space under the owner's confirmed authorization. Do not reopen the resolved scope question.",
+    "action": "Proceed with the public dataset (ingredient facts, recorded titles and original ingredient lines) and free Static Space under the owner's confirmed authorization and the September 23, 2026 request. Cooking instructions, descriptions, author names and images stay excluded.",
     "confirmation_needed": null,
     "alternative_basis": "A documented applicable basis for publishing the factual extract without additional permission can also resolve scope.",
     "private_permission_letters_required_in_repository": false,

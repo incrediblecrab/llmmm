@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import test from "node:test";
 import { ARRAY_FORMAT, prepareIngredientCatalog, searchIngredientCatalog } from "../ingredient-catalog.js";
-import { checkedDecompression } from "../ingredient-loader.js";
+import { checkedBytes, checkedDecompression, loadResultText, loadTextManifest } from "../ingredient-loader.js";
 import { candidateFeatures, heuristicScores, heuristicStatisticScore } from "../ranker.js";
 import { policy } from "./fixtures.js";
 
@@ -18,7 +18,7 @@ function fixture() {
     has_source_url: new Uint8Array([1, 0, 1, 0]),
   };
   const metadata = {
-    schema_version: 1, format: "llmmm-ingredient-catalog", endianness: "little",
+    schema_version: 2, format: "llmmm-ingredient-catalog", endianness: "little",
     statistics_scope: "full-canonical-corpus", n_recipes: 4, n_slots: 8,
     vocabulary: ["egg", "milk", "salt", "pepper"], ingredient_frequency: [3, 2, 3, 0],
     source_names: ["fixture"], language_names: ["en", "fr"],
@@ -30,6 +30,8 @@ function fixture() {
       { file: "urls/0000.json.gz", first_id: 0, rows: 3 },
       { file: "urls/0001.json.gz", first_id: 3, rows: 1 },
     ],
+    rows_per_text_shard: 3,
+    text_manifest: { file: "text-shards.json.gz", compression: "gzip", shards: 2 },
   };
   return { metadata, arrays };
 }
@@ -112,6 +114,10 @@ test("array corruption, incomplete coverage and invalid numeric facts fail close
     ({ metadata }) => { metadata.ingredient_frequency[0] = 2; },
     ({ metadata }) => { metadata.url_shards[1].first_id = 2; },
     ({ metadata }) => { metadata.arrays.ingredients.file = "../private.bin"; },
+    ({ metadata }) => { metadata.schema_version = 1; },
+    ({ metadata }) => { metadata.text_manifest.shards = 1; },
+    ({ metadata }) => { metadata.text_manifest.file = "../text-shards.json.gz"; },
+    ({ metadata }) => { metadata.rows_per_text_shard = 0; },
   ]) {
     const data = fixture();
     mutate(data);
@@ -137,4 +143,116 @@ test("gzip decoding verifies exact lengths and hashes", async () => {
   assert.deepEqual(Buffer.from(await checkedDecompression(compressed, record)), data);
   await assert.rejects(checkedDecompression(compressed, { ...record, raw_bytes: data.length - 1 }), /exceeded/);
   await assert.rejects(checkedDecompression(compressed, { ...record, raw_sha256: "0".repeat(64) }), /integrity/);
+});
+
+function sha256(bytes) {
+  return createHash("sha256").update(bytes).digest("hex");
+}
+
+function gzipJson(value) {
+  const raw = Buffer.from(JSON.stringify(value));
+  const data = gzipSync(raw);
+  return { data, record: { bytes: data.length, sha256: sha256(data), raw_bytes: raw.length, raw_sha256: sha256(raw), compression: "gzip" } };
+}
+
+function textFixture({ shard = (value) => value, manifest = (value) => value } = {}) {
+  const files = new Map();
+  const shards = [
+    { first_id: 0, titles: ["Egg & milk custard", null, "Salted eggs"],
+      ingredient_lines: [["2 eggs", "1 cup milk"], null, ["3 eggs", "salt to taste"]] },
+    { first_id: 3, titles: ["Pepper egg"], ingredient_lines: [["1 egg", "black pepper"]] },
+  ];
+  const records = shards.map((value, index) => {
+    const file = `text/000${index}.json.gz`;
+    const { data, record } = gzipJson(shard(structuredClone(value), index));
+    files.set(file, data);
+    return { file, first_id: value.first_id, rows: value.titles.length, ...record };
+  });
+  const { data, record } = gzipJson(manifest({ shards: records }));
+  files.set("text-shards.json.gz", data);
+  return { files, catalog: { n_recipes: 4, rows_per_text_shard: 3, text_manifest: { file: "text-shards.json.gz", shards: 2, ...record } } };
+}
+
+async function servingFiles(files, action) {
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const path = new URL(url).pathname.replace(/^\/index\//, "");
+    return files.has(path) ? new Response(files.get(path)) : new Response("missing", { status: 404 });
+  };
+  try {
+    return await action(new URL("https://example.test/index/ingredient-index.json"));
+  } finally {
+    globalThis.fetch = original;
+  }
+}
+
+async function resultText(files, catalog, ids) {
+  return servingFiles(files, async (indexUrl) => loadResultText(indexUrl, catalog,
+    await loadTextManifest(indexUrl, catalog), ids.map((id) => ({ id }))));
+}
+
+test("result cards receive their own recorded title and ingredient lines", async () => {
+  const { files, catalog } = textFixture();
+  assert.deepEqual(await resultText(files, catalog, [2, 3, 1]), [
+    { id: 2, title: "Salted eggs", ingredient_lines: ["3 eggs", "salt to taste"] },
+    { id: 3, title: "Pepper egg", ingredient_lines: ["1 egg", "black pepper"] },
+    { id: 1, title: null, ingredient_lines: null },
+  ]);
+});
+
+test("misaligned, oversized, smuggled or corrupt recipe text fails closed", async () => {
+  const first = (mutate) => (value, index) => { if (index === 0) mutate(value); return value; };
+  for (const [options, pattern] of [
+    [{ shard: (value) => ({ ...value, first_id: value.first_id + 1 }) }, /aligned/],
+    [{ shard: (value) => ({ ...value, instructions: ["Whisk."] }) }, /aligned/],
+    [{ shard: first((value) => { value.titles.pop(); }) }, /aligned/],
+    [{ shard: first((value) => { value.ingredient_lines[2] = ["salt\u0007"]; }) }, /invalid/],
+    [{ shard: first((value) => { value.titles[2] = "x".repeat(16_385); }) }, /invalid/],
+    [{ shard: first((value) => { value.ingredient_lines[2] = []; }) }, /invalid/],
+    [{ shard: first((value) => { value.ingredient_lines[2] = "3 eggs"; }) }, /invalid/],
+    [{ manifest: (value) => { value.shards[1].file = "../private.json.gz"; return value; } }, /contiguous/],
+    [{ manifest: (value) => ({ shards: value.shards.slice(0, 1) }) }, /structure/],
+  ]) {
+    const { files, catalog } = textFixture(options);
+    await assert.rejects(resultText(files, catalog, [2, 3]), pattern);
+  }
+  const { files, catalog } = textFixture();
+  files.set("text/0001.json.gz", gzipSync(Buffer.from('{"first_id":3}')));
+  await assert.rejects(resultText(files, catalog, [3]), /integrity|exceeded/);
+  files.delete("text/0001.json.gz");
+  await assert.rejects(resultText(files, catalog, [3]), /HTTP 404/);
+});
+
+test("a network failure is retried a bounded number of times; HTTP and checksum failures are not", async () => {
+  const payload = Buffer.from("verified bytes");
+  const expected = { bytes: payload.length, sha256: createHash("sha256").update(payload).digest("hex") };
+  const url = new URL("https://example.test/index/text/0000.json.gz");
+  const original = globalThis.fetch;
+  let calls = 0;
+  const serve = (responses) => {
+    calls = 0;
+    globalThis.fetch = async () => {
+      const next = responses[Math.min(calls++, responses.length - 1)];
+      if (next instanceof Error) throw next;
+      return next();
+    };
+  };
+  const options = { retryDelays: [0, 0] };
+  try {
+    serve([new TypeError("Failed to fetch"), () => new Response(payload)]);
+    assert.deepEqual(Buffer.from(await checkedBytes(url, expected, options)), payload);
+    assert.equal(calls, 2);
+    serve([new TypeError("Failed to fetch")]);
+    await assert.rejects(checkedBytes(url, expected, options),
+      /Download failed after 3 attempts \(network error\): \/index\/text\/0000\.json\.gz/);
+    assert.equal(calls, 3);
+    serve([() => new Response("verified bytez")]);
+    await assert.rejects(checkedBytes(url, expected, options), /integrity check/);
+    assert.equal(calls, 1);
+    serve([() => new Response("busy", { status: 503 })]);
+    await assert.rejects(checkedBytes(url, expected, options), /HTTP 503/);
+    assert.equal(calls, 1);
+  } finally {
+    globalThis.fetch = original;
+  }
 });

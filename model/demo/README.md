@@ -1,6 +1,6 @@
 # Browser recipe demo
 
-The live [demo](https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo) searches the full public ingredient-only index, then runs the released supervised ranker in JavaScript. It needs no private corpus, Python backend or API key. The [release receipt](../results/huggingface_ingredient_demo_release.json) pins the actual dataset and application revisions.
+The [demo](https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo) searches the full public index, then runs the released supervised ranker in JavaScript. Result cards show each recipe's recorded title and original ingredient lines. It needs no private corpus, Python backend or API key. Each release's receipt in [`../results/`](../results/) pins the actual dataset and application revisions; the publisher below writes this app's receipt to `huggingface_recipe_card_release.json`.
 
 The original twelve-recipe sample is also retained. Its complete recipe text, license notices and revision links live in [`../demo_data/`](../demo_data/). The sample and full-index modes share the ranking implementation.
 
@@ -62,13 +62,19 @@ The demo retrieves existing recipes; it is not a recipe-writing model. Ingredien
 
 The sample is not a held-out benchmark. Numerical parity establishes that the browser executes the same ranking calculation, not that users prefer its meals. The full-catalog recovery measurements must not be applied to this demo.
 
-## Full ingredient-only index
+## Full index with recipe cards
 
-The full mode scans every canonical ingredient record, including singletons, duplicates and records without readable instructions. It does not copy recipe titles, quantities, raw ingredient sentences, instructions, images or descriptive prose. Known overall time and servings must carry their source-reported status; unknown values remain unknown.
+The full mode scans every canonical ingredient record, including singletons, duplicates and records without readable instructions. A result card shows the record's recorded title and original ingredient lines, quantities included, beside its canonical matches and source link. Cooking instructions, descriptions, author names and images are not copied; the source link leads to the steps. Known overall time and servings must carry their source-reported status; unknown values remain unknown.
+
+Of the 4,653,430 records, 4,503,160 have a recorded title and 4,503,161 have ingredient lines, 39,045,568 lines in all. A card without a title shows its canonical ingredient names instead, and a card without lines says so. The export decodes complete HTML character references, collapses whitespace and turns HTML ingredient tables into one `name: amount` line per row. A whole list recorded on one line becomes one line per item only where it is joined with ` ; ` (or `|` in filipino-2k); commas never split a line. Wording is otherwise unchanged.
+
+The example pantries show their cards before anything large downloads. The build ranks each example over the complete index with the browser's own search code, then stores those five results with their text and links. The cards are labeled as precomputed until the index loads, and the browser checks require the live search to return the same cards.
 
 The public dataset has 4,653,430 records and 36,707,624 ingredient slots. Seven compressed arrays total 37,769,040 bytes (36.0 MiB). The browser reconstructs offsets, verifies sorted unique sets and full-corpus document frequencies, then searches in a worker. The user must request the initial download. Loaded arrays and offsets occupy about 181 MiB; browser overhead is additional. The measured Node process footprint is not a phone memory or latency guarantee.
 
-Only 2,292,411 records have a recorded original URL. Links are retrieved from 285 small, checksum-bound shards as results need them, with bounded concurrency. The default link-only filter avoids presenting an ingredient set as if it were a complete cooking recipe. Disabling it includes records without links; the UI says when a link is missing. No URLs, source times or serving counts are invented.
+Titles and ingredient lines live in 2,273 checksum-bound text shards, 312,865,086 compressed bytes in all and at most 923,037 bytes each, listed in a compressed 222,134-byte manifest. The browser fetches only the shards holding the results shown. Any index, link or recipe-text download interrupted by a network error is retried twice, after 0.5 and 1.5 seconds; HTTP errors and checksum mismatches are not retried. A missing or corrupted shard fails the search rather than showing cards without their text.
+
+Only 2,292,411 records have a recorded original URL. Links are retrieved from 285 small, checksum-bound shards as results need them, with bounded concurrency. Scheme-less source URLs get `http://`, not `https://`: `https://www.cookbooks.com` resets the connection, while its `http://` address redirects to a working HTTPS page. The link-only filter, on by default, shows only records with a recorded source link, since that link is the only route to the cooking steps. Disabling it includes records without links; the UI says when a link is missing. No URLs, source times or serving counts are invented.
 
 Every record is checked against the hard constraints. The best 2,000 feasible records under the deterministic baseline form a shortlist for the real published supervised model. Both ranking choices use that same shortlist, and the UI discloses truncation. This is a different retrieval pipeline from the private SQLite/FTS finder: neither its recovery benchmark nor the public sample's statistics measure this mode.
 
@@ -84,7 +90,7 @@ from huggingface_hub import snapshot_download
 from ingredient_model.ingredient_demo import build_ingredient_demo
 
 root = Path.cwd()
-release = json.loads((root / "model/results/huggingface_ingredient_demo_release.json").read_text())
+release = json.loads((root / "model/results/huggingface_recipe_card_release.json").read_text())
 snapshot = snapshot_download(
     release["dataset"]["repository"],
     repo_type="dataset",
@@ -98,7 +104,7 @@ python3 -m http.server 7860 --bind 127.0.0.1 \
   --directory .artifacts/public-demo-preview
 ```
 
-This uses public weights and public ingredient facts, not the private SQLite catalog or original corpus arrays. Existing preview directories are not overwritten. The full dataset also provides a standard Parquet `train` split with IDs, ingredient IDs/names, source/language, times, servings and source URLs.
+This uses public weights and the public index, including its text shards, not the private SQLite catalog or original corpus arrays. Existing preview directories are not overwritten. The full dataset also provides a standard Parquet `train` split with IDs, ingredient IDs/names, source/language, times, servings and source URLs; titles and ingredient lines are only in the index.
 
 ### Rebuild from original inputs
 
@@ -114,38 +120,39 @@ python3 -m http.server 7860 --bind 127.0.0.1 \
 
 The Make variables `INGREDIENT_INDEX`, `INGREDIENT_REPORT` and `INGREDIENT_DEMO` select new output paths relative to `model/`. Existing outputs are never overwritten. The two build commands require Git-ignored output directories. Their Python scripts also accept `--ipv4` for Hub downloads where applicable.
 
-`verify-ingredient-index` independently compares the full exported arrays against the canonical corpus, validates every URL shard and compares ten queries under both policies with the existing Python feature/ranking kernels. Its [recorded result](../results/ingredient_catalog_verification.json) is aggregate evidence only. The preview additionally binds the index to the released model's vocabulary, corpus and catalog identities.
+`verify-ingredient-index` independently compares the full exported arrays against the canonical corpus. It recomputes every exported link, title and ingredient line from the private catalog in ID order, validates every URL and text shard, and compares ten queries under both policies with the existing Python feature/ranking kernels. That comparison checks alignment and completeness; unit tests check the normalization rules. Its [recorded result](../results/ingredient_catalog_verification.json) is aggregate evidence only. The preview additionally binds the index to the released model's vocabulary, corpus and catalog identities.
 
 With the preview served on port 7860:
 
 ```bash
 LLMMM_DEMO_URL=http://127.0.0.1:7860 \
-LLMMM_DEMO_BUILD="$PWD/.artifacts/ingredient-demo-preview" \
 LLMMM_DEMO_REPORT="$PWD/.artifacts/ingredient-browser-checks.json" \
   npm --prefix model/demo run test:ingredients
 ```
 
-The browser checks cover deliberate download, full-population coverage, actual source links, hard constraints, shortlist disclosure and corrupted-index rejection in desktop/mobile layouts. The original public-sample suite is separate and still uses `test:e2e`.
+The browser checks run in desktop and mobile layouts. Before any download, the example cards must show the stored titles, ingredient lines and links, with no numbered cooking steps. After a deliberate download, the live learned ranking must return the same cards; the checks then cover full-population coverage, 100 results, hard constraints, the baseline comparison, shortlist disclosure and input privacy. Corrupted arrays, a failed index download and corrupted recipe text must each fail visibly rather than show live-looking cards, while a single dropped recipe-text download must be retried and the search completed. The original public-sample suite is separate and still uses `test:e2e`.
 
-**Publication authorization:** the owner confirmed permission for this complete ingredient-only release. The [scope record](../results/ingredient_catalog_publication_scope.json) records the confirmation; it is not a license for copied source-page prose or images, and does not relicense the model weights.
+**Publication authorization:** the owner confirmed permission for the complete ingredient-only release. The September 23, 2026 request to show each recipe on its card is recorded in the [scope record](../results/ingredient_catalog_publication_scope.json) as the owner's authorization to add recorded titles and ingredient lines; that is an interpretation of the request, not a new permission grant. The record is not a license for cooking instructions, other source-page prose or images, and does not relicense the model weights.
 
 ## Publish the full ingredient dataset and demo
 
-The full publisher is separate from the twelve-recipe sample publisher. It packages every canonical ingredient row as bounded Parquet shards and a compact browser index. Before upload, a separate comparison checks every Parquet ID, ingredient name/ID, source/language value, source time, serving count and URL against the verified index. Only the fixed dataset/application inventories can be published.
+The full publisher is separate from the twelve-recipe sample publisher. It packages every canonical ingredient row as bounded Parquet shards and a compact browser index with its text shards. Before upload, a separate comparison checks every Parquet ID, ingredient name/ID, source/language value, source time, serving count and URL against the verified index, and every text shard's bytes and hash against the verified index's manifest. Only the fixed dataset/application inventories can be published.
 
 Commit and push the implementation and authorization record first, then run from the repository root:
 
 ```bash
 model/.venv/bin/python model/scripts/publish_ingredient_demo.py \
-  --index .artifacts/ingredient-catalog-v2 \
+  --index .artifacts/ingredient-catalog-v4 \
   --source-revision "$(git rev-parse HEAD)" \
-  --out .artifacts/hf/ingredient-demo-release \
-  --report model/results/huggingface_ingredient_demo_release.json \
-  --public --update
+  --out .artifacts/hf/recipe-card-release \
+  --report model/results/huggingface_recipe_card_release.json \
+  --public --update --dataset-tag v0.2.0 --space-tag v0.3.0-recipe-cards
 ```
 
-Use new artifact/receipt paths for another attempt; add `--ipv4` if needed. The public dataset is `incrediblecrab/llmmm-recipe-ingredients`. Its train split contains ingredient facts, not the separately sourced sample's instructions. The sample dataset is preserved unchanged.
+Use new artifact/receipt paths for another attempt; add `--ipv4` if needed. The public dataset is `incrediblecrab/llmmm-recipe-ingredients`. Its train split contains ingredient facts; its index adds the recorded titles and ingredient lines, not cooking instructions. The sample dataset is preserved unchanged.
 
-The Space downloads the index from an immutable public dataset revision rather than storing a second full copy. Its manifest also pins the source commit, model and application bytes. Browser checks run locally against the public dataset, then anonymously on the actual Static Space origin. The dataset viewer must expose the complete row count and matching fields. Only then are the model card's demo links updated; model files and existing model tags are preserved.
+An update uploads only new or changed files. It uses one commit when at most 99 files change, following the Hub's advice to keep manual commits to about 50–100 files. A larger update adds new files first, then replacements, in chained 99-file commits; the card, dataset manifest and index descriptor go in the final commit. Until that commit lands, the dataset's `main` branch mixes old and new files, but the Space and tags pin only the verified final revision. A rerun compares against the current `main` again and uploads what is still missing.
 
-The existing sample Space revision is preserved under `v0.1.0-sample`. The ingredient-only app uses `v0.2.0-ingredient-search`. Tags are never moved. No GitHub Actions, paid hardware or inference endpoint is requested.
+The Space downloads the index from an immutable public dataset revision rather than storing a second full copy. Its manifest also pins the source commit, model and application bytes. Browser checks run locally against the public dataset, then anonymously on the actual Static Space origin. The dataset viewer must expose the complete row count and matching fields; while it still serves the previous release's rows, the publisher waits up to 15 minutes. Only then are the model card's demo links updated; model files and existing model tags are preserved.
+
+Both release tags must be new, and every existing dataset and Space tag must still point at the same commit afterwards. The existing sample Space revision is preserved under `v0.1.0-sample` and the ingredient-only app under `v0.2.0-ingredient-search`; the dataset's ingredient-only release keeps `v0.1.0`. This release adds dataset tag `v0.2.0` and Space tag `v0.3.0-recipe-cards`. Tags are never moved. No GitHub Actions, paid hardware or inference endpoint is requested.

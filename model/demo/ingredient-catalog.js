@@ -21,7 +21,7 @@ function strings(values, maximum) {
 }
 
 export function ingredientCatalogMetadata(metadata) {
-  if (!metadata || metadata.schema_version !== 1 || metadata.format !== "llmmm-ingredient-catalog"
+  if (!metadata || metadata.schema_version !== 2 || metadata.format !== "llmmm-ingredient-catalog"
       || metadata.endianness !== "little" || metadata.statistics_scope !== "full-canonical-corpus"
       || !Number.isSafeInteger(metadata.n_recipes) || metadata.n_recipes > 10_000_000
       || !Number.isSafeInteger(metadata.n_slots) || metadata.n_slots < metadata.n_recipes
@@ -56,6 +56,13 @@ export function ingredientCatalogMetadata(metadata) {
       throw new Error("Source URL shards are not contiguous, complete and safely named.");
     }
   });
+  const textSize = metadata.rows_per_text_shard;
+  const manifest = metadata.text_manifest;
+  if (!Number.isSafeInteger(textSize) || textSize < 1 || textSize > 65_536 || !manifest
+      || manifest.file !== "text-shards.json.gz" || manifest.compression !== "gzip"
+      || manifest.shards !== Math.ceil(metadata.n_recipes / textSize)) {
+    throw new Error("The recipe text shard declaration is incomplete.");
+  }
   return { ...metadata, index: new Map(metadata.vocabulary.map((name, id) => [name, id])) };
 }
 

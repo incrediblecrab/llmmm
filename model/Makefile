@@ -144,7 +144,8 @@ ingredient-demo:
 
 verify-ingredient-index:
 	OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 $(PY) scripts/verify_ingredient_catalog.py \
-		--index "$(INGREDIENT_INDEX)" --corpus "$(RECIPE_CORPUS)" --report "$(INGREDIENT_REPORT)"
+		--index "$(INGREDIENT_INDEX)" --corpus "$(RECIPE_CORPUS)" --catalog "$(RECIPE_CATALOG)" \
+		--report "$(INGREDIENT_REPORT)"
 
 snapshot:
 	$(PY) -m ingredient_model.recovery pack --output "$(BUNDLE)"

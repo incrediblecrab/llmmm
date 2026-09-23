@@ -1,8 +1,9 @@
-"""A compact ingredient-only catalog; building it does not authorize publication."""
+"""A compact recipe-search catalog with titles and ingredient lines; building it does not authorize publication."""
 from __future__ import annotations
 
 import gzip
 import hashlib
+import html
 import json
 import os
 import re
@@ -33,12 +34,150 @@ ARRAYS = {
     "has_source_url": ("source-links.u8.gz", "|u1"),
 }
 FORBIDDEN_FIELDS = (
-    "title", "description", "instructions", "steps", "raw_ingredients",
-    "ingredient_quantities", "author", "image", "photo",
+    "description", "instructions", "steps", "ingredient_quantities", "author", "image", "photo",
 )
+SCHEMA_VERSION = 2
+INCLUDED_FIELDS = (
+    "canonical_ingredient_ids", "source_total_minutes", "source_servings",
+    "source_code", "language_code", "source_url", "recipe_title", "ingredient_lines",
+)
+TEXT_COVERAGE = ("recipe_titles", "ingredient_line_records", "ingredient_lines")
+TEXT_SEMANTICS = (
+    "Recorded titles and ingredient lines, one line per catalog separator or embedded line break. Complete HTML "
+    "character references are decoded, whitespace is collapsed, HTML ingredient tables become one 'name: amount' "
+    "line per row, and a whole list recorded on one line becomes one line per item (joined with ' ; ', or '|' in "
+    "filipino-2k); wording is otherwise unchanged. Null means the source recorded none. No instructions."
+)
+TEXT_MANIFEST = "text-shards.json.gz"
+MAX_TEXT_BYTES = 16_384
+MAX_LINES = 2_048
 _SENSITIVE_QUERY = re.compile(
     r"(?:access[_-]?token|auth|authorization|password|passwd|secret|api[_-]?key|"
     r"signature|credential|email|session|token)", re.I)
+_CHARACTER_REFERENCE = re.compile(r"&(?:#[0-9]{1,7}|#[xX][0-9a-fA-F]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});")
+_CONTROL = re.compile(r"[\x00-\x1f\x7f-\x9f]")
+_HTML_TABLE = re.compile(r"\s*<table[\s>]", re.I)
+_TABLE_ROW = re.compile(r"<tr\b[^>]*>(.*?)</tr>", re.I | re.S)
+_TABLE_CELL = re.compile(r"<t[hd]\b[^>]*>(.*?)</t[hd]>", re.I | re.S)
+_TAG = re.compile(r"<[^>]*>")
+
+
+def _display_text(value: str) -> str:
+    # Only complete character references are decoded, so text such as "PB&J;" or "salt &pepper" is kept.
+    decoded = _CHARACTER_REFERENCE.sub(lambda match: html.unescape(match.group(0)), value)
+    return " ".join(_CONTROL.sub(" ", decoded).split())
+
+
+def recipe_title(value: object) -> str | None:
+    """The recorded title with character references decoded and whitespace collapsed."""
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise ValueError("catalog titles must be strings or null")
+    return _display_text(value) or None
+
+
+def ingredient_lines(value: object, source: str | None = None) -> list[str] | None:
+    """The recorded ingredient lines, one per catalog separator or embedded line break.
+
+    Wording is unchanged apart from decoded character references and collapsed
+    whitespace; an HTML ingredient table becomes one "name: amount" line per row,
+    and a whole list recorded as one line becomes one line per item: joined with
+    " ; ", or with "|" in filipino-2k.
+    """
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise ValueError("catalog ingredient lines must be strings or null")
+    lines = []
+    elements = value.split("\x1f")
+    for element in elements:
+        if _HTML_TABLE.match(element):
+            rows = _TABLE_ROW.findall(element)
+            texts = [": ".join(filter(None, (_display_text(_TAG.sub(" ", cell)) for cell in _TABLE_CELL.findall(row))))
+                     for row in rows] if rows else [_display_text(_TAG.sub(" ", element))]
+        else:
+            parts = element.splitlines()
+            # Only a whole list on one line is split: elsewhere these marks are ordinary punctuation or part of a name.
+            if len(elements) == 1 and len(parts) == 1:
+                parts = parts[0].split("|" if source == "filipino-2k" else " ; ")
+            texts = [_display_text(part) for part in parts]
+        lines.extend(text for text in texts if text)
+    return lines or None
+
+
+def _bounded_text(value: object) -> bool:
+    return (isinstance(value, str) and value == value.strip() and bool(value)
+            and len(value.encode("utf-8")) <= MAX_TEXT_BYTES and not _CONTROL.search(value))
+
+
+def _check_text(title: object, lines: object, label: str) -> None:
+    if title is not None and not _bounded_text(title):
+        raise ValueError(f"{label}: a title must be null or bounded single-line text")
+    if lines is not None and (not isinstance(lines, list) or not 1 <= len(lines) <= MAX_LINES
+                              or not all(_bounded_text(line) for line in lines)):
+        raise ValueError(f"{label}: ingredient lines must be null or 1-{MAX_LINES} bounded single-line strings")
+
+
+def _checked_gzip_json(path: Path, record: dict, label: str, *, maximum: int = 256 * 1024 * 1024) -> dict:
+    if (type(record.get("bytes")) is not int or not 0 < record["bytes"] <= 64 * 1024 * 1024
+            or type(record.get("raw_bytes")) is not int or not 0 < record["raw_bytes"] <= maximum
+            or not re.fullmatch(r"[a-f0-9]{64}", str(record.get("sha256")))
+            or not re.fullmatch(r"[a-f0-9]{64}", str(record.get("raw_sha256")))
+            or record.get("compression") != "gzip"):
+        raise ValueError(f"{label}: invalid size, digest or compression declaration")
+    if path.is_symlink() or not path.is_file():
+        raise ValueError(f"{label}: index files must be regular files, not symlinks")
+    if path.stat().st_size != record["bytes"] or file_sha256(path) != record["sha256"]:
+        raise ValueError(f"{label}: compressed bytes failed their integrity check")
+    try:
+        with gzip.open(path, "rb") as stream:
+            raw = stream.read(record["raw_bytes"] + 1)
+    except (OSError, EOFError) as error:
+        raise ValueError(f"{label}: invalid gzip data") from error
+    if len(raw) != record["raw_bytes"] or hashlib.sha256(raw).hexdigest() != record["raw_sha256"]:
+        raise ValueError(f"{label}: decompressed bytes failed their integrity check")
+    return json.loads(raw)
+
+
+def load_text_shards(directory: Path, metadata: dict) -> list[dict]:
+    """Validate the text-shard manifest declared by the index and return its shard records."""
+    record, rows = metadata.get("text_manifest"), metadata["n_recipes"]
+    size = metadata.get("rows_per_text_shard")
+    if (not isinstance(record, dict) or record.get("file") != TEXT_MANIFEST
+            or type(size) is not int or not 1 <= size <= 65_536
+            or record.get("shards") != (rows + size - 1) // size):
+        raise ValueError("the text-shard manifest declaration does not cover the population")
+    manifest = _checked_gzip_json(directory / TEXT_MANIFEST, record, TEXT_MANIFEST, maximum=64 * 1024 * 1024)
+    shards = manifest.get("shards") if isinstance(manifest, dict) and set(manifest) == {"shards"} else None
+    if not isinstance(shards, list) or len(shards) != record["shards"]:
+        raise ValueError("the text-shard manifest has an unexpected structure")
+    for position, shard in enumerate(shards):
+        if (not isinstance(shard, dict) or set(shard) != {
+                "file", "first_id", "rows", "bytes", "sha256", "raw_bytes", "raw_sha256", "compression"}
+                or shard["file"] != f"text/{position:04d}.json.gz"
+                or shard["first_id"] != position * size
+                or shard["rows"] != min(size, rows - position * size)
+                or type(shard["bytes"]) is not int or not 0 < shard["bytes"] <= 16 * 1024 * 1024
+                or type(shard["raw_bytes"]) is not int or not 0 < shard["raw_bytes"] <= 256 * 1024 * 1024
+                or not re.fullmatch(r"[a-f0-9]{64}", str(shard["sha256"]))
+                or not re.fullmatch(r"[a-f0-9]{64}", str(shard["raw_sha256"]))
+                or shard["compression"] != "gzip"):
+            raise ValueError("text shard path, identity or record boundaries are invalid")
+    return shards
+
+
+def read_text_shard(directory: Path, record: dict) -> tuple[list, list]:
+    """Return one shard's aligned titles and ingredient lines after checking both digests."""
+    shard = _checked_gzip_json(directory / record["file"], record, record["file"])
+    if (not isinstance(shard, dict) or set(shard) != {"first_id", "titles", "ingredient_lines"}
+            or shard["first_id"] != record["first_id"]
+            or not isinstance(shard["titles"], list) or len(shard["titles"]) != record["rows"]
+            or not isinstance(shard["ingredient_lines"], list) or len(shard["ingredient_lines"]) != record["rows"]):
+        raise ValueError(f"{record['file']}: text shard alignment differs from the index")
+    for offset, (title, lines) in enumerate(zip(shard["titles"], shard["ingredient_lines"])):
+        _check_text(title, lines, f"record {record['first_id'] + offset}")
+    return shard["titles"], shard["ingredient_lines"]
 
 
 def _json_bytes(value: object) -> bytes:
@@ -74,15 +213,18 @@ def public_source_url(value: object) -> tuple[str | None, str]:
 
 
 def build_ingredient_catalog(catalog_path: Path, corpus_path: Path, output: Path, *,
-                             rows_per_shard: int = 16_384, progress=None) -> dict:
+                             rows_per_shard: int = 16_384, rows_per_text_shard: int = 2_048,
+                             progress=None) -> dict:
     """Export every canonical row, including records without readable instructions.
 
-    All constraints use numeric source facts, not copied recipe prose. The result
-    remains a local artifact until separate source permissions are established.
+    Constraints use numeric source facts. Titles and ingredient lines are copied for
+    display; instructions, descriptions, authors and images are not. The result
+    remains a local artifact until publication is separately authorized.
     """
     started = time.perf_counter()
-    if type(rows_per_shard) is not int or not 1 <= rows_per_shard <= 65_536:
-        raise ValueError("rows_per_shard must be an integer between 1 and 65536")
+    for label, value in (("rows_per_shard", rows_per_shard), ("rows_per_text_shard", rows_per_text_shard)):
+        if type(value) is not int or not 1 <= value <= 65_536:
+            raise ValueError(f"{label} must be an integer between 1 and 65536")
     if os.path.lexists(output):
         raise FileExistsError(f"{output}: ingredient-only builds never overwrite existing outputs")
     identity, catalog_stamp, metadata = _catalog_binding(catalog_path)
@@ -109,20 +251,25 @@ def build_ingredient_catalog(catalog_path: Path, corpus_path: Path, output: Path
     url_statuses = Counter()
     rows_by_source = Counter()
     shard_records, shards = [], []
+    titles, line_lists, text_shards = [], [], []
+    text_counts = Counter()
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".ingredient-catalog-", dir=output.parent) as temporary:
         staged = Path(temporary) / "catalog"
         staged.mkdir(mode=0o700)
         urls_directory = staged / "urls"
         urls_directory.mkdir()
+        text_directory = staged / "text"
+        text_directory.mkdir()
         seen = 0
         connection = _read_connection(catalog_path)
         try:
             cursor = connection.execute(
                 "SELECT id, url, total_minutes, time_status, servings, servings_status, "
-                "source, language, ingredient_ids FROM recipes ORDER BY id")
+                "source, language, ingredient_ids, title, raw_ingredients FROM recipes ORDER BY id")
             while batch := cursor.fetchmany(8192):
-                for recipe_id, url, minutes, time_status, servings, servings_status, source, language, ingredients in batch:
+                for (recipe_id, url, minutes, time_status, servings, servings_status, source, language,
+                     ingredients, title, raw_ingredients) in batch:
                     if recipe_id != seen or recipe_id >= n_rows:
                         raise ValueError("catalog record IDs are not complete, ordered and contiguous")
                     begin, end = index.offsets[recipe_id:recipe_id + 2]
@@ -147,6 +294,13 @@ def build_ingredient_catalog(catalog_path: Path, corpus_path: Path, output: Path
                     url_statuses[status] += 1
                     rows_by_source[source] += 1
                     shard_records.append(cleaned_url)
+                    title_text, lines = recipe_title(title), ingredient_lines(raw_ingredients, source)
+                    _check_text(title_text, lines, f"recipe {recipe_id}")
+                    titles.append(title_text)
+                    line_lists.append(lines)
+                    text_counts["recipe_titles"] += title_text is not None
+                    text_counts["ingredient_line_records"] += lines is not None
+                    text_counts["ingredient_lines"] += len(lines or ())
                     seen += 1
                     if len(shard_records) == rows_per_shard or seen == n_rows:
                         first = seen - len(shard_records)
@@ -156,12 +310,22 @@ def build_ingredient_catalog(catalog_path: Path, corpus_path: Path, output: Path
                         record.update(file=f"urls/{name}", first_id=first, rows=len(shard_records))
                         shards.append(record)
                         shard_records = []
+                    if len(titles) == rows_per_text_shard or seen == n_rows:
+                        first = seen - len(titles)
+                        name = f"{len(text_shards):04d}.json.gz"
+                        data = _json_bytes({"first_id": first, "titles": titles, "ingredient_lines": line_lists})
+                        record = _gzip_file(text_directory / name, data)
+                        record.update(file=f"text/{name}", first_id=first, rows=len(titles))
+                        text_shards.append(record)
+                        titles, line_lists = [], []
                 if progress and (seen % (8192 * 32) == 0 or seen == n_rows):
                     progress({"phase": "source_metadata", "rows": seen, "total": n_rows})
         finally:
             connection.close()
-        if seen != n_rows or shard_records:
+        if seen != n_rows or shard_records or titles:
             raise ValueError("catalog scan did not cover every declared canonical row")
+        text_manifest = _gzip_file(staged / TEXT_MANIFEST, _json_bytes({"shards": text_shards}))
+        text_manifest["shards"] = len(text_shards)
         files = {}
         for name, array in arrays.items():
             filename, dtype = ARRAYS[name]
@@ -171,13 +335,14 @@ def build_ingredient_catalog(catalog_path: Path, corpus_path: Path, output: Path
             record.update(dtype=dtype, count=int(array.size))
             files[name] = record
         metadata_projection = {
-            "schema_version": 1, "format": FORMAT, "endianness": "little",
+            "schema_version": SCHEMA_VERSION, "format": FORMAT, "endianness": "little",
             "n_recipes": n_rows, "n_slots": n_slots,
             "vocabulary": metadata["vocabulary"],
             "ingredient_frequency": frequencies.tolist(),
             "statistics_scope": "full-canonical-corpus",
             "source_names": list(source_names), "language_names": list(language_names),
             "arrays": files, "url_shards": shards, "rows_per_url_shard": rows_per_shard,
+            "text_manifest": text_manifest, "rows_per_text_shard": rows_per_text_shard,
             "identity": {
                 "corpus_sha256": identity["corpus_sha256"],
                 "catalog_sha256": identity["sha256"],
@@ -190,6 +355,7 @@ def build_ingredient_catalog(catalog_path: Path, corpus_path: Path, output: Path
                 "source_total_times": int(np.count_nonzero(np.isfinite(arrays["total_minutes"]))),
                 "source_servings": int(np.count_nonzero(np.isfinite(arrays["servings"]))),
                 "url_statuses": dict(url_statuses), "rows_by_source": dict(rows_by_source),
+                **{name: text_counts[name] for name in TEXT_COVERAGE},
             },
             "bytes": {
                 "initial_compressed_download": sum(file["bytes"] for file in files.values()),
@@ -197,18 +363,19 @@ def build_ingredient_catalog(catalog_path: Path, corpus_path: Path, output: Path
                 "derived_uint32_offsets": (n_rows + 1) * 4,
                 "url_shards_compressed": sum(shard["bytes"] for shard in shards),
                 "largest_url_shard_compressed": max(shard["bytes"] for shard in shards),
+                "text_manifest_compressed": text_manifest["bytes"],
+                "text_shards_compressed": sum(shard["bytes"] for shard in text_shards),
+                "largest_text_shard_compressed": max(shard["bytes"] for shard in text_shards),
             },
-            "fields_included": [
-                "canonical_ingredient_ids", "source_total_minutes", "source_servings",
-                "source_code", "language_code", "source_url",
-            ],
+            "fields_included": list(INCLUDED_FIELDS),
             "fields_excluded": list(FORBIDDEN_FIELDS),
             "semantics": {
                 "row_identity": "All canonical records in original ID order; duplicate sets are not removed.",
                 "times": "Positive source-reported totals only; NaN means unknown; no component sums.",
                 "servings": "Positive source-reported counts only; NaN means unknown; no quantity scaling.",
                 "matching": "Canonical ingredient names, not quantities, every compound constituent or allergy safety.",
-                "url_shards": "Only recipe IDs implied by order and original HTTP(S) URLs; no copied titles or prose.",
+                "url_shards": "Only recipe IDs implied by order and original HTTP(S) URLs; scheme-less records use http://.",
+                "text_shards": TEXT_SEMANTICS,
             },
             "publication": {
                 "status": "local_export_only",
@@ -220,14 +387,14 @@ def build_ingredient_catalog(catalog_path: Path, corpus_path: Path, output: Path
         if _catalog_stamp(catalog_path) != catalog_stamp:
             raise ValueError("catalog changed during ingredient-only export")
         report = {
-            "schema_version": 1, "status": "verified_local_ingredient_only_export",
+            "schema_version": 1, "status": "verified_local_recipe_card_export",
             "created_at": datetime.now(timezone.utc).isoformat(),
             "elapsed_seconds": time.perf_counter() - started,
             "index_sha256": file_sha256(staged / "ingredient-index.json"),
             "coverage": metadata_projection["coverage"], "bytes": metadata_projection["bytes"],
             "all_rows_compared_with_canonical_arrays": True,
             "source_metadata_provenance_checked_per_row": True,
-            "private_prose_exported": False, "uploaded": False,
+            "cooking_instructions_exported": False, "uploaded": False,
         }
         (staged / "export-report.json").write_bytes(_json_bytes(report))
         _publish_directory(staged, output)
@@ -236,7 +403,7 @@ def build_ingredient_catalog(catalog_path: Path, corpus_path: Path, output: Path
 
 def load_ingredient_catalog(directory: Path) -> tuple[dict, dict[str, np.ndarray]]:
     metadata = json.loads((directory / "ingredient-index.json").read_text(encoding="utf-8"))
-    if (metadata.get("schema_version") != 1 or metadata.get("format") != FORMAT
+    if (metadata.get("schema_version") != SCHEMA_VERSION or metadata.get("format") != FORMAT
             or metadata.get("endianness") != "little"
             or metadata.get("statistics_scope") != "full-canonical-corpus"):
         raise ValueError("unsupported ingredient-only catalog")
@@ -270,6 +437,7 @@ def load_ingredient_catalog(directory: Path) -> tuple[dict, dict[str, np.ndarray
                 or not re.fullmatch(r"[a-f0-9]{64}", str(shard["sha256"]))
                 or not re.fullmatch(r"[a-f0-9]{64}", str(shard["raw_sha256"]))):
             raise ValueError("source URL shard path, identity or record boundaries are invalid")
+    load_text_shards(directory, metadata)
     arrays = {}
     for name, (filename, dtype) in ARRAYS.items():
         record = metadata["arrays"][name]
