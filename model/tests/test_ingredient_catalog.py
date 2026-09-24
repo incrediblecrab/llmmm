@@ -13,6 +13,7 @@ from ingredient_model.ingredient_catalog import (
     ARRAYS, TEXT_MANIFEST, build_ingredient_catalog, ingredient_lines, load_ingredient_catalog,
     load_text_shards, public_source_url, read_text_shard, recipe_title,
 )
+from ingredient_model.recipe_links import ARCHIVE, LINK_STATUSES, NONE, OFFLINE, SOURCE, SiteRule
 
 TITLES = ["Egg &amp; Salt\n  Toast", "PB&J; Custard", ""]
 RAW_INGREDIENTS = [
@@ -21,6 +22,14 @@ RAW_INGREDIENTS = [
     "",
 ]
 URLS = ["https://example.test/recipe/0", "www.example.test/recipe/1", "https://example.test/recipe/2"]
+LINK_RULES = {
+    "example.test": (("/recipe/2", SiteRule(ARCHIVE, year="2015")), ("", SiteRule(SOURCE))),
+    "www.example.test": (("", SiteRule(OFFLINE)),),
+}
+
+
+def build(*args, **kwargs):
+    return build_ingredient_catalog(*args, link_rules=LINK_RULES, **kwargs)
 
 
 @pytest.fixture
@@ -64,7 +73,7 @@ def canonical_catalog(tmp_path):
 def test_all_rows_roundtrip_with_titles_and_lines_but_no_instructions(canonical_catalog, tmp_path):
     catalog, corpus = canonical_catalog
     output = tmp_path / "ingredient-only"
-    report = build_ingredient_catalog(catalog, corpus, output, rows_per_shard=2, rows_per_text_shard=2)
+    report = build(catalog, corpus, output, rows_per_shard=2, rows_per_text_shard=2)
     metadata, arrays = load_ingredient_catalog(output)
     assert report["coverage"]["records"] == 3
     assert report["coverage"]["singletons"] == 1
@@ -87,6 +96,11 @@ def test_all_rows_roundtrip_with_titles_and_lines_but_no_instructions(canonical_
             assert b"PRIVATE" not in data
     first = json.loads(gzip.decompress((output / metadata["url_shards"][0]["file"]).read_bytes()))
     assert first == {"first_id": 0, "urls": ["https://example.test/recipe/0", "http://www.example.test/recipe/1"]}
+    links = [json.loads(gzip.decompress((output / record["file"]).read_bytes())) for record in metadata["link_shards"]]
+    assert links == [{"first_id": 0, "links": ["https://example.test/recipe/0", None]},
+                     {"first_id": 2, "links": ["https://web.archive.org/web/2015/https://example.test/recipe/2"]}]
+    assert arrays["link_status"].tolist() == [SOURCE, OFFLINE, ARCHIVE]
+    assert report["coverage"]["link_statuses"] == {"source": 1, "offline": 1, "archive": 1}
     shards = load_text_shards(output, metadata)
     assert [(shard["file"], shard["first_id"], shard["rows"]) for shard in shards] == [
         ("text/0000.json.gz", 0, 2), ("text/0001.json.gz", 2, 1)]
@@ -98,7 +112,7 @@ def test_all_rows_roundtrip_with_titles_and_lines_but_no_instructions(canonical_
     assert {name: report["coverage"][name] for name in ("recipe_titles", "ingredient_line_records", "ingredient_lines")} == {
         "recipe_titles": 2, "ingredient_line_records": 2, "ingredient_lines": 4}
     with pytest.raises(FileExistsError):
-        build_ingredient_catalog(catalog, corpus, output)
+        build(catalog, corpus, output)
 
 
 @pytest.mark.parametrize("value,expected", [
@@ -134,6 +148,33 @@ def test_one_line_lists_split_only_on_their_recorded_separator(value, source, ex
     assert ingredient_lines(value, source) == expected
 
 
+@pytest.mark.parametrize("value,expected", [
+    ("{'count': '3 шт', 'name': 'Яйцо куриное'}\x1f{'count': None, 'name': 'Мука'}\x1f{'count': ' по вкусу', 'name': 'Соль'}",
+     ["Яйцо куриное: 3 шт", "Мука", "Соль: по вкусу"]),
+    ("{'name': '洋蔥切片', 'unit': '1顆'}\x1f{'name': \"Mom's 'best' sauce\", 'unit': ''}", ["洋蔥切片: 1顆", "Mom's 'best' sauce"]),
+    ("{'count': '1 ; 2 ст. л.', 'name': 'Сахар'}", ["Сахар: 1 ; 2 ст. л."]),
+    ("{'count': None, 'name': None}\x1f1 egg", ["1 egg"]),
+    # Anything else that merely looks like a dict keeps its recorded wording.
+    ("{'count': 2, 'name': 'egg'}\x1f{'name': 'egg', 'amount': '2'}\x1f{'count': '2', 'name': 'egg'", [
+        "{'count': 2, 'name': 'egg'}", "{'name': 'egg', 'amount': '2'}", "{'count': '2', 'name': 'egg'"]),
+    ("{For the dressing}\x1f{'name': 'salt'", ["{For the dressing}", "{'name': 'salt'"]),
+])
+def test_lines_recorded_as_name_and_amount_fields_read_name_colon_amount(value, expected):
+    assert ingredient_lines(value) == expected
+
+
+@pytest.mark.parametrize("value,source,expected", [
+    ("Майонез: None\x1fРис: 1 стак.\x1fСоль : None", "03-povarenok", ["Майонез", "Рис: 1 стак.", "Соль"]),
+    ("Соль: None", "03-povarenok", ["Соль"]),
+    ("Сахар: None Such", "03-povarenok", ["Сахар: None Such"]),
+    # Elsewhere "None" is recorded wording: a cocktail without a garnish, a RecipeNLG line, a brand.
+    ("Garnish: None", "kaggle-food-13k", ["Garnish: None"]),
+    ("None\x1f1 pkg. None Such mincemeat", "01-recipenlg", ["None", "1 pkg. None Such mincemeat"]),
+])
+def test_null_amounts_the_catalog_wrote_as_none_are_dropped_only_for_povarenok(value, source, expected):
+    assert ingredient_lines(value, source) == expected
+
+
 def test_scheme_less_urls_use_http_because_https_fails_on_some_hosts():
     assert public_source_url("www.cookbooks.com/Recipe-Details.aspx?id=1") == (
         "http://www.cookbooks.com/Recipe-Details.aspx?id=1", "source_url")
@@ -146,7 +187,7 @@ def test_canonical_mismatch_never_publishes_partial_output(canonical_catalog, tm
                            (np.asarray([0, 1], dtype="<u2").tobytes(),))
     output = tmp_path / "mismatch"
     with pytest.raises(ValueError, match="differ from the canonical"):
-        build_ingredient_catalog(catalog, corpus, output)
+        build(catalog, corpus, output)
     assert not output.exists()
 
 
@@ -172,37 +213,47 @@ def test_missing_or_invalid_links_do_not_remove_ingredient_records(canonical_cat
         connection.execute("UPDATE recipes SET url=NULL WHERE id=1")
         connection.execute("UPDATE recipes SET url='javascript:alert(1)' WHERE id=2")
     output = tmp_path / "ingredient-only"
-    report = build_ingredient_catalog(catalog, corpus, output)
+    report = build(catalog, corpus, output)
     metadata, arrays = load_ingredient_catalog(output)
     assert metadata["n_recipes"] == 3
-    assert arrays["has_source_url"].tolist() == [1, 0, 0]
+    assert arrays["link_status"].tolist() == [SOURCE, NONE, NONE]
     assert report["coverage"]["url_statuses"] == {
         "source_url": 1, "missing": 1, "invalid_or_oversized": 1,
     }
+    assert report["coverage"]["link_statuses"] == {"source": 1, "none": 2}
+
+
+def test_a_recorded_site_without_a_measured_link_rule_fails_the_build(canonical_catalog, tmp_path):
+    catalog, corpus = canonical_catalog
+    output = tmp_path / "unmeasured"
+    with pytest.raises(ValueError, match="no measured card-link rule"):
+        build_ingredient_catalog(catalog, corpus, output)
+    assert not output.exists()
 
 
 def test_array_corruption_is_detected(canonical_catalog, tmp_path):
     catalog, corpus = canonical_catalog
     output = tmp_path / "ingredient-only"
-    build_ingredient_catalog(catalog, corpus, output)
+    build(catalog, corpus, output)
     path = output / ARRAYS["ingredients"][0]
     path.write_bytes(path.read_bytes() + b"corruption")
     with pytest.raises(ValueError, match="integrity"):
         load_ingredient_catalog(output)
 
 
+@pytest.mark.parametrize("shards", ["url_shards", "link_shards"])
 @pytest.mark.parametrize("patch", [
     {"file": "../private.env"},
     {"first_id": 1},
     {"rows": 2},
 ])
-def test_url_shards_cannot_escape_the_index_or_misalign_records(canonical_catalog, tmp_path, patch):
+def test_url_and_link_shards_cannot_escape_the_index_or_misalign_records(canonical_catalog, tmp_path, shards, patch):
     catalog, corpus = canonical_catalog
     output = tmp_path / "ingredient-only"
-    build_ingredient_catalog(catalog, corpus, output)
+    build(catalog, corpus, output)
     path = output / "ingredient-index.json"
     metadata = json.loads(path.read_text())
-    metadata["url_shards"][0].update(patch)
+    metadata[shards][0].update(patch)
     path.write_text(json.dumps(metadata))
     with pytest.raises(ValueError, match="shard"):
         load_ingredient_catalog(output)
@@ -218,7 +269,7 @@ def _rewrite_gzip_json(path, value):
 def test_text_shard_corruption_is_detected(canonical_catalog, tmp_path):
     catalog, corpus = canonical_catalog
     output = tmp_path / "ingredient-only"
-    build_ingredient_catalog(catalog, corpus, output)
+    build(catalog, corpus, output)
     metadata, _ = load_ingredient_catalog(output)
     shard = load_text_shards(output, metadata)[0]
     path = output / shard["file"]
@@ -238,7 +289,7 @@ def test_text_shard_corruption_is_detected(canonical_catalog, tmp_path):
 def test_text_shards_cannot_misalign_or_smuggle_unbounded_text(canonical_catalog, tmp_path, content):
     catalog, corpus = canonical_catalog
     output = tmp_path / "ingredient-only"
-    build_ingredient_catalog(catalog, corpus, output)
+    build(catalog, corpus, output)
     metadata, _ = load_ingredient_catalog(output)
     shard = load_text_shards(output, metadata)[0]
     shard.update(_rewrite_gzip_json(output / shard["file"], content))
@@ -255,7 +306,7 @@ def test_text_shards_cannot_misalign_or_smuggle_unbounded_text(canonical_catalog
 def test_text_manifest_cannot_escape_the_index_or_misalign_records(canonical_catalog, tmp_path, patch):
     catalog, corpus = canonical_catalog
     output = tmp_path / "ingredient-only"
-    build_ingredient_catalog(catalog, corpus, output)
+    build(catalog, corpus, output)
     manifest = json.loads(gzip.decompress((output / TEXT_MANIFEST).read_bytes()))
     patch(manifest)
     index_path = output / "ingredient-index.json"
@@ -269,7 +320,22 @@ def test_text_manifest_cannot_escape_the_index_or_misalign_records(canonical_cat
 def test_text_manifest_must_match_its_declared_digest(canonical_catalog, tmp_path):
     catalog, corpus = canonical_catalog
     output = tmp_path / "ingredient-only"
-    build_ingredient_catalog(catalog, corpus, output)
+    build(catalog, corpus, output)
     _rewrite_gzip_json(output / TEXT_MANIFEST, {"shards": []})
     with pytest.raises(ValueError, match="integrity"):
+        load_ingredient_catalog(output)
+
+
+def test_unknown_link_status_codes_are_rejected(canonical_catalog, tmp_path):
+    catalog, corpus = canonical_catalog
+    output = tmp_path / "ingredient-only"
+    build(catalog, corpus, output)
+    path, raw = output / ARRAYS["link_status"][0], bytes([SOURCE, OFFLINE, len(LINK_STATUSES)])
+    path.write_bytes(gzip.compress(raw, mtime=0))
+    index_path = output / "ingredient-index.json"
+    metadata = json.loads(index_path.read_text())
+    metadata["arrays"]["link_status"].update(bytes=path.stat().st_size, sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                                             raw_sha256=hashlib.sha256(raw).hexdigest())
+    index_path.write_text(json.dumps(metadata))
+    with pytest.raises(ValueError, match="unknown ingredient or metadata codes"):
         load_ingredient_catalog(output)

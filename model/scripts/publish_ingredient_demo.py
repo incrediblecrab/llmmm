@@ -27,9 +27,8 @@ from ingredient_model.ingredient_demo import (
     INGREDIENT_DATASET_REPOSITORY, INGREDIENT_SOURCE_FILES, add_ingredient_demo_links,
     build_ingredient_demo,
 )
-from ingredient_model.recipe_demo import (
-    DATASET_REPOSITORY, SPACE_FILES, SPACE_REPOSITORY, WEB_FILES, verify_source_revision,
-)
+from ingredient_model.recipe_demo import SPACE_FILES, SPACE_REPOSITORY, WEB_FILES, verify_source_revision
+from ingredient_model.recipe_links import LINK_STATUSES
 from publish_recipe_demo import (
     _browser_tests, browser_check, link_model_card, preview_server, wait_for_space, write_report,
 )
@@ -37,13 +36,14 @@ from publish_recipe_demo import (
 ROOT = Path(__file__).resolve().parents[2]
 PARQUET_COLUMNS = (
     "id", "ingredient_ids", "ingredients", "source", "language", "total_minutes", "servings", "source_url",
+    "recipe_link", "link_status",
 )
 FULL_BROWSER_CASES = [
     "precomputed_examples_before_download", "recipe_titles_and_ingredient_lines",
     "precomputed_equal_live_results", "anonymous_trained_inference", "optional_large_download",
-    "complete_population", "original_source_links", "no_instruction_steps_rendered", "zero_time_limit",
+    "complete_population", "recipe_card_links", "no_instruction_steps_rendered", "zero_time_limit",
     "required_excluded_and_missing_constraints", "explicit_baseline_comparison",
-    "source_link_filter", "shortlist_disclosure", "canonical_match_details", "show_100_latency_recorded",
+    "link_filter", "shortlist_disclosure", "canonical_match_details", "show_100_latency_recorded",
     "input_privacy_and_text_rendering", "corrupt_index_rejected", "failed_download_rejected",
     "corrupt_recipe_text_rejected", "dropped_download_retried", "responsive_layout",
 ]
@@ -84,7 +84,7 @@ def verified_dataset_files(directory: Path) -> dict[str, dict]:
     required = {"README.md", "dataset-manifest.json", "index/ingredient-index.json",
                 "index/" + metadata["text_manifest"]["file"]}
     required.update("index/" + record["file"] for record in metadata["arrays"].values())
-    required.update("index/" + record["file"] for record in metadata["url_shards"])
+    required.update("index/" + record["file"] for record in (*metadata["url_shards"], *metadata["link_shards"]))
     required.update("index/" + record["file"] for record in load_text_shards(directory / "index", metadata))
     if not required <= set(files):
         raise ValueError("the public dataset is missing declared index files")
@@ -96,6 +96,19 @@ def verified_dataset_files(directory: Path) -> dict[str, dict]:
     return files
 
 
+def _original_shard(original_index: Path, record: dict, field: str) -> list:
+    data = (original_index / record["file"]).read_bytes()
+    if len(data) != record["bytes"] or hashlib.sha256(data).hexdigest() != record["sha256"]:
+        raise ValueError(f"an original {field} shard failed its integrity check")
+    raw = gzip.decompress(data)
+    if len(raw) != record["raw_bytes"] or hashlib.sha256(raw).hexdigest() != record["raw_sha256"]:
+        raise ValueError(f"an original {field} shard failed its raw integrity check")
+    shard = json.loads(raw)
+    if set(shard) != {"first_id", field} or shard["first_id"] != record["first_id"] or len(shard[field]) != record["rows"]:
+        raise ValueError(f"an original {field} shard is not aligned")
+    return shard[field]
+
+
 def verify_dataset_content(directory: Path, original_index: Path) -> dict:
     metadata, arrays = load_ingredient_catalog(original_index)
     released = json.loads((directory / "index/ingredient-index.json").read_text())
@@ -105,9 +118,10 @@ def verify_dataset_content(directory: Path, original_index: Path) -> dict:
     offsets = np.r_[0, np.cumsum(arrays["lengths"], dtype=np.int64)]
     vocabulary = pa.array(metadata["vocabulary"])
     sources, languages = pa.array(metadata["source_names"]), pa.array(metadata["language_names"])
-    seen = slots = links = times = servings = 0
+    link_names = pa.array(LINK_STATUSES)
+    seen = slots = links = card_links = times = servings = 0
     cached_shard = -1
-    urls = None
+    urls = card = None
     for path in sorted((directory / "data").glob("*.parquet")):
         parquet = pq.ParquetFile(path)
         if tuple(parquet.schema_arrow.names) != PARQUET_COLUMNS:
@@ -135,35 +149,33 @@ def verify_dataset_content(directory: Path, original_index: Path) -> dict:
                 values = arrays[name][seen:last]
                 if not columns[name].equals(pa.array(values, mask=np.isnan(values))):
                     raise ValueError(f"Parquet {name} invented, removed or changed a source value")
-            expected_urls = []
+            expected_urls, expected_links = [], []
             position = seen
             while position < last:
                 shard_id = position // metadata["rows_per_url_shard"]
                 record = metadata["url_shards"][shard_id]
                 if shard_id != cached_shard:
-                    data = (original_index / record["file"]).read_bytes()
-                    if len(data) != record["bytes"] or hashlib.sha256(data).hexdigest() != record["sha256"]:
-                        raise ValueError("an original URL shard failed its integrity check")
-                    raw = gzip.decompress(data)
-                    if len(raw) != record["raw_bytes"] or hashlib.sha256(raw).hexdigest() != record["raw_sha256"]:
-                        raise ValueError("an original URL shard failed its raw integrity check")
-                    shard = json.loads(raw)
-                    if (set(shard) != {"first_id", "urls"} or shard["first_id"] != record["first_id"]
-                            or len(shard["urls"]) != record["rows"]):
-                        raise ValueError("an original URL shard is not aligned")
-                    urls, cached_shard = shard["urls"], shard_id
+                    urls = _original_shard(original_index, record, "urls")
+                    card = _original_shard(original_index, metadata["link_shards"][shard_id], "links")
+                    cached_shard = shard_id
                 end = min(last, record["first_id"] + record["rows"])
                 expected_urls.extend(urls[position - record["first_id"]:end - record["first_id"]])
+                expected_links.extend(card[position - record["first_id"]:end - record["first_id"]])
                 position = end
             if not columns["source_url"].equals(pa.array(expected_urls, type=pa.string())):
                 raise ValueError("Parquet source URLs differ from the original recorded links")
+            if (not columns["recipe_link"].equals(pa.array(expected_links, type=pa.string()))
+                    or not columns["link_status"].equals(pc.take(link_names, pa.array(arrays["link_status"][seen:last])))):
+                raise ValueError("Parquet card links or link statuses differ from the verified index")
             slots += len(flat)
             links += len(batch) - columns["source_url"].null_count
+            card_links += len(batch) - columns["recipe_link"].null_count
             times += len(batch) - columns["total_minutes"].null_count
             servings += len(batch) - columns["servings"].null_count
             seen = last
     if (seen != metadata["n_recipes"] or slots != metadata["n_slots"]
             or links != metadata["coverage"]["url_statuses"]["source_url"]
+            or card_links != sum(metadata["coverage"]["link_statuses"].get(name, 0) for name in ("source", "archive"))
             or times != metadata["coverage"]["source_total_times"]
             or servings != metadata["coverage"]["source_servings"]):
         raise ValueError("public Parquet does not cover every canonical record and source fact")
@@ -174,7 +186,7 @@ def verify_dataset_content(directory: Path, original_index: Path) -> dict:
             raise ValueError(f"{record['file']}: dataset card text differs from the verified index")
     return {
         "records_compared": seen, "ingredient_slots_compared": slots,
-        "source_urls_compared": links, "source_total_times_compared": times,
+        "source_urls_compared": links, "card_links_compared": card_links, "source_total_times_compared": times,
         "source_serving_counts_compared": servings,
         "text_shards_compared": len(text_shards),
         "text_shard_bytes_compared": sum(record["bytes"] for record in text_shards),
@@ -254,8 +266,7 @@ def publish_tree(
         if marker not in remote:
             raise ValueError("the existing destination is not a recognized llmmm release")
         previous = json.loads(downloaded_file(repository, kind, existing.sha, marker).read_text())
-        if kind == "space" and previous.get("provenance", {}).get("dataset_repository") not in {
-                DATASET_REPOSITORY, INGREDIENT_DATASET_REPOSITORY}:
+        if kind == "space" and previous.get("provenance", {}).get("dataset_repository") != INGREDIENT_DATASET_REPOSITORY:
             raise ValueError("the existing Space belongs to a different dataset")
     if len(changed) + len(extras) <= MAX_COMMIT_FILES:
         batches = [changed]
@@ -265,8 +276,8 @@ def publish_tree(
         final = [name for name in changed if name in CONTROL_FILES[kind]]
         if final or extras:
             batches.append(final)
-    message = ("Publish ingredient records with recipe titles and ingredient lines" if kind == "dataset"
-               else "Deploy browser recipe cards without paid hardware")
+    message = ("Publish ingredient records with measured recipe-card links" if kind == "dataset"
+               else "Deploy recipe cards with measured links, without paid hardware")
     parent = existing.sha
     for position, batch in enumerate(batches, 1):
         deletions = sorted(extras) if position == len(batches) else []
@@ -450,7 +461,7 @@ def main() -> None:
         viewer = verify_dataset_viewer(client, dataset)
         model_update = link_model_card(
             api, transform=add_ingredient_demo_links,
-            commit_message="Describe the demo's recipe cards: recorded titles and ingredient lines")
+            commit_message="Describe the demo's recipe-card links; drop the retired sample dataset link")
         immutable_tag(api, INGREDIENT_DATASET_REPOSITORY, "dataset", args.dataset_tag, dataset_revision)
         immutable_tag(api, SPACE_REPOSITORY, "space", args.space_tag, space_revision)
         check_tags_preserved(api, tags_before)

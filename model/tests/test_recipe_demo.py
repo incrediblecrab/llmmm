@@ -10,7 +10,7 @@ pytest.importorskip("torch")
 pytest.importorskip("safetensors")
 
 from ingredient_model.recipe_demo import (
-    add_demo_links, browser_policy, example_pantries, load_sample, make_catalog, verify_browser,
+    browser_policy, example_pantries, load_sample, make_catalog, verify_browser,
 )
 from ingredient_model.recipe_ranker import RecipeRankingPolicy
 
@@ -116,15 +116,3 @@ def test_browser_features_scores_and_searches_match_python(time_enabled):
     assert result["python_finder_searches_matched"] == 42
     assert result["private_corpus_used"] is False
     assert result["quality_benchmark"] is False
-
-
-def test_model_card_demo_section_is_idempotent_and_keeps_scope_caveats():
-    original = "# Model\n\n## Finding recipes\n\nExisting model evidence.\n"
-    updated = add_demo_links(original)
-    assert add_demo_links(updated) == updated
-    assert "Existing model evidence." in updated
-    assert updated.count("## Try the public demo") == 1
-    assert "not the full training catalog or a new quality benchmark" in updated
-    assert "weights retain their existing terms" in updated
-    with pytest.raises(ValueError, match="malformed"):
-        add_demo_links(original + "<!-- PUBLIC-DEMO:START -->")

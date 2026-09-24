@@ -83,7 +83,7 @@ def test_independent_reference_applies_constraints_before_shortlisting(monkeypat
         "lengths": np.array([2, 1, 1], dtype="<u2"),
         "total_minutes": np.array([5, np.nan, 10]),
         "servings": np.array([2, np.nan, np.nan]),
-        "has_source_url": np.array([1, 0, 1], dtype="u1"),
+        "link_status": np.array([2, 0, 1], dtype="u1"),
     }
     policy = demo.RecipeRankingPolicy()
     query = {"available_ingredients": ["egg"], "max_missing": 2}
@@ -91,9 +91,11 @@ def test_independent_reference_applies_constraints_before_shortlisting(monkeypat
     assert result["feasible_count"] == 2
     assert result["candidates_scored"] == 1
     assert result["learned"]["ids"] == result["heuristic"]["ids"] == [1]
-    result = reference(metadata, arrays, {**query, "require_source_url": True}, policy)
+    result = reference(metadata, arrays, {**query, "require_link": True}, policy)
     assert result["feasible_count"] == 1
     assert result["learned"]["ids"] == result["heuristic"]["ids"] == [0]
+    offline = {**arrays, "link_status": np.array([3, 3, 1], dtype="u1")}
+    assert reference(metadata, offline, {**query, "require_link": True}, policy)["feasible_count"] == 0
     result = reference(metadata, arrays, {**query, "max_total_minutes": 0}, policy)
     assert result["feasible_count"] == result["candidates_scored"] == 0
     assert result["learned"]["ids"] == result["heuristic"]["ids"] == []
@@ -111,14 +113,27 @@ def test_public_preview_requires_immutable_source_and_dataset_pins(tmp_path, arg
 
 
 def test_model_card_update_only_replaces_the_existing_demo_section():
-    card = "Before\n<!-- PUBLIC-DEMO:START -->\nOld sample description.\n<!-- PUBLIC-DEMO:END -->\nAfter"
+    retired = "incrediblecrab/llmmm-recipe-" + "sample"
+    card = f"Before\n<!-- PUBLIC-DEMO:START -->\nOld text linking {retired}.\n<!-- PUBLIC-DEMO:END -->\nAfter"
     updated = demo.add_ingredient_demo_links(card)
     assert updated.startswith("Before\n")
     assert updated.endswith("\nAfter")
     assert "4,653,430" in updated
     assert demo.INGREDIENT_DATASET_REPOSITORY in updated
-    assert demo.DATASET_REPOSITORY in updated
+    assert retired not in updated
     assert "not measure this browser retrieval" in updated
+    assert "not a new quality benchmark" in updated
+    assert "Model weights and their terms are unchanged" in updated
     assert demo.add_ingredient_demo_links(updated) == updated
     with pytest.raises(ValueError, match="single demo-link section"):
         demo.add_ingredient_demo_links("No replacement boundary")
+
+
+def test_a_card_without_a_demo_section_gets_one_before_finding_recipes():
+    card = "# Model\n\n## Finding recipes\n\nExisting model evidence.\n"
+    updated = demo.add_ingredient_demo_links(card)
+    assert updated.index("## Try the public demo") < updated.index("## Finding recipes")
+    assert "Existing model evidence." in updated
+    assert demo.add_ingredient_demo_links(updated) == updated
+    with pytest.raises(ValueError, match="single demo-link section"):
+        demo.add_ingredient_demo_links(card + "<!-- PUBLIC-DEMO:START -->")

@@ -21,6 +21,7 @@ from ingredient_model.data.recipe_catalog import _SCHEMA
 from ingredient_model.ingredient_catalog import (
     ARRAYS, TEXT_MANIFEST, build_ingredient_catalog, load_ingredient_catalog, load_text_shards,
 )
+from ingredient_model.recipe_links import ARCHIVE, OFFLINE, SOURCE, SiteRule
 
 REVISION = "0123456789abcdef0123456789abcdef01234567"
 VOCABULARY = ["egg", "salt", "milk", "cr\u00e8me fra\u00eeche"]
@@ -33,6 +34,13 @@ ROWS = [
     ([1, 2], "fixture-a", "en", 30.0, None, "http://recipes.example.test/5"),
     ([2], "fixture-b", "en", None, None, "https://example.test/6?access_token=PRIVATE"),
 ]
+LINK_RULES = {
+    "example.test": (("/recipe/", SiteRule(SOURCE)), ("", SiteRule(OFFLINE))),
+    "recipes.example.test": (("", SiteRule(ARCHIVE, year="2015")),),
+}
+ARCHIVED = "https://web.archive.org/web/2015/http://recipes.example.test/5"
+LINKS = ["https://example.test/recipe/0", None, None, None, None, ARCHIVED, None]
+LINK_STATUS_NAMES = ["source", "none", "offline", "none", "none", "archive", "none"]
 
 
 @pytest.fixture
@@ -71,8 +79,9 @@ def ingredient_index(tmp_path, request):
                 f"INSERT INTO recipes ({','.join(fields)}) VALUES ({','.join('?' for _ in fields)})",
                 list(fields.values()))
     index = tmp_path / "ingredient-index"
-    build_ingredient_catalog(catalog, corpus, index, rows_per_shard=3, rows_per_text_shard=2)
-    for filename in ("browser-probe.json", "private-source.txt", "urls/undeclared.json.gz", "text/undeclared.json.gz"):
+    build_ingredient_catalog(catalog, corpus, index, rows_per_shard=3, rows_per_text_shard=2, link_rules=LINK_RULES)
+    for filename in ("browser-probe.json", "private-source.txt", "urls/undeclared.json.gz", "links/undeclared.json.gz",
+                     "text/undeclared.json.gz"):
         (index / filename).write_bytes(b"PRIVATE EXTRA INPUT MUST NOT BE EXPORTED")
     return index
 
@@ -94,13 +103,15 @@ def _metadata(index):
 
 
 def _write_metadata(index, metadata):
-    arrays, shards = metadata["arrays"].values(), metadata["url_shards"]
+    arrays, shards, links = metadata["arrays"].values(), metadata["url_shards"], metadata["link_shards"]
     text_shards = json.loads(gzip.decompress((index / TEXT_MANIFEST).read_bytes()))["shards"]
     metadata["bytes"].update(
         initial_compressed_download=sum(record["bytes"] for record in arrays),
         initial_uncompressed_arrays=sum(record["raw_bytes"] for record in arrays),
         url_shards_compressed=sum(record["bytes"] for record in shards),
         largest_url_shard_compressed=max(record["bytes"] for record in shards),
+        link_shards_compressed=sum(record["bytes"] for record in links),
+        largest_link_shard_compressed=max(record["bytes"] for record in links),
         text_manifest_compressed=metadata["text_manifest"]["bytes"],
         text_shards_compressed=sum(record["bytes"] for record in text_shards),
         largest_text_shard_compressed=max(record["bytes"] for record in text_shards),
@@ -108,8 +119,8 @@ def _write_metadata(index, metadata):
     (index / "ingredient-index.json").write_text(json.dumps(metadata, allow_nan=False), encoding="utf-8")
 
 
-def _rewrite_url_shard(index, metadata, position, raw):
-    record = metadata["url_shards"][position]
+def _rewrite_url_shard(index, metadata, position, raw, shards="url_shards"):
+    record = metadata[shards][position]
     compressed = gzip.compress(raw, mtime=0)
     (index / record["file"]).write_bytes(compressed)
     record.update(bytes=len(compressed), sha256=hashlib.sha256(compressed).hexdigest(),
@@ -179,16 +190,16 @@ def test_complete_bounded_parquet_and_fixed_inventory(ingredient_index, tmp_path
             schema = parquet.schema_arrow
             assert schema.names == [
                 "id", "ingredient_ids", "ingredients", "source", "language",
-                "total_minutes", "servings", "source_url"]
+                "total_minutes", "servings", "source_url", "recipe_link", "link_status"]
             assert schema.field("id").type == pa.uint32()
             assert schema.field("ingredient_ids").type.value_type == pa.uint16()
             assert schema.field("ingredients").type.value_type == pa.string()
-            for name in ("source", "language", "source_url"):
+            for name in ("source", "language", "source_url", "recipe_link", "link_status"):
                 assert schema.field(name).type == pa.string()
             for name in ("total_minutes", "servings"):
                 assert schema.field(name).type == pa.float64()
             for field in schema:
-                assert field.nullable == (field.name in {"total_minutes", "servings", "source_url"})
+                assert field.nullable == (field.name in {"total_minutes", "servings", "source_url", "recipe_link"})
             for group_id in range(parquet.metadata.num_row_groups):
                 group = parquet.metadata.row_group(group_id)
                 assert 1 <= group.num_rows <= 2
@@ -201,20 +212,21 @@ def test_complete_bounded_parquet_and_fixed_inventory(ingredient_index, tmp_path
         "ingredients": [VOCABULARY[value] for value in row[0]],
         "source": row[1], "language": row[2], "total_minutes": row[3], "servings": row[4],
         "source_url": row[5] if position in (0, 2, 5) else None,
+        "recipe_link": LINKS[position], "link_status": LINK_STATUS_NAMES[position],
     } for position, row in enumerate(ROWS)]
     assert table.to_pylist() == expected
     assert table.column("ingredient_ids")[0].as_py() == table.column("ingredient_ids")[3].as_py()
     assert manifest["parquet"] == {
         "rows": 7, "ingredient_slots": 12,
         "null_counts": {"id": 0, "ingredient_ids": 0, "ingredients": 0, "source": 0, "language": 0,
-                        "total_minutes": 4, "servings": 5, "source_url": 4},
+                        "total_minutes": 4, "servings": 5, "source_url": 4, "recipe_link": 5, "link_status": 0},
         "split": "train", "compression": "zstd", "shards": 2,
         "max_rows_per_shard": 4, "max_rows_per_batch": 2, "max_ingredient_slots_per_batch": 3,
     }
     assert {item["name"]: item["type"] for item in manifest["output_schema"]} == {
         "id": "uint32", "ingredient_ids": "list<uint16>", "ingredients": "list<string>",
         "source": "string", "language": "string", "total_minutes": "double",
-        "servings": "double", "source_url": "string",
+        "servings": "double", "source_url": "string", "recipe_link": "string", "link_status": "string",
     }
     for item in manifest["output_schema"]:
         assert item["nullable"] == table.schema.field(item["name"]).nullable
@@ -223,7 +235,8 @@ def test_complete_bounded_parquet_and_fixed_inventory(ingredient_index, tmp_path
     expected_files = {"README.md", "index/ingredient-index.json"}
     text_records = load_text_shards(ingredient_index, original)
     assert [record["file"] for record in text_records] == [f"text/{position:04d}.json.gz" for position in range(4)]
-    for record in [*original["arrays"].values(), *original["url_shards"], original["text_manifest"], *text_records]:
+    for record in [*original["arrays"].values(), *original["url_shards"], *original["link_shards"],
+                   original["text_manifest"], *text_records]:
         name = "index/" + record["file"]
         expected_files.add(name)
         assert (output / name).read_bytes() == (ingredient_index / record["file"]).read_bytes()
@@ -247,6 +260,9 @@ def test_complete_bounded_parquet_and_fixed_inventory(ingredient_index, tmp_path
     assert "https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo" in card
     assert "**3 of 7 records**" in card and "**2 of 7 records**" in card
     assert "**4 records have null URLs**" in card
+    assert "`source` for **1 records**" in card and "`archive` for **1 records**" in card
+    assert "`offline` for **1 records**" in card and "**4 records** without a recorded URL" in card
+    assert f"https://github.com/incrediblecrab/llmmm/blob/{REVISION}/model/ingredient_model/recipe_links.py" in card
     assert "**6 recorded titles** and **12 ingredient lines** from **6 records**" in card
     assert "Cooking instructions are not included" in card
     first_text = json.loads(gzip.decompress((output / "index/text/0000.json.gz").read_bytes()))
@@ -267,11 +283,12 @@ def test_singleton_with_no_numeric_facts_or_links_is_a_complete_split(ingredient
         assert parquet.read(use_threads=False).to_pylist() == [{
             "id": 0, "ingredient_ids": [0], "ingredients": ["egg"], "source": "singleton-fixture",
             "language": "en", "total_minutes": None, "servings": None, "source_url": None,
+            "recipe_link": None, "link_status": "none",
         }]
     assert manifest["parquet"]["rows"] == manifest["parquet"]["ingredient_slots"] == 1
     assert manifest["parquet"]["null_counts"] == {
         "id": 0, "ingredient_ids": 0, "ingredients": 0, "source": 0, "language": 0,
-        "total_minutes": 1, "servings": 1, "source_url": 1,
+        "total_minutes": 1, "servings": 1, "source_url": 1, "recipe_link": 1, "link_status": 0,
     }
 
 
@@ -327,8 +344,8 @@ def test_url_integrity_and_alignment_fail_atomically(
 
 
 @pytest.mark.parametrize("position,value,match", [
-    (0, None, "has_source_url flag"),
-    (1, "https://example.test/extra", "has_source_url flag"),
+    (0, None, "differs from its link status"),
+    (1, "https://example.test/extra", "differs from its link status"),
     (0, "javascript:alert(1)", "unsafe or not already normalized"),
     (0, "https://example.test/r?api_key=PRIVATE", "unsafe or not already normalized"),
     (0, "https://user:PRIVATE@example.test/r", "unsafe or not already normalized"),
@@ -350,9 +367,34 @@ def test_urls_are_preserved_or_rejected_never_guessed(ingredient_index, tmp_path
     _assert_unpublished(output)
 
 
+@pytest.mark.parametrize("position,value,match", [
+    (0, None, "differs from its link status"),
+    (1, "https://example.test/recipe/1", "differs from its link status"),
+    (2, "https://example.test/recipe?id=2", "differs from its link status"),
+    (0, "http://example.test/recipe/0", "credential-free HTTPS"),
+    (0, "https://user@example.test/recipe/0", "credential-free HTTPS"),
+    (0, "https://web.archive.org/web/2015/https://example.test/recipe/0", "wrap exactly the recorded URL"),
+    (5, "https://web.archive.org/web/2015/http://recipes.example.test/6", "wrap exactly the recorded URL"),
+    (5, "https://web.archive.org/web/15/http://recipes.example.test/5", "wrap exactly the recorded URL"),
+    (5, "https://recipes.example.test/5", "wrap exactly the recorded URL"),
+    (0, 42, "bounded string"),
+])
+def test_card_links_must_agree_with_their_status_and_recorded_url(ingredient_index, tmp_path, position, value, match):
+    metadata = _metadata(ingredient_index)
+    shard, offset = divmod(position, metadata["rows_per_url_shard"])
+    record = metadata["link_shards"][shard]
+    payload = json.loads(gzip.decompress((ingredient_index / record["file"]).read_bytes()))
+    payload["links"][offset] = value
+    _rewrite_url_shard(ingredient_index, metadata, shard, json.dumps(payload).encode(), shards="link_shards")
+    output = tmp_path / "dataset"
+    with pytest.raises(ValueError, match=match):
+        dataset.build_ingredient_dataset(ingredient_index, output, source_revision=REVISION)
+    _assert_unpublished(output)
+
+
 @pytest.mark.parametrize("location", [
-    "index", "array", "url_record", "text_manifest", "identity", "coverage", "bytes", "semantics",
-    "publication", "included_fields", "url_statuses", "source_counts",
+    "index", "array", "url_record", "link_record", "text_manifest", "identity", "coverage", "bytes", "semantics",
+    "publication", "included_fields", "url_statuses", "link_statuses", "source_counts",
 ])
 def test_unexpected_manifest_fields_cannot_be_exported(ingredient_index, tmp_path, location):
     metadata = _metadata(ingredient_index)
@@ -361,11 +403,13 @@ def test_unexpected_manifest_fields_cannot_be_exported(ingredient_index, tmp_pat
     else:
         targets = {
             "index": metadata, "array": metadata["arrays"]["ingredients"],
-            "url_record": metadata["url_shards"][0], "text_manifest": metadata["text_manifest"],
+            "url_record": metadata["url_shards"][0], "link_record": metadata["link_shards"][0],
+            "text_manifest": metadata["text_manifest"],
             "identity": metadata["identity"],
             "coverage": metadata["coverage"], "bytes": metadata["bytes"],
             "semantics": metadata["semantics"], "publication": metadata["publication"],
             "url_statuses": metadata["coverage"]["url_statuses"],
+            "link_statuses": metadata["coverage"]["link_statuses"],
             "source_counts": metadata["coverage"]["rows_by_source"],
         }
         targets[location]["PRIVATE_TITLE"] = "PRIVATE"
@@ -386,7 +430,8 @@ def test_duplicate_index_fields_are_rejected(ingredient_index, tmp_path):
 
 
 @pytest.mark.parametrize("damage", [
-    "array", "frequency", "coverage", "shard_path", "shard_boundary", "text_coverage", "text_bytes",
+    "array", "frequency", "coverage", "link_coverage", "shard_path", "link_shard_path", "shard_boundary",
+    "link_shard_boundary", "text_coverage", "text_bytes",
 ])
 def test_existing_catalog_checks_and_statistics_are_enforced(ingredient_index, tmp_path, damage):
     metadata = _metadata(ingredient_index)
@@ -407,10 +452,12 @@ def test_existing_catalog_checks_and_statistics_are_enforced(ingredient_index, t
         metadata["ingredient_frequency"][0] += 1
     elif damage == "coverage":
         metadata["coverage"]["source_servings"] += 1
-    elif damage == "shard_path":
-        metadata["url_shards"][0]["file"] = "../private.sqlite"
+    elif damage == "link_coverage":
+        metadata["coverage"]["link_statuses"]["archive"] += 1
+    elif damage.endswith("shard_path"):
+        metadata["link_shards" if damage.startswith("link") else "url_shards"][0]["file"] = "../private.sqlite"
     else:
-        metadata["url_shards"][0]["first_id"] += 1
+        metadata["link_shards" if damage.startswith("link") else "url_shards"][0]["first_id"] += 1
     _write_metadata(ingredient_index, metadata)
     output = tmp_path / "dataset"
     with pytest.raises(ValueError):
@@ -419,7 +466,7 @@ def test_existing_catalog_checks_and_statistics_are_enforced(ingredient_index, t
 
 
 @pytest.mark.parametrize("filename", [
-    "ingredient-index.json", "ingredients.u16.gz", "urls", "urls/0000.json.gz",
+    "ingredient-index.json", "ingredients.u16.gz", "urls", "urls/0000.json.gz", "links", "links/0000.json.gz",
     "text", "text/0000.json.gz", TEXT_MANIFEST,
 ])
 def test_declared_input_symlinks_are_rejected(ingredient_index, tmp_path, filename):

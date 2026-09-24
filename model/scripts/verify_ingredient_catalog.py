@@ -17,10 +17,11 @@ from ingredient_model.ingredient_catalog import (
     TEXT_COVERAGE, ingredient_lines, load_ingredient_catalog, load_text_shards, public_source_url,
     read_text_shard, recipe_title,
 )
-from ingredient_model.ingredient_dataset import _read_url_shard
+from ingredient_model.ingredient_dataset import _read_link_shard, _read_url_shard
 from ingredient_model.ingredient_demo import load_ingredient_policy
 from ingredient_model.recipe_demo import browser_policy
 from ingredient_model.recipe_ingredients import CanonicalIngredientIndex
+from ingredient_model.recipe_links import ARCHIVE, LINK_STATUSES, SOURCE, recipe_link
 from ingredient_model.recipe_ranker import candidate_features, heuristic_scores
 
 QUERIES = [
@@ -35,9 +36,9 @@ QUERIES = [
     {"available_ingredients": ["rice"], "max_missing": None, "max_total_minutes": 30},
     {"available_ingredients": ["water"], "max_missing": 0},
     {"available_ingredients": ["tomato", "basil", "olive_oil", "salt", "garlic"],
-     "max_missing": 2, "require_source_url": True},
+     "max_missing": 2, "require_link": True},
     {"available_ingredients": ["chicken", "rice", "broccoli"], "max_total_minutes": 30,
-     "max_missing": 2, "require_source_url": True},
+     "max_missing": 2, "require_link": True},
 ]
 
 
@@ -57,8 +58,8 @@ def reference_search(metadata: dict, arrays: dict, query: dict, policy, *, max_c
 
     overlap = counts(available)
     eligible = counts(searchable) > 0
-    if query.get("require_source_url", False):
-        eligible &= arrays["has_source_url"] != 0
+    if query.get("require_link", False):
+        eligible &= np.isin(arrays["link_status"], (SOURCE, ARCHIVE))
     if required:
         eligible &= counts(required) == len(required)
     if excluded:
@@ -101,13 +102,14 @@ def reference_search(metadata: dict, arrays: dict, query: dict, policy, *, max_c
 
 
 def compare_with_catalog(index_directory: Path, metadata: dict, arrays: dict, catalog_path: Path) -> Counter:
-    """Recompute every exported link, title and ingredient line from the private catalog, in ID order."""
+    """Recompute every exported URL, card link, title and ingredient line from the private catalog, in ID order."""
     identity, stamp, _ = _catalog_binding(catalog_path)
     if identity["sha256"] != metadata["identity"]["catalog_sha256"]:
         raise ValueError("the private catalog is not the one this index was exported from")
     url_records, text_records = metadata["url_shards"], load_text_shards(index_directory, metadata)
+    link_records = metadata["link_shards"]
     url_size, text_size = metadata["rows_per_url_shard"], metadata["rows_per_text_shard"]
-    counts = Counter()
+    counts, link_statuses = Counter(), Counter()
     connection = _read_connection(catalog_path)
     try:
         cursor = connection.execute("SELECT id, source, url, title, raw_ingredients FROM recipes ORDER BY id")
@@ -117,11 +119,10 @@ def compare_with_catalog(index_directory: Path, metadata: dict, arrays: dict, ca
                     raise ValueError("catalog record IDs are not complete, ordered and contiguous")
                 if recipe_id % url_size == 0:
                     urls = _read_url_shard(index_directory, url_records[recipe_id // url_size])
+                    links = _read_link_shard(index_directory, link_records[recipe_id // url_size])
                 if recipe_id % text_size == 0:
                     titles, lines = read_text_shard(index_directory, text_records[recipe_id // text_size])
                 exported = urls[recipe_id % url_size]
-                if bool(arrays["has_source_url"][recipe_id]) != (exported is not None):
-                    raise ValueError("a URL availability flag differs from the actual recorded link")
                 if exported is not None:
                     normalized, status = public_source_url(exported)
                     if normalized != exported or status != "source_url":
@@ -129,6 +130,10 @@ def compare_with_catalog(index_directory: Path, metadata: dict, arrays: dict, ca
                     counts["source_urls"] += 1
                 if exported != public_source_url(url)[0]:
                     raise ValueError(f"recipe {recipe_id}: the exported link differs from the catalog")
+                link, link_status = recipe_link(public_source_url(url)[0], recipe_title(title))
+                if links[recipe_id % url_size] != link or int(arrays["link_status"][recipe_id]) != link_status:
+                    raise ValueError(f"recipe {recipe_id}: the card link differs from the per-site link rule")
+                link_statuses[LINK_STATUSES[link_status]] += 1
                 exported_title, exported_lines = titles[recipe_id % text_size], lines[recipe_id % text_size]
                 if exported_title != recipe_title(title) or exported_lines != ingredient_lines(raw, source):
                     raise ValueError(f"recipe {recipe_id}: exported card text differs from the catalog")
@@ -144,8 +149,11 @@ def compare_with_catalog(index_directory: Path, metadata: dict, arrays: dict, ca
         raise ValueError("the catalog comparison did not cover every exported record")
     if counts["source_urls"] != metadata["coverage"]["url_statuses"]["source_url"]:
         raise ValueError("source URL coverage differs from its recorded count")
+    if dict(link_statuses) != metadata["coverage"]["link_statuses"]:
+        raise ValueError("card link coverage differs from its recorded counts")
     if any(counts[name] != metadata["coverage"][name] for name in TEXT_COVERAGE):
         raise ValueError("declared card-text coverage differs from the catalog")
+    counts["link_statuses"] = dict(link_statuses)
     return counts
 
 
@@ -215,14 +223,16 @@ def verify(index_directory: Path, corpus_path: Path, catalog_path: Path, reposit
         "records_compared": metadata["n_recipes"], "ingredient_slots_compared": metadata["n_slots"],
         "source_urls_checked": url_count, "url_records_checked": metadata["n_recipes"],
         "source_urls_unavailable": metadata["n_recipes"] - url_count,
+        "card_links_rederived": compared["rows"], "link_statuses": compared["link_statuses"],
         "catalog_records_compared": compared["rows"],
         "recipe_titles_compared": compared["recipe_titles"],
         "ingredient_line_records_compared": compared["ingredient_line_records"],
         "ingredient_lines_compared": compared["ingredient_lines"],
         "catalog_comparison_scope": (
-            "Every exported link, title and ingredient line was recomputed from the private catalog in ID order "
-            "with the export's own normalization functions. This checks alignment, completeness and integrity; "
-            "unit tests, not this comparison, check the normalization rules."),
+            "Every exported URL, card link, title and ingredient line was recomputed from the private catalog in "
+            "ID order with the export's own normalization functions and per-site link rule. This checks "
+            "alignment, completeness and integrity; unit tests and the link-health sample, not this comparison, "
+            "check the rules themselves."),
         "coverage": metadata["coverage"], "index_bytes": metadata["bytes"],
         "initial_download_bytes": metadata["bytes"]["initial_compressed_download"],
         "python_browser_searches_matched": len(browser["results"]),
@@ -252,7 +262,8 @@ def main() -> None:
         json.dump(report, stream, indent=2, allow_nan=False)
         stream.write("\n")
     print(json.dumps({name: report[name] for name in (
-        "records_compared", "ingredient_slots_compared", "source_urls_checked", "recipe_titles_compared",
+        "records_compared", "ingredient_slots_compared", "source_urls_checked", "card_links_rederived",
+        "link_statuses", "recipe_titles_compared",
         "ingredient_lines_compared", "python_browser_searches_matched", "max_absolute_score_error",
         "public_upload")}, indent=2))
 

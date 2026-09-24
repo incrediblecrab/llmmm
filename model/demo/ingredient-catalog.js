@@ -11,8 +11,14 @@ export const ARRAY_FORMAT = Object.freeze({
   servings: ["servings.f64.gz", "<f8", Float64Array],
   source_codes: ["sources.u8.gz", "|u1", Uint8Array],
   language_codes: ["languages.u8.gz", "|u1", Uint8Array],
-  has_source_url: ["source-links.u8.gz", "|u1", Uint8Array],
+  link_status: ["link-status.u8.gz", "|u1", Uint8Array],
 });
+// Codes of the link_status array, computed at build time by model/ingredient_model/recipe_links.py.
+export const LINK_STATUSES = Object.freeze(["none", "source", "archive", "offline"]);
+
+export function clickableLink(status) {
+  return status === 1 || status === 2;
+}
 
 function strings(values, maximum) {
   return Array.isArray(values) && values.length > 0 && values.length <= maximum
@@ -21,7 +27,7 @@ function strings(values, maximum) {
 }
 
 export function ingredientCatalogMetadata(metadata) {
-  if (!metadata || metadata.schema_version !== 2 || metadata.format !== "llmmm-ingredient-catalog"
+  if (!metadata || metadata.schema_version !== 3 || metadata.format !== "llmmm-ingredient-catalog"
       || metadata.endianness !== "little" || metadata.statistics_scope !== "full-canonical-corpus"
       || !Number.isSafeInteger(metadata.n_recipes) || metadata.n_recipes > 10_000_000
       || !Number.isSafeInteger(metadata.n_slots) || metadata.n_slots < metadata.n_recipes
@@ -56,6 +62,11 @@ export function ingredientCatalogMetadata(metadata) {
       throw new Error("Source URL shards are not contiguous, complete and safely named.");
     }
   });
+  if (!Array.isArray(metadata.link_shards) || metadata.link_shards.length !== metadata.url_shards.length
+      || metadata.link_shards.some((shard, index) => shard.file !== `links/${String(index).padStart(4, "0")}.json.gz`
+        || shard.first_id !== metadata.url_shards[index].first_id || shard.rows !== metadata.url_shards[index].rows)) {
+    throw new Error("Recipe link shards are not contiguous, complete and safely named.");
+  }
   const textSize = metadata.rows_per_text_shard;
   const manifest = metadata.text_manifest;
   if (!Number.isSafeInteger(textSize) || textSize < 1 || textSize > 65_536 || !manifest
@@ -81,7 +92,7 @@ export function prepareIngredientCatalog(metadata, arrays) {
     if (!length || length > catalog.vocabulary.length || position + length > catalog.n_slots
         || arrays.source_codes[id] >= catalog.source_names.length
         || arrays.language_codes[id] >= catalog.language_names.length
-        || arrays.has_source_url[id] > 1) {
+        || arrays.link_status[id] >= LINK_STATUSES.length) {
       throw new Error(`Ingredient-only record ${id} has invalid lengths or metadata codes.`);
     }
     for (const name of ["total_minutes", "servings"]) {
@@ -154,8 +165,9 @@ export async function searchIngredientCatalog(catalog, policy, query, ranking = 
   if (!["learned", "heuristic"].includes(ranking)) throw new Error("Unknown ranking method.");
   validatePolicy(policy);
   const request = normalizeQuery(query, catalog);
-  if (query.require_source_url !== undefined && typeof query.require_source_url !== "boolean") {
-    throw new Error("The source-link filter must be a boolean.");
+  if (query.require_source_url !== undefined) throw new Error("The link filter is now named require_link.");
+  if (query.require_link !== undefined && typeof query.require_link !== "boolean") {
+    throw new Error("The link filter must be a boolean.");
   }
   if (!Number.isSafeInteger(maxCandidates) || maxCandidates < request.topK || maxCandidates > 10_000) {
     throw new Error("The shortlist limit must be an integer from the result count to 10,000.");
@@ -181,7 +193,7 @@ export async function searchIngredientCatalog(catalog, policy, query, ranking = 
       if (yieldToEvents) await new Promise((resolve) => setTimeout(resolve, 0));
     }
     const total = totals[id];
-    if ((query.require_source_url && !catalog.data.has_source_url[id])
+    if ((query.require_link && !clickableLink(catalog.data.link_status[id]))
         || (request.budget !== null && !(total <= request.budget))
         || (request.servings !== null && !(servings[id] >= request.servings))
         || (languageCode !== null && languages[id] !== languageCode)
@@ -226,6 +238,7 @@ export async function searchIngredientCatalog(catalog, policy, query, ranking = 
     servings: Number.isNaN(servings[id]) ? null : servings[id],
     source: catalog.source_names[catalog.data.source_codes[id]],
     language: catalog.language_names[languages[id]],
+    link_status: LINK_STATUSES[catalog.data.link_status[id]],
   })).sort((a, b) => b.score - a.score || a.id - b.id).slice(0, request.topK);
   return {
     matches, feasible_count: feasible, scanned: catalog.n_recipes, ranking,

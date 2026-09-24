@@ -1,5 +1,5 @@
 import { searchIngredientCatalog } from "./ingredient-catalog.js";
-import { loadIngredientCatalog, loadResultText, loadResultUrls, loadTextManifest } from "./ingredient-loader.js";
+import { loadIngredientCatalog, loadResultLinks, loadResultText, loadTextManifest } from "./ingredient-loader.js";
 import { validatePolicy } from "./ranker.js";
 
 let catalog;
@@ -34,7 +34,7 @@ self.addEventListener("message", async ({ data }) => {
       // The text manifest is fetched on the first search; a failed fetch is retried by the next one.
       textShards ??= loadTextManifest(indexUrl, catalog).catch((error) => { textShards = undefined; throw error; });
       const [linked, described] = await Promise.all([
-        loadResultUrls(indexUrl, catalog, result.matches),
+        loadResultLinks(indexUrl, catalog, result.matches),
         textShards.then((shards) => loadResultText(indexUrl, catalog, shards, result.matches)),
       ]);
       result.matches = linked.map((match, position) => ({

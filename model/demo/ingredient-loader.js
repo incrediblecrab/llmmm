@@ -1,4 +1,5 @@
-import { ARRAY_FORMAT, ingredientCatalogMetadata, prepareIngredientCatalog } from "./ingredient-catalog.js";
+import { ARRAY_FORMAT, clickableLink, ingredientCatalogMetadata, prepareIngredientCatalog } from "./ingredient-catalog.js";
+import { sourceUrl } from "./search.js";
 
 export async function checkedBytes(url, expected, {
   maximum = 128 * 1024 * 1024, progress = null, retryDelays = [500, 1_500],
@@ -101,39 +102,36 @@ export async function loadIngredientCatalog(indexUrl, indexRecord, progress = nu
   return prepareIngredientCatalog(metadata, arrays);
 }
 
-export async function loadResultUrls(indexUrl, catalog, matches) {
+export async function loadResultLinks(indexUrl, catalog, matches) {
   const shardIds = [...new Set(matches.map((match) => Math.floor(match.id / catalog.rows_per_url_shard)))];
-  const urls = new Map();
+  const links = new Map();
   async function loadShard(id) {
-    const record = catalog.url_shards[id];
+    const record = catalog.link_shards[id];
     const compressed = await checkedBytes(new URL(record.file, indexUrl), record, { maximum: 16 * 1024 * 1024 });
     const buffer = await checkedDecompression(compressed, record);
     const shard = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(buffer));
-    if (shard.first_id !== record.first_id || !Array.isArray(shard.urls) || shard.urls.length !== record.rows) {
-      throw new Error("Source URLs are not aligned with their declared ingredient records.");
+    if (shard.first_id !== record.first_id || !Array.isArray(shard.links) || shard.links.length !== record.rows) {
+      throw new Error("Recipe links are not aligned with their declared ingredient records.");
     }
     for (const match of matches) {
       const offset = match.id - shard.first_id;
-      if (offset < 0 || offset >= shard.urls.length) continue;
-      const url = shard.urls[offset];
-      if (catalog.data.has_source_url[match.id] !== Number(url !== null)) {
-        throw new Error("A result's source link differs from its availability flag.");
+      if (offset < 0 || offset >= shard.links.length) continue;
+      const link = shard.links[offset];
+      if ((link !== null) !== clickableLink(catalog.data.link_status[match.id])) {
+        throw new Error("A result's recipe link differs from its link status.");
       }
-      if (url !== null) {
-        if (typeof url !== "string" || url.length > 4096) throw new Error("Invalid source URL value.");
-        const address = new URL(url);
-        if (!["http:", "https:"].includes(address.protocol) || address.username || address.password) {
-          throw new Error("Source URL is not an ordinary HTTP(S) link.");
-        }
+      if (link !== null) {
+        if (typeof link !== "string" || link.length > 8192) throw new Error("Invalid recipe link value.");
+        sourceUrl(link);
       }
-      urls.set(match.id, url);
+      links.set(match.id, link);
     }
   }
   for (let first = 0; first < shardIds.length; first += 4) {
     await Promise.all(shardIds.slice(first, first + 4).map(loadShard));
   }
-  if (urls.size !== matches.length) throw new Error("Some result source URLs are missing from their expected shards.");
-  return matches.map((match) => ({ ...match, source_url: urls.get(match.id) }));
+  if (links.size !== matches.length) throw new Error("Some result links are missing from their expected shards.");
+  return matches.map((match) => ({ ...match, link: links.get(match.id) }));
 }
 
 const TEXT_SHARD_FIELDS = JSON.stringify(["bytes", "compression", "file", "first_id", "raw_bytes", "raw_sha256", "rows", "sha256"]);

@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
   "status": "verified_local_complete_recipe_card_index",
-  "verified_at": "2026-09-23T22:27:31.904339+00:00",
-  "index_sha256": "b05f932727bd372f09234749b25301b28510303f16f1334fc7f23ee564b4cd1b",
+  "verified_at": "2026-09-24T05:40:29.486405+00:00",
+  "index_sha256": "41afc7b20de4ce6f072ad3673ea983f4e509f88f7566b9c27559d07a341ec0a8",
   "corpus_sha256": "414c4134035378e620e542633b18f71f086c192be2041fcbac9116f25d0758c9",
   "catalog_sha256": "708662e373a8825805be5b94a58ad9f1be3a3f2263df9bfb6022691bd196ff7f",
   "model_revision": "9b152b52ece1ebd88d802726346b1d3d949f422f",
@@ -12,11 +12,18 @@
   "source_urls_checked": 2292411,
   "url_records_checked": 4653430,
   "source_urls_unavailable": 2361019,
+  "card_links_rederived": 4653430,
+  "link_statuses": {
+    "source": 1652643,
+    "offline": 373586,
+    "archive": 266182,
+    "none": 2361019
+  },
   "catalog_records_compared": 4653430,
   "recipe_titles_compared": 4503160,
   "ingredient_line_records_compared": 4503161,
   "ingredient_lines_compared": 39045568,
-  "catalog_comparison_scope": "Every exported link, title and ingredient line was recomputed from the private catalog in ID order with the export's own normalization functions. This checks alignment, completeness and integrity; unit tests, not this comparison, check the normalization rules.",
+  "catalog_comparison_scope": "Every exported URL, card link, title and ingredient line was recomputed from the private catalog in ID order with the export's own normalization functions and per-site link rule. This checks alignment, completeness and integrity; unit tests and the link-health sample, not this comparison, check the rules themselves.",
   "coverage": {
     "records": 4653430,
     "ingredient_slots": 36707624,
@@ -28,6 +35,12 @@
     "url_statuses": {
       "source_url": 2292411,
       "missing": 2361019
+    },
+    "link_statuses": {
+      "source": 1652643,
+      "offline": 373586,
+      "archive": 266182,
+      "none": 2361019
     },
     "rows_by_source": {
       "01-recipenlg": 1994816,
@@ -65,16 +78,18 @@
     "ingredient_lines": 39045568
   },
   "index_bytes": {
-    "initial_compressed_download": 37769040,
+    "initial_compressed_download": 37892178,
     "initial_uncompressed_arrays": 171137278,
     "derived_uint32_offsets": 18613724,
     "url_shards_compressed": 24974375,
     "largest_url_shard_compressed": 280772,
-    "text_manifest_compressed": 222134,
-    "text_shards_compressed": 312865086,
+    "link_shards_compressed": 20203739,
+    "largest_link_shard_compressed": 272192,
+    "text_manifest_compressed": 222126,
+    "text_shards_compressed": 312659863,
     "largest_text_shard_compressed": 923037
   },
-  "initial_download_bytes": 37769040,
+  "initial_download_bytes": 37892178,
   "python_browser_searches_matched": 20,
   "max_absolute_score_error": 7.62939453125e-06,
   "score_tolerance": 0.0001,
@@ -92,8 +107,8 @@
       "feasible_records": 1268,
       "candidates_scored": 1268,
       "node_search_ms": {
-        "learned": 48.40583300000003,
-        "heuristic": 28.866333000000054
+        "learned": 37.07429199999996,
+        "heuristic": 28.466250000000002
       }
     },
     {
@@ -110,8 +125,8 @@
       "feasible_records": 97687,
       "candidates_scored": 2000,
       "node_search_ms": {
-        "learned": 107.70587499999999,
-        "heuristic": 102.2532920000001
+        "learned": 105.88483400000007,
+        "heuristic": 98.66283299999998
       }
     },
     {
@@ -129,8 +144,8 @@
       "feasible_records": 11083,
       "candidates_scored": 2000,
       "node_search_ms": {
-        "learned": 65.31650000000002,
-        "heuristic": 38.392541999999935
+        "learned": 65.59437500000001,
+        "heuristic": 37.24320799999998
       }
     },
     {
@@ -153,8 +168,8 @@
       "feasible_records": 552,
       "candidates_scored": 552,
       "node_search_ms": {
-        "learned": 33.861834000000044,
-        "heuristic": 25.971541000000002
+        "learned": 39.101249999999936,
+        "heuristic": 25.573667
       }
     },
     {
@@ -172,8 +187,8 @@
       "feasible_records": 13265,
       "candidates_scored": 2000,
       "node_search_ms": {
-        "learned": 64.99887500000011,
-        "heuristic": 52.144250000000056
+        "learned": 63.30991700000004,
+        "heuristic": 50.895958000000064
       }
     },
     {
@@ -187,8 +202,8 @@
       "feasible_records": 0,
       "candidates_scored": 0,
       "node_search_ms": {
-        "learned": 36.12641699999995,
-        "heuristic": 36.196874999999864
+        "learned": 34.97458300000005,
+        "heuristic": 34.77045799999996
       }
     },
     {
@@ -202,8 +217,8 @@
       "feasible_records": 6715,
       "candidates_scored": 2000,
       "node_search_ms": {
-        "learned": 64.50304200000005,
-        "heuristic": 52.40454199999999
+        "learned": 60.44704200000001,
+        "heuristic": 49.019374999999854
       }
     },
     {
@@ -216,8 +231,8 @@
       "feasible_records": 3220,
       "candidates_scored": 2000,
       "node_search_ms": {
-        "learned": 89.50070800000003,
-        "heuristic": 46.73358299999995
+        "learned": 84.703708,
+        "heuristic": 44.86416699999995
       }
     },
     {
@@ -230,13 +245,13 @@
           "garlic"
         ],
         "max_missing": 2,
-        "require_source_url": true
+        "require_link": true
       },
-      "feasible_records": 37205,
+      "feasible_records": 28016,
       "candidates_scored": 2000,
       "node_search_ms": {
-        "learned": 90.10662500000012,
-        "heuristic": 74.1471660000002
+        "learned": 84.09641600000009,
+        "heuristic": 69.11408299999994
       }
     },
     {
@@ -248,23 +263,23 @@
         ],
         "max_total_minutes": 30,
         "max_missing": 2,
-        "require_source_url": true
+        "require_link": true
       },
       "feasible_records": 15,
       "candidates_scored": 15,
       "node_search_ms": {
-        "learned": 52.51104200000009,
-        "heuristic": 52.13758400000006
+        "learned": 54.247707999999875,
+        "heuristic": 54.25949999999989
       }
     }
   ],
-  "node_cold_load_ms": 481.6735,
+  "node_cold_load_ms": 445.811334,
   "node_process_memory_bytes": {
-    "rss": 373342208,
-    "heapTotal": 48119808,
-    "heapUsed": 22449240,
-    "external": 193757850,
-    "arrayBuffers": 191235034
+    "rss": 396263424,
+    "heapTotal": 47595520,
+    "heapUsed": 14803704,
+    "external": 193696555,
+    "arrayBuffers": 191181391
   },
   "timing_scope": "Local Node process; excludes network, source-URL loading and UI. Not a service guarantee.",
   "fields_in_export": [
@@ -274,6 +289,8 @@
     "source_code",
     "language_code",
     "source_url",
+    "recipe_link",
+    "link_status",
     "recipe_title",
     "ingredient_lines"
   ],

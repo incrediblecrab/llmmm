@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import importlib
+import subprocess
 from pathlib import Path
-from types import SimpleNamespace
 
 import pytest
+
+ROOT = Path(__file__).resolve().parents[2]
+RETIRED_DATASET = "incrediblecrab/llmmm-recipe-" + "sample"
 
 
 @pytest.fixture
@@ -12,61 +15,8 @@ def publisher(monkeypatch):
     pytest.importorskip("torch")
     pytest.importorskip("safetensors")
     pytest.importorskip("huggingface_hub")
-    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "scripts"))
+    monkeypatch.syspath_prepend(str(ROOT / "model/scripts"))
     return importlib.import_module("publish_recipe_demo")
-
-
-def test_new_space_creation_can_only_request_the_free_static_sdk(publisher, monkeypatch):
-    calls = {}
-
-    class Api:
-        created = False
-
-        def repo_info(self, *_args, **_kwargs):
-            if not self.created:
-                raise publisher.RepositoryNotFoundError(
-                    "missing", response=publisher.httpx.Response(
-                        404, request=publisher.httpx.Request("GET", "https://huggingface.co/api/spaces/test")))
-            return SimpleNamespace(sha="a" * 40, siblings=[
-                SimpleNamespace(rfilename=name)
-                for name in (".gitattributes", "README.md", "index.html", "style.css")])
-
-        def create_repo(self, repository, **kwargs):
-            calls["create"] = (repository, kwargs)
-            self.created = True
-
-        def create_commit(self, repository, **kwargs):
-            calls["commit"] = (repository, kwargs)
-            return SimpleNamespace(oid="b" * 40)
-
-    monkeypatch.setattr(publisher, "public_files", lambda *args: calls.update(verified=args))
-    result = publisher.publish_files(Api(), publisher.SPACE_REPOSITORY, "space",
-                                     {"index.html": b"test fixture", "README.md": b"test card",
-                                      "styles.css": b"test styles"}, update=False)
-    assert result == "b" * 40
-    assert calls["create"][1] == {
-        "repo_type": "space", "private": False, "exist_ok": False, "space_sdk": "static",
-    }
-    assert calls["commit"][1]["parent_commit"] == "a" * 40
-    operations = calls["commit"][1]["operations"]
-    assert [item.path_in_repo for item in operations if isinstance(item, publisher.CommitOperationDelete)] == ["style.css"]
-    assert calls["verified"][3] == "b" * 40
-
-
-@pytest.mark.parametrize("private,gated,sdk,extra", [
-    (True, False, "static", None),
-    (False, "auto", "static", None),
-    (False, False, "docker", None),
-    (False, False, "gradio", None),
-    (False, False, "static", "private.sqlite"),
-])
-def test_publication_refuses_to_repurpose_other_repositories(publisher, private, gated, sdk, extra):
-    names = ["index.html"] + ([extra] if extra else [])
-    api = SimpleNamespace(repo_info=lambda *args, **kwargs: SimpleNamespace(
-        private=private, gated=gated, sdk=sdk, siblings=[SimpleNamespace(rfilename=name) for name in names]))
-    with pytest.raises(ValueError):
-        publisher.publish_files(api, publisher.SPACE_REPOSITORY, "space",
-                                {"index.html": b"test fixture"}, update=True)
 
 
 def test_browser_report_walker_counts_tests_not_nested_fields(publisher):
@@ -75,3 +25,27 @@ def test_browser_report_walker_counts_tests_not_nested_fields(publisher):
         {"status": "unexpected", "results": [{"status": "failed"}]},
     ]}]}]}]}
     assert len(publisher._browser_tests(report)) == 2
+
+
+def _tracked_files() -> list[str]:
+    try:
+        listing = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, check=True)
+    except (OSError, subprocess.CalledProcessError):
+        pytest.skip("needs a git checkout to list the tracked files")
+    return [name for name in listing.stdout.decode().split("\0") if name]
+
+
+def test_no_code_can_republish_the_retired_sample_dataset(publisher):
+    assert not hasattr(publisher, "main") and not hasattr(publisher, "publish_files")
+    code = [name for name in _tracked_files() if name.endswith((".py", ".js", ".html", ".mjs", ".cjs", "Makefile"))]
+    assert "model/scripts/publish_recipe_demo.py" in code
+    assert [name for name in code if RETIRED_DATASET in (ROOT / name).read_text(encoding="utf-8")] == []
+
+
+def test_no_current_document_links_to_the_retired_sample_dataset():
+    # Release receipts under model/results are historical records and keep the name they published under.
+    documents = [name for name in _tracked_files() if not name.startswith("model/results/")
+                 and name.endswith((".md", ".json", ".txt", ".yml", ".yaml"))]
+    assert "README.md" in documents
+    link = "huggingface.co/datasets/" + RETIRED_DATASET
+    assert [name for name in documents if link in (ROOT / name).read_text(encoding="utf-8", errors="replace")] == []

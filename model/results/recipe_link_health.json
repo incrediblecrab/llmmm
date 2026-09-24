@@ -1,0 +1,9045 @@
+{
+ "schema_version": 1,
+ "measured": "September 23-24, 2026 (EDT)",
+ "rule": "recipe_links.LINK_RULE; preregistered before the archive results for most sites were read",
+ "design_sample": "12 recorded links per site, drawn with Python random.Random(1) by probe_links.py; www.epicurious.com's 12 split into its two path patterns",
+ "success": "the opened page shows the record's title (normalized); hand reads, listed per link, decide renamed recipes (success) and redirects to different recipes (failure)",
+ "records_by_decision": {
+  "archive": 266182,
+  "offline": 373586,
+  "source": 1652643
+ },
+ "records_with_recorded_url": 2292411,
+ "records_with_card_link": 1918825,
+ "deviations": [
+  "Archived copies were not checked for sites whose recorded pages already met the bar, so the rule 'more successes wins' was not applied there; food52.com (10/12) and www.foodnetwork.com (10/12) could in principle have scored higher archived.",
+  "Where curl was bot-blocked or challenged, recorded pages were opened in Chromium instead.",
+  "www.myrecipes.com's preregistered archive year (2019) failed, 7 of 12; one preregistered second round tried 2021, the latest other year with captures of at least 10 of the 12 design links, on a fresh sample drawn with seed 2. It failed as well, 6 of 12, so the site's records have no link.",
+  "www.povarenok.ru passed its design check (12 of 12 recorded pages, September 23), but all 22 of its links in the first held-out check failed on September 24, and its homepage served the site's own outage page. One preregistered recheck on a fresh sample (seed 3) found 0 of 12 recorded pages and 12 of 12 archived copies (2025) showing the recipe, so its cards open the archived copy. The site answered again by 00:57 EDT; a later release can recheck it."
+ ],
+ "caveats": [
+  "Each decision rests on about 12 links per site, so a site's true rate can differ from its sample; the held-out checks below measure the shipped links.",
+  "A title check can pass a page that is a different recipe with a similar title; hand reads caught two such pages in the design sample (listed)."
+ ],
+ "held_out_checks": [
+  {
+   "draw": 1,
+   "links_checked": "the v5 index, in which www.povarenok.ru cards opened the recorded page",
+   "measured": "September 24, 2026, 00:19-00:39 EDT",
+   "seed": 20260923,
+   "n": 300,
+   "successes": 271,
+   "rate": 0.9033,
+   "wilson_95": [
+    0.8646,
+    0.9318
+   ],
+   "gate": "failed",
+   "automated": {
+    "ok": 267,
+    "no-title": 31,
+    "ok-loose": 2
+   },
+   "by_host": {
+    "cookbooks.com": {
+     "n": 110,
+     "successes": 110
+    },
+    "www.food.com": {
+     "n": 68,
+     "successes": 68
+    },
+    "www.povarenok.ru": {
+     "n": 22,
+     "successes": 0
+    },
+    "www.nefisyemektarifleri.com": {
+     "n": 20,
+     "successes": 20
+    },
+    "www.allrecipes.com": {
+     "n": 17,
+     "successes": 17
+    },
+    "www.epicurious.com": {
+     "n": 12,
+     "successes": 12
+    },
+    "food52.com": {
+     "n": 8,
+     "successes": 7
+    },
+    "www.foodnetwork.com": {
+     "n": 8,
+     "successes": 7
+    },
+    "www.tasteofhome.com": {
+     "n": 8,
+     "successes": 8
+    },
+    "cookpad.com": {
+     "n": 7,
+     "successes": 6
+    },
+    "cooking.nytimes.com": {
+     "n": 5,
+     "successes": 5
+    },
+    "www.foodgeeks.com": {
+     "n": 4,
+     "successes": 0
+    },
+    "www.foodandwine.com": {
+     "n": 3,
+     "successes": 3
+    },
+    "recipeland.com": {
+     "n": 2,
+     "successes": 2
+    },
+    "www.seriouseats.com": {
+     "n": 2,
+     "successes": 2
+    },
+    "www.cookstr.com": {
+     "n": 2,
+     "successes": 2
+    },
+    "online-cookbook.com": {
+     "n": 1,
+     "successes": 1
+    },
+    "www.vegetariantimes.com": {
+     "n": 1,
+     "successes": 1
+    }
+   },
+   "hand_read": {
+    "redirected_ok": [
+     749458,
+     1447828,
+     1501594,
+     1522570,
+     1523059,
+     1606268,
+     1651339,
+     1658307,
+     1784707,
+     1824058,
+     1845524,
+     1870044,
+     1930447,
+     1932175,
+     1971298
+    ],
+    "random_ok_seed": 20260924,
+    "random_ok": [
+     76164,
+     115510,
+     122865,
+     268246,
+     387325,
+     436088,
+     438915,
+     503944,
+     557839,
+     562850,
+     846090,
+     856546,
+     877086,
+     1014464,
+     1039170,
+     1061304,
+     1507560,
+     727508,
+     4469458,
+     1343162
+    ],
+    "flipped_to_failure": []
+   },
+   "notes": [
+    "The Internet Archive refused connections to 7 of the 16 archive links on the first pass; they were re-run once and the re-run stands."
+   ],
+   "links": [
+    {
+     "id": 2360,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 12723,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 15128,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 15889,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 16622,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 18348,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 29120,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 48820,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 52548,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 67677,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 76164,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 79273,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 79284,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 95556,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 105016,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 115510,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 122865,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 133468,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 139223,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 141970,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 152698,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 156313,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 165270,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 177628,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 207153,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 215477,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 217852,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 220726,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 224843,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 232709,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 237992,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 243401,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 244532,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 247954,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 252690,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 261519,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 268246,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 280689,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 283492,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 296979,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 303600,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 305712,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 306579,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 316218,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 327069,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 338799,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 340308,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 342851,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 344388,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 348077,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 353500,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 354395,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 354745,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 367129,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 375544,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 379178,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 382328,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 387325,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 394315,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 397526,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 411924,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 414482,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 422902,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 428932,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 435864,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 436088,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 438915,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 442086,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 450178,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 458730,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 464211,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 469057,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 498995,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 502536,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 503944,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 507087,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 513924,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 523225,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 528997,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 532977,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 537211,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 537873,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 538726,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 554002,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 555082,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 557839,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 562850,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 576122,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 582706,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 592185,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 599576,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 603065,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 607361,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 609444,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 614349,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 615294,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 624442,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 629683,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 630673,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 641820,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 648484,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 653479,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 660137,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 670667,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 680418,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 692972,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 699485,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 703930,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 706912,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 723083,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 788012,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 793909,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 807994,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 809205,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 809746,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 814023,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 816869,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 818515,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 822113,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 823825,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 824921,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 829859,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 830009,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 846090,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 856546,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 868911,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 869157,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 877086,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 881077,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 887795,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 889172,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 889640,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 897829,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 900890,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 905758,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 907070,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 907278,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 907535,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 915046,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 917048,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 920285,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 922923,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 943732,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 954500,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 969693,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 977298,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 995826,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1004992,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1014464,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1024210,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1031797,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1032382,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1039170,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1048952,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1061304,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1465706,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1496099,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1496154,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1507560,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1565704,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1569184,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1593629,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1602437,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1615722,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1629185,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1635893,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1657591,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1657807,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "no-title",
+     "success": true,
+     "hand_read": "the record lost its æ and å letters and fraction slashes; the page's 6 JSON-LD ingredients are the record's"
+    },
+    {
+     "id": 1714555,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1735846,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1742851,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1791439,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1870864,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1878497,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1918271,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1959379,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1970892,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1986618,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 727508,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 727901,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 732185,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok-loose",
+     "success": true,
+     "hand_read": "the title differs only by an accent (Saute, Sauté); 7/7 ingredient lines"
+    },
+    {
+     "id": 733667,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 743036,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 749458,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 759179,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 763257,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 782068,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1095458,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1099378,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1100769,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1128507,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1173312,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1186750,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1190440,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1190627,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1195881,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1196557,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 404,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 404"
+    },
+    {
+     "id": 1216867,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok-loose",
+     "success": true,
+     "hand_read": "retitled Hot and Sunny Sunflower Seeds; the page's 14 JSON-LD ingredients are the record's up to singular units"
+    },
+    {
+     "id": 1219892,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1220180,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1445794,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1447828,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1473563,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1501594,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1508520,
+     "host": "www.foodgeeks.com",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 to headless Chromium, while curl with a Safari user agent read the title: bot challenge"
+    },
+    {
+     "id": 1522570,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1523059,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1530989,
+     "host": "cooking.nytimes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1574845,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "redirected to the site's /recipes listing"
+    },
+    {
+     "id": 1606268,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1644624,
+     "host": "online-cookbook.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1651339,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1658307,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1688078,
+     "host": "www.foodgeeks.com",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 to headless Chromium, while curl with a Safari user agent read the title: bot challenge"
+    },
+    {
+     "id": 1715302,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1732789,
+     "host": "cooking.nytimes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1771567,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1784707,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1801613,
+     "host": "recipeland.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1802833,
+     "host": "www.foodgeeks.com",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 to headless Chromium, while curl with a Safari user agent read the title: bot challenge"
+    },
+    {
+     "id": 1824058,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1825408,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1845524,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1870044,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1885459,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1930447,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1932175,
+     "host": "recipeland.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1935564,
+     "host": "cooking.nytimes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1939731,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 404,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 404"
+    },
+    {
+     "id": 1941546,
+     "host": "www.foodgeeks.com",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 to headless Chromium, while curl with a Safari user agent read the title: bot challenge"
+    },
+    {
+     "id": 1948827,
+     "host": "cooking.nytimes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1952252,
+     "host": "cooking.nytimes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1971298,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1990897,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3435580,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3445943,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3447660,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3461722,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3471666,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3487113,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3489354,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3490723,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3495351,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3495735,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3496494,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3512996,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3516359,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3535419,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3542535,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3546351,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3554942,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3565512,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3573697,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 3573724,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 4362592,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 4364175,
+     "host": "www.povarenok.ru",
+     "link_status": "source",
+     "http_status": 403,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 403 in Chromium; the site's homepage served its own outage page (HTTP 502) to curl: error page"
+    },
+    {
+     "id": 4387713,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4388617,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4393317,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4396078,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4399897,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4412781,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4417538,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4421652,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4421742,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4424148,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4425266,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4429185,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4432917,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4453540,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4465766,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4466851,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4469458,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4473479,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4475992,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4477143,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4550756,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4551688,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4557052,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4558195,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4564693,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4564996,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "no-title",
+     "success": true,
+     "hand_read": "same recipe ID 8509, retitled Crispy Coated Baked Chicken; 5/5 ingredient lines"
+    },
+    {
+     "id": 4568663,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4579468,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1285844,
+     "host": "www.seriouseats.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1286365,
+     "host": "www.seriouseats.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1299987,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1302781,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1314979,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1333325,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1336069,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1337780,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1942949,
+     "host": "www.foodandwine.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1341647,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1343162,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1511509,
+     "host": "www.cookstr.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1774503,
+     "host": "www.foodandwine.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1786985,
+     "host": "www.foodandwine.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1812045,
+     "host": "www.cookstr.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1923466,
+     "host": "www.vegetariantimes.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    }
+   ]
+  },
+  {
+   "draw": 2,
+   "links_checked": "the released index",
+   "measured": "September 24, 2026, 01:08-01:27 EDT",
+   "seed": 2026092401,
+   "n": 300,
+   "successes": 298,
+   "rate": 0.9933,
+   "wilson_95": [
+    0.976,
+    0.9982
+   ],
+   "gate": "passed",
+   "automated": {
+    "ok": 297,
+    "no-title": 2,
+    "ok-loose": 1
+   },
+   "by_host": {
+    "cookbooks.com": {
+     "n": 112,
+     "successes": 112
+    },
+    "www.food.com": {
+     "n": 80,
+     "successes": 80
+    },
+    "www.povarenok.ru": {
+     "n": 30,
+     "successes": 30
+    },
+    "www.allrecipes.com": {
+     "n": 12,
+     "successes": 12
+    },
+    "www.nefisyemektarifleri.com": {
+     "n": 10,
+     "successes": 10
+    },
+    "www.tasteofhome.com": {
+     "n": 10,
+     "successes": 10
+    },
+    "food52.com": {
+     "n": 9,
+     "successes": 8
+    },
+    "www.foodnetwork.com": {
+     "n": 7,
+     "successes": 6
+    },
+    "www.epicurious.com": {
+     "n": 6,
+     "successes": 6
+    },
+    "recipeland.com": {
+     "n": 6,
+     "successes": 6
+    },
+    "cookpad.com": {
+     "n": 6,
+     "successes": 6
+    },
+    "cooking.nytimes.com": {
+     "n": 5,
+     "successes": 5
+    },
+    "www.seriouseats.com": {
+     "n": 2,
+     "successes": 2
+    },
+    "www.cookstr.com": {
+     "n": 2,
+     "successes": 2
+    },
+    "allrecipes.com": {
+     "n": 1,
+     "successes": 1
+    },
+    "www.foodandwine.com": {
+     "n": 1,
+     "successes": 1
+    },
+    "www.chowhound.com": {
+     "n": 1,
+     "successes": 1
+    }
+   },
+   "hand_read": {
+    "redirected_ok": [
+     1469642,
+     1505794,
+     1516049,
+     1546292,
+     1567512,
+     1641420,
+     1643161,
+     1674661,
+     1725695,
+     1741456,
+     1744776,
+     1792679,
+     1857542,
+     1890629
+    ],
+    "random_ok_seed": 2026092402,
+    "random_ok": [
+     141590,
+     251720,
+     401976,
+     454897,
+     816264,
+     828084,
+     843518,
+     988199,
+     1001311,
+     1522793,
+     1615699,
+     1914810,
+     1937241,
+     743978,
+     764507,
+     1176524,
+     4451235,
+     4472967,
+     3511249,
+     3564023
+    ],
+    "flipped_to_failure": []
+   },
+   "notes": [
+    "The links were opened from an earlier build of the released index. The two builds differ only in the ingredient-line text of 03-povarenok records; their link shards are byte-identical, and every drawn link is checked against the released index below."
+   ],
+   "links": [
+    {
+     "id": 3537,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 30590,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 31693,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 54464,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 71407,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 72484,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 81849,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 81868,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 88791,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 94107,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 97743,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 103163,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 109441,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 109547,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 113879,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 118582,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 119550,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 122023,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 130722,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 137624,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 141590,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 142269,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 142734,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 143298,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 145843,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 154105,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 155159,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 156839,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 165628,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 176615,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 184001,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 190144,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 191419,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 192893,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 206640,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 208435,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 208645,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 227286,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 228350,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 231052,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 234959,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 239629,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 249886,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 251720,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 251999,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 252809,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 254965,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 257030,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 261569,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 264266,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 268299,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 268426,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 279376,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 282795,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 283965,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 298079,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 304411,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 306441,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 306913,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 307391,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 310922,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 315545,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 327847,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 328257,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 329346,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 330204,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 339063,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 344257,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 345114,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 355345,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 360297,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 361716,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 373596,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 373881,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 374829,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 398748,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 401976,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 403445,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 406731,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 426978,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 454897,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 474773,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 476690,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 482051,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 485042,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 489813,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 495340,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 500218,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 502557,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 506404,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 528528,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 533784,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 547039,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 557167,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 563027,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 576994,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 583501,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 584855,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 585380,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 586336,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 591688,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 606778,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 609776,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 618855,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 630565,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 638879,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 670394,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 671786,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 671928,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 679432,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 692944,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 712700,
+     "host": "cookbooks.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 792224,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 806606,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 806794,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 810169,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 810681,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 816264,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 826917,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 828084,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 830061,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 843518,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 846934,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 857395,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 866603,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 871789,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 873014,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 884332,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 890034,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 890100,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 897228,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 899158,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 903108,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 913768,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 927325,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 935077,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 936809,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 943294,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 943825,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 951859,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 952962,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 960988,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 968714,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 968764,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 971889,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 972252,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 973997,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 975091,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 975343,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 980965,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 983067,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 983722,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 988199,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 990857,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 992948,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1001311,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1014039,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1022675,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1025340,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1028465,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1041094,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1052186,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1053239,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1060666,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1063564,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1447765,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1484652,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1500296,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1506077,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1522793,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1525451,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1534477,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1565191,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1591824,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1607919,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1615699,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1618744,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1717589,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1733254,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1761830,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1776570,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1813362,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1814703,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1831915,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1849387,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1868066,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1914810,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1925594,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1937241,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1940145,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1972777,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1979465,
+     "host": "www.food.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 740636,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 742011,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 743865,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 743978,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 752158,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 756111,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 764507,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 767099,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 776134,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 777112,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1085294,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1122115,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1175554,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1176524,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1179186,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 404,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "HTTP 404"
+    },
+    {
+     "id": 1180478,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1180877,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1193114,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1196984,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1209647,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1216899,
+     "host": "food52.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1469642,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1505794,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1516049,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1546292,
+     "host": "recipeland.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1566431,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1567512,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1578840,
+     "host": "cooking.nytimes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1610887,
+     "host": "recipeland.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1641420,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1643161,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1674661,
+     "host": "recipeland.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1675940,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "no-title",
+     "success": false,
+     "hand_read": "redirected to the site's /recipes listing"
+    },
+    {
+     "id": 1701696,
+     "host": "cooking.nytimes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1725695,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1741456,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1744776,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1761459,
+     "host": "recipeland.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1774852,
+     "host": "cooking.nytimes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1775581,
+     "host": "recipeland.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok-loose",
+     "success": true,
+     "hand_read": "same recipe ID 35844, retitled One Bowl Coffee Honey Cake with Chocolate Chips & Nuts; the page's 16 JSON-LD ingredients are the record's 16 lines, in order"
+    },
+    {
+     "id": 1792679,
+     "host": "cookpad.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1793103,
+     "host": "recipeland.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1800165,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1827441,
+     "host": "cooking.nytimes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1848982,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1857542,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1885791,
+     "host": "www.epicurious.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1890629,
+     "host": "www.foodnetwork.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1906976,
+     "host": "cooking.nytimes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4383221,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4387452,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4401883,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4408017,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4435454,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4451235,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4459844,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4472967,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4473663,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4477775,
+     "host": "www.nefisyemektarifleri.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4551696,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4556498,
+     "host": "www.allrecipes.com",
+     "link_status": "source",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1291999,
+     "host": "www.seriouseats.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1292058,
+     "host": "www.seriouseats.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1298439,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1299350,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1299377,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1301374,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1304832,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1307973,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1314806,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1324089,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1333416,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1335802,
+     "host": "www.tasteofhome.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1576559,
+     "host": "www.cookstr.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1704463,
+     "host": "www.cookstr.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1728372,
+     "host": "allrecipes.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1813517,
+     "host": "www.foodandwine.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 1850909,
+     "host": "www.chowhound.com",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3442726,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3449819,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3455502,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3462482,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3462730,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3474591,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3481210,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3492514,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3493855,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3494630,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3497198,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3503299,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3510843,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3511249,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3519634,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3523196,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3539685,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3549204,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3551116,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3555361,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3555673,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3558637,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3561239,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3564023,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3568508,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3568802,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 3569299,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4362220,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4366835,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    },
+    {
+     "id": 4370946,
+     "host": "www.povarenok.ru",
+     "link_status": "archive",
+     "http_status": 200,
+     "automated": "ok",
+     "success": true
+    }
+   ]
+  }
+ ],
+ "sites": [
+  {
+   "host": "allrecipes.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 4,
+    "links": [
+     {
+      "id": 1549259,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1889018,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1493924,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1642389,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1534850,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1827648,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1792703,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1811183,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1950462,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1737187,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1611535,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1517315,
+      "automated": "http-404",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2015",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 12,
+    "replay_checked": true,
+    "successes": 12,
+    "links": [
+     {
+      "id": 1549259,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1889018,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1493924,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1642389,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1534850,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1827648,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1792703,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1811183,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1950462,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1737187,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1611535,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1517315,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "archive",
+   "archive_year": "2015",
+   "records": 2929
+  },
+  {
+   "host": "cookeatshare.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 0,
+    "links": [
+     {
+      "id": 1776884,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1461963,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1710030,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1739652,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1857334,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1963732,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1967046,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1444148,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1918129,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1748468,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1627017,
+      "automated": "http-521",
+      "success": false
+     },
+     {
+      "id": 1936098,
+      "automated": "http-521",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2015",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 9,
+    "replay_checked": true,
+    "successes": 9,
+    "links": [
+     {
+      "id": 1776884,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1461963,
+      "cdx_200": false,
+      "replay": "not-archived",
+      "success": false
+     },
+     {
+      "id": 1710030,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1739652,
+      "cdx_200": false,
+      "replay": "not-archived",
+      "success": false
+     },
+     {
+      "id": 1857334,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1963732,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1967046,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1444148,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1918129,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1748468,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1627017,
+      "cdx_200": false,
+      "replay": "not-archived",
+      "success": false
+     },
+     {
+      "id": 1936098,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "offline",
+   "archive_year": null,
+   "records": 52991
+  },
+  {
+   "host": "cooking.nytimes.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "Chromium (check-nyt-out.jsonl); curl was bot-blocked or challenged",
+    "successes": 12,
+    "links": [
+     {
+      "id": 1902894,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1581551,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1788135,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1982159,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1506278,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1957376,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1633303,
+      "automated": "ok-loose",
+      "success": true,
+      "hand_read": "NYT Cooking: same recipe ID 12862, retitled Pasta Salad With Roasted Eggplant, Chile and Mint"
+     },
+     {
+      "id": 1462268,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1457080,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1459222,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1819660,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1760080,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 15848
+  },
+  {
+   "host": "cookpad.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 12,
+    "links": [
+     {
+      "id": 1448519,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1689540,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1881896,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1584447,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1715693,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1906558,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1461641,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1782165,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1587759,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1930195,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1725763,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1762266,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 56924
+  },
+  {
+   "host": "food52.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "Chromium (browser-chromium-seed1.jsonl); curl was bot-blocked or challenged",
+    "successes": 10,
+    "links": [
+     {
+      "id": 1210191,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1189234,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1196614,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1189089,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1218316,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1188297,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1204079,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1192950,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1175367,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1201233,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1210426,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1216052,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 47758
+  },
+  {
+   "host": "icook.tw",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 12,
+    "links": [
+     {
+      "id": 4651095,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4651271,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4652179,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4652373,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4651498,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4651138,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4652412,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4651572,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4652368,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4652347,
+      "automated": "no-title",
+      "success": true,
+      "hand_read": "icook.tw: same URL and recipe ID 453099; page title adds one character (橙香蘆筍炒鴨肉)"
+     },
+     {
+      "id": 4651916,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4651755,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 1748
+  },
+  {
+   "host": "online-cookbook.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 12,
+    "links": [
+     {
+      "id": 1907246,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1614710,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1721217,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1702122,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1976477,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1898584,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1904281,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1802692,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1977924,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1473722,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1882413,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1663320,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 4995
+  },
+  {
+   "host": "recipeland.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 11,
+    "links": [
+     {
+      "id": 1752942,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1761365,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1958262,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1573659,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1723890,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1865546,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1988246,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1966587,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1729525,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1508376,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1781060,
+      "automated": "ok-loose",
+      "success": true,
+      "hand_read": "recipeland: same URL; the page writes '&' for the recorded 'and'"
+     },
+     {
+      "id": 1957521,
+      "automated": "no-title",
+      "success": false,
+      "hand_read": "recipeland: recipe 41793 redirects to a different recipe, 10959 Chili Macaroni, whose ingredients differ"
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 23303
+  },
+  {
+   "host": "recipes-plus.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 0,
+    "links": [
+     {
+      "id": 1080888,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1067764,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1069592,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1081298,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1077114,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1076369,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1080274,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1065197,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1079606,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1065652,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1074337,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1084374,
+      "automated": "network-error",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": null,
+    "method": "Wayback CDX 200 capture only (replay not needed: below the bar)",
+    "cdx_200": 0,
+    "replay_checked": false,
+    "successes": 0,
+    "links": [
+     {
+      "id": 1080888,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1067764,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1069592,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1081298,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1077114,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1076369,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1080274,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1065197,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1079606,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1065652,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1074337,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1084374,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     }
+    ]
+   },
+   "decision": "offline",
+   "archive_year": null,
+   "records": 20386
+  },
+  {
+   "host": "tastykitchen.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 0,
+    "links": [
+     {
+      "id": 1516878,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1367267,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1367036,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1803554,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1374684,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1346551,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1371090,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1899930,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1922024,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1375370,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1544618,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1833854,
+      "automated": "network-error",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2013",
+    "method": "Wayback CDX 200 capture only (replay not needed: below the bar)",
+    "cdx_200": 8,
+    "replay_checked": false,
+    "successes": 8,
+    "links": [
+     {
+      "id": 1516878,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1367267,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1367036,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1803554,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1374684,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1346551,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1371090,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1899930,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1922024,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1375370,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1544618,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1833854,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     }
+    ]
+   },
+   "decision": "offline",
+   "archive_year": null,
+   "records": 75690
+  },
+  {
+   "host": "www.allrecipes.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 12,
+    "links": [
+     {
+      "id": 771653,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4566434,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 772892,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4550881,
+      "automated": "no-title",
+      "success": true,
+      "hand_read": "allrecipes: same URL and recipe ID 12870, retitled Ahi Tuna Poke; 5/6 ingredient lines match"
+     },
+     {
+      "id": 761882,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4577106,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4562528,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4570517,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 727336,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 776878,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4557876,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 743528,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 92446
+  },
+  {
+   "host": "www.chowhound.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 0,
+    "links": [
+     {
+      "id": 1884777,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1920315,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1621891,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1805413,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1493294,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1852502,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1755077,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1927722,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1915762,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1615841,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1872944,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1796052,
+      "automated": "http-404",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2019",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 12,
+    "replay_checked": true,
+    "successes": 12,
+    "links": [
+     {
+      "id": 1884777,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1920315,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1621891,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1805413,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1493294,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1852502,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1755077,
+      "cdx_200": true,
+      "replay": "no-title",
+      "success": true,
+      "hand_read": "chowhound: the recorded title lost the en dash in Molasses–Maple; 3/3 ingredient lines"
+     },
+     {
+      "id": 1927722,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1915762,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1615841,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1872944,
+      "cdx_200": true,
+      "replay": "no-title",
+      "success": true,
+      "hand_read": "chowhound: same recipe ID 29194, retitled Easy Aioli; 7/7 ingredient lines"
+     },
+     {
+      "id": 1796052,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "archive",
+   "archive_year": "2019",
+   "records": 5357
+  },
+  {
+   "host": "www.cookbooks.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded http:// URL, whose redirect ends on the card link",
+    "successes": 12,
+    "links": [
+     {
+      "id": 508480,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 374121,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 434555,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 362889,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1661,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 564635,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 566345,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 653776,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 642202,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 347222,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 480401,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 628993,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 726588
+  },
+  {
+   "host": "www.cookstr.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 0,
+    "links": [
+     {
+      "id": 1473516,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1691002,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1635505,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1638618,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1541829,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1720558,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1478139,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1518078,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1533401,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1460731,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1928038,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1458406,
+      "automated": "network-error",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2015",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 12,
+    "replay_checked": true,
+    "successes": 12,
+    "links": [
+     {
+      "id": 1473516,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1691002,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1635505,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1638618,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1541829,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1720558,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1478139,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1518078,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1533401,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1460731,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1928038,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1458406,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "archive",
+   "archive_year": "2015",
+   "records": 8446
+  },
+  {
+   "host": "www.delish.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "Chromium (check-delish-live-out.jsonl); curl was bot-blocked or challenged",
+    "successes": 1,
+    "links": [
+     {
+      "id": 1903227,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1904132,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1612140,
+      "automated": "ok-loose",
+      "success": false
+     },
+     {
+      "id": 1593882,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1603832,
+      "automated": "ok-loose",
+      "success": false
+     },
+     {
+      "id": 1508441,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1928800,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1819684,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1554875,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1647700,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1617866,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1482998,
+      "automated": "no-title",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2015",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 10,
+    "replay_checked": true,
+    "successes": 10,
+    "links": [
+     {
+      "id": 1903227,
+      "cdx_200": false,
+      "replay": "not-archived",
+      "success": false
+     },
+     {
+      "id": 1904132,
+      "cdx_200": true,
+      "replay": "ok-loose",
+      "success": true,
+      "hand_read": "delish: archived h1 matches the title; 9/11 ingredient lines"
+     },
+     {
+      "id": 1612140,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1593882,
+      "cdx_200": false,
+      "replay": "not-archived",
+      "success": false
+     },
+     {
+      "id": 1603832,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1508441,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1928800,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1819684,
+      "cdx_200": true,
+      "replay": "ok-loose",
+      "success": true,
+      "hand_read": "delish: archived h1 identical; 9/10 ingredient lines"
+     },
+     {
+      "id": 1554875,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1647700,
+      "cdx_200": true,
+      "replay": "ok-loose",
+      "success": true,
+      "hand_read": "delish: archived h1 matches (Provençale); 14/15 ingredient lines"
+     },
+     {
+      "id": 1617866,
+      "cdx_200": true,
+      "replay": "ok-loose",
+      "success": true,
+      "hand_read": "delish: archived h1 identical; 8/12 ingredient lines"
+     },
+     {
+      "id": 1482998,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "archive",
+   "archive_year": "2015",
+   "records": 3711
+  },
+  {
+   "host": "www.epicurious.com",
+   "path_prefix": "/recipes/food/views/",
+   "n": 5,
+   "needed": 5,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 5,
+    "links": [
+     {
+      "id": 1105536,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1169575,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1507133,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1123213,
+      "automated": "ok",
+      "success": true,
+      "hand_read": "epicurious: automated pass confirmed; same URL retitled Raw Asparagus Salsa, 9/9 ingredient lines match"
+     },
+     {
+      "id": 1487687,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "archive": {
+    "year": "2022",
+    "method": "Wayback CDX 200 capture only (replay not needed: below the bar)",
+    "cdx_200": 5,
+    "replay_checked": false,
+    "successes": 5,
+    "links": [
+     {
+      "id": 1105536,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1169575,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1507133,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1123213,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1487687,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 48712
+  },
+  {
+   "host": "www.epicurious.com",
+   "path_prefix": "/recipes/member/views/",
+   "n": 7,
+   "needed": 6,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 0,
+    "links": [
+     {
+      "id": 1106564,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1118065,
+      "automated": "ok",
+      "success": false,
+      "hand_read": "epicurious member: redirects to a different recipe, Marie-Hélène's Apple Cake; 0/10 ingredient lines"
+     },
+     {
+      "id": 1153738,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1106653,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1170683,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1120385,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1144212,
+      "automated": "http-404",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2021",
+    "method": "Wayback CDX 200 capture only (replay not needed: below the bar)",
+    "cdx_200": 5,
+    "replay_checked": false,
+    "successes": 5,
+    "links": [
+     {
+      "id": 1106564,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1118065,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1153738,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1106653,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1170683,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1120385,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1144212,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     }
+    ]
+   },
+   "decision": "offline",
+   "archive_year": null,
+   "records": 74079
+  },
+  {
+   "host": "www.food.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 12,
+    "links": [
+     {
+      "id": 955155,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1046639,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1034726,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 846202,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 798725,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 949914,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 989001,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 966344,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1007016,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1839097,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 884920,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 921820,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 473640
+  },
+  {
+   "host": "www.foodandwine.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 4,
+    "links": [
+     {
+      "id": 1513665,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1606083,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1897693,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1763680,
+      "automated": "http-410",
+      "success": false
+     },
+     {
+      "id": 1578681,
+      "automated": "http-410",
+      "success": false
+     },
+     {
+      "id": 1823296,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1715518,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1951078,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1457596,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1588803,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1454694,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1693418,
+      "automated": "no-title",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2016",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 12,
+    "replay_checked": true,
+    "successes": 12,
+    "links": [
+     {
+      "id": 1513665,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1606083,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1897693,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1763680,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1578681,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1823296,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1715518,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1951078,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1457596,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1588803,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1454694,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1693418,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "archive",
+   "archive_year": "2016",
+   "records": 14529
+  },
+  {
+   "host": "www.foodgeeks.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 12,
+    "links": [
+     {
+      "id": 1601684,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1480342,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1617700,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1928683,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1907623,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1682796,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1935057,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1685623,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1475389,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1873295,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1789288,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1907158,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 8247
+  },
+  {
+   "host": "www.foodnetwork.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "Chromium (browser-chromium-seed1.jsonl); curl was bot-blocked or challenged",
+    "successes": 10,
+    "links": [
+     {
+      "id": 1487165,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1663185,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1535663,
+      "automated": "ok-loose",
+      "success": false
+     },
+     {
+      "id": 1598732,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1479204,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1669131,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1495747,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1499924,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1671892,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1662579,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1559661,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1751125,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 47986
+  },
+  {
+   "host": "www.foodrepublic.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 12,
+    "links": [
+     {
+      "id": 1700302,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1578420,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1452693,
+      "automated": "ok-loose",
+      "success": true,
+      "hand_read": "foodrepublic: same URL; the recorded title lost the apostrophe in Pollinger's"
+     },
+     {
+      "id": 1483126,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1667764,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1918107,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1619904,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1964189,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1483063,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1834936,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1649404,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1802268,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 2206
+  },
+  {
+   "host": "www.kraftrecipes.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 0,
+    "links": [
+     {
+      "id": 1520962,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1611369,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1973717,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1825807,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1993241,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1600944,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1886998,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1525521,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1783488,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1694606,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1899853,
+      "automated": "network-error",
+      "success": false
+     },
+     {
+      "id": 1895278,
+      "automated": "network-error",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2016",
+    "method": "Wayback CDX 200 capture only (replay not needed: below the bar)",
+    "cdx_200": 4,
+    "replay_checked": false,
+    "successes": 4,
+    "links": [
+     {
+      "id": 1520962,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1611369,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1973717,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1825807,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1993241,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1600944,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1886998,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1525521,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1783488,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1694606,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1899853,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1895278,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     }
+    ]
+   },
+   "decision": "offline",
+   "archive_year": null,
+   "records": 38858
+  },
+  {
+   "host": "www.landolakes.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 6,
+    "links": [
+     {
+      "id": 1461443,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1753262,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1826311,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1712786,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1462920,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1600411,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1642631,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1754729,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1972022,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1577709,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1764720,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1849971,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "archive": {
+    "year": "2015",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 12,
+    "replay_checked": true,
+    "successes": 12,
+    "links": [
+     {
+      "id": 1461443,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1753262,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1826311,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1712786,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1462920,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1600411,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1642631,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1754729,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1972022,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1577709,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1764720,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1849971,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "archive",
+   "archive_year": "2015",
+   "records": 2403
+  },
+  {
+   "host": "www.lovefood.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 12,
+    "links": [
+     {
+      "id": 1567030,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1598766,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1848530,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1506271,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1942450,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1669972,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1994425,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1773518,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1646095,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1985725,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1968222,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1854406,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 1910
+  },
+  {
+   "host": "www.myrecipes.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 0,
+    "links": [
+     {
+      "id": 1256734,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1253469,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1272045,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1256616,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1237094,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1225997,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1269261,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1224364,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1227266,
+      "automated": "ok-loose",
+      "success": false
+     },
+     {
+      "id": 1230434,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1232838,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1232632,
+      "automated": "no-title",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2019",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 12,
+    "replay_checked": true,
+    "successes": 7,
+    "links": [
+     {
+      "id": 1256734,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1253469,
+      "cdx_200": true,
+      "replay": "no-title",
+      "success": false,
+      "hand_read": "myrecipes: the 2019 capture's raw HTML is an empty page titled '| MyRecipes'; 0 ingredient lines"
+     },
+     {
+      "id": 1272045,
+      "cdx_200": true,
+      "replay": "no-title",
+      "success": false,
+      "hand_read": "myrecipes: the 2019 capture's raw HTML is an empty page titled '| MyRecipes'; 0 ingredient lines"
+     },
+     {
+      "id": 1256616,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1237094,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1225997,
+      "cdx_200": true,
+      "replay": "no-title",
+      "success": false,
+      "hand_read": "myrecipes: the 2019 capture's raw HTML is an empty page titled '| MyRecipes'; 0 ingredient lines"
+     },
+     {
+      "id": 1269261,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1224364,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1227266,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1230434,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1232838,
+      "cdx_200": true,
+      "replay": "no-title",
+      "success": false,
+      "hand_read": "myrecipes: the 2019 capture's raw HTML is an empty page titled '| MyRecipes'; 0 ingredient lines"
+     },
+     {
+      "id": 1232632,
+      "cdx_200": true,
+      "replay": "no-title",
+      "success": false,
+      "hand_read": "myrecipes: the 2019 capture's raw HTML is an empty page titled '| MyRecipes'; 0 ingredient lines"
+     }
+    ]
+   },
+   "archive_round2": {
+    "year": "2021",
+    "seed": 2,
+    "n": 12,
+    "needed": 10,
+    "successes": 6,
+    "links": [
+     {
+      "id": 1263482,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1253558,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1252082,
+      "automated": "no-title",
+      "success": false,
+      "hand_read": "myrecipes round 2: the '2021' link lands on a March 3, 2019 capture, an empty page titled '| MyRecipes'; 0/9 ingredient lines"
+     },
+     {
+      "id": 1235364,
+      "automated": "no-title",
+      "success": false,
+      "hand_read": "myrecipes round 2: the '2021' link lands on a March 3, 2019 capture, an empty page titled '| MyRecipes'; 0/9 ingredient lines"
+     },
+     {
+      "id": 1280014,
+      "automated": "no-title",
+      "success": false,
+      "hand_read": "myrecipes round 2: the '2021' link lands on a March 3, 2019 capture, an empty page titled '| MyRecipes'; 0/2 ingredient lines"
+     },
+     {
+      "id": 1260300,
+      "automated": "no-title",
+      "success": false,
+      "hand_read": "myrecipes round 2: the '2021' link lands on a March 3, 2019 capture, an empty page titled '| MyRecipes'; 0/6 ingredient lines"
+     },
+     {
+      "id": 1261927,
+      "automated": "no-title",
+      "success": false,
+      "hand_read": "myrecipes round 2: the '2021' link lands on a March 3, 2019 capture, an empty page titled '| MyRecipes'; 0/9 ingredient lines"
+     },
+     {
+      "id": 1226552,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1222066,
+      "automated": "no-title",
+      "success": false,
+      "hand_read": "myrecipes round 2: the '2021' link lands on a March 3, 2019 capture, an empty page titled '| MyRecipes'; 0/12 ingredient lines"
+     },
+     {
+      "id": 1240352,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1223299,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1246155,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "offline",
+   "archive_year": null,
+   "records": 61777
+  },
+  {
+   "host": "www.nefisyemektarifleri.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 12,
+    "links": [
+     {
+      "id": 4448430,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4405800,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4413014,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4477384,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4421432,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4456556,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4444193,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4411347,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4426134,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4422299,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4422487,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4392816,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "source",
+   "archive_year": null,
+   "records": 100332
+  },
+  {
+   "host": "www.povarenok.ru",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 12,
+    "links": [
+     {
+      "id": 3509722,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 3495035,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4373401,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 3561516,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 3468862,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4367103,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 4359557,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 3460717,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 3517458,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 3443641,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 3539969,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 3452569,
+      "automated": "ok",
+      "success": true
+     }
+    ]
+   },
+   "round3": {
+    "why": "all 22 held-out links failed on September 24, 2026 (HTTP 403 in Chromium; the homepage served the site's outage page, HTTP 502)",
+    "measured": "September 24, 2026, 00:41-00:54 EDT",
+    "seed": 3,
+    "n": 12,
+    "needed": 10,
+    "live": {
+     "method": "curl (probe_links.py) or Chromium (open_links_v2.cjs); either showing the title counts",
+     "successes": 0,
+     "links": [
+      {
+       "id": 3436834,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 3450563,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 3467578,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 3495777,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 3530383,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 3556413,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 3557677,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 4357766,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 4367370,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 4370461,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 4373419,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      },
+      {
+       "id": 4373859,
+       "curl": "http-502",
+       "chromium": "no-title",
+       "success": false
+      }
+     ]
+    },
+    "archive": {
+     "year": "2025",
+     "method": "Wayback CDX 200 capture, replayed in Chromium",
+     "successes": 12,
+     "links": [
+      {
+       "id": 3436834,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 3450563,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 3467578,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 3495777,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 3530383,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 3556413,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 3557677,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 4357766,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 4367370,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 4370461,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 4373419,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      },
+      {
+       "id": 4373859,
+       "cdx_200": true,
+       "replay": "ok",
+       "success": true
+      }
+     ]
+    }
+   },
+   "decision": "archive",
+   "archive_year": "2025",
+   "records": 162815
+  },
+  {
+   "host": "www.seriouseats.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 5,
+    "links": [
+     {
+      "id": 1289690,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1285874,
+      "automated": "ok-loose",
+      "success": false
+     },
+     {
+      "id": 1285509,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1289046,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1285340,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1293540,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1293085,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1289654,
+      "automated": "no-title",
+      "success": false
+     },
+     {
+      "id": 1284716,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1292812,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1292476,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1287126,
+      "automated": "http-404",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2020",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 12,
+    "replay_checked": true,
+    "successes": 12,
+    "links": [
+     {
+      "id": 1289690,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1285874,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1285509,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1289046,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1285340,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1293540,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1293085,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1289654,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1284716,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1292812,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1292476,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1287126,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "archive",
+   "archive_year": "2020",
+   "records": 12328
+  },
+  {
+   "host": "www.tasteofhome.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 2,
+    "links": [
+     {
+      "id": 1332880,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1301146,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1313269,
+      "automated": "ok-loose",
+      "success": false
+     },
+     {
+      "id": 1319702,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1315158,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1332780,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1330804,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1303280,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1325789,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1313954,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1302849,
+      "automated": "ok",
+      "success": true
+     },
+     {
+      "id": 1298787,
+      "automated": "ok-loose",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2019",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 12,
+    "replay_checked": true,
+    "successes": 12,
+    "links": [
+     {
+      "id": 1332880,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1301146,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1313269,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1319702,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1315158,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1332780,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1330804,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1303280,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1325789,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1313954,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1302849,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1298787,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "archive",
+   "archive_year": "2019",
+   "records": 49150
+  },
+  {
+   "host": "www.vegetariantimes.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "curl of the recorded page over https",
+    "successes": 0,
+    "links": [
+     {
+      "id": 1749565,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1454506,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1456382,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1538014,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1864637,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1563311,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1483938,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1638299,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1691631,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1870645,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1613299,
+      "automated": "http-404",
+      "success": false
+     },
+     {
+      "id": 1563404,
+      "automated": "http-404",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2015",
+    "method": "Wayback CDX 200 capture, replayed in Chromium",
+    "cdx_200": 11,
+    "replay_checked": true,
+    "successes": 11,
+    "links": [
+     {
+      "id": 1749565,
+      "cdx_200": false,
+      "replay": "not-archived",
+      "success": false
+     },
+     {
+      "id": 1454506,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1456382,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1538014,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1864637,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1563311,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1483938,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1638299,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1691631,
+      "cdx_200": true,
+      "replay": "no-title",
+      "success": true,
+      "hand_read": "vegetariantimes: archived title writes Provençale for the recorded Provencale; 13/14 ingredient lines"
+     },
+     {
+      "id": 1870645,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1613299,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     },
+     {
+      "id": 1563404,
+      "cdx_200": true,
+      "replay": "ok",
+      "success": true
+     }
+    ]
+   },
+   "decision": "archive",
+   "archive_year": "2015",
+   "records": 4514
+  },
+  {
+   "host": "www.yummly.com",
+   "path_prefix": "",
+   "n": 12,
+   "needed": 10,
+   "live": {
+    "method": "Chromium (browser-chromium-seed1.jsonl); curl was bot-blocked or challenged",
+    "successes": 0,
+    "links": [
+     {
+      "id": 1422526,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1403945,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1437598,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1408797,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1403392,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1441735,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1399715,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1421490,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1417766,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1428557,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1412245,
+      "automated": "error",
+      "success": false
+     },
+     {
+      "id": 1429034,
+      "automated": "error",
+      "success": false
+     }
+    ]
+   },
+   "archive": {
+    "year": "2016",
+    "method": "Wayback CDX 200 capture only (replay not needed: below the bar)",
+    "cdx_200": 2,
+    "replay_checked": false,
+    "successes": 2,
+    "links": [
+     {
+      "id": 1422526,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1403945,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1437598,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1408797,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1403392,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1441735,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1399715,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1421490,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     },
+     {
+      "id": 1417766,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1428557,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1412245,
+      "cdx_200": false,
+      "replay": null,
+      "success": false
+     },
+     {
+      "id": 1429034,
+      "cdx_200": true,
+      "replay": null,
+      "success": true
+     }
+    ]
+   },
+   "decision": "offline",
+   "archive_year": null,
+   "records": 49805
+  }
+ ]
+}

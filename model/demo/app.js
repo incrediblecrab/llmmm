@@ -21,17 +21,9 @@ function element(tag, text = "", className = "") {
   return node;
 }
 
-function link(text, url, allowHttp = false) {
+function link(text, url) {
   const node = element("a", text);
-  if (allowHttp) {
-    const parsed = new URL(url);
-    if (!["http:", "https:"].includes(parsed.protocol) || parsed.username || parsed.password) {
-      throw new Error("Source links must be ordinary HTTP(S) URLs.");
-    }
-    node.href = parsed.href;
-  } else {
-    node.href = sourceUrl(url);
-  }
+  node.href = sourceUrl(url);
   node.target = "_blank";
   node.rel = "noopener noreferrer";
   return node;
@@ -122,6 +114,27 @@ function recordText(node, language) {
   return node;
 }
 
+function recipeLink(recipe) {
+  const original = element("p", "", "original-recipe");
+  if (recipe.link_status === "source") {
+    original.append(link("Open recipe", recipe.link));
+    return [original, element("p", "Cooking steps are on the original page and are not copied here.", "hint")];
+  }
+  if (recipe.link_status === "archive") {
+    original.append(link("Open archived copy", recipe.link));
+    const site = new URL(recipe.link.replace(/^https:\/\/web\.archive\.org\/web\/\d{4}\//, "")).hostname;
+    return [original, element("p", `When checked in September 2026, pages on ${site.replace(/^www\./, "")} opened less `
+      + "reliably than their Internet Archive copies, so this opens the archived copy. Cooking steps are not copied here.",
+    "hint")];
+  }
+  if (recipe.link_status === "offline") {
+    return [element("p", "When checked in September 2026, neither this site's pages nor their Internet Archive "
+      + "copies opened reliably, so no link is shown.", "hint")];
+  }
+  return [element("p", "No original recipe link was recorded, so this record's cooking steps "
+    + "are not available here.", "hint")];
+}
+
 function recipeCard(recipe, index) {
   const article = element("article", "", "recipe-card");
   article.dataset.recipeId = recipe.id;
@@ -158,15 +171,7 @@ function recipeCard(recipe, index) {
     article.append(details);
     const source = element("p", `${recipe.source} / Record ${recipe.id.toLocaleString()} / ${recipe.language}`, "attribution");
     article.append(source);
-    if (recipe.source_url) {
-      const original = element("p", "", "original-recipe");
-      original.append(link("Open original recipe", recipe.source_url, true));
-      article.append(original, element("p", "Cooking steps are on the original page and are not copied here. "
-        + "Some older recipe sites no longer respond.", "hint"));
-    } else {
-      article.append(element("p", "No original recipe link was recorded, so this record's cooking steps "
-        + "are not available here.", "hint"));
-    }
+    article.append(...recipeLink(recipe));
     return article;
   }
   if (recipe.unmapped_ingredients.length) {
@@ -250,7 +255,7 @@ async function runSearch() {
       max_missing: $("max-missing").value === "" ? null : Number($("max-missing").value),
       top_k: topK,
     };
-    if (ingredientMode) query.require_source_url = $("require-source-link").checked;
+    if (ingredientMode) query.require_link = $("require-link").checked;
     if (ingredientMode) {
       $("result-count").textContent = "Searching the ingredient index...";
     }
@@ -320,6 +325,10 @@ async function start() {
   } else if (ingredientMode) {
     $("dataset-link").href = new URL(bundle.index.path, import.meta.url).href;
     $("dataset-link").textContent = "Local index manifest";
+  } else {
+    $("dataset-link").href = sourceUrl(`https://github.com/incrediblecrab/llmmm/tree/${
+      provenance.source_revision || "main"}/model/demo_data`);
+    $("dataset-link").textContent = "Sample & attribution";
   }
   if (provenance.source_revision) {
     $("code-link").href = sourceUrl(`https://github.com/incrediblecrab/llmmm/tree/${provenance.source_revision}/model/demo`);
@@ -338,11 +347,13 @@ async function start() {
       + (provenance.dataset_repository ? "See the dataset's publication terms and source inventory."
         : "This is a local preview without a pinned public dataset revision.");
     $("index-download").hidden = false;
-    $("source-link-filter").hidden = false;
+    $("link-filter").hidden = false;
     $("download-size").textContent = `${(bundle.catalog.bytes.initial_compressed_download / 1024 ** 2).toFixed(1)} MiB`;
+    const links = catalog.coverage.link_statuses;
     $("index-coverage").textContent = `${catalog.coverage.source_total_times.toLocaleString()} records have source total times; `
       + `${catalog.coverage.source_servings.toLocaleString()} have serving counts; `
-      + `${(catalog.coverage.url_statuses.source_url || 0).toLocaleString()} have source links; `
+      + `${((links.source || 0) + (links.archive || 0)).toLocaleString()} have a recipe link, `
+      + `${(links.archive || 0).toLocaleString()} of them to an Internet Archive copy; `
       + `${catalog.coverage.recipe_titles.toLocaleString()} have recorded titles and `
       + `${catalog.coverage.ingredient_line_records.toLocaleString()} have ingredient lines. `
       + "Missing metadata is not invented.";
@@ -377,7 +388,7 @@ async function start() {
     });
   } else {
     $("license-note").textContent = `Recipe text: ${[...new Set(catalog.recipes.map((row) => row.license.toUpperCase()))].join(", ")}; `
-      + "Wikibooks contributors. See each recipe and the dataset for attribution and changes. "
+      + "Wikibooks contributors. See each recipe and the tracked sample for attribution and changes. "
       + "The ranking weights retain their separate model terms.";
   }
   const orderedNames = [...catalog.vocabulary].sort((a, b) =>
@@ -411,7 +422,7 @@ async function start() {
     runSearch();
     $("pantry-entry").focus();
   });
-  for (const id of ["max-time", "max-missing", "min-servings", "must-use", "exclude", "ranking", "require-source-link"]) {
+  for (const id of ["max-time", "max-missing", "min-servings", "must-use", "exclude", "ranking", "require-link"]) {
     $(id).addEventListener("change", () => { topK = 5; runSearch(); });
   }
   $("show-all").addEventListener("click", () => { topK = 100; runSearch(); });

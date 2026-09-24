@@ -13,11 +13,12 @@ from pathlib import Path
 from ._hashing import file_sha256
 from .data.recipe_search_metadata import _publish_directory
 from .ingredient_catalog import TEXT_MANIFEST, load_ingredient_catalog, load_text_shards, read_text_shard
-from .ingredient_dataset import _read_url_shard
+from .ingredient_dataset import _read_link_shard, _read_url_shard
 from .recipe_demo import (
-    DATASET_REPOSITORY, MODEL_REPOSITORY, SOURCE_FILES, SPACE_REPOSITORY,
+    MODEL_REPOSITORY, SOURCE_FILES, SPACE_REPOSITORY,
     WEB_FILES, _json_bytes, browser_policy, load_public_policy, verify_source_revision,
 )
+from .recipe_links import ARCHIVE, LINK_STATUSES, SOURCE
 from .recipe_ranker import RecipeRankingPolicy
 
 INGREDIENT_DATASET_REPOSITORY = "incrediblecrab/llmmm-recipe-ingredients"
@@ -27,6 +28,7 @@ INGREDIENT_SOURCE_FILES = tuple(dict.fromkeys((
     "model/ingredient_model/ingredient_dataset.py",
     "model/ingredient_model/ingredient_demo.py",
     "model/ingredient_model/recipe_ingredients.py",
+    "model/ingredient_model/recipe_links.py",
     "model/ingredient_model/data/recipe_search_metadata.py",
     "model/demo/test/full_catalog_bridge.js",
     "model/demo/e2e/ingredient-demo.spec.js",
@@ -38,6 +40,7 @@ INGREDIENT_SOURCE_FILES = tuple(dict.fromkeys((
     "model/scripts/publish_ingredient_demo.py",
     "model/results/ingredient_catalog_verification.json",
     "model/results/ingredient_catalog_publication_scope.json",
+    "model/results/recipe_link_health.json",
 )))
 EXAMPLE_PANTRIES = (
     {"label": "Tomato and basil", "available_ingredients": ["tomato", "basil", "olive_oil", "salt", "garlic"],
@@ -82,7 +85,7 @@ def example_query(example: dict) -> dict:
     return {
         "available_ingredients": list(example["available_ingredients"]), "must_use": [], "exclude": [],
         "max_total_minutes": example["max_total_minutes"], "min_servings": None,
-        "max_missing": example["max_missing"], "top_k": 5, "require_source_url": True,
+        "max_missing": example["max_missing"], "top_k": 5, "require_link": True,
     }
 
 
@@ -99,7 +102,7 @@ def precompute_examples(repository: Path, index_directory: Path, metadata: dict,
     if browser["records"] != metadata["n_recipes"] or len(browser["results"]) != 2 * len(queries):
         raise ValueError("the example searches did not cover the complete index")
     url_size, text_size = metadata["rows_per_url_shard"], metadata["rows_per_text_shard"]
-    urls, texts = {}, {}
+    urls, links, texts = {}, {}, {}
     examples = []
     for position, (example, query) in enumerate(zip(EXAMPLE_PANTRIES, queries)):
         result = browser["results"][2 * position]
@@ -111,13 +114,16 @@ def precompute_examples(repository: Path, index_directory: Path, metadata: dict,
             recipe_id = match["id"]
             if recipe_id // url_size not in urls:
                 urls[recipe_id // url_size] = _read_url_shard(index_directory, metadata["url_shards"][recipe_id // url_size])
+                links[recipe_id // url_size] = _read_link_shard(index_directory, metadata["link_shards"][recipe_id // url_size])
             if recipe_id // text_size not in texts:
                 texts[recipe_id // text_size] = read_text_shard(index_directory, text_records[recipe_id // text_size])
             url = urls[recipe_id // url_size][recipe_id % url_size]
+            link = links[recipe_id // url_size][recipe_id % url_size]
+            status = int(arrays["link_status"][recipe_id])
             titles, lines = texts[recipe_id // text_size]
-            if url is None or not arrays["has_source_url"][recipe_id]:
-                raise ValueError(f"{example['label']}: a link-only result has no source link")
-            matches.append({**match, "source_url": url, "title": titles[recipe_id % text_size],
+            if url is None or link is None or status not in (SOURCE, ARCHIVE) or match["link_status"] != LINK_STATUSES[status]:
+                raise ValueError(f"{example['label']}: a link-only result has no recipe link")
+            matches.append({**match, "source_url": url, "link": link, "title": titles[recipe_id % text_size],
                             "ingredient_lines": lines[recipe_id % text_size]})
         summary = {name: result[name] for name in (
             "ranking", "feasible_count", "scanned", "candidates_scored", "retrieval_truncated", "shortlist_method")}
@@ -126,6 +132,8 @@ def precompute_examples(repository: Path, index_directory: Path, metadata: dict,
 
 
 def ingredient_space_card(metadata: dict, provenance: dict) -> str:
+    links = {name: metadata['coverage']['link_statuses'].get(name, 0) for name in LINK_STATUSES}
+    revision = provenance['source_revision'] or 'main'
     return f"""---
 title: llmmm Recipe Finder
 colorFrom: green
@@ -136,24 +144,22 @@ models:
   - {MODEL_REPOSITORY}
 datasets:
   - {INGREDIENT_DATASET_REPOSITORY}
-  - {DATASET_REPOSITORY}
 ---
 
 # llmmm recipe finder
 
 Search **{metadata['n_recipes']:,} canonical ingredient records** with pantry ingredients, source-reported time and serving limits, required/excluded ingredients, and a missing-item allowance. The same independently trained supervised weights from [llmmm-recipes](https://huggingface.co/{MODEL_REPOSITORY}) rank the results.
 
-This is retrieval, not recipe generation. Result cards show each recipe's recorded title and original ingredient lines, quantities included: **{metadata['coverage']['recipe_titles']:,} records have titles** and **{metadata['coverage']['ingredient_line_records']:,} have ingredient lines**. Cooking instructions, descriptions and photos are not copied; open the recorded source link for the steps. There are **{metadata['coverage']['url_statuses'].get('source_url', 0):,} records with links**; the link-only filter is on by default and can be disabled. A record is not necessarily a unique or complete recipe.
+This is retrieval, not recipe generation. Result cards show each recipe's recorded title and original ingredient lines, quantities included: **{metadata['coverage']['recipe_titles']:,} records have titles** and **{metadata['coverage']['ingredient_line_records']:,} have ingredient lines**. Cooking instructions, descriptions and photos are not copied; a card's recipe link leads to the steps. **{links['source'] + links['archive']:,} records have a recipe link**: {links['source']:,} open the recorded page on its source site, and {links['archive']:,} open the Internet Archive's copy, for sites whose own pages failed a September 23 or 24, 2026 check that their archived copies passed. The {links['offline']:,} records from sites that passed neither check show no link. Each site's rule was chosen from a sample of its links opened on the day of its check ([measurements](https://github.com/incrediblecrab/llmmm/blob/{revision}/model/results/recipe_link_health.json)); an individual page can still have moved. The link filter is on by default and can be disabled. A record is not necessarily a unique or complete recipe.
 
-The example pantries show precomputed results immediately. Loading the **{metadata['bytes']['initial_compressed_download'] / 1024**2:.1f} MiB** index is optional; search and model inference then run in your browser, and recipe text and source links for the results shown download as needed. This is a free Static Space, with no server-side model, paid hardware, API key or per-search inference fee. Pantry inputs are not sent to a server or stored between visits.
+The example pantries show precomputed results immediately. Loading the **{metadata['bytes']['initial_compressed_download'] / 1024**2:.1f} MiB** index is optional; search and model inference then run in your browser, and recipe text and links for the results shown download as needed. This is a free Static Space, with no server-side model, paid hardware, API key or per-search inference fee. Pantry inputs are not sent to a server or stored between visits.
 
 All records are checked against the hard constraints. The baseline retains at most 2,000 feasible records for learned ranking; the app discloses truncation. Those results are not guaranteed global learned top-k. The private finder's recovery scores do not evaluate this browser retrieval pipeline.
 
 Missing time/serving metadata cannot pass its corresponding constraint. Values are source reports, not independently measured. Canonical exclusions are not an allergy-safety check; serving limits do not scale quantities.
 
 - [Ingredient dataset and source provenance](https://huggingface.co/datasets/{INGREDIENT_DATASET_REPOSITORY})
-- [Separate twelve-recipe Wikibooks sample, with complete instructions](https://huggingface.co/datasets/{DATASET_REPOSITORY})
-- [Source and reproduction](https://github.com/incrediblecrab/llmmm/tree/{provenance['source_revision'] or 'main'}/model/demo)
+- [Source and reproduction](https://github.com/incrediblecrab/llmmm/tree/{revision}/model/demo)
 - Model revision: `{provenance['model_revision']}`.
 - Dataset revision: `{provenance['dataset_revision'] or 'local preview'}`.
 - Source revision: `{provenance['source_revision'] or 'local preview'}`.
@@ -164,18 +170,19 @@ The maintainer confirmed permission to publish this extract, including the recor
 
 def add_ingredient_demo_links(card: str) -> str:
     start, end = "<!-- PUBLIC-DEMO:START -->", "<!-- PUBLIC-DEMO:END -->"
+    heading = "## Finding recipes"
+    if start not in card and end not in card and card.count(heading) == 1:
+        card = card.replace(heading, f"{start}\n{end}\n\n{heading}", 1)
     if card.count(start) != 1 or card.count(end) != 1 or card.index(start) > card.index(end):
         raise ValueError("the model card must contain its existing single demo-link section")
     section = f"""{start}
 ## Try the public demo
 
-[Open the browser demo](https://huggingface.co/spaces/{SPACE_REPOSITORY}) or [download all 4,653,430 ingredient records](https://huggingface.co/datasets/{INGREDIENT_DATASET_REPOSITORY}). The demo uses the released supervised weights and full-corpus ingredient frequencies. Example pantries show precomputed results at once; an optional 36.0 MiB index download enables local browser search, with no login, API key or paid inference service.
+[Open the browser demo](https://huggingface.co/spaces/{SPACE_REPOSITORY}) or [download all 4,653,430 ingredient records](https://huggingface.co/datasets/{INGREDIENT_DATASET_REPOSITORY}). The demo uses the released supervised weights and full-corpus ingredient frequencies. Example pantries show precomputed results at once; an optional index download, whose size the demo states first, enables local browser search, with no login, API key or paid inference service.
 
-The dataset contains normalized ingredient names, source-reported times and servings, source identifiers, recorded original links, and each recipe's recorded title and ingredient lines for the result cards. It does not copy cooking instructions, descriptions or images. The link-only filter is enabled by default; unlinked records remain available when disabled.
+The dataset contains normalized ingredient names, source-reported times and servings, source identifiers, recorded original links, the link each result card opens, and each recipe's recorded title and ingredient lines. It does not copy cooking instructions, descriptions or images. A card links to the recorded page or, for sites whose recorded pages failed a September 23 or 24, 2026 check that their archived copies passed, to the Internet Archive's copy; the dataset card states the rule. The link filter is enabled by default; records without a link remain available when disabled.
 
-All records are checked against constraints, then at most 2,000 baseline-selected candidates receive learned scores. This is not a new quality benchmark or a guaranteed global learned top-k. The private catalog's recovery scores below do not measure this browser retrieval pipeline.
-
-The [separately sourced twelve-recipe sample](https://huggingface.co/datasets/{DATASET_REPOSITORY}) remains available with complete Wikibooks instructions and attribution. Model weights and their terms are unchanged.
+All records are checked against constraints, then at most 2,000 baseline-selected candidates receive learned scores. This is not a new quality benchmark or a guaranteed global learned top-k. The private catalog's recovery scores below do not measure this browser retrieval pipeline. Model weights and their terms are unchanged.
 {end}"""
     before, remaining = card.split(start, 1)
     _, after = remaining.split(end, 1)
@@ -217,7 +224,7 @@ def build_ingredient_demo(
         if dataset_revision is None:
             data_directory = staged / "ingredient-data"
             data_directory.mkdir()
-            shards = {record["file"]: record for record in (*metadata["url_shards"], *text_records)}
+            shards = {record["file"]: record for record in (*metadata["link_shards"], *text_records)}
             data_files = ["ingredient-index.json", TEXT_MANIFEST,
                           *(record["file"] for record in metadata["arrays"].values()), *shards]
             for filename in data_files:
@@ -225,7 +232,7 @@ def build_ingredient_demo(
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 record = shards.get(filename)
                 if record and (source_path.stat().st_size != record["bytes"] or file_sha256(source_path) != record["sha256"]):
-                    raise ValueError(f"{filename}: a URL or text shard differs from its index declaration")
+                    raise ValueError(f"{filename}: a link or text shard differs from its index declaration")
                 shutil.copyfile(source_path, destination)
             index_location = "ingredient-data/ingredient-index.json"
         bundle = {

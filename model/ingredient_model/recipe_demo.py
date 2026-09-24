@@ -1,4 +1,8 @@
-"""Build a public-sample browser demo without opening the private recipe corpus."""
+"""Build a local preview of the Wikibooks sample demo, and helpers shared with the full browser demo.
+
+The sample's Hugging Face dataset is retired: incrediblecrab/llmmm-recipe-ingredients is the project's only
+public dataset, and model/demo_data holds the sample's tracked copy. Nothing here publishes the sample.
+"""
 from __future__ import annotations
 
 import hashlib
@@ -26,7 +30,6 @@ from .recipe_ranker import (
 from .recipe_search import RecipeFinder, RecipeQuery
 
 MODEL_REPOSITORY = "incrediblecrab/llmmm-recipes"
-DATASET_REPOSITORY = "incrediblecrab/llmmm-recipe-sample"
 SPACE_REPOSITORY = "incrediblecrab/llmmm-recipes-demo"
 WEB_FILES = (
     "index.html", "styles.css", "app.js", "ranker.js", "search.js",
@@ -364,8 +367,6 @@ sdk: static
 app_file: index.html
 models:
   - {MODEL_REPOSITORY}
-datasets:
-  - {DATASET_REPOSITORY}
 ---
 
 # llmmm recipe finder
@@ -376,10 +377,9 @@ Everything runs in the browser, including the trained model's forward pass. No G
 
 The sample is separately sourced from Wikibooks, not extracted from the private training corpus. It is not a held-out benchmark, and the full-catalog quality measurements do not apply to it. Document frequencies are recomputed from this sample; the full published vocabulary and supervised weights are retained. Time and servings are source reports, not independently measured values. Unknown metadata cannot pass a corresponding limit. Canonical exclusions are not an allergy-safety check, and servings do not scale quantities.
 
-Recipe text is licensed under {licenses}; see the [dataset](https://huggingface.co/datasets/{DATASET_REPOSITORY}) and individual recipes for source revisions, contributor-history links and changes. The model weights retain their [separate terms](https://huggingface.co/{MODEL_REPOSITORY}/blob/{provenance['model_revision']}/recipe_release_policy.json); the recipe-text license does not relicense the weights or project code.
+Recipe text is licensed under {licenses}; see [`model/demo_data`](https://github.com/incrediblecrab/llmmm/tree/{provenance['source_revision'] or 'main'}/model/demo_data) and individual recipes for source revisions, contributor-history links and changes. The model weights retain their [separate terms](https://huggingface.co/{MODEL_REPOSITORY}/blob/{provenance['model_revision']}/recipe_release_policy.json); the recipe-text license does not relicense the weights or project code.
 
 - Model commit: `{provenance['model_revision']}` (supervised).
-- Dataset commit: `{provenance['dataset_revision'] or 'local preview; not published'}`.
 - Source commit: `{provenance['source_revision'] or 'local preview; not committed'}`.
 - [Source and reproduction instructions](https://github.com/incrediblecrab/llmmm).
 
@@ -387,34 +387,9 @@ Recipe text is licensed under {licenses}; see the [dataset](https://huggingface.
 """
 
 
-def add_demo_links(card: str) -> str:
-    start, end = "<!-- PUBLIC-DEMO:START -->", "<!-- PUBLIC-DEMO:END -->"
-    section = f"""{start}
-## Try the public demo
-
-[Open the browser demo](https://huggingface.co/spaces/{SPACE_REPOSITORY}) or [download the public recipe sample](https://huggingface.co/datasets/{DATASET_REPOSITORY}). The demo runs the released supervised ranker on a small, separately sourced Wikibooks catalog. It needs no private dataset, API key or login.
-
-This is not the full training catalog or a new quality benchmark. The demo uses sample-specific ingredient frequencies; the full-catalog measurements below do not apply to it. Recipe-text licenses, source revisions and attribution are recorded with the sample. The model weights retain their existing terms.
-{end}
-"""
-    if start in card or end in card:
-        if card.count(start) != 1 or card.count(end) != 1 or card.index(start) > card.index(end):
-            raise ValueError("malformed existing demo-link section")
-        before, remaining = card.split(start, 1)
-        _, after = remaining.split(end, 1)
-        return before + section.rstrip() + after
-    heading = "## Finding recipes"
-    if card.count(heading) != 1:
-        raise ValueError("the model card does not have its expected recipe-search section")
-    return card.replace(heading, section + "\n" + heading, 1)
-
-
-def build_demo(repository: Path, output: Path, *, source_revision: str | None = None,
-               dataset_revision: str | None = None, ipv4: bool = False) -> dict:
+def build_demo(repository: Path, output: Path, *, source_revision: str | None = None, ipv4: bool = False) -> dict:
     if output.exists():
         raise FileExistsError(f"{output}: demo builds never overwrite an existing directory")
-    if dataset_revision is not None and not re.fullmatch(r"[0-9a-f]{40}", dataset_revision):
-        raise ValueError("dataset revision must be an immutable Hub commit")
     source_files = verify_source_revision(repository, source_revision) if source_revision else None
     sources = verify_sample_provenance(repository)
     torch.set_num_threads(4)
@@ -430,7 +405,6 @@ def build_demo(repository: Path, output: Path, *, source_revision: str | None = 
     verification = verify_browser(repository, catalog, policy, exported)
     provenance = {
         "model_repository": MODEL_REPOSITORY, "model_revision": model_source["revision"],
-        "dataset_repository": DATASET_REPOSITORY, "dataset_revision": dataset_revision,
         "source_revision": source_revision, "sample_sha256": file_sha256(sample_path),
         "source_manifest_sha256": file_sha256(repository / "model/demo_data/sources.json"),
     }

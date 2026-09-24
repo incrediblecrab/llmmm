@@ -181,7 +181,7 @@ def test_dataset_inventory_rejects_an_extra_private_file_or_missing_card_text(pu
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("fixture")
     monkeypatch.setattr(publisher, "load_ingredient_catalog", lambda directory: (
-        {"arrays": {"ingredients": {"file": "safe.gz"}}, "url_shards": [],
+        {"arrays": {"ingredients": {"file": "safe.gz"}}, "url_shards": [], "link_shards": [],
          "text_manifest": {"file": "text-shards.json.gz"}}, {}))
     monkeypatch.setattr(publisher, "load_text_shards", lambda directory, metadata: [{"file": "text/0000.json.gz"}])
 
@@ -222,7 +222,8 @@ def _viewer_rows(publisher, tmp_path):
     (tmp_path / "index/ingredient-index.json").write_text(json.dumps({"n_recipes": 3}))
     rows = [
         {"id": value, "ingredient_ids": [0], "ingredients": ["egg"], "source": "fixture",
-         "language": "en", "total_minutes": None, "servings": None, "source_url": None}
+         "language": "en", "total_minutes": None, "servings": None, "source_url": None,
+         "recipe_link": None, "link_status": "none"}
         for value in range(3)
     ]
     publisher.pq.write_table(publisher.pa.Table.from_pylist(rows),
@@ -230,10 +231,11 @@ def _viewer_rows(publisher, tmp_path):
     return rows
 
 
-def _viewer_size(count):
+def _viewer_size(publisher, count):
     return {"partial": False, "pending": [], "failed": [], "size": {
         "dataset": {"num_rows": count},
-        "splits": [{"config": "default", "split": "train", "num_rows": count, "num_columns": 8}],
+        "splits": [{"config": "default", "split": "train", "num_rows": count,
+                    "num_columns": len(publisher.PARQUET_COLUMNS)}],
     }}
 
 
@@ -246,7 +248,7 @@ def test_viewer_must_cover_the_full_population_not_just_matching_first_rows(publ
             if url.endswith("first-rows"):
                 body = {"rows": [{"row": row, "truncated_cells": []} for row in rows]}
             else:
-                body = _viewer_size(count)
+                body = _viewer_size(publisher, count)
             return publisher.httpx.Response(200, json=body)
 
     assert publisher.verify_dataset_viewer(Client(), tmp_path)["total_rows"] == 3
@@ -267,7 +269,7 @@ def test_viewer_waits_while_it_still_serves_the_previous_release(publisher, monk
                 current = served.pop(0) if len(served) > 1 else served[0]
                 return publisher.httpx.Response(200, json={
                     "rows": [{"row": row, "truncated_cells": []} for row in current]})
-            return publisher.httpx.Response(200, json=_viewer_size(3))
+            return publisher.httpx.Response(200, json=_viewer_size(publisher, 3))
 
     clock = SimpleNamespace(monotonic=publisher.time.monotonic, sleep=sleeps.append)
     monkeypatch.setattr(publisher, "time", clock)

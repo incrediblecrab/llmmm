@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import test from "node:test";
 import { ARRAY_FORMAT, prepareIngredientCatalog, searchIngredientCatalog } from "../ingredient-catalog.js";
-import { checkedBytes, checkedDecompression, loadResultText, loadTextManifest } from "../ingredient-loader.js";
+import { checkedBytes, checkedDecompression, loadResultLinks, loadResultText, loadTextManifest } from "../ingredient-loader.js";
 import { candidateFeatures, heuristicScores, heuristicStatisticScore } from "../ranker.js";
 import { policy } from "./fixtures.js";
 
@@ -15,10 +15,10 @@ function fixture() {
     servings: new Float64Array([2, 4, 1, NaN]),
     source_codes: new Uint8Array([0, 0, 0, 0]),
     language_codes: new Uint8Array([0, 1, 0, 0]),
-    has_source_url: new Uint8Array([1, 0, 1, 0]),
+    link_status: new Uint8Array([1, 0, 2, 3]),
   };
   const metadata = {
-    schema_version: 2, format: "llmmm-ingredient-catalog", endianness: "little",
+    schema_version: 3, format: "llmmm-ingredient-catalog", endianness: "little",
     statistics_scope: "full-canonical-corpus", n_recipes: 4, n_slots: 8,
     vocabulary: ["egg", "milk", "salt", "pepper"], ingredient_frequency: [3, 2, 3, 0],
     source_names: ["fixture"], language_names: ["en", "fr"],
@@ -29,6 +29,10 @@ function fixture() {
     url_shards: [
       { file: "urls/0000.json.gz", first_id: 0, rows: 3 },
       { file: "urls/0001.json.gz", first_id: 3, rows: 1 },
+    ],
+    link_shards: [
+      { file: "links/0000.json.gz", first_id: 0, rows: 3 },
+      { file: "links/0001.json.gz", first_id: 3, rows: 1 },
     ],
     rows_per_text_shard: 3,
     text_manifest: { file: "text-shards.json.gz", compression: "gzip", shards: 2 },
@@ -81,18 +85,24 @@ test("bounded learned scoring preserves exact baseline shortlisting and reports 
   assert.equal(limited.retrieval_truncated, true);
 });
 
-test("source-link availability is an explicit constraint, not a silent exclusion", async () => {
+test("recipe-link availability is an explicit constraint, not a silent exclusion", async () => {
   const { metadata, arrays } = fixture();
   const catalog = prepareIngredientCatalog(metadata, arrays);
   const query = { available_ingredients: ["egg", "milk", "salt"], max_missing: null };
   const result = await searchIngredientCatalog(catalog, policy(), {
-    ...query, require_source_url: true,
+    ...query, require_link: true,
   }, "learned", { yieldToEvents: false });
   assert.equal(result.feasible_count, 2);
   assert.deepEqual(new Set(result.matches.map((row) => row.id)), new Set([0, 2]));
+  const all = await searchIngredientCatalog(catalog, policy(), query, "learned", { yieldToEvents: false });
+  assert.deepEqual(Object.fromEntries(all.matches.map((row) => [row.id, row.link_status])),
+    { 0: "source", 1: "none", 2: "archive", 3: "offline" });
   await assert.rejects(searchIngredientCatalog(catalog, policy(), {
-    ...query, require_source_url: "true",
+    ...query, require_link: "true",
   }, "learned", { yieldToEvents: false }), /boolean/);
+  await assert.rejects(searchIngredientCatalog(catalog, policy(), {
+    ...query, require_source_url: true,
+  }, "learned", { yieldToEvents: false }), /require_link/);
 });
 
 test("shortlisting uses the same rounded baseline features, not a separate formula", () => {
@@ -113,8 +123,12 @@ test("array corruption, incomplete coverage and invalid numeric facts fail close
     ({ arrays }) => { arrays.source_codes[0] = 1; },
     ({ metadata }) => { metadata.ingredient_frequency[0] = 2; },
     ({ metadata }) => { metadata.url_shards[1].first_id = 2; },
+    ({ metadata }) => { metadata.link_shards[1].first_id = 2; },
+    ({ metadata }) => { metadata.link_shards[0].file = "../private.json.gz"; },
+    ({ metadata }) => { metadata.link_shards.pop(); },
+    ({ arrays }) => { arrays.link_status[0] = 4; },
     ({ metadata }) => { metadata.arrays.ingredients.file = "../private.bin"; },
-    ({ metadata }) => { metadata.schema_version = 1; },
+    ({ metadata }) => { metadata.schema_version = 2; },
     ({ metadata }) => { metadata.text_manifest.shards = 1; },
     ({ metadata }) => { metadata.text_manifest.file = "../text-shards.json.gz"; },
     ({ metadata }) => { metadata.rows_per_text_shard = 0; },
@@ -221,6 +235,43 @@ test("misaligned, oversized, smuggled or corrupt recipe text fails closed", asyn
   await assert.rejects(resultText(files, catalog, [3]), /integrity|exceeded/);
   files.delete("text/0001.json.gz");
   await assert.rejects(resultText(files, catalog, [3]), /HTTP 404/);
+});
+
+function linkFixture(links) {
+  const { metadata, arrays } = fixture();
+  const files = new Map();
+  links.forEach((values, index) => {
+    const { data, record } = gzipJson({ first_id: metadata.link_shards[index].first_id, links: values });
+    files.set(metadata.link_shards[index].file, data);
+    Object.assign(metadata.link_shards[index], record);
+  });
+  return { files, catalog: prepareIngredientCatalog(metadata, arrays) };
+}
+
+async function resultLinks(links, ids) {
+  const { files, catalog } = linkFixture(links);
+  return servingFiles(files, (indexUrl) => loadResultLinks(indexUrl, catalog, ids.map((id) => ({ id }))));
+}
+
+const ARCHIVED = "https://web.archive.org/web/2015/http://example.test/recipe/2";
+
+test("result cards receive the link their status declares", async () => {
+  assert.deepEqual(await resultLinks([["https://example.test/recipe/0", null, ARCHIVED], [null]], [2, 0, 3, 1]), [
+    { id: 2, link: ARCHIVED }, { id: 0, link: "https://example.test/recipe/0" }, { id: 3, link: null }, { id: 1, link: null },
+  ]);
+});
+
+test("links that contradict their status or are not plain HTTPS fail closed", async () => {
+  for (const [links, pattern] of [
+    [[[null, null, ARCHIVED], [null]], /link status/],
+    [[["https://example.test/recipe/0", "https://example.test/recipe/1", ARCHIVED], [null]], /link status/],
+    [[["https://example.test/recipe/0", null, ARCHIVED], ["https://example.test/recipe/3"]], /link status/],
+    [[["http://example.test/recipe/0", null, ARCHIVED], [null]], /HTTPS/],
+    [[["https://user:secret@example.test/recipe/0", null, ARCHIVED], [null]], /HTTPS/],
+    [[["https://example.test/recipe/0", null], [null]], /aligned/],
+  ]) {
+    await assert.rejects(resultLinks(links, [0, 1, 2, 3]), pattern);
+  }
 });
 
 test("a network failure is retried a bounded number of times; HTTP and checksum failures are not", async () => {

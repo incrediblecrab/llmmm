@@ -11,13 +11,20 @@ function renderedCards(page) {
     title: card.querySelector(".recipe-title").textContent,
     lines: [...card.querySelectorAll(".recipe-ingredients li")].map((item) => item.textContent),
     link: card.querySelector(".original-recipe a")?.getAttribute("href") ?? null,
+    linkText: card.querySelector(".original-recipe a")?.textContent ?? null,
   })));
 }
 
 function expectedCards(example) {
   return example.results.matches.map((match) => ({
-    id: match.id, title: match.title, lines: match.ingredient_lines, link: new URL(match.source_url).href,
+    id: match.id, title: match.title, lines: match.ingredient_lines,
+    link: match.link === null ? null : new URL(match.link).href, linkText: linkText(match.link),
   }));
+}
+
+function linkText(link) {
+  if (link === null) return null;
+  return link.startsWith("https://web.archive.org/web/") ? "Open archived copy" : "Open recipe";
 }
 
 function trackIndexRequests(page) {
@@ -41,8 +48,9 @@ test("example recipe cards appear before any download and match the complete ind
   expect(bundle.catalog.n_slots).toBe(36_707_624);
   expect(bundle.examples.map((example) => example.label)).toEqual(examples);
   expect(bundle.examples.every((example) => example.results.matches.length === 5 && example.results.matches.every(
-    (match) => match.title && match.ingredient_lines?.length && /^https?:\/\//.test(match.source_url)))).toBe(true);
-  expect(bundle.examples[0].results.matches.some((match) => match.source_url.startsWith("http://www.cookbooks.com/"))).toBe(true);
+    (match) => match.title && match.ingredient_lines?.length && ["source", "archive"].includes(match.link_status)
+      && match.link.startsWith("https://")))).toBe(true);
+  expect(bundle.examples[0].results.matches.some((match) => match.link.startsWith("https://cookbooks.com/"))).toBe(true);
 
   await expect(page.locator("#results")).toHaveAttribute("data-origin", "precomputed");
   await expect(page.locator("#precomputed-note")).toBeVisible();
@@ -54,7 +62,7 @@ test("example recipe cards appear before any download and match the complete ind
     await expect(page.locator("#results")).toHaveAttribute("data-origin", "precomputed");
   }
   await expect(page.locator("#result-count")).toContainText("in 4,653,430 ingredient records");
-  await expect(page.locator(".recipe-card").first().getByRole("link", { name: "Open original recipe" })).toBeVisible();
+  await expect(page.locator(".recipe-card").first().getByRole("link", { name: /^Open (recipe|archived copy)$/ })).toBeVisible();
   await expect(page.locator(".recipe-card ol")).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(indexRequests).toEqual([]);
@@ -81,14 +89,14 @@ test("example recipe cards appear before any download and match the complete ind
   await expect(page.locator(".recipe-card")).toHaveCount(100, { timeout: 60_000 });
   test.info().annotations.push({ type: "show-100-ms", description: String(Date.now() - started) });
   const hundred = await renderedCards(page);
-  expect(hundred.every((card) => card.title && /^https?:\/\//.test(card.link))).toBe(true);
+  expect(hundred.every((card) => card.title && card.link?.startsWith("https://") && card.linkText === linkText(card.link))).toBe(true);
   expect(hundred.filter((card) => card.lines.length).length).toBeGreaterThan(0);
 
   await page.locator("#max-time").fill("0");
   await page.locator("#max-time").blur();
   await expect(page.locator("#result-count")).toContainText("0 matches");
   await expect(page.locator(".recipe-card")).toHaveCount(0);
-  await page.locator("#require-source-link").uncheck();
+  await page.locator("#require-link").uncheck();
   await page.getByRole("button", { name: "Chicken, rice, broccoli", exact: true }).click();
   await expect(page.locator(".recipe-card").first()).toContainText("Source total:");
   await page.getByRole("button", { name: "Tomato and basil", exact: true }).click();
