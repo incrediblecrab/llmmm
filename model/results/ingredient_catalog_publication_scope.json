@@ -6,7 +6,7 @@
   "index_sha256": "41afc7b20de4ce6f072ad3673ea983f4e509f88f7566b9c27559d07a341ec0a8",
   "full_index_uploaded_at_review": false,
   "public_demo_changed_at_review": false,
-  "publication_receipt": "model/results/huggingface_recipe_card_release.json",
+  "publication_receipt": "model/results/huggingface_recipe_link_release.json",
   "owner_confirmation": {
     "confirmed_at": "2026-09-10T14:27:55.474-04:00",
     "statement": "yes we have permission to publish",

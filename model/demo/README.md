@@ -1,8 +1,8 @@
 # Browser recipe demo
 
-The [demo](https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo) searches the full public index, then runs the released supervised ranker in JavaScript. Result cards show each recipe's recorded title and original ingredient lines. It needs no private corpus, Python backend or API key. The [release receipt](../results/huggingface_recipe_card_release.json) pins the live dataset, Space, model-card and source revisions and records the browser checks. The earlier ingredient-only app remains pinned by [its receipt](../results/huggingface_ingredient_demo_release.json) and the Space tag `v0.2.0-ingredient-search`.
+The [demo](https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo) searches the full public index, then runs the released supervised ranker in JavaScript. Result cards show each recipe's recorded title and original ingredient lines. It needs no private corpus, Python backend or API key. The [release receipt](../results/huggingface_recipe_link_release.json) pins the live dataset, Space, model-card and source revisions and records the browser checks. Earlier apps remain pinned by their receipts and Space tags: the recipe-card app by [its receipt](../results/huggingface_recipe_card_release.json) and `v0.3.0-recipe-cards`, and the ingredient-only app by [its receipt](../results/huggingface_ingredient_demo_release.json) and `v0.2.0-ingredient-search`.
 
-The original twelve-recipe Wikibooks sample is kept for local previews only. Its complete recipe text, license notices and revision links live in [`../demo_data/`](../demo_data/). Its Hugging Face dataset, `incrediblecrab/llmmm-recipe-sample`, is retired and nothing here publishes it; [`incrediblecrab/llmmm-recipe-ingredients`](https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-ingredients) is the project's only public dataset. The sample and full-index modes share the ranking implementation.
+The original twelve-recipe Wikibooks sample is kept for local previews only. Its complete recipe text, license notices and revision links live in [`../demo_data/`](../demo_data/). Its Hugging Face dataset, `incrediblecrab/llmmm-recipe-sample`, was deleted on September 24, 2026 ([deletion receipt](../results/huggingface_sample_dataset_deletion.json)) and nothing here publishes it; [`incrediblecrab/llmmm-recipe-ingredients`](https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-ingredients) is the project's single source of truth and only public dataset. The sample and full-index modes share the ranking implementation.
 
 The weights are downloaded from the exact public model commit recorded in [`huggingface_recipe_search_release.json`](../results/huggingface_recipe_search_release.json). The builder checks the original safetensors and configuration hashes before exporting their numbers to JSON. The full published vocabulary is retained: changing its size would change the feature normalizer. The sample mode uses sample frequencies; the full-index mode uses full-corpus frequencies.
 
@@ -54,7 +54,7 @@ The example pantries show their cards before anything large downloads. The build
 
 The public dataset has 4,653,430 records and 36,707,624 ingredient slots. Seven compressed arrays total 37,892,178 bytes (36.1 MiB). The browser reconstructs offsets, verifies sorted unique sets and full-corpus document frequencies, then searches in a worker. The user must request the initial download. Loaded arrays and offsets occupy about 181 MiB; browser overhead is additional. The measured Node process footprint is not a phone memory or latency guarantee.
 
-Titles and ingredient lines live in 2,273 checksum-bound text shards, 312,659,863 compressed bytes in all and at most 923,037 bytes each, listed in a compressed 222,126-byte manifest. The browser fetches only the shards holding the results shown, so showing all 100 results can fetch up to 100 shards; in the release's anonymous browser check this took 6.4 seconds from click to 100 cards in each viewport, one run each. Any index, link or recipe-text download interrupted by a network error is retried twice, after 0.5 and 1.5 seconds; HTTP errors and checksum mismatches are not retried. A missing or corrupted shard fails the search rather than showing cards without their text.
+Titles and ingredient lines live in 2,273 checksum-bound text shards, 312,659,863 compressed bytes in all and at most 923,037 bytes each, listed in a compressed 222,126-byte manifest. The browser fetches only the shards holding the results shown, so showing all 100 results can fetch up to 100 shards; in the release's anonymous browser check this took 5.4 seconds from click to 100 cards on desktop and 6.9 seconds on mobile, one run each. Any index, link or recipe-text download interrupted by a network error is retried twice, after 0.5 and 1.5 seconds; HTTP errors and checksum mismatches are not retried. A missing or corrupted shard fails the search rather than showing cards without their text.
 
 Only 2,292,411 records have a recorded original URL. Each card link comes from that URL by its site's rule, stated in [`recipe_links.py`](../ingredient_model/recipe_links.py) and backed by the [per-site checks](../results/recipe_link_health.json). 1,652,643 records open the recorded page over HTTPS, on the site's current host: `https://www.cookbooks.com` resets the connection, so cookbooks.com records open `https://cookbooks.com`, where their `http://` addresses redirect, and NYT Cooking records get the title slug its pages now require. 266,182 open the Internet Archive's copy of the recorded URL, for sites whose own pages failed the September 23, 2026 check and whose archived copies passed it; www.povarenok.ru passed that check but failed a September 24 recheck made while its pages were answering errors, so its records open 2025 copies. The other 373,586, from sites that passed neither, have no link, and their cards say so. The recorded URL is kept beside the link, with `http://` added where it was recorded without a scheme. Links are retrieved from 285 small, checksum-bound link shards as results need them, with bounded concurrency. The link-only filter, on by default, shows only records with a card link, since that link is the only route to the cooking steps. Disabling it includes records without links; the UI says when a link is missing. No source times or serving counts are invented, and every link is derived from a recorded URL.
 
@@ -72,12 +72,13 @@ from huggingface_hub import snapshot_download
 from ingredient_model.ingredient_demo import build_ingredient_demo
 
 root = Path.cwd()
-release = json.loads((root / "model/results/huggingface_recipe_card_release.json").read_text())
+release = json.loads((root / "model/results/huggingface_recipe_link_release.json").read_text())
 snapshot = snapshot_download(
     release["dataset"]["repository"],
     repo_type="dataset",
     revision=release["dataset"]["revision"],
     allow_patterns=["index/**"],
+    local_dir=root / ".artifacts/public-index",
     token=False,
 )
 build_ingredient_demo(root, Path(snapshot) / "index", root / ".artifacts/public-demo-preview")
@@ -86,7 +87,7 @@ python3 -m http.server 7860 --bind 127.0.0.1 \
   --directory .artifacts/public-demo-preview
 ```
 
-This uses public weights and the public index, including its text shards, not the private SQLite catalog or original corpus arrays. Existing preview directories are not overwritten. The full dataset also provides a standard Parquet `train` split with IDs, ingredient IDs/names, source/language, times, servings, source URLs, recipe links and link statuses; titles and ingredient lines are only in the index.
+This uses public weights and the public index, including its text shards, not the private SQLite catalog or original corpus arrays. The index is downloaded as regular files into `.artifacts/public-index`, because the builder refuses symlinked index files such as those in the Hugging Face cache. Existing preview directories are not overwritten. The full dataset also provides a standard Parquet `train` split with IDs, ingredient IDs/names, source/language, times, servings, source URLs, recipe links and link statuses; titles and ingredient lines are only in the index.
 
 ### Rebuild from original inputs
 

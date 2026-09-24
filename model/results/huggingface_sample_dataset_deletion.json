@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "status": "deleted",
+  "repository": "incrediblecrab/llmmm-recipe-sample",
+  "repo_type": "dataset",
+  "url": "https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-sample",
+  "authorization": {
+    "owner_request": "we can delete \"https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-sample\"",
+    "owner_scope": "https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-ingredients is the single source of truth for this project",
+    "requested_at": "2026-09-23T22:36-04:00"
+  },
+  "before_deletion": {
+    "checked_at": "2026-09-24T02:15:27-04:00",
+    "commit": "ebe33c27023333287c05ca0ff8074643027b092f",
+    "last_modified": "2026-09-23T18:43:26+00:00",
+    "private": false,
+    "gated": false,
+    "downloads": 40,
+    "likes": 0,
+    "tags": {
+      "v0.1.0": "e66ba8738ea6dbd164a21ec41ed781a45a9c8f4d"
+    },
+    "branches": {
+      "main": "ebe33c27023333287c05ca0ff8074643027b092f"
+    },
+    "commits": [
+      {
+        "id": "ebe33c27023333287c05ca0ff8074643027b092f",
+        "title": "Join hard-wrapped card paragraphs onto single lines",
+        "created_at": "2026-09-23T18:43:26+00:00"
+      },
+      {
+        "id": "e66ba8738ea6dbd164a21ec41ed781a45a9c8f4d",
+        "title": "Publish the public recipe sample",
+        "created_at": "2026-09-10T17:00:36+00:00"
+      },
+      {
+        "id": "818f151492e0edb35effec1623314f2afd144941",
+        "title": "initial commit",
+        "created_at": "2026-09-10T17:00:35+00:00"
+      }
+    ],
+    "files": [
+      {
+        "path": ".gitattributes",
+        "bytes": 2504,
+        "git_blob_id": "bed0738c7eeb449bca98b5d2f33c89a1ee56349a",
+        "lfs_sha256": null
+      },
+      {
+        "path": "README.md",
+        "bytes": 6695,
+        "git_blob_id": "f79ae44fdb5f8b4f0b0a796cb484adc2eb493823",
+        "lfs_sha256": null
+      },
+      {
+        "path": "recipes.jsonl",
+        "bytes": 28060,
+        "git_blob_id": "2a35397e81e6f24113df97fe85df45a134628482",
+        "lfs_sha256": null
+      },
+      {
+        "path": "sources.json",
+        "bytes": 89076,
+        "git_blob_id": "389a9dbcd8b2569b64ec812ef2f49b8b04b41297",
+        "lfs_sha256": null
+      }
+    ],
+    "total_bytes": 126335
+  },
+  "tracked_copy": {
+    "path": "model/demo_data",
+    "files": {
+      "README.md": {
+        "bytes": 6695,
+        "sha256": "fdfc9127299aa57240290cc9315772a5d5cb62cdd0d132998ed703a4815d2bde",
+        "git_blob_id": "f79ae44fdb5f8b4f0b0a796cb484adc2eb493823",
+        "matches_deleted_file": true
+      },
+      "recipes.jsonl": {
+        "bytes": 28060,
+        "sha256": "844bb9b14dd0df6446a2201384f382f41400c29e0a6b33538adc522c36e9fe2b",
+        "git_blob_id": "2a35397e81e6f24113df97fe85df45a134628482",
+        "matches_deleted_file": true
+      },
+      "sources.json": {
+        "bytes": 89076,
+        "sha256": "54e29c84c2f8cbf1dd73f39cee61fde47369aef9792a9ed0f9d7aca799447005",
+        "git_blob_id": "389a9dbcd8b2569b64ec812ef2f49b8b04b41297",
+        "matches_deleted_file": true
+      }
+    }
+  },
+  "live_references_before_deletion": {
+    "checked_at": "2026-09-24T02:15:11-04:00",
+    "anonymous": true,
+    "pages": {
+      "space_readme": {
+        "url": "https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo/raw/main/README.md",
+        "status": 200,
+        "bytes": 3241,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [
+          "incrediblecrab/llmmm-recipe-ingredients"
+        ],
+        "front_matter_datasets": [
+          "incrediblecrab/llmmm-recipe-ingredients"
+        ]
+      },
+      "space_index_html": {
+        "url": "https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo/raw/main/index.html",
+        "status": 200,
+        "bytes": 9437,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [
+          "incrediblecrab/llmmm-recipe-ingredients"
+        ],
+        "front_matter_datasets": null
+      },
+      "space_app_js": {
+        "url": "https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo/raw/main/app.js",
+        "status": 200,
+        "bytes": 21380,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [],
+        "front_matter_datasets": null
+      },
+      "space_manifest": {
+        "url": "https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo/raw/main/manifest.json",
+        "status": 200,
+        "bytes": 9748,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [
+          "incrediblecrab/llmmm-recipe-ingredients"
+        ],
+        "front_matter_datasets": null
+      },
+      "space_catalog": {
+        "url": "https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo/resolve/main/catalog.json",
+        "status": 200,
+        "bytes": 292086,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [
+          "incrediblecrab/llmmm-recipe-ingredients"
+        ],
+        "front_matter_datasets": null
+      },
+      "space_page": {
+        "url": "https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo",
+        "status": 200,
+        "bytes": 36100,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [],
+        "front_matter_datasets": null
+      },
+      "app_origin_index": {
+        "url": "https://incrediblecrab-llmmm-recipes-demo.static.hf.space/index.html",
+        "status": 200,
+        "bytes": 9538,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [
+          "incrediblecrab/llmmm-recipe-ingredients"
+        ],
+        "front_matter_datasets": null
+      },
+      "app_origin_app_js": {
+        "url": "https://incrediblecrab-llmmm-recipes-demo.static.hf.space/app.js",
+        "status": 200,
+        "bytes": 21380,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [],
+        "front_matter_datasets": null
+      },
+      "model_card": {
+        "url": "https://huggingface.co/incrediblecrab/llmmm-recipes/raw/main/README.md",
+        "status": 200,
+        "bytes": 11207,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [
+          "incrediblecrab/llmmm-recipe-ingredients"
+        ],
+        "front_matter_datasets": []
+      },
+      "model_page": {
+        "url": "https://huggingface.co/incrediblecrab/llmmm-recipes",
+        "status": 200,
+        "bytes": 148614,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [
+          "incrediblecrab/llmmm-recipe-ingredients"
+        ],
+        "front_matter_datasets": null
+      },
+      "dataset_card": {
+        "url": "https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-ingredients/raw/main/README.md",
+        "status": 200,
+        "bytes": 5411,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [],
+        "front_matter_datasets": []
+      },
+      "dataset_manifest": {
+        "url": "https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-ingredients/raw/main/dataset-manifest.json",
+        "status": 200,
+        "bytes": 343992,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [],
+        "front_matter_datasets": null
+      },
+      "dataset_page": {
+        "url": "https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-ingredients",
+        "status": 200,
+        "bytes": 986286,
+        "sample_mentions": 0,
+        "mention_contexts": [],
+        "dataset_references": [
+          "incrediblecrab/llmmm-recipe-ingredients",
+          "incrediblecrab/llmmm-recipe-ingredients.",
+          "incrediblecrab/llmmm-recipe-ingredients.png"
+        ],
+        "front_matter_datasets": null
+      },
+      "github_readme": {
+        "url": "https://raw.githubusercontent.com/incrediblecrab/llmmm/main/README.md",
+        "status": 200,
+        "bytes": 28443,
+        "sample_mentions": 1,
+        "mention_contexts": [
+          "le dataset\n\nThe earlier twelve-recipe Wikibooks sample dataset, `incrediblecrab/llmmm-recipe-sample`, is retired: the [ingredient dataset]("
+        ],
+        "dataset_references": [
+          "incrediblecrab/llmmm-recipe-ingredients"
+        ],
+        "front_matter_datasets": null
+      },
+      "github_demo_readme": {
+        "url": "https://raw.githubusercontent.com/incrediblecrab/llmmm/main/model/demo/README.md",
+        "status": 200,
+        "bytes": 16450,
+        "sample_mentions": 1,
+        "mention_contexts": [
+          " in [`../demo_data/`](../demo_data/). Its Hugging Face dataset, `incrediblecrab/llmmm-recipe-sample`, is retired and nothing here publishes"
+        ],
+        "dataset_references": [
+          "incrediblecrab/llmmm-recipe-ingredients"
+        ],
+        "front_matter_datasets": null
+      }
+    },
+    "pages_naming_sample": [],
+    "pages_unreadable": []
+  },
+  "deleted_at": "2026-09-24T02:15:27-04:00",
+  "after_deletion": {
+    "checked_at": "2026-09-24T02:15:27-04:00",
+    "authenticated_api": {
+      "status": 404,
+      "x_error_code": "RepoNotFound"
+    },
+    "anonymous_api_status": 401,
+    "anonymous_page_status": 401,
+    "in_owner_listing": false,
+    "in_anonymous_listing": false,
+    "never_created_name": {
+      "repository": "incrediblecrab/no-such-dataset-probe-0924",
+      "authenticated_api": {
+        "status": 404,
+        "x_error_code": "RepoNotFound"
+      },
+      "anonymous_api_status": 401,
+      "anonymous_page_status": 401
+    },
+    "attempts": 1
+  },
+  "recreation_guard": "publish_ingredient_demo.py is the project's only publisher; it writes incrediblecrab/llmmm-recipe-ingredients, incrediblecrab/llmmm-recipes-demo and the model card of incrediblecrab/llmmm-recipes. publish_recipe_demo.py keeps shared helpers without a publishing entry point, and model/tests/test_recipe_demo_publication.py fails if any tracked code names the sample dataset."
+}
