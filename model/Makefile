@@ -66,7 +66,7 @@ help:
 	@echo "report     the leaderboard"
 
 setup:
-	python3 -m venv .venv
+	test -e .venv || python3 -m venv .venv
 	$(PIP) install -q -e '.[dev]'
 	@echo "installed. next: make restore BUNDLE=/private/path/archive.tar.gz"
 

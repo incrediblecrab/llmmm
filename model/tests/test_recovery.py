@@ -529,7 +529,8 @@ def test_pack_and_restore_support_long_array_names_with_pax_headers(source, tmp_
 
 
 def test_payloads_are_hashed_and_copied_in_bounded_chunks(source, tmp_path, monkeypatch):
-    monkeypatch.setattr(recovery, "CHUNK_SIZE", 16 * 1024)
+    # tarfile reads members through io.BufferedReader, whose raw reads grew from 8 KiB to 128 KiB in Python 3.14.
+    monkeypatch.setattr(recovery, "CHUNK_SIZE", max(16 * 1024, io.DEFAULT_BUFFER_SIZE))
     write(source / ARRAY, b"x" * (3 * recovery.CHUNK_SIZE + 1))
     read = recovery._HashingReader.read
     requested_sizes = []

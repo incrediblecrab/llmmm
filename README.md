@@ -168,7 +168,7 @@ The native-only exporter and publisher admit six model-package files and refuse 
 
 For a recipe-search release, complete `make evaluate-recipe-search`, commit and push the tested source, then run `make export-recipe-search`. Publication is a separate, explicit command: `python scripts/publish_recipe_search.py --public --folder /private/export-directory`. The publisher checks anonymously installable pinned source, isolated inference, remote hashes and preserved tags. Catalogs, raw text, private query cases and coverage arrays are excluded. Existing outputs, version tags and publication receipts are not overwritten.
 
-A separate `.venv-generation` environment contains MLX support so experiments with the [pinned Qwen base](model/generation_base.lock.json) do not alter the native PyTorch environment. The base is downloaded; culinary fine-tuning and generation evaluation have not run.
+MLX support for experiments with the [pinned Qwen base](model/generation_base.lock.json) is the optional `generation` extra (`.venv/bin/pip install -e '.[generation]'` from `model/`), installed alongside the native PyTorch environment. The base is downloaded; culinary fine-tuning and generation evaluation have not run.
 
 ## One source of truth
 
