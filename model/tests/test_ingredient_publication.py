@@ -179,6 +179,32 @@ def test_updates_delete_only_remote_files_the_previous_release_listed(
                 if isinstance(operation, publisher.CommitOperationDelete)] == deleted
 
 
+@pytest.mark.parametrize("headers,waits", [
+    (['"resolvers";r=2999;t=216'], []),
+    (['"resolvers";r=100;t=216', '"resolvers";r=2999;t=300'], [217]),
+    ([None], []),
+    (['"resolvers";r=100;t=5'] * 3, None),
+])
+def test_browser_checks_wait_for_the_anonymous_hub_quota(publisher, headers, waits):
+    responses, requests, slept = iter(headers), [], []
+
+    def head(url, **kwargs):
+        requests.append(kwargs)
+        value = next(responses)
+        return SimpleNamespace(headers={} if value is None else {
+            "ratelimit": value, "ratelimit-policy": '"fixed window";"resolvers";q=3000;w=300'})
+
+    client = SimpleNamespace(head=head)
+    if waits is None:
+        with pytest.raises(RuntimeError, match="did not recover"):
+            publisher.wait_for_resolver_quota(client, "https://hub.test/resolve/r/f", sleep=slept.append)
+        assert slept == [6, 6, 6]
+    else:
+        publisher.wait_for_resolver_quota(client, "https://hub.test/resolve/r/f", sleep=slept.append)
+        assert slept == waits
+    assert requests == [{"follow_redirects": False}] * len(headers)
+
+
 def test_release_tags_must_be_new_and_existing_tags_must_survive(publisher):
     refs = {publisher.INGREDIENT_DATASET_REPOSITORY: {"v0.1.0": "a" * 40},
             publisher.SPACE_REPOSITORY: {"v0.1.0-sample": "b" * 40}}

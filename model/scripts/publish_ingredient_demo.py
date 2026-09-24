@@ -20,6 +20,7 @@ import pyarrow.parquet as pq
 from huggingface_hub import CommitOperationAdd, CommitOperationDelete, HfApi, hf_hub_download, set_client_factory
 from huggingface_hub.errors import RepositoryNotFoundError, RevisionNotFoundError
 from huggingface_hub.hf_api import RepoFile
+from huggingface_hub.utils import parse_ratelimit_headers
 
 from ingredient_model._hashing import file_sha256
 from ingredient_model.ingredient_catalog import load_ingredient_catalog, load_text_shards
@@ -57,6 +58,9 @@ CONTROL_FILES = {
     "space": {"README.md", "index.html", "manifest.json"},
 }
 RELEASE_REPOSITORIES = {"dataset": INGREDIENT_DATASET_REPOSITORY, "space": SPACE_REPOSITORY}
+# Measured September 24, 2026: the Hub allows 3,000 anonymous resolve requests per IP per fixed 5-minute window.
+# Verifying a 2,872-file release anonymously can leave too few for a browser check, which then fails with HTTP 429.
+BROWSER_RESOLVER_RESERVE = 1_500
 
 
 def inventory(directory: Path) -> dict[str, dict]:
@@ -230,6 +234,17 @@ def verify_public_tree(api: HfApi, repository: str, kind: str, revision: str, fi
 
     with ThreadPoolExecutor(max_workers=4) as pool:
         list(pool.map(verify, sorted(files)))
+
+
+def wait_for_resolver_quota(client: httpx.Client, url: str, *, sleep=time.sleep) -> None:
+    """Browser checks download the index anonymously; wait for a new window if too little of the current one remains."""
+    for _ in range(3):
+        quota = parse_ratelimit_headers(client.head(url, follow_redirects=False).headers)
+        if quota is None or quota.remaining >= BROWSER_RESOLVER_RESERVE:
+            return
+        print(f"waiting {quota.reset_in_seconds + 1} s: {quota.remaining} anonymous Hub {quota.resource_type} requests remain")
+        sleep(quota.reset_in_seconds + 1)
+    raise RuntimeError("the Hub's anonymous request quota did not recover")
 
 
 def publish_tree(
@@ -435,6 +450,9 @@ def main() -> None:
             ROOT, dataset / "index", build, source_revision=args.source_revision,
             dataset_revision=dataset_revision, ipv4=args.ipv4)
         manifest_hash = file_sha256(build / "manifest.json")
+        quota_url = (f"https://huggingface.co/datasets/{INGREDIENT_DATASET_REPOSITORY}/resolve/"
+                     f"{dataset_revision}/dataset-manifest.json")
+        wait_for_resolver_quota(client, quota_url)
         with preview_server(build) as local_url:
             local_browser = browser_check(
                 local_url, output / "browser-local.json", manifest_hash,
@@ -455,6 +473,7 @@ def main() -> None:
             "repository": SPACE_REPOSITORY, "revision": space_revision, "app_url": space_url,
             "manifest_sha256": manifest_hash})
         wait_for_space(client, space_url, (build / "manifest.json").read_bytes())
+        wait_for_resolver_quota(client, quota_url)
         public_browser = browser_check(
             space_url, output / "browser-public.json", manifest_hash,
             script="test:ingredients", minimum_expected=FULL_BROWSER_RESULTS, cases=FULL_BROWSER_CASES)
