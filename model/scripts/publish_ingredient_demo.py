@@ -251,9 +251,15 @@ def publish_tree(
     if kind == "space" and getattr(existing, "sdk", None) != "static":
         raise ValueError("only the free static Space SDK is permitted")
     remote = remote_files(api, repository, kind, existing.sha)
+    marker = "manifest.json" if kind == "space" else "dataset-manifest.json"
     extras = set(remote) - set(files)
-    if extras and not (created and kind == "space" and extras == {"style.css"}):
-        raise ValueError(f"refusing to delete unrelated remote files: {sorted(extras)}")
+    unrelated = extras
+    if extras and not created and marker in remote:
+        # A file the previous release's own manifest lists is retired with it; any other extra is not ours to delete.
+        listed = json.loads(downloaded_file(repository, kind, existing.sha, marker).read_text()).get("files", {})
+        unrelated = extras - set(listed)
+    if unrelated and not (created and kind == "space" and unrelated == {"style.css"}):
+        raise ValueError(f"refusing to delete unrelated remote files: {sorted(unrelated)}")
     changed = [name for name in sorted(files)
                if name not in remote or not matches_remote(directory / name, files[name], remote[name])]
     if not changed and not extras:
@@ -262,7 +268,6 @@ def publish_tree(
     if not created:
         if not update:
             raise FileExistsError("the destination has different bytes; inspect it before --update")
-        marker = "manifest.json" if kind == "space" else "dataset-manifest.json"
         if marker not in remote:
             raise ValueError("the existing destination is not a recognized llmmm release")
         previous = json.loads(downloaded_file(repository, kind, existing.sha, marker).read_text())

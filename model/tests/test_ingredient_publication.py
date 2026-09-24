@@ -151,6 +151,34 @@ def test_large_updates_commit_only_changes_in_chained_batches_with_control_files
     assert revision == verified[0] == f"{3:040d}"
 
 
+@pytest.mark.parametrize("listed,deleted", [(["index/source-links.u8.gz"], ["index/source-links.u8.gz"]), ([], None)])
+def test_updates_delete_only_remote_files_the_previous_release_listed(
+        publisher, monkeypatch, tmp_path, listed, deleted):
+    release = tmp_path / "release"
+    (release / "index").mkdir(parents=True)
+    (release / "dataset-manifest.json").write_text("{}")
+    (release / "index/link-status.u8.gz").write_text("new")
+    files = publisher.inventory(release)
+    previous = tmp_path / "previous-manifest.json"
+    previous.write_text(json.dumps({"files": {name: {} for name in ["dataset-manifest.json", *listed]}}))
+    commits = []
+    api = SimpleNamespace(
+        repo_info=lambda *args, **kwargs: SimpleNamespace(sha="a" * 40, private=False, gated=False),
+        list_repo_tree=lambda *args, **kwargs: [publisher.RepoFile(path=name, size=1, oid="0" * 40)
+                                                for name in ("dataset-manifest.json", "index/source-links.u8.gz")],
+        create_commit=lambda _repository, **kwargs: commits.append(kwargs) or SimpleNamespace(oid="b" * 40))
+    monkeypatch.setattr(publisher, "downloaded_file", lambda *args: previous)
+    monkeypatch.setattr(publisher, "verify_public_tree", lambda *args: None)
+    if deleted is None:
+        with pytest.raises(ValueError, match="unrelated remote files"):
+            publisher.publish_tree(api, "fixture/dataset", "dataset", release, files, update=True)
+        assert commits == []
+    else:
+        assert publisher.publish_tree(api, "fixture/dataset", "dataset", release, files, update=True) == "b" * 40
+        assert [operation.path_in_repo for operation in commits[0]["operations"]
+                if isinstance(operation, publisher.CommitOperationDelete)] == deleted
+
+
 def test_release_tags_must_be_new_and_existing_tags_must_survive(publisher):
     refs = {publisher.INGREDIENT_DATASET_REPOSITORY: {"v0.1.0": "a" * 40},
             publisher.SPACE_REPOSITORY: {"v0.1.0-sample": "b" * 40}}
