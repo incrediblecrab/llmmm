@@ -1,8 +1,19 @@
 # llmmm
 
-llmmm trains ingredient predictors and recipe-ranking models. Our released model, [llmmm-recipes](https://huggingface.co/incrediblecrab/llmmm-recipes), has its own weights and biases trained from scratch on canonical recipe ingredient sets. No pretrained model was used to initialize it.
+llmmm trains ingredient predictors and recipe-ranking models, with public weights at [llmmm-recipes](https://huggingface.co/incrediblecrab/llmmm-recipes), a browser demo at [llmmm-recipes-demo](https://huggingface.co/spaces/incrediblecrab/llmmm-recipes-demo), and the public ingredient dataset at [llmmm-recipe-ingredients](https://huggingface.co/datasets/incrediblecrab/llmmm-recipe-ingredients). The released model has weights and biases trained from scratch on canonical recipe ingredient sets; no pretrained model initialized it.
 
-The code, training records and evaluations are here; the weights are on Hugging Face. The full ingredient dataset is public, with each record's recorded title and ingredient lines; cooking instructions, descriptions and images are not redistributed. See the [source inventory](raw-data/README.md) for provenance.
+**Objective:** build reproducible ingredient-completion and recipe-ranking experiments, publish only authorized aggregate artifacts, and keep the provenance and limits of each release auditable.
+
+**Inputs:** tracked experiment declarations and receipts, an authorized private recipe corpus or recovery bundle for training, public Hugging Face releases for inspection, and the Python, Make and browser tooling under `model/`.
+
+**Files:**
+
+- [`model/`](model/README.md): training, evaluation, recovery tooling, browser demo source and recorded results
+- [`prior-study/`](prior-study/README.md): replication work, source readers and normalization dependencies
+- [`raw-data/`](raw-data/README.md): source inventory and provenance; source bytes stay outside git
+- [`paper/`](paper/): the Epicure paper copy used by the original study
+
+**Try it:** `cd model && make check-code` runs the local code checks that do not need the private data bundle.
 
 ## Public recipe demo
 
@@ -238,17 +249,6 @@ cd model
 
 Reports can read tracked metadata without model weights. Prediction and re-evaluation require the corresponding weights. Re-evaluation restores the full predictor for models that have one. The default explainer uses the embedding named in `workspace.json`.
 
-## Repository layout
-
-```text
-model/         training, evaluation, recovery tooling and recorded results
-prior-study/   replication, source readers and normalization dependencies
-raw-data/      tracked provenance; source bytes stay outside git
-paper/         the original paper
-```
-
-`prior-study/tools/` remains a runtime dependency of corpus normalization. Some one-off measurements in the legacy notes remain unsupported. Generated results are checked against their declared source artifacts.
-
 ## Acknowledgements
 
 This project started with a replication and audit of [Epicure](https://arxiv.org/abs/2605.22391) by Jakub Radzikowski and Josef Chen. Their ingredient-embedding work and published source inventory informed that research. llmmm-recipes is a separately trained model with its own learned weights and biases, not a fine-tune of Epicure or another pretrained model.
@@ -270,4 +270,4 @@ The Wikibooks sample credits [Wikibooks Cookbook contributors](https://en.wikibo
 
 ## License
 
-Project code and documentation are released under the [MIT License](LICENSE). Two tracked items are not covered: the Wikibooks recipe text in `model/demo_data/`, which stays under CC BY-SA 4.0 as its [card](model/demo_data/README.md) records, and `paper/epicure.pdf`, a copy of the Epicure paper that remains its authors' work.
+MIT. See [`LICENSE`](LICENSE). It covers this repository's project code and documentation. Two tracked items are not covered: the Wikibooks recipe text in `model/demo_data/`, which stays under CC BY-SA 4.0 as its [card](model/demo_data/README.md) records, and `paper/epicure.pdf`, a copy of the Epicure paper that remains its authors' work.
