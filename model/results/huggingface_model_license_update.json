@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "status": "verified_public_license_update",
+  "repo_id": "incrediblecrab/llmmm-recipes",
+  "url": "https://huggingface.co/incrediblecrab/llmmm-recipes",
+  "tag": "v0.4.1-mit",
+  "revision": "7a79aac4b27fba41ed1a9ee28c583f891dd470c3",
+  "previous_revision": "61d1c1fd0ad74f22b4838787b31078b2dc11a168",
+  "source_code_revision": "53ec54cf41dcfdf0f382ec68998bb8336529900f",
+  "license": "MIT",
+  "hub_card_license": "mit",
+  "license_note": "The MIT License covers the weights and configuration files in this repository. It grants no rights in the recipes or source datasets used for training, which keep their own terms.",
+  "changed_files": {
+    "README.md": {
+      "before": {
+        "bytes": 11207,
+        "sha256": "24f9499f375896f145bee4aa491583b8dfc02ff70b4597ee049f53447fca112a"
+      },
+      "after": {
+        "bytes": 11308,
+        "sha256": "30e0abddbe7f2d925f7b00bd32a83e5379ffec5fc69f1655875c0407f253739d"
+      }
+    },
+    "LICENSE": {
+      "before": null,
+      "after": {
+        "bytes": 1070,
+        "sha256": "d83054c5a7a2c2b01cb03f8cfebdbdf1813a98321753baad0c84c7705658a438"
+      }
+    },
+    "release_policy.json": {
+      "before": {
+        "bytes": 590,
+        "sha256": "083ab1b1217b8c33d312135345f86246c5b33aa3e3c6f9d4b82212b73bc6d066"
+      },
+      "after": {
+        "bytes": 699,
+        "sha256": "26acc1b40477dc2594f2155095b61b5540e37f1822d456c8771a9fca00008b29"
+      }
+    },
+    "recipe_release_policy.json": {
+      "before": {
+        "bytes": 340,
+        "sha256": "cd558006bcd2fc1e2487bc20ae2745c6ab6277f38dbc9794436bf052362bedeb"
+      },
+      "after": {
+        "bytes": 463,
+        "sha256": "a41d056e5b79deb698307ce937c32d25180017ff8252a0ee4b89c28de5e087aa"
+      }
+    }
+  },
+  "files": {
+    "LICENSE": {
+      "bytes": 1070,
+      "sha256": "d83054c5a7a2c2b01cb03f8cfebdbdf1813a98321753baad0c84c7705658a438"
+    },
+    "README.md": {
+      "bytes": 11308,
+      "sha256": "30e0abddbe7f2d925f7b00bd32a83e5379ffec5fc69f1655875c0407f253739d"
+    },
+    "config.json": {
+      "bytes": 32799,
+      "sha256": "1bf792345b8face5975534312b676fcea1b53e5fa9c0e844948c4db743aa72ce"
+    },
+    "model.safetensors": {
+      "bytes": 6062848,
+      "sha256": "1afa035ad661e197acac39df7b249516dba5bffd65cb7ad1007c4f0daa6e7eed"
+    },
+    "recipe_catalog.json": {
+      "bytes": 988,
+      "sha256": "968565d64242e394d2118d9dce1c0e7da853a0801468c25aed66a556ab16d751"
+    },
+    "recipe_evaluation.json": {
+      "bytes": 7788,
+      "sha256": "2cb367689fa5df9f4408697b170ed01224738c80282ebde8f3e9fa73c37654f2"
+    },
+    "recipe_policies/reinforce/recipe_ranker.safetensors": {
+      "bytes": 3340,
+      "sha256": "ee53b89166b4be30102dd65ed16a21cb9844d680ab1587257e3324a53f411a26"
+    },
+    "recipe_policies/reinforce/recipe_ranker_config.json": {
+      "bytes": 843,
+      "sha256": "43adb7fddbbd1df77b3837d80ec9c60c12b26d8cf0d5f2f4d71b035b9ca48dec"
+    },
+    "recipe_policies/supervised/recipe_ranker.safetensors": {
+      "bytes": 3340,
+      "sha256": "b4557181a76760d6fe2543443cc01d5ade2d247d26d49aae4b84b23e9521301d"
+    },
+    "recipe_policies/supervised/recipe_ranker_config.json": {
+      "bytes": 843,
+      "sha256": "3398c7719d723c48a46b40c162e129e8e2bb1c22f64d37165025537036fd63f2"
+    },
+    "recipe_release_policy.json": {
+      "bytes": 463,
+      "sha256": "a41d056e5b79deb698307ce937c32d25180017ff8252a0ee4b89c28de5e087aa"
+    },
+    "recipe_search_config.json": {
+      "bytes": 2227,
+      "sha256": "6deaaa616d0f8d9ffb6fa5d0af45077dec750a8808e98924359ae885a3da3d44"
+    },
+    "recipe_training.json": {
+      "bytes": 22505,
+      "sha256": "bca0d97060ef9f0c53f22697f5f96677bc0de6b4f18d2ea37cf835c62c102216"
+    },
+    "release_policy.json": {
+      "bytes": 699,
+      "sha256": "26acc1b40477dc2594f2155095b61b5540e37f1822d456c8771a9fca00008b29"
+    },
+    "training_manifest.json": {
+      "bytes": 2313,
+      "sha256": "dc4acfede9d363ba34eef77ac610ce5c19e03f8b5a774dbbddf6c6a2714d3399"
+    },
+    "training_verification.json": {
+      "bytes": 5717,
+      "sha256": "ade537f81e38bb2323a25380eaf683c9c0d18f65d1c3271bdb33be11d2303693"
+    }
+  },
+  "unchanged_files_verified": 12,
+  "card_generators_reproduce_live_card": true,
+  "card_edits": [
+    {
+      "before": "---\nlibrary_name: pytorch\n",
+      "after": "---\nlicense: mit\nlibrary_name: pytorch\n"
+    },
+    {
+      "before": "Model weights and their terms are unchanged.",
+      "after": "Model weights are unchanged."
+    },
+    {
+      "before": "## Intended use and limits\n\nFor noncommercial research and education. No permissive weights license is granted. ",
+      "after": "## License and limits\n\nReleased under the [MIT License](LICENSE). The MIT License covers the weights and configuration files in this repository. It grants no rights in the recipes or source datasets used for training, which keep their own terms. "
+    },
+    {
+      "before": " and applicable terms before redistribution or commercial use.",
+      "after": " before reusing any source data."
+    }
+  ],
+  "anonymous_inference_identical_before_and_after": true,
+  "inference_contexts": 3,
+  "preserved_tags": {
+    "v0.4.0-recipe-search": "9b152b52ece1ebd88d802726346b1d3d949f422f",
+    "v0.3.1-public": "b12bcd5a887b86b162e95703861b642e645f092f",
+    "v0.3.0-all-recipes": "a2f67609a1cedb9578daab40b3e1f8192731e6de",
+    "v0.2.0-preview": "80448d074299eb587d6c434099d51eb3897de44b"
+  },
+  "weights_changed": false,
+  "verified_at": "2026-09-28T16:02:53.685628+00:00"
+}

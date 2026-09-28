@@ -2,7 +2,7 @@
 
 Recorded measurements, verifications and release receipts that the documentation cites.
 
-- `huggingface_*.json` are Hugging Face release, update and deletion receipts. Each pins the repository revisions, tags and file hashes it produced or checked. Receipts are historical records: they keep the repository names and URLs they recorded after a release is superseded or a repository is deleted. `huggingface_recipe_link_release.json` records the current public dataset and demo.
+- `huggingface_*.json` are Hugging Face release, update and deletion receipts. Each pins the repository revisions, tags and file hashes it produced or checked. Receipts are historical records: they keep the repository names and URLs they recorded after a release is superseded or a repository is deleted. `huggingface_recipe_link_release.json` records the current public dataset and demo, and `huggingface_model_license_update.json` records the model's MIT license and its current file inventory.
 - The other top-level `*.json` and `*.csv` files are measurement, training, evaluation, export and verification records, plus `ingredient_catalog_publication_scope.json`, the record of the owner's publication decisions for the ingredient dataset.
 - `runs/` holds a `metrics.json` and a `manifest.json` for each training or evaluation run, plus a few sweep journals and logs.
 
