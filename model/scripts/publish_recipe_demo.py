@@ -129,8 +129,11 @@ def wait_for_space(client: httpx.Client, url: str, expected_manifest: bytes, *, 
 
 
 def link_model_card(api: HfApi, *, transform, commit_message: str) -> dict:
-    receipt = json.loads((ROOT / "model/results/huggingface_recipe_search_release.json").read_text())
-    original = {**receipt["files"], **receipt["preserved_native_files"]}
+    # The license update is the latest record of every file on the model's main branch.
+    receipt = json.loads((ROOT / "model/results/huggingface_model_license_update.json").read_text())
+    if receipt["repo_id"] != MODEL_REPOSITORY:
+        raise ValueError("the model inventory receipt refers to a different repository")
+    original = receipt["files"]
     before = api.model_info(MODEL_REPOSITORY, token=False)
     if before.private or before.gated:
         raise ValueError("the model must remain public and ungated")

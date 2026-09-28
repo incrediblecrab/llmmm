@@ -182,7 +182,7 @@ def add_ingredient_demo_links(card: str) -> str:
 
 The dataset contains normalized ingredient names, source-reported times and servings, source identifiers, recorded original links, the link each result card opens, and each recipe's recorded title and ingredient lines. It does not copy cooking instructions, descriptions or images. A card links to the recorded page or, for sites whose recorded pages failed a September 23 or 24, 2026 check that their archived copies passed, to the Internet Archive's copy; the dataset card states the rule. The link filter is enabled by default; records without a link remain available when disabled.
 
-All records are checked against constraints, then at most 2,000 baseline-selected candidates receive learned scores. This is not a new quality benchmark or a guaranteed global learned top-k. The private catalog's recovery scores below do not measure this browser retrieval pipeline. Model weights and their terms are unchanged.
+All records are checked against constraints, then at most 2,000 baseline-selected candidates receive learned scores. This is not a new quality benchmark or a guaranteed global learned top-k. The private catalog's recovery scores below do not measure this browser retrieval pipeline. Model weights are unchanged.
 {end}"""
     before, remaining = card.split(start, 1)
     _, after = remaining.split(end, 1)

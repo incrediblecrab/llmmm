@@ -20,7 +20,7 @@ from ingredient_model.config import PATHS
 from ingredient_model.hub import IngredientPredictor
 
 FILES = {
-    "README.md", "config.json", "model.safetensors", "training_manifest.json",
+    "README.md", "LICENSE", "config.json", "model.safetensors", "training_manifest.json",
     "training_verification.json", "release_policy.json",
 }
 
@@ -32,7 +32,7 @@ def digest(path: Path) -> str:
 
 def read_package(folder: Path) -> dict:
     if {path.name for path in folder.iterdir()} != FILES:
-        raise ValueError("the export must contain only the six allowed model-package files")
+        raise ValueError("the export must contain only the seven allowed model-package files")
     report = json.loads((folder / "training_verification.json").read_text())
     if (report["evaluation_status"] != "not_run"
             or report["training"]["status"] != "verified_all_record_training"):

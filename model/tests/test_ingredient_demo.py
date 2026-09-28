@@ -123,7 +123,7 @@ def test_model_card_update_only_replaces_the_existing_demo_section():
     assert retired not in updated
     assert "not measure this browser retrieval" in updated
     assert "not a new quality benchmark" in updated
-    assert "Model weights and their terms are unchanged" in updated
+    assert "Model weights are unchanged" in updated
     assert demo.add_ingredient_demo_links(updated) == updated
     with pytest.raises(ValueError, match="single demo-link section"):
         demo.add_ingredient_demo_links("No replacement boundary")

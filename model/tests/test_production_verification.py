@@ -146,9 +146,10 @@ def test_production_export_has_coverage_and_reload_evidence_not_a_borrowed_score
     assert exporter.render_production_card(report, public=public) == card
     policy = json.loads((args.out / "release_policy.json").read_text())
     assert policy["visibility"] == ("public" if public else "private")
-    assert policy["weights_license"] is None
+    assert policy["weights_license"] == "MIT"
+    assert (args.out / "LICENSE").read_bytes() == (exporter.REPO.parent / "LICENSE").read_bytes()
     from publish_native_model import read_package
     assert read_package(args.out)["training"]["recipes_per_epoch"] == 3
     (args.out / "evaluation.json").write_text('{"recall_at_10": 1.0}')
-    with pytest.raises(ValueError, match="six allowed"):
+    with pytest.raises(ValueError, match="seven allowed"):
         read_package(args.out)

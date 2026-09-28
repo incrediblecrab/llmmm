@@ -26,6 +26,13 @@ DEFAULT_CANDIDATE = "train-v2-full-20260909/masked-set-full-recipe-holdout-s42"
 DEFAULT_REFERENCE = "train-v2-20260909/masked-set-recipe-holdout-s42"
 DEFAULT_PRODUCTION = "production-v2-all-20260909/llmmm-recipes-full-s42"
 
+# The one definition of the published model's license; the card, policy files and publishers read it from here.
+WEIGHTS_LICENSE = "MIT"
+WEIGHTS_LICENSE_HUB_ID = "mit"
+WEIGHTS_LICENSE_NOTE = ("The MIT License covers the weights and configuration files in this repository. "
+                        "It grants no rights in the recipes or source datasets used for training, "
+                        "which keep their own terms.")
+
 
 def digest(path: Path) -> str:
     value = hashlib.sha256()
@@ -98,11 +105,10 @@ def export_production(args, generation: dict, candidate: Path, manifest: dict) -
     visibility = "public" if args.public else "private"
     policy = {
         "version": 2, "release_tier": f"{visibility}_educational_all_record_model",
-        "visibility": visibility, "weights_license": None,
+        "visibility": visibility, "weights_license": WEIGHTS_LICENSE,
         "scope": "Complete ingredient predictor; recipe-text generation is unsupported.",
-        "intended_use": "Noncommercial research and education.",
-        "rights_note": "No permissive weights license is granted. Dataset license labels "
-                      "alone do not establish model-weight redistribution rights.",
+        "intended_use": "Ingredient completion; predictions are not validated for taste, allergies or food safety.",
+        "rights_note": WEIGHTS_LICENSE_NOTE,
         "source_code_repository": "https://github.com/incrediblecrab/llmmm",
         "source_code_revision": source_revision,
         "source_data_included": False,
@@ -113,6 +119,7 @@ def export_production(args, generation: dict, candidate: Path, manifest: dict) -
     }.items():
         (args.out / filename).write_text(json.dumps(document, indent=2) + "\n")
     shutil.copyfile(candidate / "manifest.json", args.out / "training_manifest.json")
+    shutil.copyfile(REPO.parent / "LICENSE", args.out / "LICENSE")
     (args.out / "README.md").write_text(render_production_card(report, public=args.public))
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2) + "\n")
@@ -129,6 +136,7 @@ def render_production_card(report: dict, *, public: bool) -> str:
     login = "" if public else "\nhf auth login"
     token = "False" if public else "True"
     return f"""---
+license: {WEIGHTS_LICENSE_HUB_ID}
 library_name: pytorch
 tags:
 - ingredient-completion
@@ -180,9 +188,9 @@ print(model.recommend(["tomato", "basil"], top_k=10))
 
 Inference does not require the training corpus. Supply at least two distinct ingredient names from `model.vocabulary`; spaces can replace underscores. Unknown names raise an error, and recommendations exclude supplied ingredients. Scores are unnormalized logits, not calibrated probabilities.
 
-## Intended use and limits
+## License and limits
 
-For noncommercial research and education. No permissive weights license is granted. This package contains no source recipes, titles or cooking instructions. Predictions have not been validated for taste, allergies or food safety. Review the [data provenance](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/raw-data/README.md) and applicable terms before redistribution or commercial use.
+Released under the [MIT License](LICENSE). {WEIGHTS_LICENSE_NOTE} This package contains no source recipes, titles or cooking instructions. Predictions have not been validated for taste, allergies or food safety. Review the [data provenance](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/raw-data/README.md) before reusing any source data.
 
 ## Acknowledgements
 

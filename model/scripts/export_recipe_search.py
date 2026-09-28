@@ -25,7 +25,7 @@ from ingredient_model.recipe_ranker import FEATURE_NAMES, RecipeRankingPolicy
 from ingredient_model.recipe_ingredients import CanonicalIngredientIndex
 from ingredient_model.ingredient_demo import add_ingredient_demo_links
 from evaluate_recipe_search import _operational_pass
-from export_native_model import render_production_card
+from export_native_model import WEIGHTS_LICENSE, WEIGHTS_LICENSE_NOTE, render_production_card
 from train_recipe_ranker import array_digest
 
 POLICY_FILES = ("recipe_ranker_config.json", "recipe_ranker.safetensors")
@@ -469,8 +469,8 @@ def export(args) -> dict:
         "schema_version": 1, "visibility": "public", "source_recipe_data_included": False,
         "private_query_and_coverage_arrays_included": False,
         "external_pretrained_parameters_used": False,
-        "license": "No permissive weights license is granted; review source terms for downstream use.",
-        "native_ingredient_checkpoint": "unchanged",
+        "license": WEIGHTS_LICENSE,
+        "native_ingredient_checkpoint": "unchanged", "license_note": WEIGHTS_LICENSE_NOTE,
     }
     _metadata_only(evaluation)
     native = json.loads(args.native_evidence.read_text())

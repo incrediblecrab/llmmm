@@ -25,7 +25,7 @@ from export_recipe_search import (
     verify_evaluated_catalog, verify_source_revision)
 
 NATIVE_FILES = {
-    "config.json", "model.safetensors", "training_manifest.json",
+    "LICENSE", "config.json", "model.safetensors", "training_manifest.json",
     "training_verification.json", "release_policy.json",
 }
 
@@ -185,7 +185,7 @@ def main() -> int:
     parser.add_argument("--catalog", type=Path, default=PATHS.recipes / "recipe_search.sqlite")
     parser.add_argument("--corpus", type=Path, default=PATHS.recipes / "recipe_ids.npz")
     parser.add_argument("--native-receipt", type=Path,
-                        default=PATHS.results / "huggingface_public_release.json")
+                        default=PATHS.results / "huggingface_model_license_update.json")
     parser.add_argument("--out", type=Path,
                         default=PATHS.results / "huggingface_recipe_search_release.json")
     parser.add_argument("--public", action="store_true")
