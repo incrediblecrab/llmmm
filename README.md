@@ -159,7 +159,7 @@ The comparison has limits: source overlap is known or possible, the row split do
 
 The [original text audit](model/results/generation_data_audit.json) exposed a Food.com quantity column being used in place of ingredient names. The [rebuilt text-v2 audit](model/results/generation_data_audit_text_v2.json) confirms that names are recovered. Separate quantities are retained without inventing missing units; lists with different lengths are explicitly flagged and must not be paired.
 
-The new index is `recipe_text_v2.parquet`; the original is retained for comparison. Every rebuilt row was checked against the canonical ingredient corpus. Failed builds do not publish partial indexes, and existing indexes are not overwritten. The canonical ingredient sets used by the predictors have not changed.
+The new index is `recipe_text_v2.parquet`; the original `recipe_text.parquet` was deleted on September 28, 2026 to reclaim disk space, and its audit remains in the linked results file. Every rebuilt row was checked against the canonical ingredient corpus. Failed builds do not publish partial indexes, and existing indexes are not overwritten. The canonical ingredient sets used by the predictors have not changed.
 
 The next quality comparison needs new test recipes, with duplicate families and source overlap accounted for. A future generator should be compared with T5 under equal output budgets, checking ingredient use, quantities, instructions and blinded quality judgments.
 
