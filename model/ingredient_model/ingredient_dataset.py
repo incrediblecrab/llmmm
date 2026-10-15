@@ -26,6 +26,7 @@ from .ingredient_catalog import (
     ARRAYS, FORBIDDEN_FIELDS, INCLUDED_FIELDS, TEXT_COVERAGE, TEXT_MANIFEST, _json_bytes,
     load_ingredient_catalog, load_text_shards, public_source_url, read_text_shard,
 )
+from .licensing import DATASET_LICENSE_NOTE, LICENSE_HUB_ID, LICENSE_NAME, LICENSE_TITLE, license_bytes
 from .recipe_links import ARCHIVE, ARCHIVE_PREFIX, LINK_RULE, LINK_STATUSES, NONE, SOURCE
 
 ROWS_PER_SHARD = 262_144
@@ -347,7 +348,7 @@ def _dataset_card(metadata: dict, source_revision: str) -> str:
     links = coverage["url_statuses"].get("source_url", 0)
     link_counts = {name: coverage["link_statuses"].get(name, 0) for name in LINK_STATUSES}
     return f"""---
-license: other
+license: {LICENSE_HUB_ID}
 pretty_name: llmmm Recipe Ingredients
 configs:
   - config_name: default
@@ -372,13 +373,13 @@ Source-reported positive `total_minutes` are available for **{coverage['source_t
 
 Canonical matching does not recover quantities or every compound constituent, and exclusions are not an allergy-safety guarantee.
 
-[Model and its separate terms]({_MODEL_URL}) | [Browser demo]({_DEMO_URL}) | [Exact source revision `{source_revision}`]({_SOURCE_REPOSITORY}/tree/{source_revision})
+[Model]({_MODEL_URL}) | [Browser demo]({_DEMO_URL}) | [Exact source revision `{source_revision}`]({_SOURCE_REPOSITORY}/tree/{source_revision})
 
 `index/` preserves the index's compressed arrays, URL shards, card link shards, text manifest and text shards byte-for-byte; only its publication provenance changes. `dataset-manifest.json` records the source revision, input and copied index hashes, Parquet counts and every other file's bytes and SHA256. Packaging stages a release locally; it does not upload it.
 
-## Use
+## License
 
-The maintainer confirmed permission to publish these ingredient facts, titles and ingredient lines. `license: other` is not a grant of rights to source-page instructions, prose or photos, or to the separate model weights. Source-page material and model weights retain their separate terms.
+Released under the [{LICENSE_TITLE}](LICENSE) ({LICENSE_NAME}). {DATASET_LICENSE_NOTE} The maintainer confirmed permission to publish these ingredient facts, titles and ingredient lines.
 
 ## Acknowledgements
 
@@ -452,7 +453,7 @@ def build_ingredient_dataset(index_directory: Path, output: Path, *, source_revi
         (staged / "index/links").mkdir()
         (staged / "index/text").mkdir()
         (staged / "data").mkdir()
-        filenames = ["README.md", "index/ingredient-index.json"]
+        filenames = ["README.md", "LICENSE", "index/ingredient-index.json"]
         for record in [*metadata["arrays"].values(), *metadata["url_shards"], *metadata["link_shards"],
                        metadata["text_manifest"], *text_shards]:
             source, destination = index_directory / record["file"], staged / "index" / record["file"]
@@ -464,6 +465,7 @@ def build_ingredient_dataset(index_directory: Path, output: Path, *, source_revi
         copied_index.write_bytes(_json_bytes({**metadata, "publication": publication}))
         parquet, parquet_files = _write_parquet(staged, metadata, arrays)
         (staged / "README.md").write_text(_dataset_card(metadata, source_revision), encoding="utf-8")
+        (staged / "LICENSE").write_bytes(license_bytes())
         schema = []
         for field in PARQUET_SCHEMA:
             item = {"name": field.name, "type": str(field.type), "nullable": field.nullable}

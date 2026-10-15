@@ -9,6 +9,7 @@ import pytest
 
 from ingredient_model import artifacts
 from ingredient_model.data.recipes import RecipeCorpus
+from ingredient_model.licensing import LICENSE_NAME, LICENSE_TEXT
 from ingredient_model.production import verify_full_training
 from ingredient_model.spec import TrainContext
 
@@ -146,8 +147,9 @@ def test_production_export_has_coverage_and_reload_evidence_not_a_borrowed_score
     assert exporter.render_production_card(report, public=public) == card
     policy = json.loads((args.out / "release_policy.json").read_text())
     assert policy["visibility"] == ("public" if public else "private")
-    assert policy["weights_license"] == "MIT"
-    assert (args.out / "LICENSE").read_bytes() == (exporter.REPO.parent / "LICENSE").read_bytes()
+    assert policy["weights_license"] == LICENSE_NAME == "CC BY-NC 4.0"
+    assert (args.out / "LICENSE").read_bytes() == LICENSE_TEXT.read_bytes()
+    assert "license: cc-by-nc-4.0\n" in card
     from publish_native_model import read_package
     assert read_package(args.out)["training"]["recipes_per_epoch"] == 3
     (args.out / "evaluation.json").write_text('{"recall_at_10": 1.0}')

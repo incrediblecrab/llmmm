@@ -30,6 +30,8 @@ from .recipe_ranker import (
 from .recipe_search import RecipeFinder, RecipeQuery
 
 MODEL_REPOSITORY = "incrediblecrab/llmmm-recipes"
+# The latest receipt that records every file on the model's main branch, with its "repo_id" and "files".
+MODEL_INVENTORY_RECEIPT = "huggingface_model_cc_by_nc_update.json"
 SPACE_REPOSITORY = "incrediblecrab/llmmm-recipes-demo"
 WEB_FILES = (
     "index.html", "styles.css", "app.js", "ranker.js", "search.js",

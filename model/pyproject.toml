@@ -54,3 +54,6 @@ packages = [
     "models.hybrid",
     "cloud",
 ]
+
+[tool.setuptools.package-data]
+ingredient_model = ["licenses/*.txt"]

@@ -232,7 +232,7 @@ def test_complete_bounded_parquet_and_fixed_inventory(ingredient_index, tmp_path
         assert item["nullable"] == table.schema.field(item["name"]).nullable
         if item["name"] in {"ingredients", "ingredient_ids"}:
             assert item["item_nullable"] is False
-    expected_files = {"README.md", "index/ingredient-index.json"}
+    expected_files = {"README.md", "LICENSE", "index/ingredient-index.json"}
     text_records = load_text_shards(ingredient_index, original)
     assert [record["file"] for record in text_records] == [f"text/{position:04d}.json.gz" for position in range(4)]
     for record in [*original["arrays"].values(), *original["url_shards"], *original["link_shards"],
@@ -251,7 +251,8 @@ def test_complete_bounded_parquet_and_fixed_inventory(ingredient_index, tmp_path
         assert b"PRIVATE" not in data
     card = (output / "README.md").read_text()
     frontmatter = yaml.safe_load(card.split("---", 2)[1])
-    assert frontmatter["license"] == "other"
+    assert frontmatter["license"] == "cc-by-nc-4.0"
+    assert (output / "LICENSE").read_bytes().startswith(b"Attribution-NonCommercial 4.0 International\n")
     assert frontmatter["configs"] == [
         {"config_name": "default", "data_files": [{"split": "train", "path": "data/*.parquet"}]}]
     assert f"https://github.com/incrediblecrab/llmmm/tree/{REVISION}" in card
@@ -268,7 +269,7 @@ def test_complete_bounded_parquet_and_fixed_inventory(ingredient_index, tmp_path
     first_text = json.loads(gzip.decompress((output / "index/text/0000.json.gz").read_bytes()))
     assert first_text == {"first_id": 0, "titles": ["Fixture & recipe 0", None],
                           "ingredient_lines": [["1 egg", "a pinch of salt"], None]}
-    assert "## Use" in card and "## Acknowledgements" in card
+    assert "## License" in card and "## Acknowledgements" in card
     assert not list(output.parent.glob(".ingredient-dataset-*"))
 
 

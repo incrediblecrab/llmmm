@@ -18,6 +18,7 @@ from huggingface_hub.utils import disable_progress_bars
 
 from ingredient_model.config import PATHS
 from ingredient_model.hub import IngredientPredictor
+from ingredient_model.recipe_demo import MODEL_INVENTORY_RECEIPT
 from ingredient_model.recipe_ranker import FEATURE_NAMES, RecipeRankingPolicy
 from ingredient_model.recipe_search import RecipeFinder, RecipeQuery
 from export_recipe_search import (
@@ -185,7 +186,7 @@ def main() -> int:
     parser.add_argument("--catalog", type=Path, default=PATHS.recipes / "recipe_search.sqlite")
     parser.add_argument("--corpus", type=Path, default=PATHS.recipes / "recipe_ids.npz")
     parser.add_argument("--native-receipt", type=Path,
-                        default=PATHS.results / "huggingface_model_license_update.json")
+                        default=PATHS.results / MODEL_INVENTORY_RECEIPT)
     parser.add_argument("--out", type=Path,
                         default=PATHS.results / "huggingface_recipe_search_release.json")
     parser.add_argument("--public", action="store_true")

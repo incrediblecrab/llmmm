@@ -18,6 +18,7 @@ from ingredient_model.data.recipes import load_recipes
 from ingredient_model.data.splits import held_out_recipes
 from ingredient_model.eval.completion import completion_ranks
 from ingredient_model.hub import IngredientPredictor
+from ingredient_model.licensing import LICENSE_HUB_ID, LICENSE_NAME, LICENSE_TITLE, WEIGHTS_LICENSE_NOTE, license_bytes
 from ingredient_model.production import verify_full_training
 from ingredient_model.workspace import verify_training_corpus
 from m6_intervals import summarise_ranks
@@ -26,12 +27,10 @@ DEFAULT_CANDIDATE = "train-v2-full-20260909/masked-set-full-recipe-holdout-s42"
 DEFAULT_REFERENCE = "train-v2-20260909/masked-set-recipe-holdout-s42"
 DEFAULT_PRODUCTION = "production-v2-all-20260909/llmmm-recipes-full-s42"
 
-# The one definition of the published model's license; the card, policy files and publishers read it from here.
-WEIGHTS_LICENSE = "MIT"
-WEIGHTS_LICENSE_HUB_ID = "mit"
-WEIGHTS_LICENSE_NOTE = ("The MIT License covers the weights and configuration files in this repository. "
-                        "It grants no rights in the recipes or source datasets used for training, "
-                        "which keep their own terms.")
+# The published model's license is defined once, in ingredient_model.licensing; these names are what the card,
+# policy files and publishers import.
+WEIGHTS_LICENSE = LICENSE_NAME
+WEIGHTS_LICENSE_HUB_ID = LICENSE_HUB_ID
 
 
 def digest(path: Path) -> str:
@@ -119,7 +118,7 @@ def export_production(args, generation: dict, candidate: Path, manifest: dict) -
     }.items():
         (args.out / filename).write_text(json.dumps(document, indent=2) + "\n")
     shutil.copyfile(candidate / "manifest.json", args.out / "training_manifest.json")
-    shutil.copyfile(REPO.parent / "LICENSE", args.out / "LICENSE")
+    (args.out / "LICENSE").write_bytes(license_bytes())
     (args.out / "README.md").write_text(render_production_card(report, public=args.public))
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2) + "\n")
@@ -190,7 +189,7 @@ Inference does not require the training corpus. Supply at least two distinct ing
 
 ## License and limits
 
-Released under the [MIT License](LICENSE). {WEIGHTS_LICENSE_NOTE} This package contains no source recipes, titles or cooking instructions. Predictions have not been validated for taste, allergies or food safety. Review the [data provenance](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/raw-data/README.md) before reusing any source data.
+Released under the [{LICENSE_TITLE}](LICENSE) ({LICENSE_NAME}). {WEIGHTS_LICENSE_NOTE} This package contains no source recipes, titles or cooking instructions. Predictions have not been validated for taste, allergies or food safety. Review the [data provenance](https://github.com/incrediblecrab/llmmm/blob/{source_revision}/raw-data/README.md) before reusing any source data.
 
 ## Acknowledgements
 

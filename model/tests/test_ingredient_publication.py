@@ -229,7 +229,7 @@ def test_existing_tags_are_never_moved(publisher):
 
 
 def test_dataset_inventory_rejects_an_extra_private_file_or_missing_card_text(publisher, monkeypatch, tmp_path):
-    for name in ("README.md", "index/ingredient-index.json", "index/safe.gz", "index/text-shards.json.gz",
+    for name in ("README.md", "LICENSE", "index/ingredient-index.json", "index/safe.gz", "index/text-shards.json.gz",
                  "index/text/0000.json.gz", "data/train-00000-of-00001.parquet"):
         path = tmp_path / name
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -244,7 +244,7 @@ def test_dataset_inventory_rejects_an_extra_private_file_or_missing_card_text(pu
         (tmp_path / "dataset-manifest.json").write_text(json.dumps({"files": publisher.inventory(tmp_path)}))
 
     write_manifest()
-    assert len(publisher.verified_dataset_files(tmp_path)) == 7
+    assert len(publisher.verified_dataset_files(tmp_path)) == 8
     (tmp_path / "private.sqlite").write_text("not part of the release")
     with pytest.raises(ValueError, match="outside its verified inventory"):
         publisher.verified_dataset_files(tmp_path)

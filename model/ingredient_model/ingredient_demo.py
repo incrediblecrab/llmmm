@@ -14,19 +14,23 @@ from ._hashing import file_sha256
 from .data.recipe_search_metadata import _publish_directory
 from .ingredient_catalog import TEXT_MANIFEST, load_ingredient_catalog, load_text_shards, read_text_shard
 from .ingredient_dataset import _read_link_shard, _read_url_shard
+from .licensing import LICENSE_HUB_ID, LICENSE_NAME, LICENSE_TITLE, SPACE_LICENSE_NOTE, license_bytes
 from .recipe_demo import (
-    MODEL_REPOSITORY, SOURCE_FILES, SPACE_REPOSITORY,
+    MODEL_REPOSITORY, SOURCE_FILES, SPACE_FILES, SPACE_REPOSITORY,
     WEB_FILES, _json_bytes, browser_policy, load_public_policy, verify_source_revision,
 )
 from .recipe_links import ARCHIVE, LINK_STATUSES, SOURCE
 from .recipe_ranker import RecipeRankingPolicy
 
 INGREDIENT_DATASET_REPOSITORY = "incrediblecrab/llmmm-recipe-ingredients"
+INGREDIENT_SPACE_FILES = (*SPACE_FILES, "LICENSE")
 INGREDIENT_SOURCE_FILES = tuple(dict.fromkeys((
     *SOURCE_FILES,
     "model/ingredient_model/ingredient_catalog.py",
     "model/ingredient_model/ingredient_dataset.py",
     "model/ingredient_model/ingredient_demo.py",
+    "model/ingredient_model/licensing.py",
+    "model/ingredient_model/licenses/CC-BY-NC-4.0.txt",
     "model/ingredient_model/recipe_ingredients.py",
     "model/ingredient_model/recipe_links.py",
     "model/ingredient_model/data/recipe_search_metadata.py",
@@ -140,6 +144,7 @@ colorFrom: green
 colorTo: yellow
 sdk: static
 app_file: index.html
+license: {LICENSE_HUB_ID}
 models:
   - {MODEL_REPOSITORY}
 datasets:
@@ -164,7 +169,7 @@ Missing time/serving metadata cannot pass its corresponding constraint. Values a
 - Dataset revision: `{provenance['dataset_revision'] or 'local preview'}`.
 - Source revision: `{provenance['source_revision'] or 'local preview'}`.
 
-The maintainer confirmed permission to publish this extract, including the recorded titles and ingredient lines. Cooking instructions and other recipe-page content stay on the source sites under their own terms, and the model weights keep their separate terms. `manifest.json` pins the application assets and dataset index by SHA256.
+Released under the [{LICENSE_TITLE}](LICENSE) ({LICENSE_NAME}). {SPACE_LICENSE_NOTE} The maintainer confirmed permission to publish this extract, including the recorded titles and ingredient lines. Cooking instructions and other recipe-page content stay on the source sites. `manifest.json` pins the application assets and dataset index by SHA256.
 """
 
 
@@ -251,6 +256,7 @@ def build_ingredient_demo(
             },
         }
         (staged / "README.md").write_text(ingredient_space_card(metadata, bundle["provenance"]), encoding="utf-8")
+        (staged / "LICENSE").write_bytes(license_bytes())
         (staged / "catalog.json").write_bytes(_json_bytes(bundle))
         (staged / "policy.json").write_bytes(_json_bytes(exported_policy))
         manifest = {
@@ -264,8 +270,8 @@ def build_ingredient_demo(
             "index_manifest": bundle["index"], "provenance": bundle["provenance"],
             "source_files_sha256": identities,
             "documentation_files": {
-                "README.md": {"bytes": (staged / "README.md").stat().st_size,
-                              "sha256": file_sha256(staged / "README.md")},
+                filename: {"bytes": (staged / filename).stat().st_size, "sha256": file_sha256(staged / filename)}
+                for filename in ("README.md", "LICENSE")
             },
             "catalog_summary": metadata["coverage"], "index_bytes": metadata["bytes"],
             "scoring": {

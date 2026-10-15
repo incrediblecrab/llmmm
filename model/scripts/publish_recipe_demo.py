@@ -21,7 +21,7 @@ import httpx
 from huggingface_hub import CommitOperationAdd, HfApi, hf_hub_download
 
 from ingredient_model._hashing import file_sha256
-from ingredient_model.recipe_demo import MODEL_REPOSITORY
+from ingredient_model.recipe_demo import MODEL_INVENTORY_RECEIPT, MODEL_REPOSITORY
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -129,8 +129,7 @@ def wait_for_space(client: httpx.Client, url: str, expected_manifest: bytes, *, 
 
 
 def link_model_card(api: HfApi, *, transform, commit_message: str) -> dict:
-    # The license update is the latest record of every file on the model's main branch.
-    receipt = json.loads((ROOT / "model/results/huggingface_model_license_update.json").read_text())
+    receipt = json.loads((ROOT / "model/results" / MODEL_INVENTORY_RECEIPT).read_text())
     if receipt["repo_id"] != MODEL_REPOSITORY:
         raise ValueError("the model inventory receipt refers to a different repository")
     original = receipt["files"]

@@ -25,10 +25,10 @@ from huggingface_hub.utils import parse_ratelimit_headers
 from ingredient_model._hashing import file_sha256
 from ingredient_model.ingredient_catalog import load_ingredient_catalog, load_text_shards
 from ingredient_model.ingredient_demo import (
-    INGREDIENT_DATASET_REPOSITORY, INGREDIENT_SOURCE_FILES, add_ingredient_demo_links,
+    INGREDIENT_DATASET_REPOSITORY, INGREDIENT_SOURCE_FILES, INGREDIENT_SPACE_FILES, add_ingredient_demo_links,
     build_ingredient_demo,
 )
-from ingredient_model.recipe_demo import SPACE_FILES, SPACE_REPOSITORY, WEB_FILES, verify_source_revision
+from ingredient_model.recipe_demo import SPACE_REPOSITORY, WEB_FILES, verify_source_revision
 from ingredient_model.recipe_links import LINK_STATUSES
 from publish_recipe_demo import (
     _browser_tests, browser_check, link_model_card, preview_server, wait_for_space, write_report,
@@ -85,7 +85,7 @@ def verified_dataset_files(directory: Path) -> dict[str, dict]:
     for name, expected in declared.items():
         if files[name] != {"bytes": expected["bytes"], "sha256": expected["sha256"]}:
             raise ValueError(f"{name}: dataset file differs from its recorded bytes")
-    required = {"README.md", "dataset-manifest.json", "index/ingredient-index.json",
+    required = {"README.md", "LICENSE", "dataset-manifest.json", "index/ingredient-index.json",
                 "index/" + metadata["text_manifest"]["file"]}
     required.update("index/" + record["file"] for record in metadata["arrays"].values())
     required.update("index/" + record["file"] for record in (*metadata["url_shards"], *metadata["link_shards"]))
@@ -459,7 +459,7 @@ def main() -> None:
                 script="test:ingredients", minimum_expected=FULL_BROWSER_RESULTS, cases=FULL_BROWSER_CASES)
         local_browser["show_100_ms"] = show_100_milliseconds(output / "browser-local.json")
         space_files = inventory(build)
-        if set(space_files) != set(SPACE_FILES):
+        if set(space_files) != set(INGREDIENT_SPACE_FILES):
             raise ValueError("the full Space must contain only the static application allowlist, not a private corpus")
         space_revision = publish_tree(
             api, SPACE_REPOSITORY, "space", build, space_files, update=args.update)
