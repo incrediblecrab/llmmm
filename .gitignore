@@ -70,3 +70,10 @@ model/cloud/config.json
 
 # macOS
 .DS_Store
+
+# Local environment files can hold credentials; committed templates stay tracked.
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.sample
