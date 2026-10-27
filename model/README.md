@@ -18,6 +18,22 @@ im sweep experiments/baselines.yaml
 im report
 ```
 
+## Private backup
+
+`raw-data/`, `data/` and the recovery bundle have one off-machine copy: the private Hugging Face dataset `incrediblecrab/llmmm-private-backup`, which holds only gpg-encrypted (AES-256) zstd tar parts. The passphrase is `LLMMM_BACKUP_PASSPHRASE` in the login keychain, read through `keychain-env`; without it the backup cannot be opened, so keep a copy of it in a password manager. `scripts/private_backup.py` does all of it, and nothing else writes to that repository:
+
+```bash
+.venv/bin/python scripts/private_backup.py pack                              # encrypted parts in ../.artifacts/private-backup/
+.venv/bin/python scripts/private_backup.py verify                            # decrypt locally, check every file's SHA-256
+keychain-env run -- .venv/bin/python scripts/private_backup.py upload        # refuses unless the repo is private
+keychain-env run -- .venv/bin/python scripts/private_backup.py check-remote  # Hub SHA-256 of every part matches local
+keychain-env run -- .venv/bin/python scripts/private_backup.py restore DIR   # download, decrypt, extract, check; never overwrites
+```
+
+`restore --unit raw-data/01-recipenlg` restores one folder. The repository must stay private: the source corpora are third-party data this project does not redistribute.
+
+If the passphrase is ever exposed, rotate it rather than re-store it: `openssl rand -base64 32 | keychain-env put LLMMM_BACKUP_PASSPHRASE`, confirm the new value cannot decrypt the old `manifest.tsv.gpg`, move `../.artifacts/private-backup/` aside, `pack` and `verify`, delete and recreate the Hub repository (new commits alone keep the old ciphertext in its history), `upload` and `check-remote`, then replace the password-manager copy.
+
 ## The one thing to understand first
 
 **Graph models and recipe models cannot share an evaluation protocol.**
