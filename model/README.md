@@ -20,19 +20,18 @@ im report
 
 ## Private backup
 
-`raw-data/`, `data/` and the recovery bundle have one off-machine copy: the private Hugging Face dataset `incrediblecrab/llmmm-private-backup`, which holds only gpg-encrypted (AES-256) zstd tar parts. The passphrase is `LLMMM_BACKUP_PASSPHRASE` in the login keychain, read through `keychain-env`; without it the backup cannot be opened, so keep a copy of it in a password manager. `scripts/private_backup.py` does all of it, and nothing else writes to that repository:
+Everything git does not hold lives in the private Hugging Face dataset `incrediblecrab/llmmm-private-backup`: `raw-data/`, `data/`, `../.artifacts/` (with the recovery bundle), and the git-ignored files in `results/runs/`, `training/` and `../prior-study/data/`. It holds zstd tar parts, one archive per top-level folder split at 2 GB, and a `manifest.tsv` with the SHA-256 of every file; it is not encrypted, so it must stay private. On October 29, 2026 it held 22,261 files in 59 parts (8.2 GB), a full restore from the Hub into an empty folder matched every local file, and the local copies were deleted. `make check`, `make train`, `make text` and recipe-search work need a restore first; `make check-code` does not. `scripts/private_backup.py` does all of it, and nothing else writes to that repository:
 
 ```bash
-.venv/bin/python scripts/private_backup.py pack                              # encrypted parts in ../.artifacts/private-backup/
-.venv/bin/python scripts/private_backup.py verify                            # decrypt locally, check every file's SHA-256
-keychain-env run -- .venv/bin/python scripts/private_backup.py upload        # refuses unless the repo is private
-keychain-env run -- .venv/bin/python scripts/private_backup.py check-remote  # Hub SHA-256 of every part matches local
-keychain-env run -- .venv/bin/python scripts/private_backup.py restore DIR   # download, decrypt, extract, check; never overwrites
+keychain-env run -- .venv/bin/python scripts/private_backup.py restore ..    # download, extract into the repo, check every file; never overwrites
+keychain-env run -- .venv/bin/python scripts/private_backup.py restore .. --unit raw-data/01-recipenlg   # one folder
+.venv/bin/python scripts/private_backup.py pack                              # parts and manifest in ../.artifacts/private-backup/upload/
+.venv/bin/python scripts/private_backup.py verify                            # decompress locally, check every file's SHA-256
+keychain-env run -- .venv/bin/python scripts/private_backup.py upload        # refuses unless the repo is private; deletes Hub parts no longer listed
+keychain-env run -- .venv/bin/python scripts/private_backup.py check-remote  # Hub SHA-256 of every file matches local
 ```
 
-`restore --unit raw-data/01-recipenlg` restores one folder. The repository must stay private: the source corpora are third-party data this project does not redistribute.
-
-If the passphrase is ever exposed, rotate it rather than re-store it: `openssl rand -base64 32 | keychain-env put LLMMM_BACKUP_PASSPHRASE`, confirm the new value cannot decrypt the old `manifest.tsv.gpg`, move `../.artifacts/private-backup/` aside, `pack` and `verify`, delete and recreate the Hub repository (new commits alone keep the old ciphertext in its history), `upload` and `check-remote`, then replace the password-manager copy.
+`restore` reads the list of folders from the manifest on the Hub, so it needs no local data. `pack` keeps a folder's existing parts when its files and parts still match the manifest, and refuses to run while a backed-up folder is missing locally: restore before packing again. The repository must stay private: the source corpora are third-party data this project does not redistribute.
 
 ## The one thing to understand first
 
